@@ -329,4 +329,10 @@ $language["PRICE_NAME"]="Price for change username";
 $language["PRICE_GB"]="Price for GB";
 $language["POINTS"]="Points";
 $language["SEEDBONUS_UPDATED"]="SeedBonus settings updated";
+// irc start
+$language["IRC_SETTINGS"]="Irc settings";
+$language["SETTING_IRC_SERVER"]="Irc Server (without irc://)";
+$language["SETTING_IRC_PORT"]="Irc Port";
+$language["SETTING_IRC_CHANNEL"]="Irc Channel (without #)";
+// irc ends
 ?>

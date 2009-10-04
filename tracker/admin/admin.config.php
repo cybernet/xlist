@@ -71,6 +71,9 @@ switch ($action)
         $btit_settings["invitation_only"]=isset($_POST["invitation_only"])?"true":"false";
         $btit_settings["image_cat"]=$_POST["image_cat"];
         $btit_settings["limit_im"]=$_POST["limit_im"];
+        $btit_settings["irc_server"]=$_POST["irc_server"];
+        $btit_settings["irc_port"]=$_POST["irc_port"];
+        $btit_settings["irc_channel"]=$_POST["irc_channel"];
 
 
         if (isset($_POST["xbtt_use"]))
@@ -315,6 +318,11 @@ switch ($action)
         $btit_settings["smtp_port"]=isset($btit_settings["smtp_port"])?$btit_settings["smtp_port"]:"25";
         $btit_settings["smtp_username"]=isset($btit_settings["smtp_username"])?$btit_settings["smtp_username"]:"";
         $btit_settings["smtp_password"]=isset($btit_settings["smtp_password"])?$btit_settings["smtp_password"]:"";
+// irc start
+        $btit_settings["irc_server"]=isset($btit_settings["irc_server"])?$btit_settings["irc_server"]:"";
+        $btit_settings["irc_port"]=isset($btit_settings["irc_port"])?$btit_settings["irc_port"]:"6667";
+        $btit_settings["irc_channel"]=isset($btit_settings["irc_channel"])?$btit_settings["irc_channel"]:"";
+//irc ends
         $btit_settings["invitation_only"]=isset($_POST["invitation_only"])?"true":"false";
         $btit_settings["invitation_reqvalid"]=isset($_POST["invitation_reqvalid"])?"true":"false";
 

@@ -94,7 +94,10 @@ else
                     "description"=>$language["ACP_PRUNE_TORRENTS"]),
                           1=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=visible" ,
-                    "description"=>$language["ACP_VISIBLE_TORRENTS"])
+                    "description"=>$language["ACP_VISIBLE_TORRENTS"]),
+                          2=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=cyberfun_no_name" ,
+                    "description"=>$language["ACP_CYBERFUN_NO_NAME"])
 )
             ),
 

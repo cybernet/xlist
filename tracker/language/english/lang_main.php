@@ -461,4 +461,5 @@ $language["UP_TO_VIP"]="Upgrade rank to VIP";
 $language["NEED_MORE_POINTS"]="[need more points]";
 $language["CHANGE_USERNAME"]="Change username (price - ";
 $language['SEEDBONUS_MOD_LOGIN']='Please <a href="index.php?page=login">login</a> on the site using your account.';
+$language["MNU_IRC"]="iRC";
 ?>

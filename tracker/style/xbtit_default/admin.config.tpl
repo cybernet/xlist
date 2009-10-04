@@ -185,6 +185,19 @@
       <td class="lista"><input type="text" name="mostpoplimit" value="<tag:config.mostpoplimit />" size="3" maxlength="3" /></td>
     </tr>
     <tr>
+      <td class="header" align="center" colspan="4"><tag:language.IRC_SETTINGS /></td>
+    </tr>
+    <tr>
+      <td class="header"><tag:language.SETTING_IRC_SERVER /></td>
+      <td class="lista"><input type="text" id="irc_server" name="irc_server" value="<tag:config.irc_server />" size="30" /></td>
+      <td class="header"><tag:language.SETTING_IRC_PORT /></td>
+      <td class="lista"><input type="text" name="irc_port" value="<tag:config.irc_port />" size="10" /></td>
+    </tr>
+    <tr>
+      <td class="header"><tag:language.SETTING_IRC_CHANNEL /></td>
+      <td class="lista" colspan="3"><input type="text" id="irc_channel" name="irc_channel" value="<tag:config.irc_channel />" size="20" /></td>
+    </tr>
+    <tr>
       <td class="header" align="center" colspan="4"><tag:language.IMAGE_SETTING /></td>
     </tr>
     <tr>
