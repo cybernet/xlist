@@ -1,4 +1,10 @@
 <?
+
+// CyBerFuN Tracker .::. iRC
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// Modified By CyBerNe7
+
 ob_start();
 global $CURUSER, $BASEURL;
 if ($CURUSER["uid"]>1)
