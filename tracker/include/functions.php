@@ -1,40 +1,15 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////////////
-// xbtit - Bittorrent tracker/frontend
-//
-// Copyright (C) 2004 - 2007  Btiteam
-//
-//    This file is part of xbtit.
-//
-// Redistribution and use in source and binary forms, with or without modification,
-// are permitted provided that the following conditions are met:
-//
-//   1. Redistributions of source code must retain the above copyright notice,
-//      this list of conditions and the following disclaimer.
-//   2. Redistributions in binary form must reproduce the above copyright notice,
-//      this list of conditions and the following disclaimer in the documentation
-//      and/or other materials provided with the distribution.
-//   3. The name of the author may not be used to endorse or promote products
-//      derived from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-// IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
-// TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-////////////////////////////////////////////////////////////////////////////////////
+// CyBerFuN
 
 error_reporting(E_ALL ^ E_NOTICE);
 
 #
 // Emulate register_globals off
 #
+
+ini_set("memory_limit","-1");
+set_time_limit(0);
+
 if (ini_get('register_globals')) {
   $superglobals = array($_SERVER, $_ENV,$_FILES, $_COOKIE, $_POST, $_GET);
   if (isset($_SESSION))
@@ -90,6 +65,39 @@ function load_css($css_name) {
     return $STYLEURL.'/'.$css_name;
   return $BASEURL.'/style/xbtit_default/'.$css_name;
 }
+
+/*Mod by losmi - visible mod
+Operation #3*/
+function updateVisible($hash,$visible)
+{
+    global $TABLE_PREFIX;
+    $query = "UPDATE {$TABLE_PREFIX}files 
+                   SET visible=".(int)$visible."
+                   WHERE info_hash ='$hash'";
+    do_sqlquery($query,true);
+   
+}
+/*End mod by losmi - visible mod
+End Operation #3*/
+
+
+/*Mod by losmi - visible mod*/
+function getLevelVisible($cur_level)
+{
+    global $TABLE_PREFIX;
+    $query = "SELECT id, id_level FROM {$TABLE_PREFIX}users_level";
+    $rez = do_sqlquery($query,true);
+    
+    while($row = mysql_fetch_assoc($rez))
+    {
+        if($row['id'] == $cur_level)
+        {
+            return $row['id_level'];
+        }
+    }
+    return 0;
+}
+/*End mod by losmi - visible mod*/
 
 function load_template($tpl_name) {
   // control if input template name exist in current user's stylepath, else return default
@@ -173,9 +181,11 @@ function print_debug($level=3, $key=' - ') {
 }
 
 function print_version() {
+global $STYLEPATH;
+include($STYLEPATH.'/fuck.php');
   global $tracker_version;
 
-  return '[&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">Btiteam</a>&nbsp;]';
+  return $google_analytics;
 }
 
 function print_designer() {
@@ -183,10 +193,10 @@ function print_designer() {
 
   if (file_exists($STYLEPATH.'/style_copyright.php')) {
      include($STYLEPATH.'/style_copyright.php');
-     $design_copyright='[&nbsp;&nbsp;<u>Design By</u>: '.$design_copyright.'&nbsp;&nbsp;]&nbsp;';
+     $design_copyright='[&nbsp;&nbsp;<u>Powered By</u>: '.$design_copyright.'&nbsp;&nbsp;]&nbsp;';
   } else
      $design_copyright='';
-  return '<a href="#">Back To Top</a><br />'.$design_copyright;
+  return $design_copyright;
 }
 
 // check online passed session and user's location
@@ -202,16 +212,17 @@ function check_online($session_id, $location) {
   $prefix=sqlesc($CURUSER['prefixcolor']);
   $uname=sqlesc($CURUSER['username']);
   $ugroup=sqlesc($CURUSER['level']);
+  $warn=sqlesc($CURUSER['warn']);
   if ($uid==1)
     $where="WHERE session_id='$session_id'";
   else
     $where="WHERE user_id='$uid' OR session_id='$session_id'";
 
-  @quickQuery("UPDATE {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, location=$location, user_id=$uid, lastaction=UNIX_TIMESTAMP() $where");
+  @quickQuery("UPDATE {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, location=$location, user_id=$uid, warn=$warn, lastaction=UNIX_TIMESTAMP() $where");
   // record don't already exist, then insert it
   if (mysql_affected_rows()==0) { 
     @quickQuery("UPDATE {$TABLE_PREFIX}users SET lastconnect=NOW() WHERE id=$uid AND id>1");
-    @quickQuery("INSERT INTO {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, user_id=$uid, user_ip='$ip', location=$location, lastaction=UNIX_TIMESTAMP()");
+    @quickQuery("INSERT INTO {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, user_id=$uid, user_ip='$ip', location=$location, warn=$warn, lastaction=UNIX_TIMESTAMP()");
   }
 
   $timeout=time()-900; // 15 minutes
@@ -271,6 +282,28 @@ function hash_pad($hash) {
   return str_pad($hash, 20);
 }
 
+
+      
+function warn($arr, $big = false)
+{
+  if ($big)
+    {
+     $warnpic = "warn.gif";
+     $style = "style=\"margin-left: 4pt\"";
+  }
+  else
+    {
+     $warnpic = "warn.gif";
+     $style = "style=\"margin-left: 2pt\"";
+  }
+
+  $pics = $arr["warn"]=="yes" ? "<img src=\"images/$warnpic\" alt=\"WARNED USER !\" border=\"0\" $style />" : "";
+
+  return $pics;
+}
+
+      
+
 function userlogin() {
   global $CURUSER, $TABLE_PREFIX, $err_msg_install;
   unset($GLOBALS['CURUSER']);
@@ -289,17 +322,17 @@ function userlogin() {
   // guest
     $id = (!isset($_COOKIE['uid']))?1:max(1, $_COOKIE['uid']);
 
-  $res = do_sqlquery("SELECT u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = $id LIMIT 1;") or sqlerr(__FILE__, __LINE__);
+  $res = do_sqlquery("SELECT u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = $id LIMIT 1;") or sqlerr(__FILE__, __LINE__);
   $row = mysql_fetch_array($res);
   if (!$row) {
     $id=1;
-    $res = do_sqlquery("SELECT u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;") or sqlerr(__FILE__, __LINE__);
+    $res = do_sqlquery("SELECT u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;") or sqlerr(__FILE__, __LINE__);
     $row = mysql_fetch_array($res);
   }
   if (!isset($_COOKIE['pass'])) $_COOKIE['pass'] = '';
   if (($_COOKIE['pass']!=md5($row['random'].$row['password'].$row['random'])) && $id!=1) {
     $id=1;
-    $res = do_sqlquery("SELECT u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;") or sqlerr(__FILE__, __LINE__);
+    $res = do_sqlquery("SELECT u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;") or sqlerr(__FILE__, __LINE__);
     $row = mysql_fetch_array($res);
   }
 
@@ -556,6 +589,23 @@ function style_list() {
   return get_result('SELECT * FROM '.$TABLE_PREFIX.'style ORDER BY id;', true, $CACHE_DURATION);
 }
 
+function cat_list()
+         {
+
+         global $TABLE_PREFIX;
+
+         $ret = array();
+         $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}categories ORDER BY sort_index");
+
+         while ($row = mysql_fetch_assoc($res))
+             $ret[] = $row;
+
+         unset($row);
+         mysql_free_result($res);
+
+         return $ret;
+}
+
 function language_list() {
   global $TABLE_PREFIX, $CACHE_DURATION;
 
@@ -782,6 +832,16 @@ function makesize($bytes) {
   if (abs($bytes) < 1073741824000)
     return number_format($bytes / 1073741824, 2).' GB';
   return number_format($bytes / 1099511627776, 2).' TB';
+}
+
+function makesize1($bytes) {
+  if (abs($bytes) < 1000 * 1024)
+    return number_format($bytes / 1024, 2) . "";
+  if (abs($bytes) < 1000 * 1048576)
+    return number_format($bytes / 1048576, 2) . "";
+  if (abs($bytes) < 1000 * 1073741824)
+    return number_format($bytes / 1073741824, 2) . "";
+  return number_format($bytes / 1099511627776, 2) . "";
 }
 
 function redirect($redirecturl) {

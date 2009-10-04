@@ -96,6 +96,25 @@ else
          if ($addparams!="")
             $addparams.="&amp;";
 
+
+          # Search by ip, email, pid # 1
+          #
+                 
+          if (!$CURUSER || $CURUSER["admin_access"]=="yes") {
+          
+          $searchip=htmlspecialchars($_GET["sip"]);
+          if ($searchip!="") $where.=" AND u.cip LIKE '%$searchip%'";
+          
+          $searchmail=htmlspecialchars($_GET["smail"]);           
+          if ($searchmail!="") $where.=" AND u.email LIKE '%$searchmail%'";
+          
+          $getpid=htmlspecialchars($_GET["pid"]);;
+          if ($getpid!="") $where.=" AND u.pid LIKE '%$getpid%'";
+          }
+          
+          #
+          ############################ #
+
          $scriptname = htmlspecialchars($_SERVER["PHP_SELF"]."?page=users");
 
          $res=do_sqlquery("select COUNT(*) FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id>1 $where") or die(mysql_error());
@@ -114,6 +133,17 @@ require(load_language("lang_users.php"));
 $userstpl = new bTemplate();
 $userstpl->set("language", $language);
 $userstpl->set("users_search", $search);
+
+
+          # Search by ip, email, pid # 2 # last
+          #'        
+
+          $userstpl->set("smail", $searchmail);
+          $userstpl->set("sip", $searchip);
+          $userstpl->set("pid", $getpid);
+
+          #
+          ################################# End
 $userstpl->set("users_search_level", $level==0 ? " selected=\"selected\" " : "");
 
 $res=do_sqlquery("SELECT id,level FROM {$TABLE_PREFIX}users_level WHERE id_level>1 ORDER BY id_level");
@@ -142,7 +172,7 @@ if ($CURUSER["edit_users"]=="yes")
 if ($CURUSER["delete_users"]=="yes")
   $userstpl->set("users_delete", $language["DELETE"]);
           
-$query="select prefixcolor, suffixcolor, u.id, $udownloaded as downloaded, $uuploaded as uploaded, IF($udownloaded>0,$uuploaded/$udownloaded,0) as ratio, username, level, UNIX_TIMESTAMP(joined) AS joined,UNIX_TIMESTAMP(lastconnect) AS lastconnect, flag, flagpic, c.name as name, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id>1 $where ORDER BY $order $by $limit";
+$query="select prefixcolor, suffixcolor, u.id, $udownloaded as downloaded, $uuploaded as uploaded, IF($udownloaded>0,$uuploaded/$udownloaded,0) as ratio, username, level, UNIX_TIMESTAMP(joined) AS joined,UNIX_TIMESTAMP(lastconnect) AS lastconnect, flag, flagpic, c.name as name, u.warn, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id>1 $where ORDER BY $order $by $limit";
 
 $rusers=do_sqlquery($query,true);
 $userstpl->set("no_users", ($count==0), TRUE);
@@ -154,7 +184,7 @@ $i=0;
 
 while ($row_user=mysql_fetch_array($rusers))
   {     // start while
-  $users[$i]["username"] = "<a href=\"index.php?page=userdetails&amp;id=".$row_user["id"]."\">".unesc($row_user["prefixcolor"]).unesc($row_user["username"]).unesc($row_user["suffixcolor"])."</a>";
+  $users[$i]["username"] = "<a href=\"index.php?page=userdetails&amp;id=".$row_user["id"]."\">".unesc($row_user["prefixcolor"]).unesc($row_user["username"]).warn($row_user).unesc($row_user["suffixcolor"])."</a>";
   $users[$i]["userlevel"] = $row_user["level"];
   $users[$i]["joined"] = $row_user["joined"]==0 ? $language["NOT_AVAILABLE"] : date("d/m/Y H:i:s",$row_user["joined"]-$offset);
   $users[$i]["lastconnect"] = $row_user["lastconnect"]==0 ? $language["NOT_AVAILABLE"] : date("d/m/Y H:i:s",$row_user["lastconnect"]-$offset);

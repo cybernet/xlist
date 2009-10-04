@@ -106,7 +106,46 @@ switch ($action)
                  do_sqlquery("UPDATE {$db_prefix}members SET instantMessages=instantMessages+1, unreadMessages=unreadMessages+1 WHERE ID_MEMBER=$rec");
              }
              else
+	  {
                  do_sqlquery("INSERT INTO {$TABLE_PREFIX}messages (sender, receiver, added, subject, msg) VALUES ($send,$rec,UNIX_TIMESTAMP(),$subject,$msg)") or die(mysql_error());
+	  global $BASEURL, $SITENAME, $SITEEMAIL, $language;
+
+$res = mysql_fetch_assoc(mysql_query("SELECT email, pm_mail_notify FROM {$TABLE_PREFIX}users WHERE id = $rec")) or sqlerr();
+$email = $res["email"];
+$pm_mail_notification = $res["pm_mail_notify"];
+$sender = $CURUSER['username'];
+$txt = $_POST["msg"];
+$npmn = $language["MNU_UCP_NEWPM"];
+$npmn2 = $language["BY"];
+$npmn3 = $language["SUBJECT"];
+$npmn4 = $language["BODY"];
+
+nl2br(htmlentities($txt));
+
+$body = <<<EOD
+$npmn $npmn2 $sender.
+
+$npmn3:
+$subject
+
+$npmn4:
+$txt
+
+$BASEURL/index.php?page=login
+
+------------------------------------------------
+$SITENAME
+EOD;
+	if($pm_mail_notification == "true")
+	{ini_set("sendmail_from","");
+   if (mysql_errno()==0)
+     {
+      send_mail($email,$npmn,$body);
+      }
+   else
+       die(mysql_error());
+	}
+	}
              redirect("index.php?page=usercp&uid=".$uid."&do=pm&action=list");
              exit();
            }

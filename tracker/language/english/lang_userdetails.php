@@ -33,4 +33,8 @@ $language['DELETE']             = 'Delete';
 $language['PM']                 = 'PM';
 $language['BACK']               = 'Back';
 $language['NO_HISTORY']         = 'No history to display...';
+// INVITATION SYSTEM
+$language['USER_INVITATIONS']   = 'Invitations';
+$language['USER_INVITED_BY']    = 'Invited By';
+$language["POINTS"]             = "Points";
 ?>

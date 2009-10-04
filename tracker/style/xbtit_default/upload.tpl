@@ -1,4 +1,3 @@
-
 <script type="text/javascript">
 
 function checkExtension()
@@ -70,13 +69,43 @@ function CheckForm()
       <td class="header" ><tag:language.FILE_NAME /></td>
       <td class="lista" align="left"><input type="text" name="filename" size="50" maxlength="200" /></td>
     </tr>
+
+      <if:LEVEL_VISIBLE_OK>
+    <tr>
+      <td class="header" ><tag:language.LEVEL_VISIBILE />:</td>
+      <td class="lista" align="left">
+      <tag:visible />
+      </td>
+    </tr>
+    </if:LEVEL_VISIBLE_OK>
+  <if:imageon>
+    <tr>
+      <td class="header" ><tag:language.IMAGE /> (<tag:language.FACOLTATIVE />):</td>
+      <td class="lista" align="left"><input type="file" name="userfile" size="15" /></td>
+    </tr>
+  </if:imageon>
     <tr>
       <td class="header" valign="top"><tag:language.DESCRIPTION /></td>
       <td class="lista" ><tag:textbbcode /></td>
     </tr>
+  <if:screenon>
+    <tr>
+      <td class="header"><tag:language.SCREEN /> (<tag:language.FACOLTATIVE />):</td>
+      <td class="lista">
+      <table class="lista" border="0" cellspacing="0" cellpadding="0">
+      <td class="lista" align="left"><input type="file" name="screen1" size="5" /></td>
+      <td class="lista" align="left"><input type="file" name="screen2" size="5" /></td>
+      <td class="lista" align="left"><input type="file" name="screen3" size="5" /></td>
+      </table></td>
+    </tr>
+  </if:screenon>
     <tr>
       <td class="header"><tag:language.TORRENT_ANONYMOUS /></td>
       <td class="lista">&nbsp;&nbsp;<tag:language.NO /><input type="radio" name="anonymous" value="false" checked="checked" />&nbsp;&nbsp;<tag:language.YES /><input type="radio" name="anonymous" value="true" /></td>
+    </tr>
+<tr>
+	  <td align="left" class="header"><tag:language.PROFILE_COMMENT_MAIL_NOTIFY /></td>
+      <td class="lista">&nbsp;&nbsp;<tag:language.NO /><input type="radio" name="comment_notify" value="false" <tag:COMMENT_NOTIFY_FALSE /> />&nbsp;&nbsp;<tag:language.YES /><input type="radio" name="comment_notify" value="true" <tag:COMMENT_NOTIFY_TRUE /> />&nbsp;&nbsp;<tag:language.ALLOW_COMMENT_NOTIFY /></td>
     </tr>
     <tr>
       <td class="header" align="right"><input type="submit" class="btn" value="<tag:language.FRM_SEND />" /></td>

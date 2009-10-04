@@ -20,4 +20,9 @@ $language['BLOCK_MAINUSERTOOLBAR']='Main User Toolbar';
 $language['WELCOME_LASTUSER']=' Welcome to our Tracker ';
 $language['BLOCK_MINCLASSVIEW']='Minimum rank that can view';
 $language['BLOCK_MAXCLASSVIEW']='Maximum rank that can view';
+$language["BLOCK_FEATURED"]="Featured Torrent";
+$language["BLOCK_LASTTORRENT"]="Latest Uploaded Torrent";
+$language["BLOCK_LASTTORRENT_MARQ"]="Latest Uploaded Torrents";
+$language["TORRENT_DETAILS"]="View details";
+$language["TWITTER"]="Twitter Updates";
 ?>

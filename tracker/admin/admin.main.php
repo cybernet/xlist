@@ -1,37 +1,8 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////////////
-// xbtit - Bittorrent tracker/frontend
-//
-// Copyright (C) 2004 - 2007  Btiteam
-//
-//    This file is part of xbtit.
-//
-// Redistribution and use in source and binary forms, with or without modification,
-// are permitted provided that the following conditions are met:
-//
-//   1. Redistributions of source code must retain the above copyright notice,
-//      this list of conditions and the following disclaimer.
-//   2. Redistributions in binary form must reproduce the above copyright notice,
-//      this list of conditions and the following disclaimer in the documentation
-//      and/or other materials provided with the distribution.
-//   3. The name of the author may not be used to endorse or promote products
-//      derived from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-// IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
-// TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-////////////////////////////////////////////////////////////////////////////////////
+// CyBerFuN
 
-$btit_url_rss="http://www.btiteam.org/smf/index.php?type=rss;action=.xml;board=83;sa=news";
-$btit_url_last="http://www.btiteam.org/last_version.txt";
+//$btit_url_rss="http://www.btiteam.org/smf/index.php?type=rss;action=.xml;board=83;sa=news";
+//$btit_url_last="http://www.btiteam.org/last_version.txt";
 
 if (!defined("IN_BTIT"))
       die("non direct access!");
@@ -127,7 +98,25 @@ if (!$btit_last)
 $current_version=explode(" ", strtolower($tracker_version)); // array('2.0.0','beta','2')
 $last_version=explode("/",strtolower($btit_last));  // array('2.0.0','beta','2')
 
-$your_version="";
+$your_version="";$hack_email_notification_url_last="http://xbtitnotify.sourceforge.net/last_version/last_email_notification_version.txt";
+
+// check last version on xbtitnotify.sourceforge.net
+$hack_email_notification_last=get_cached_version($hack_email_notification_url_last);
+if (!$hack_email_notification_last)
+{
+  $hack_email_notification_last=get_remote_file($hack_email_notification_url_last);
+  if ($hack_email_notification_last)
+     write_cached_version($hack_email_notification_url_last,$hack_email_notification_last);
+  else
+      $hack_email_notification_last = $language["PM_NOTIFY_NO_INFO"];
+}
+$title_email_notification = "email_notification";
+$res_email_notification_version = get_result("SELECT title, version FROM {$TABLE_PREFIX}hacks WHERE title LIKE '" . $title_email_notification . "'",true);
+$row0_email_notification = $res_email_notification_version[0];
+$row_email_notification = substr($row0_email_notification["version"],0,5);
+$last_email_notification_version=explode("/",strtolower($hack_email_notification_last));
+
+$your_email_notification_version="cybernet2u@yahoo.com";
 
 // make further control only if differents
 if ((implode(" ",$current_version)!=implode(" ",$last_version)))
@@ -138,11 +127,23 @@ if ((implode(" ",$current_version)!=implode(" ",$last_version)))
 }
 else
   {
-  $your_version.="You have the latest xBtit version installed.";
+  $your_version.="You have the latest xBTiT version installed.";
+}
+if (($row_email_notification != implode(" ",$last_email_notification_version)))
+  {
+  $your_email_notification_version.="<table width=\"100%\"><tr><td align=\"left\">".$language["PM_NOTIFY_INSTALLED"]."</td><td align=\"left\">".$row_email_notification."</td></tr>\n";
+  $your_email_notification_version.="<tr><td align=\"left\">".$language["PM_NOTIFY_CURRENT"]."</td><td align=\"left\">".implode(" ",$last_email_notification_version)."</td></tr>\n";
+  $your_email_notification_version.="<tr><td align=\"left\"><b>".$language["PM_NOTIFY_GET"]."<a href=\"http://www.btiteam.org/smf/index.php?topic=10456\" target=\"_blank\">".$language["PM_NOTIFY_OFFICIAL_RELEASE"]."</b></a></td></tr>\n</table>";
+}
+else
+  {
+  $your_email_notification_version.="".$language["PM_NOTIFY_VERSION"]."";
 }
 
 if (!empty($your_version))
    $admin["xbtit_version"]=$your_version."<br />\n";
+if (!empty($your_email_notification_version))
+   $admin["email_notification_version"]=$your_email_notification_version."<br />\n";
 
 $admin["infos"].=("<br />\n<table border=\"0\">\n");
 $admin["infos"].=("<tr><td class=\"header\" align=\"center\">Server's OS</td></tr><tr><td align=\"left\">".php_uname()."</td></tr>");

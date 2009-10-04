@@ -39,6 +39,14 @@ function convert() {
 			<td align="left" class="header"><tag:language.USER_EMAIL /></td>
 			<td align="left" class="lista"><input type="text" size="30" name="email" maxlength="30" value="<tag:profile.email />"/></td>
 		</tr>
+<tr>
+	  <td align="left" class="header"><tag:language.PROFILE_PM_MAIL_NOTIFY /></td>
+      <td class="lista">&nbsp;&nbsp;<tag:language.YES /><input type="radio" name="pm_mail_notification" value="true" <tag:profile.PM_MAIL_NOTIFY_TRUE /> />&nbsp;&nbsp;<tag:language.NO /><input type="radio" name="pm_mail_notification" value="false" <tag:profile.PM_MAIL_NOTIFY_FALSE /> />&nbsp;&nbsp;<tag:language.ALLOW_PM_MAIL_NOTIFY /></td>
+    </tr>
+	<tr>
+	  <td align="left" class="header"><tag:language.PROFILE_COMMENT_MAIL_NOTIFY /></td>
+      <td class="lista">&nbsp;&nbsp;<tag:language.YES /><input type="radio" name="status_comment_notify" value="true" <tag:profile.COMMENT_NOTIFY_TRUE /> />&nbsp;&nbsp;<tag:language.NO /><input type="radio" name="status_comment_notify" value="false" <tag:profile.COMMENT_NOTIFY_FALSE /> />&nbsp;&nbsp;<tag:language.DEFAULT_COMMENT_NOTIFY /></td>
+    </tr>
 		<tr>
 			<td align="left" class="header"><tag:language.AVATAR_URL /></td>
 			<td align="left" class="lista"><input type="text" size="40" name="avatar" maxlength="100" value="<tag:profile.avatar_field />"/></td>
@@ -47,6 +55,13 @@ function convert() {
 			<td align="left" class="header"><tag:language.USER_LEVEL />:</td>
 			<td align="left" class="lista"><tag:rank_combo /></td>
 		</tr>
+
+        <tr>
+          <td align="left" class="header"><tag:language.CUSTOM_TITLE />:</td>
+          <td align="left" class="lista"><input type="text" size="40" name="custom_title" maxlength="50" value="<tag:profile.custom_title />"/></td>
+        </tr>
+
+
 		<tr>
 			<td align="left" class="header"><tag:language.USER_LANGUE />:</td>
 			<td align="left" class="lista"><tag:language_combo /></td>

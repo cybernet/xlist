@@ -39,7 +39,10 @@ $morescript='
 	<script type="text/javascript" src="'.$BASEURL.'/jscript/animatedcollapse.js"></script>
 	<script type="text/javascript" src="'.$BASEURL.'/jscript/DV.js"></script>
 	<script type="text/javascript" src="'.$BASEURL.'/jscript/xbtit.js"></script>
+        <script type="text/javascript" language="javascript" src="ajaxstarrater/js/behavior.js"></script>
+        <script type="text/javascript" language="javascript" src="ajaxstarrater/js/rating.js"></script>
 ';
 
-$morecss='';
+$morecss='<link rel="stylesheet" type="text/css" href="ajaxstarrater/css/rating.css" />
+<meta name="google-site-verification" content="4t88g1Vej9cHGPVLl2shr9DGCkhPm7rWmyg6itUuqnE" />';
 ?>

@@ -86,9 +86,9 @@ function apply_default_settings() {
     if (!array_key_exists('peercaching',$btit_settings)) $btit_settings['peercaching']=true;
     if (!array_key_exists('maxpid_seeds',$btit_settings)) $btit_settings['maxpid_seeds']=3;
     if (!array_key_exists('maxpid_leech',$btit_settings)) $btit_settings['maxpid_leech']=2;
-    if (!array_key_exists('name',$btit_settings)) $btit_settings['name']='BtiTracker Test Site';
-    if (!array_key_exists('url',$btit_settings)) $btit_settings['url']='http://localhost';
-    if (!array_key_exists('announce',$btit_settings)) $btit_settings['announce']=serialize(array('http://localhost/announce.php'));
+    if (!array_key_exists('name',$btit_settings)) $btit_settings['name']='CyBerFuN Tracker';
+    if (!array_key_exists('url',$btit_settings)) $btit_settings['url']='http://tracker.cyberfun.ro';
+    if (!array_key_exists('announce',$btit_settings)) $btit_settings['announce']=serialize(array('http://tracker.cyberfun.ro/announce.php'));
     if (!array_key_exists('email',$btit_settings)) $btit_settings['email']='tracker@localhost';
     if (!array_key_exists('torrentdir',$btit_settings)) $btit_settings['torrentdir']='torrents';
     if (!array_key_exists('validation',$btit_settings)) $btit_settings['validation']='user';
@@ -124,6 +124,8 @@ function apply_default_settings() {
     if (!array_key_exists('cache_duration',$btit_settings)) $btit_settings['cache_duration']=0;
     if (!array_key_exists('mail_type',$btit_settings)) $btit_settings['mail_type']='php';
     if (!array_key_exists('ajax_poller',$btit_settings)) $btit_settings['ajax_poller']=true;
+    if (!array_key_exists('invitation_only',$btit_settings)) $btit_settings['invitation_only']=false;
+    if (!array_key_exists('invitation_reqvalid',$btit_settings)) $btit_settings['invitation_reqvalid']=false;
 }
 
 $btit_settings=get_cached_config('SELECT `key`,`value` FROM '.$TABLE_PREFIX.'settings',$reload_cfg_interval);
@@ -249,12 +251,27 @@ $CACHE_DURATION=$btit_settings['cache_duration'];
 //if set to false then the default btit polling system will be used
 $GLOBALS['ajax_poller']=true;
 //if set to true the script will perform an IP check to see if the IP has already voted
-$GLOBALS['ipcheck_poller']=false;
+$GLOBALS['ipcheck_poller']=true;
 //number of votes per page listed in admincp
 $votesppage=25;
+$GLOBALS["imageon"] = $btit_settings["imageon"];
+      $GLOBALS["screenon"] = $btit_settings["screenon"];
+$GLOBALS["uploaddir"] = $btit_settings["uploaddir"];
+$GLOBALS["file_limit"] = $btit_settings["file_limit"];
 
 // inits
 $cached_querys=0;
 $num_querys=0;
 
+//begin invitation system by dodge
+$INVITATIONSON=$btit_settings['invitation_only'];
+$VALID_INV=$btit_settings['invitation_reqvalid'];
+$INV_EXPIRES=$btit_settings['invitation_expires'];
+//end invitation system
+$GLOBALS["image_cat"]=$btit_settings["image_cat"];
+$GLOBALS["limit_im"]=$btit_settings["limit_im"];
+$GLOBALS["bonus"] = $btit_settings["bonus"];
+$GLOBALS["price_vip"] = $btit_settings["price_vip"];
+$GLOBALS["price_ct"] = $btit_settings["price_ct"];
+$GLOBALS["price_name"] = $btit_settings["price_name"];
 ?>

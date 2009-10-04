@@ -54,7 +54,7 @@
         <loop:torrents>
         <tr>
           <td align="center" width="45" class="lista" style="text-align: center;"><tag:torrents[].category /></td>
-          <td align="left" class="lista" style="white-space:wrap;padding-left:10px;"><tag:torrents[].filename /></td>
+          <td align="left" class="lista" style="white-space:wrap;padding-left:10px;"><tag:torrents[].filename /><tag:torrents[].level /></td>
           <if:WT1>
           <td align="center" width="20" class="lista" style="text-align: center;"><tag:torrents[].waiting /></td>
           <else:WT1>

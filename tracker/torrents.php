@@ -1,34 +1,5 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////////////
-// xbtit - Bittorrent tracker/frontend
-//
-// Copyright (C) 2004 - 2007  Btiteam
-//
-//    This file is part of xbtit.
-//
-// Redistribution and use in source and binary forms, with or without modification,
-// are permitted provided that the following conditions are met:
-//
-//   1. Redistributions of source code must retain the above copyright notice,
-//      this list of conditions and the following disclaimer.
-//   2. Redistributions in binary form must reproduce the above copyright notice,
-//      this list of conditions and the following disclaimer in the documentation
-//      and/or other materials provided with the distribution.
-//   3. The name of the author may not be used to endorse or promote products
-//      derived from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-// IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
-// TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-////////////////////////////////////////////////////////////////////////////////////
+// CyBerFuN
 
 
 
@@ -158,7 +129,7 @@ if ($count>0) {
         $order="data";
 
     $qry_order=str_replace(array("leechers","seeds","finished"),array($tleechs,$tseeds, $tcompletes),$order);
-
+/*Mod by losmi - visible mod*/
     if (isset($_GET["by"]))
         $by=htmlspecialchars(mysql_escape_string($_GET["by"]));
     else
@@ -169,11 +140,11 @@ if ($count>0) {
 
     // Do the query with the uploader nickname
     if ($SHOW_UPLOADER)
-        $query = "SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.anonymous, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader as upname, u.username as uploader, prefixcolor, suffixcolor FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id $where ORDER BY $qry_order $by $limit";
+        $query = "SELECT f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.anonymous, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader as upname, u.username as uploader, prefixcolor, suffixcolor FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id $where ORDER BY $qry_order $by $limit";
 
     // Do the query without the uploader nickname
     else
-        $query = "SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where ORDER BY $qry_order $by $limit";
+        $query = "SELECT f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where ORDER BY $qry_order $by $limit";
     // End the queries
        $results = get_result($query,true);
 }
@@ -184,6 +155,7 @@ if ($by=="ASC")
     $mark="&nbsp;&uarr;";
 else
     $mark="&nbsp;&darr;";
+/*Mod by losmi - visible mod*/
 
 // load language file
 require(load_language("lang_torrents.php"));
@@ -226,18 +198,45 @@ $i=0;
 if ($count>0) {
   foreach ($results as $id=>$data) {
 
+    /*Mod by losmi - visible mod*/
+    $ok_level = $data['visible'];
+    $curr_l = getLevelVisible($CURUSER['id_level']);
+    if($CURUSER['username'] == $data['uploader'] || $curr_l>=$ok_level)
+    {
+    /*Mod by losmi - end visible mod*/
    $torrenttpl->set("WT1",intval($CURUSER["WT"])>0,TRUE);
    $torrenttpl->set("uploader1",$SHOW_UPLOADER,TRUE);
+
+    /*Mod by losmi - visible mod*/
+    $users_level =do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users_level ORDER BY id",true);
+   
+    while ($row = mysql_fetch_assoc($users_level))
+    {
+        if($ok_level==$row['id_level'] && $row['id_level']!=3)
+        {
+            $torrents[$i]['level'] = '<br/><font color="red">(visible for '.$row['level'].' and higher)</font>';
+            
+        }
+    }
+   
+    /*Mod by losmi - end visible mod*/
    $torrenttpl->set("XBTT1",$XBTT_USE,TRUE);
 
    $data["filename"]=unesc($data["filename"]);
    $filename=cut_string($data["filename"],intval($btit_settings["cut_name"]));
+      // Start baloon hack DT
+$hover=($data["img"]);
+if ($hover=="")
+ $balon=("nocover.jpg");
+ else
+ $balon =($data["img"]);
+     // End baloon hack DT
 
    $torrents[$i]["category"]="<a href=\"index.php?page=torrents&amp;category=$data[catid]\">".image_or_link(($data["image"]==""?"":"$STYLEPATH/images/categories/" . $data["image"]),"",$data["cname"])."</a>";
    if ($GLOBALS["usepopup"])
-       $torrents[$i]["filename"]="<a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=".$data["hash"]."');\" title=\"".$language["VIEW_DETAILS"].": ".($data["filename"]!=""?$filename:$data["hash"])."\">".$data["filename"]."</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)");
+       $torrents[$i]["filename"]="<a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=".$data["hash"]."');\" onmouseover=\" return overlib('<img src=cyberfun_img/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">".$data["filename"]."</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">Multi.</span>)");
    else
-       $torrents[$i]["filename"]="<a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."\" title=\"".$language["VIEW_DETAILS"].": ".$data["filename"]."\">".($data["filename"]!=""?$filename:$data["hash"])."</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)");
+       $torrents[$i]["filename"]="<a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."\" onmouseover=\" return overlib('<img src=cyberfun_img/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">".($data["filename"]!=""?$filename:$data["hash"])."</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">Multi.</span>)");
 
    // search for comments
    $commentres = get_result("SELECT COUNT(*) as comments FROM {$TABLE_PREFIX}comments WHERE info_hash='" . $data["hash"] . "'",true);
@@ -246,9 +245,9 @@ if ($count>0) {
     if ($commentdata["comments"]>0)
       {
        if ($GLOBALS["usepopup"])
-           $torrents[$i]["comments"]="<a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=".$data["hash"]."#comments');\" title=\"".$language["VIEW_DETAILS"].": ".$data["filename"]."\">" . $commentdata["comments"] . "</a>";
+           $torrents[$i]["comments"]="<a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=".$data["hash"]."#comments');\" onmouseover=\" return overlib('<img src=cyberfun_img/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">" . $commentdata["comments"] . "</a>";
        else
-           $torrents[$i]["comments"]="<a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."#comments\" title=\"".$language["VIEW_DETAILS"].": ".$data["filename"]."\">".$commentdata["comments"]."</a>";
+           $torrents[$i]["comments"]="<a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."#comments\" onmouseover=\" return overlib('<img src=cyberfun_img/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">".$commentdata["comments"]."</a>";
       }
    else
        $torrents[$i]["comments"]="---";
@@ -403,6 +402,9 @@ if ($count>0) {
   }
   $torrents[$i]["average"]=$prgsf;
 
+    /*Mod by losmi - visible mod*/
+    }
+    /*Mod by losmi - end visible mod*/
   $i++;
   }
 } // if count

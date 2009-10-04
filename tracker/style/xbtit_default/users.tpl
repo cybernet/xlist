@@ -17,6 +17,42 @@
         <td><input type="submit" class="btn" value="<tag:language.SEARCH />" /></td>
       </tr>
     </table>
+
+
+<!-- Search by ip, email, pid ################################################################# -->
+
+<?php
+ if (!$CURUSER || $CURUSER["admin_access"]=="yes") {
+?>
+<a href='#advanced' onclick=javascript:collapse2.slideit()>
+.:. <u> ADVANCED</u> .:.<br /></a>
+
+<div id="slideadvanced">
+    <script type="text/javascript">
+    //Syntax: var uniquevar=new animatedcollapse("DIV_id", animatetime_milisec, enablepersist(true/fase), [initialstate] )
+    var collapse2=new animatedcollapse("slideadvanced", 700, true, "lista")
+    </script>
+
+    <table border="0" class="lista">
+
+      <tr>
+        <td class="block"><tag:language.EMAIL /></td>
+        <td class="block"><tag:language.LAST_IP /></td>
+        <td class="block"><tag:language.PID /></td>
+      </tr>
+
+      <tr>
+        <td><input type="text" name="smail" size="18" maxlength="50" value="<tag:smail />" /></td>
+        <td><input type="text" name="sip" size="18" maxlength="50" value="<tag:sip />" /></td>
+        <td><input type="text" name="pid" size="18" maxlength="48" value="<tag:pid />" /></td>
+      </tr>
+
+    </table>
+</div>
+
+<?php } ?>
+
+<!-- Search by ip, email, pid # end ########################################################### -->
   </form>
   <tag:users_pagertop />
     <table class="lista" width="95%">

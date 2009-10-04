@@ -97,6 +97,21 @@ $admintpl=new bTemplate();
 switch ($do)
     {
 
+    case 'invitations':
+      include("$ADMIN_PATH/admin.invitations.php");
+      $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.invitations.tpl"))));
+      break;
+
+    case 'cyberfun_torrents':
+      include("$ADMIN_PATH/admin.cyberfun_torrents.php");
+      $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.cyberfun_torrents.tpl"))));
+      break;
+
+    case 'visible':
+      include("$ADMIN_PATH/admin.visible.php");
+      $tpl->set("main_content",set_block($language["VISIBLE_SETTINGS"],"center",$admintpl->fetch(load_template("admin.visible.tpl"))));
+      break;
+
     case 'language':
       include("$ADMIN_PATH/admin.languages.php");
       $tpl->set("main_content",set_block($language["LANGUAGE_SETTINGS"],"center",$admintpl->fetch(load_template("admin.languages.tpl"))));
@@ -110,6 +125,11 @@ switch ($do)
     case 'forum':
       include("$ADMIN_PATH/admin.forums.php");
       $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.forums.tpl"))));
+      break;
+
+    case 'seedbonus':
+      include("$ADMIN_PATH/admin.bonus.php");
+      $tpl->set("main_content",set_block($language["ACP_SEEDBONUS"],"center",$admintpl->fetch(load_template("admin.bonus.tpl"))));
       break;
 
     case 'masspm':
@@ -131,6 +151,11 @@ switch ($do)
       include("$ADMIN_PATH/admin.sitelog.php");
       $tpl->set("main_content",set_block($language["SITE_LOG"],"center",$admintpl->fetch(load_template("admin.sitelog.tpl"))));
       break;
+
+    case 'warned_users':
+      include("$ADMIN_PATH/admin.warned_users.php");
+      $tpl->set("main_content",set_block("Warned users","center",$admintpl->fetch(load_template("admin.warned_users.tpl"))));
+      break; 
     
     case 'mysql_stats':
       $content="";
@@ -163,6 +188,11 @@ switch ($do)
       $tpl->set("main_content",set_block($language["BLOCKS_SETTINGS"],"center",$admintpl->fetch(load_template("admin.blocks.tpl"))));
       break;
 
+    case 'featured':
+      include("$ADMIN_PATH/admin.featured.php");
+      $tpl->set("main_content",set_block($language["FEATURED_SETTINGS"],"center",$admintpl->fetch(load_template("admin.featured.tpl"))));
+      break;
+
     case 'style':
       include("$ADMIN_PATH/admin.styles.php");
       $tpl->set("main_content",set_block($language["STYLE_SETTINGS"],"center",$admintpl->fetch(load_template("admin.styles.tpl"))));
@@ -173,7 +203,6 @@ switch ($do)
       $tpl->set("main_content",set_block($language["CATEGORY_SETTINGS"],"center",$admintpl->fetch(load_template("admin.categories.tpl"))));
       break;
 
-    
     case 'config':
       include("$ADMIN_PATH/admin.config.php");
       $tpl->set("main_content",set_block($language["TRACKER_SETTINGS"],"center",$admintpl->fetch(load_template("admin.config.tpl"))));
@@ -198,9 +227,7 @@ switch ($do)
       include("$ADMIN_PATH/admin.users.tools.php");
       $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.users.tools.tpl"))));
       break;
-
-
-    case 'sanity':
+    case 'sanity':
       require_once("$THIS_BASEPATH/include/sanity.php");
 
       $now = time();

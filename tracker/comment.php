@@ -72,6 +72,41 @@ if (isset($_POST["info_hash"])) {
    $comment = addslashes($_POST["comment"]);
       $user=AddSlashes($CURUSER["username"]);
       if ($user=="") $user="Anonymous";
+global $BASEURL, $SITENAME, $language;
+
+$res1 = mysql_fetch_assoc(mysql_query("SELECT comment_notify, uploader, anonymous FROM {$TABLE_PREFIX}files WHERE info_hash = '$id'")) or sqlerr();
+$arr1 = $res1["uploader"];
+$res = mysql_fetch_assoc(mysql_query("SELECT email FROM {$TABLE_PREFIX}users WHERE id = '$arr1'")) or sqlerr();
+$email = $res["email"];
+$comment_email_notify = $res1["comment_notify"];
+$sender = $CURUSER['username'];
+$senderid = $CURUSER['uid'];
+$anonym_check = $res1["anonymous"];
+$npmn = $language["NEW_COMMENT_T"];
+$npmn2 = $language["BY"];
+$npmn4 = $language["BODY"];
+
+$body = <<<EOD
+$npmn $npmn2 $sender.
+
+$npmn4:
+
+$comment
+
+$BASEURL/index.php?page=torrent-details&id=$id#comments
+
+------------------------------------------------
+$SITENAME
+EOD;
+	if($comment_email_notify == "true" && $senderid != $arr1 && $anonym_check = "false")
+	{ini_set("sendmail_from","");
+   if (mysql_errno()==0)
+     {
+      send_mail($email,$npmn,$body);
+      }
+   else
+       die(mysql_error());
+	}
   do_sqlquery("INSERT INTO {$TABLE_PREFIX}comments (added,text,ori_text,user,info_hash) VALUES (NOW(),\"$comment\",\"$comment\",\"$user\",\"" . mysql_escape_string(StripSlashes($_POST["info_hash"])) . "\")",true);
   redirect("index.php?page=torrent-details&id=" . StripSlashes($_POST["info_hash"])."#comments");
   die();

@@ -1,34 +1,5 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////////////
-// xbtit - Bittorrent tracker/frontend
-//
-// Copyright (C) 2004 - 2007  Btiteam
-//
-//    This file is part of xbtit.
-//
-// Redistribution and use in source and binary forms, with or without modification,
-// are permitted provided that the following conditions are met:
-//
-//   1. Redistributions of source code must retain the above copyright notice,
-//      this list of conditions and the following disclaimer.
-//   2. Redistributions in binary form must reproduce the above copyright notice,
-//      this list of conditions and the following disclaimer in the documentation
-//      and/or other materials provided with the distribution.
-//   3. The name of the author may not be used to endorse or promote products
-//      derived from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-// IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
-// TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-////////////////////////////////////////////////////////////////////////////////////
+// CyBerFuN
 
 if (!defined("IN_BTIT"))
       die("non direct access!");
@@ -72,7 +43,10 @@ else
                     "description"=>$language["ACP_LANGUAGES"]),
                           3=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=style&amp;action=read" ,
-                    "description"=>$language["ACP_STYLES"])  
+                    "description"=>$language["ACP_STYLES"])  ,
+                          4=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=seedbonus" ,
+                    "description"=>$language["ACP_SEEDBONUS"])
                                  )),
     1=>array(
             "title"=>$language["ACP_FRONTEND"],
@@ -87,7 +61,10 @@ else
                     "description"=>$language["ACP_CENSORED"]),
                           3=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=blocks&amp;action=read" ,
-                    "description"=>$language["ACP_BLOCKS"])
+                    "description"=>$language["ACP_BLOCKS"]) ,
+                          4=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=featured&amp;action=read" ,
+                    "description"=>$language["ACP_FEATURED"])
                     )
             ),
     2=>array(
@@ -103,7 +80,10 @@ else
                     "description"=>$language["ACP_PRUNE_USERS"]),
                           3=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=searchdiff" ,
-                    "description"=>$language["ACP_SEARCH_DIFF"])
+                    "description"=>$language["ACP_SEARCH_DIFF"]),
+                          4=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=warned_users" ,
+                    "description"=>"Warned users")
                     )
             ),
 
@@ -111,7 +91,11 @@ else
             "title"=>$language["ACP_TORRENTS_TOOLS"],
             "menu"=>array(0=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=prunet" ,
-                    "description"=>$language["ACP_PRUNE_TORRENTS"]))
+                    "description"=>$language["ACP_PRUNE_TORRENTS"]),
+                          1=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=visible" ,
+                    "description"=>$language["ACP_VISIBLE_TORRENTS"])
+)
             ),
 
     4=>array(
@@ -132,7 +116,10 @@ else
                     "description"=>$language["ACP_MYSQL_STATS"]),
                           2=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=logview" ,
-                    "description"=>$language["ACP_SITE_LOG"])
+                    "description"=>$language["ACP_SITE_LOG"]),
+                          3=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=invitations" ,
+                    "description"=>$language["ACP_INVITATIONS"])
                     )
             ),
             

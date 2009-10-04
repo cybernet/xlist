@@ -21,6 +21,14 @@
       <td align="left" class="lista" colspan="2"><tag:language.REVERIFY_MSG /></td>
     </tr>
   </if:USER_VALIDATION>
+<tr>
+	  <td align="left" class="header"><tag:language.PROFILE_PM_MAIL_NOTIFY /></td>
+      <td class="lista">&nbsp;&nbsp;<tag:language.YES /><input type="radio" name="pm_mail_notification" value="true" <tag:profile.PM_MAIL_NOTIFY_TRUE /> />&nbsp;&nbsp;<tag:language.NO /><input type="radio" name="pm_mail_notification" value="false" <tag:profile.PM_MAIL_NOTIFY_FALSE /> />&nbsp;&nbsp;<tag:language.ALLOW_PM_MAIL_NOTIFY /></td>
+    </tr>
+	<tr>
+	  <td align="left" class="header"><tag:language.PROFILE_COMMENT_MAIL_NOTIFY /></td>
+      <td class="lista">&nbsp;&nbsp;<tag:language.YES /><input type="radio" name="status_comment_notify" value="true" <tag:profile.COMMENT_NOTIFY_TRUE /> />&nbsp;&nbsp;<tag:language.NO /><input type="radio" name="status_comment_notify" value="false" <tag:profile.COMMENT_NOTIFY_FALSE /> />&nbsp;&nbsp;<tag:language.DEFAULT_COMMENT_NOTIFY /></td>
+    </tr>
     <tr>
       <td align="left" class="header"><tag:language.USER_LANGUE />:</td>
       <td align="left" class="lista" colspan="2"><select name="language"><tag:lang.language_combo /></select></td>

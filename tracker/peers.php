@@ -1,36 +1,4 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////////////
-// xbtit - Bittorrent tracker/frontend
-//
-// Copyright (C) 2004 - 2007  Btiteam
-//
-//    This file is part of xbtit.
-//
-// Redistribution and use in source and binary forms, with or without modification,
-// are permitted provided that the following conditions are met:
-//
-//   1. Redistributions of source code must retain the above copyright notice,
-//      this list of conditions and the following disclaimer.
-//   2. Redistributions in binary form must reproduce the above copyright notice,
-//      this list of conditions and the following disclaimer in the documentation
-//      and/or other materials provided with the distribution.
-//   3. The name of the author may not be used to endorse or promote products
-//      derived from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-// IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
-// TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-////////////////////////////////////////////////////////////////////////////////////
-
-
 if (!defined("IN_BTIT"))
       die("non direct access!");
 
@@ -42,12 +10,35 @@ $id = AddSlashes($_GET["id"]);
 if (!isset($id) || !$id)
     die("Error ID");
 
-
+/*
 $res = do_sqlquery("SELECT size FROM {$TABLE_PREFIX}files WHERE info_hash='$id'") or die(mysql_error());
+*/
+
+
+    ################################################################################################
+    # Speed stats in peers with filename
+
+$res = do_sqlquery("SELECT filename, size FROM {$TABLE_PREFIX}files WHERE info_hash='$id'") or die(mysql_error());
+
+    # End       
+    ################################################################################################
 if ($res) {
    $row=mysql_fetch_array($res);
    if ($row) {
       $tsize=0+$row["size"];
+
+
+    ################################################################################################
+    # Speed stats in peers with filename
+       
+      $peers["filename"] = $row["filename"];
+      $peers["size"] = makesize($row["size"]);      
+        
+    # End       
+    ################################################################################################
+    
+
+	
       }
 }
 else
@@ -112,7 +103,42 @@ $peers[$i]["CLIENT"]=htmlspecialchars(getagent(unesc($row["client"]),unesc($row[
   $dled=makesize($row["downloaded"]);
   $upld=makesize($row["uploaded"]);
 $peers[$i]["DOWNLOADED"]=$dled;
+
+
+    ################################################################################################
+    # Speed stats in peers with filename
+
+            if ($row['status']=='seeder') $transferrateDL="<i>seeder</i>";             
+              else if ($row['download_difference'] > '0' && $row['announce_interval'] > '0')
+                $transferrateDL=round(round($row['download_difference']/$row['announce_interval'])/1000, 2)." KB/sec";
+                else $transferrateDL="0 KB/sec";
+              
+if ($transferrateDL >= 6.50) $color="green";
+else if ($transferrateDL >= 3.00) $color="orange";
+else if ($transferrateDL >= 0.01) $color="red";
+else if($row['status']=='seeder') $color="#00D900";
+else $color="";
+              $peers[$i]["DLSPEED"]="<font color=$color>$transferrateDL</font>";
+
+
 $peers[$i]["UPLOADED"]=$upld;
+
+
+            if ($row['upload_difference'] > '0' && $row['announce_interval'] > '0')
+              $transferrateUP=round(round($row['upload_difference']/$row['announce_interval'])/1000, 2)." KB/sec";
+              else $transferrateUP="0 KB/sec";
+              
+if ($transferrateUP >= 6.50) $color="green";
+else if ($transferrateUP >= 3.00) $color="orange";
+else if ($transferrateUP >= 0.01) $color="red";
+else $color="";
+              $peers[$i]["UPSPEED"]="<font color=$color>$transferrateUP</font>";
+
+    # End       
+    ################################################################################################
+
+
+	
 
 //Peer Ratio
   if (intval($row["downloaded"])>0) {

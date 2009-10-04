@@ -109,6 +109,7 @@ function BBTag(opentag, closetag, textarea)
           <td align="left" style="height:25px;"><input type="button" class="btn" name="quote" value="Quote" onclick="javascript: BBTag('[quote]','[/quote]',document.forms.<tag:form_name />.<tag:object_name />)" /></td>
           <td align="left" style="height:25px;"><input type="button" class="btn" name="url" value="Url" onclick="javascript: BBTag('[url]','[/url]',document.forms.<tag:form_name />.<tag:object_name />)" /></td>
           <td align="left" style="height:25px;"><input type="button" class="btn" name="img" value="Img" onclick="javascript: BBTag('[img]','[/img]',document.forms.<tag:form_name />.<tag:object_name />)" /></td>
+          <td align="left"><input type="button" class="btn" name="video" value="Video" onclick="javascript: BBTag('[video=',']',document.forms.<tag:form_name />.<tag:object_name />)" /></td>
         </tr>
         </table>
       </td>

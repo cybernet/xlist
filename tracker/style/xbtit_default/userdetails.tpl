@@ -53,7 +53,33 @@
   </tr>
 
   </if:userdetail_edit_admin>
+         
+  <tr>
 
+    <td class="header"><tag:language.USER_INVITATIONS /></td>
+
+    <td class="lista"><tag:userdetail_invs /></td>
+
+  </tr>
+
+  <if:was_invited>
+
+  <tr>
+
+    <td class="header"><tag:language.USER_INVITED_BY /></td>
+
+    <td class="lista"><tag:userdetail_invby /></td>
+
+  </tr>
+
+  </if:was_invited>
+  <tr>
+
+    <td class="header"><tag:language.CUSTOM_TITLE /></td>
+
+    <td class="lista" colspan="2"><tag:custom_title /></td>
+
+  </tr>
   <tr>
 
     <td class="header"><tag:language.USER_JOINED /></td>
@@ -110,6 +136,15 @@
 
   </tr>
 
+
+    <tr>
+
+    <td class="header"><tag:language.POINTS /></td>
+
+    <td class="lista" colspan="2"><tag:userdetail_bonus /></td>
+
+  </tr>
+
   <if:userdetail_forum_internal>
 
   <tr>
@@ -125,6 +160,89 @@
   </if:userdetail_forum_internal>
 
 </table>
+
+<if:warn_access>
+<table class="lista" width="100%"> 
+   <tr>
+    <td class="block" align="center" colspan="2"><b>Warning Data</b></td>
+  </tr>
+    <tr>
+    <td class="header">Reason for the Warning</td>
+    <td class="lista"><tag:warnreason /></td>
+  </tr>
+      <tr>
+    <td class="header">Expire Time</td>
+    <td class="lista"><tag:warnadded /></td>
+  </tr>
+      <tr>
+    <td class="header">Warned Times:</td>
+    <td class="lista"><tag:warns /></td>
+  </tr>
+  <tr>
+    <td class="header">Warn added by:</td>
+    <td class="lista"><tag:warnaddedby /></td>
+  </tr>
+</table>
+<else:warn_access>
+</if:warn_access>
+<if:adminwarn_access>
+<if:rewarn_access>
+
+<table class="lista" width="100%"> 
+   <tr>
+    <td class="block" align="center" colspan="2"><b>Admin Menu</b></td>
+  </tr>
+      <tr>
+  <form method="post" action="index.php?page=rewarn&amp;id=<tag:id />">
+  <input type="hidden" name="returnto" value="index.php?page=userdetails&amp;id=<tag:id />"> 
+  <tr>
+    <td class="lista" valign="middle"><center><input type="submit" class="btn" value="Remove Warning"></center></td>
+  </tr>
+  </form>
+  </tr>
+</table>
+<else:rewarn_access>
+</if:rewarn_access>
+<else:adminwarn_access>
+</if:adminwarn_access>
+    <!-- Begin Admin Control Panel -->
+    <if:nowarn_access>
+<if:warns_access>
+<table width=100%>
+  <tr>
+    <td class="block" align=center colspan=3><b>Warning Settings</b></td>
+        <tr>
+    <td class="header">Warned Times:</td>
+    <td class="lista"><tag:warns /></td>
+  </tr>
+  </tr>
+    <!-- Begin warn -->
+  <form method="post" action="index.php?page=warn&amp;id=<tag:id />">
+  <input type="hidden" name="returnto" value="index.php?page=userdetails&amp;id=<tag:id />"> 
+  <tr>
+    <td class="header">Warn Time</td>
+      <td class="lista"><select name="days">
+      <option value="1">1 Day</option>
+      <option value="7">1 Week</option>
+      <option value="14">2 Weeks</option>
+      <option value="21">3 Weeks</option>
+      <option value="28">4 Weeks</option>
+      <option value="91">13 Weeks</option>
+      <option value="182">26 Weeks</option>
+      <option value="365">1 Year</option></select></td></tr>
+      <tr>
+      <td class="header">Warn Motivation</td>
+    <td class="lista"><textarea cols="50" rows="1" name="warnreason"><tag:warnreason /></textarea></td>
+    <td class="lista" valign="middle"><center><input type="submit" class="btn" value="<tag:language.UPDATE />"></center></td>
+  </tr>
+  </form>
+  <!-- end warn -->
+
+<else:warns_access>
+</if:warns_access>
+<else:nowarn_access>
+</if:nowarn_access>
+<!-- End Admin Control Panel -->
 
 <br />
 <tag:pagertop />

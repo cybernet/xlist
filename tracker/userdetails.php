@@ -1,34 +1,5 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////////////
-// xbtit - Bittorrent tracker/frontend
-//
-// Copyright (C) 2004 - 2007  Btiteam
-//
-//    This file is part of xbtit.
-//
-// Redistribution and use in source and binary forms, with or without modification,
-// are permitted provided that the following conditions are met:
-//
-//   1. Redistributions of source code must retain the above copyright notice,
-//      this list of conditions and the following disclaimer.
-//   2. Redistributions in binary form must reproduce the above copyright notice,
-//      this list of conditions and the following disclaimer in the documentation
-//      and/or other materials provided with the distribution.
-//   3. The name of the author may not be used to endorse or promote products
-//      derived from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-// IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
-// TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-////////////////////////////////////////////////////////////////////////////////////
+// CyBerFuN
 
 
 if (!defined("IN_BTIT"))
@@ -79,7 +50,7 @@ else
 
 
 if ($id>1) {
-   $res=do_sqlquery("SELECT u.avatar,u.email,u.cip,u.username,$udownloaded as downloaded,$uuploaded as uploaded,UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id",true);
+   $res=do_sqlquery("SELECT u.seedbonus, u.invited_by, u.invitations, u.custom_title, u.warn, u.warnreason,u.warns, u.warnadded, u.warnaddedby, u.avatar,u.email,u.cip,u.username,$udownloaded as downloaded,$uuploaded as uploaded,UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id",true);
    $num=mysql_num_rows($res);
    if ($num==0)
       {
@@ -125,7 +96,7 @@ $utorrents = intval($CURUSER["torrentsperpage"]);
 
 $userdetailtpl= new bTemplate();
 $userdetailtpl-> set("language",$language);
-$userdetailtpl-> set("userdetail_username", unesc($row["username"]));
+$userdetailtpl-> set("userdetail_username", unesc($row["username"]). warn($row,true));
 //$userdetailtpl-> set("userdetail_no_guest", $CURUSER["uid"]>1, TRUE);
 if ($CURUSER["uid"]>1 && $id!=$CURUSER["uid"])
     $userdetailtpl -> set("userdetail_send_pm", "&nbsp;&nbsp;&nbsp;<a href=\"index.php?page=usercp&amp;do=pm&amp;action=edit&amp;uid=".$CURUSER["uid"]."&amp;what=new&amp;to=".urlencode(unesc($row["username"]))."\">".image_or_link("$STYLEPATH/images/pm.png","",$language["PM"])."</a>");
@@ -150,14 +121,31 @@ else
 $userdetailtpl-> set("userdetail_level", ($row["level"]));
 $userdetailtpl-> set("userdetail_colspan", "0");
 }
+//begin invitation system by dodge
+$userdetailtpl->set("userdetail_invs", ($row["invitations"]));
+if ($row["invited_by"] > 0)
+{
+    $res2 = do_sqlquery("SELECT id, username FROM {$TABLE_PREFIX}users WHERE id='" . $row["invited_by"] . "'", true);
+    if ($res2)
+    {
+        $userdetailtpl->set("was_invited", true, true);
+        $invite = mysql_fetch_row($res2);
+        $userdetailtpl->set("userdetail_invby", "<a href=index.php?page=userdetails&amp;id=" . $invite[0] . ">" . $invite[1] . "</a>");
+    }
+}
+else
+    $userdetailtpl->set("was_invited", false, true);
+//end invitation system
 $userdetailtpl -> set("userdetail_joined", ($row["joined"]==0 ? "N/A" : get_date_time($row["joined"])));
+$userdetailtpl -> set("custom_title", (!$row["custom_title"] ? "" : unesc($row["custom_title"])));
 $userdetailtpl -> set("userdetail_lastaccess", ($row["lastconnect"]==0 ? "N/A" : get_date_time($row["lastconnect"])));
 $userdetailtpl -> set("userdetail_country", ($row["flag"]==0 ? "":unesc($row['name']))."&nbsp;&nbsp;<img src=\"images/flag/".(!$row["flagpic"] || $row["flagpic"]==""?"unknown.gif":$row["flagpic"])."\" alt=\"".($row["flag"]==0 ? "unknown":unesc($row['name']))."\" />");
 $userdetailtpl -> set("userdetail_local_time", (date("d/m/Y H:i:s",time()-$offset)."&nbsp;(GMT".($row["time_offset"]>0?" +".$row["time_offset"]:($row["time_offset"]==0?"":" ".$row["time_offset"])).")"));
 $userdetailtpl -> set("userdetail_downloaded", (makesize($row["downloaded"])));
 $userdetailtpl -> set("userdetail_uploaded", (makesize($row["uploaded"])));
 $userdetailtpl -> set("userdetail_ratio", ($ratio));
-$userdetailtpl-> set("userdetail_forum_internal", ( $GLOBALS["FORUMLINK"] == '' || $GLOBALS["FORUMLINK"] == 'internal' || $GLOBALS["FORUMLINK"] == 'smf'), TRUE);
+$userdetailtpl -> set("userdetail_bonus", (number_format($row["seedbonus"],2)));
+$userdetailtpl -> set("userdetail_forum_internal", ( $GLOBALS["FORUMLINK"] == '' || $GLOBALS["FORUMLINK"] == 'internal' || $GLOBALS["FORUMLINK"] == 'smf'), TRUE);
 
 // Only show if forum is internal
 if ( $GLOBALS["FORUMLINK"] == '' || $GLOBALS["FORUMLINK"] == 'internal' )
@@ -178,6 +166,20 @@ elseif ($GLOBALS["FORUMLINK"]=="smf")
    $userdetailtpl-> set("userdetail_forum_posts", $forum["posts"] . " &nbsp; [" . sprintf($language["POSTS_PER_DAY"], $posts_per_day) . "]");
    unset($forum);
 }
+
+
+$userdetailtpl-> set("warn_access", (($row["warn"]=="yes")?TRUE:FALSE), TRUE);
+$userdetailtpl-> set("warnreason", (!$row["warnreason"] ? "" : unesc($row["warnreason"])));   
+$userdetailtpl-> set("warnadded", (!$row["warnadded"] ? "" : unesc($row["warnadded"])));
+$userdetailtpl-> set("warnaddedby", (!$row["warnaddedby"] ? "" : unesc($row["warnaddedby"])));
+$userdetailtpl-> set("warns", (!$row["warns"] ? "" : unesc($row["warns"])));   
+$userdetailtpl-> set("rewarn_access", (($row["warn"]=="yes")?TRUE:FALSE), TRUE);
+$userdetailtpl-> set("adminwarn_access", (($CURUSER["edit_torrents"]=="yes" || $CURUSER["edit_users"]=="yes")?TRUE:FALSE), TRUE);
+$userdetailtpl-> set("nowarn_access", (($CURUSER["edit_torrents"]=="yes" || $CURUSER["edit_users"]=="yes")?TRUE:FALSE), TRUE);
+$userdetailtpl-> set("warns_access", (($row["warn"]=="no")?TRUE:FALSE), TRUE);
+$userdetailtpl-> set("warn", ($row["warn"]="yes"?"checked=\"checked\"":""));
+$userdetailtpl-> set("warnreason", $row["warnreason"]);
+$userdetailtpl-> set("id", $id);
 
 $resuploaded = do_sqlquery("SELECT count(*) FROM {$TABLE_PREFIX}files f WHERE uploader=$id AND f.anonymous = \"false\" ORDER BY data DESC");
 $ruploaded=mysql_fetch_row($resuploaded);

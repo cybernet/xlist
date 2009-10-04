@@ -107,6 +107,13 @@ function form_control()
   <input type="hidden" name="flag" value="<tag:account_IDcountry />" />
   <input type="hidden" name="username" value="<tag:account_username />"/>
   <table width="60%" border="0" class="lista">
+<if:BY_INVITATION>
+  <input type="hidden" name="code" value="<tag:account_IDcode />" />
+  <input type="hidden" name="inviter" value="<tag:account_IDinviter />" />
+    <tr>
+      <td class="lista" colspan="2"><div style="text-align:center; padding:10px;"><tag:language.WELCOME_INVITE /></div></td>
+    </tr>
+  </if:BY_INVITATION>
     <tr>
        <td align="left" class="header"><tag:language.USER_NAME />:</td>
        <td align="left" class="lista">
@@ -167,6 +174,13 @@ function form_control()
     <tr>
        <td align="left" class="header"><tag:language.USER_EMAIL_AGAIN />:</td>
        <td align="left" class="lista"><input type="text" size="30" name="email_again" id="email_again" autocomplete="off" value="<tag:dati.email />"/></td>
+<tr>
+	  <td align="left" class="header"><tag:language.PROFILE_PM_MAIL_NOTIFY /></td>
+      <td class="lista">&nbsp;&nbsp;<tag:language.YES /><input type="radio" name="pm_mail_notification" value="true" checked="checked" />&nbsp;&nbsp;<tag:language.NO /><input type="radio" name="pm_mail_notification" value="false" />&nbsp;&nbsp;<tag:language.ALLOW_PM_MAIL_NOTIFY /></td>
+    </tr>
+	<tr>
+	  <td align="left" class="header"><tag:language.PROFILE_COMMENT_MAIL_NOTIFY /></td>
+      <td class="lista">&nbsp;&nbsp;<tag:language.YES /><input type="radio" name="status_comment_notify" value="true" checked="checked"  />&nbsp;&nbsp;<tag:language.NO /><input type="radio" name="status_comment_notify" value="false" />&nbsp;&nbsp;<tag:language.DEFAULT_COMMENT_NOTIFY /></td>
     </tr>
     <tr>
        <td align="left" class="header"><tag:language.USER_LANGUE />:</td>

@@ -6,7 +6,9 @@
   <link rel="stylesheet" href="<tag:main_css />" type="text/css" />
   <tag:more_css />
   <tag:main_jscript />
+<script type="text/javascript" src="/jscript/overlib.js"></script>
 </head>
+<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 <body>
   <div id="main">
     <div id="logo">

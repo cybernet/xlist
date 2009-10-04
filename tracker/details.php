@@ -51,7 +51,7 @@ if (isset($_GET["act"]) && $_GET["act"]=="update")
        redirect("index.php?page=torrent-details&id=$id");
        exit();
    }
-
+/* ################################################################################
 
 if (isset($_GET["vote"]) && $_GET["vote"]==$language["VOTE"])
    {
@@ -68,7 +68,7 @@ if (isset($_GET["vote"]) && $_GET["vote"]==$language["VOTE"])
    }
    exit();
 }
-
+################################################################################ */
 if ($XBTT_USE)
    {
     $tseeds="f.seeds+ifnull(x.seeders,0) as seeds";
@@ -93,7 +93,7 @@ if(!$CURUSER || $CURUSER["view_torrents"]!="yes")
 }
 
 
-$res = get_result("SELECT f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'",true);
+$res = get_result("SELECT f.screen1, f.screen2, f.screen3, f.image, u.warn, f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'",true);
 //die("SELECT f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'");
 if (count($res)<1)
    stderr($language["ERROR"],"Bad ID!",$GLOBALS["usepopup"]);
@@ -104,6 +104,29 @@ $spacer = "&nbsp;&nbsp;";
 
 $torrenttpl=new bTemplate();
 $torrenttpl->set("language",$language);
+$torrenttpl->set("IMAGEIS",!empty($row["image"]),TRUE);
+      $torrenttpl->set("SCREENIS1",!empty($row["screen1"]),TRUE);
+      $torrenttpl->set("SCREENIS2",!empty($row["screen2"]),TRUE);
+      $torrenttpl->set("SCREENIS3",!empty($row["screen3"]),TRUE);
+      $torrenttpl->set("uploaddir",$uploaddir);
+if (!empty($row["image"]))
+{
+$image1 = "".$row["image"]."";
+$uploaddir = $GLOBALS["uploaddir"];
+$image_new = "cyberfun_img/$image1"; //url of picture
+//$image_new = str_replace(' ','%20',$image_new); //take url and replace spaces
+$max_width= "490"; //maximum width allowed for pictures
+$resize_width= "490"; //same as max width
+$size = getimagesize("$image_new"); //get the actual size of the picture
+$width= $size[0]; // get width of picture
+$height= $size[1]; // get height of picture
+if ($width>$max_width){
+$new_width=$resize_width; // Resize Image If over max width
+}else {
+$new_width=$width; // Keep original size from array because smaller than max
+}
+$torrenttpl->set("width",$new_width);
+}
 if ($CURUSER["uid"]>1 && ($CURUSER["uid"]==$row["uploader"] || $CURUSER["edit_torrents"]=="yes" || $CURUSER["delete_torrents"]=="yes"))
    {
     $torrenttpl->set("MOD",TRUE,TRUE);
@@ -134,6 +157,7 @@ if ($CURUSER["uid"]>1 && ($CURUSER["uid"]==$row["uploader"] || $CURUSER["delete_
 
 
 $torrenttpl->set("mod_task",$torrent_mod);
+	$torrenttpl->set("show_fblink","<script>function fbs_click() {u=location.href;t=document.title;window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;}</script><a href=\"http://www.facebook.com/share.php?u=<url>\" onclick=\"return fbs_click()\" target=\"_blank\"><b>".image_or_link("images/facebook.png","","share_on_facebook")."	&nbsp;	&nbsp;".$language["SHARE_ON_FB"]."</b></a>");
 
 if (!empty($row["comment"]))
    $row["description"]=format_comment($row["comment"]);
@@ -142,6 +166,7 @@ if (isset($row["cat_name"]))
     $row["cat_name"]=unesc($row["cat_name"]);
 else
     $row["cat_name"]=unesc($language["NONE"]);
+/* ################################################################################
 
 $vres = do_sqlquery("SELECT sum(rating) as totrate, count(*) as votes FROM {$TABLE_PREFIX}ratings WHERE infohash = '$id'");
 $vrow = @mysql_fetch_array($vres);
@@ -199,6 +224,23 @@ else
     $s = $totrate;
 }
 $row["rating"]=$s;
+
+
+*/
+# <!--
+##################################################################
+########################################################################-->
+require('ajaxstarrater/_drawrating.php'); # ajax rating
+
+  if ($row["username"]!=$CURUSER["username"] && $CURUSER["uid"]>1) {
+      $row["rating"] =  rating_bar("" . $_GET["id"]. "", 5);
+  } else {
+      $row["rating"] = rating_bar("" . $_GET["id"]. "", 5, 'static');
+  }
+  $row["rating"];
+# <!--
+##################################################################
+########################################################################-->
 $row["size"]=makesize($row["size"]);
 // files in torrent - by Lupin 20/10/05
 
@@ -254,7 +296,7 @@ if ($row["anonymous"]=="true")
       $uploader=$language["TORRENT_ANONYMOUS"];
    }
 else
-    $uploader="<a href=\"index.php?page=userdetails&amp;id=".$row['uploader']."\">".$row["username"]."</a>";
+    $uploader="<a href=\"index.php?page=userdetails&amp;id=".$row['uploader']."\">".$row["username"].warn($row) ."</a>";
 
 $row["uploader"]=$uploader;
 
@@ -297,7 +339,15 @@ else
    $torrenttpl->set("EXTERNAL",false,TRUE);
 
 // comments...
-$subres = do_sqlquery("SELECT c.id, text, UNIX_TIMESTAMP(added) as data, user, u.id as uid FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username WHERE info_hash = '" . $id . "' ORDER BY added DESC");
+if ($XBTT_USE)
+   {
+    $subres = do_sqlquery("SELECT u.downloaded+IFNULL(x.downloaded,0) as downloaded, u.uploaded+IFNULL(x.uploaded,0) as uploaded, u.avatar, c.id, c.text, UNIX_TIMESTAMP(c.added) as data, c.user, u.id uid, u.id_level FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username LEFT JOIN xbt_users x ON x.uid=u.id LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE info_hash = '" . $id . "' ORDER BY c.added DESC");
+   }
+else
+    {
+
+$subres = do_sqlquery("SELECT u.downloaded as downloaded, u.uploaded as uploaded, u.avatar, u.id_level, u.custom_title, c.id, u.warn, text, UNIX_TIMESTAMP(added) as data, user, u.id as uid FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username WHERE info_hash = '" . $id . "' ORDER BY added DESC");
+}
 if (!$subres || mysql_num_rows($subres)==0) {
      if($CURUSER["uid"]>1)
        $torrenttpl->set("INSERT_COMMENT",TRUE,TRUE);
@@ -317,8 +367,24 @@ else {
      $comments=array();
      $count=0;
      while ($subrow = mysql_fetch_array($subres)) {
-       $comments[$count]["user"]="<a href=\"index.php?page=userdetails&amp;id=".$subrow["uid"]."\">" . unesc($subrow["user"]);
+
+       $level = do_sqlquery("SELECT level FROM {$TABLE_PREFIX}users_level WHERE id_level='$subrow[id_level]'");
+       $lvl = mysql_fetch_assoc($level);
+       if (!$subrow[uid])
+        $title = "orphaned";
+       elseif (!"$subrow[custom_title]")
+        $title = "".$lvl['level']."";
+       else
+        $title = unesc($subrow["custom_title"]);
+       $comments[$count]["user"]="<a href=\"index.php?page=userdetails&amp;id=".$subrow["uid"]."\">" . unesc($subrow["user"]).warn($row)."</a>";
+       $comments[$count]["user"].="</a><br/> ".$title;
        $comments[$count]["date"]=date("d/m/Y H.i.s",$subrow["data"]-$offset);
+
+       $comments[$count]["elapsed"]="(".get_elapsed_time($subrow["data"]) . " ago)";
+       $comments[$count]["avatar"]="<img onload=\"resize_avatar(this);\" src=\"".($subrow["avatar"] && $subrow["avatar"] != "" ? htmlspecialchars($subrow["avatar"]): "$STYLEURL/images/default_avatar.gif" )."\" alt=\"\" />";
+       $comments[$count]["ratio"]="<img src=\"images/arany.png\">&nbsp;".(intval($subrow['downloaded']) > 0?number_format($subrow['uploaded'] / $subrow['downloaded'], 2):"---");
+       $comments[$count]["uploaded"]="<img src=\"images/speed_up.png\">&nbsp;".(makesize($subrow["uploaded"]));
+       $comments[$count]["downloaded"]="<img src=\"images/speed_down.png\">&nbsp;".(makesize($subrow["downloaded"]));
        // only users able to delete torrents can delete comments...
        if ($CURUSER["delete_torrents"]=="yes")
          $comments[$count]["delete"]="<a onclick=\"return confirm('". str_replace("'","\'",$language["DELETE_CONFIRM"])."')\" href=\"index.php?page=comment&amp;id=$id&amp;cid=" . $subrow["id"] . "&amp;action=delete\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>";

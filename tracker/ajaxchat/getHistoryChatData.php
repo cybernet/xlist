@@ -294,6 +294,10 @@ function getData($lastID) {
         $id   = $row[id];
         $uid  = $row[uid];
         $time = $row[time];
+$rd=mysql_fetch_row(mysql_query("SELECT warn FROM {$TABLE_PREFIX}users WHERE id=$uid"));
+$row["warn"]=$rd[0];
+unset($rd);
+$name = $name . warn($row);
         $name = $row[name];
         $text = $row[text];
         

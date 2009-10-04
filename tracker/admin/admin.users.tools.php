@@ -49,6 +49,7 @@ if ($XBTT_USE)
     $curu=get_result('SELECT u.username, u.cip, ul.level, ul.id_level as base_level, u.email, u.avatar, u.joined, u.lastconnect, u.id_level, u.language, u.style, u.flag, u.time_offset, u.topicsperpage, u.postsperpage, u.torrentsperpage, (u.downloaded+x.downloaded) as downloaded, (u.uploaded+x.uploaded) as uploaded FROM '.$TABLE_PREFIX.'users u INNER JOIN '.$TABLE_PREFIX.'users_level ul ON ul.id=u.id_level LEFT JOIN xbt_users x ON x.uid=u.id WHERE u.id='.$uid.' LIMIT 1',true);
 else
     $curu=get_result('SELECT u.username, u.cip, ul.level, ul.id_level as base_level, u.email, u.avatar, u.joined, u.lastconnect, u.id_level, u.language, u.style, u.flag, u.time_offset, u.topicsperpage, u.postsperpage, u.torrentsperpage, u.downloaded, u.uploaded FROM '.$TABLE_PREFIX.'users u INNER JOIN '.$TABLE_PREFIX.'users_level ul ON ul.id=u.id_level WHERE u.id='.$uid.' LIMIT 1',true);
+$pm_mail_notify = mysql_query("SELECT pm_mail_notify FROM {$TABLE_PREFIX}users WHERE id=$uid");$status_comment_notify = mysql_query("SELECT status_comment_notify FROM {$TABLE_PREFIX}users WHERE id=$uid");
 
 # test for bad id
 if (!isset($curu[0]))
@@ -120,6 +121,31 @@ switch ($action) {
         # init vars
         $profile['username']=unesc($curu['username']);
         $profile['email']=unesc($curu['email']);
+	  //email_notification
+	  // pm notify
+	  $pmnotify = mysql_result($pm_mail_notify, 0);
+      if ($pmnotify == "true")
+        {
+          $profile["PM_MAIL_NOTIFY_TRUE"]= "checked=\"checked\"";
+          $profile["PM_MAIL_NOTIFY_FALSE"]= "";
+        }
+		else
+		{
+			$profile["PM_MAIL_NOTIFY_TRUE"]= "";
+			$profile["PM_MAIL_NOTIFY_FALSE"]= "checked=\"checked\"";
+		}
+		// comment notify
+	  $status_comment = mysql_result($status_comment_notify, 0);
+      if ($status_comment == "true")
+        {
+          $profile["COMMENT_NOTIFY_TRUE"]= "checked=\"checked\"";
+          $profile["COMMENT_NOTIFY_FALSE"]= "";
+        }
+		else
+		{
+			$profile["COMMENT_NOTIFY_TRUE"]= "";
+			$profile["COMMENT_NOTIFY_FALSE"]= "checked=\"checked\"";
+		}
         $profile['uploaded']=$curu['uploaded'];
         $profile['downloaded']=$curu['downloaded'];
         $profile['down']=makesize($curu['downloaded']);
@@ -131,6 +157,7 @@ switch ($action) {
         $opts['id']='id';
         $opts['value']='level';
         $opts['default']=$curu['id_level'];
+        $profile['custom_title']=unesc($curu['custom_title']);
         # rank list
         $ranks=rank_list();
         $admintpl->set('rank_combo',get_combo($ranks, $opts));
@@ -198,11 +225,14 @@ switch ($action) {
             $uploaded=(float)$_POST['uploaded'];
             $downloaded=(float)$_POST['downloaded'];
             $email=AddSlashes($_POST['email']);
+            $pm_mail_notification=$_POST['pm_mail_notification'];
+	    $status_comment_notification=$_POST['status_comment_notify'];
             $avatar=unesc($_POST['avatar']);
             $username=unesc($_POST['username']);
             $pass=$_POST['pass'];
             $chpass=(isset($_POST['chpass']) && $pass!='');
             # new level of the user
+            $custom_title=unesc($_POST["custom_title"]);
             $rlev=do_sqlquery('SELECT id_level as base_level, level as name FROM '.$TABLE_PREFIX.'users_level WHERE id='.$level.' LIMIT 1;');
             $reslev=mysql_fetch_assoc($rlev);
             if ( ($CURUSER['id_level'] < $reslev['base_level']))
@@ -228,9 +258,12 @@ switch ($action) {
                 $set[]='id_level='.$level;
             }
             if ($time != $curu['time_offset'])
+                $set[]='custom_title='.sqlesc(htmlspecialchars($custom_title));
                 $set[]='time_offset='.$time;
             if ($email != $curu['email'])
                 $set[]='email='.sqlesc($email);
+          $set[]="pm_mail_notify='$pm_mail_notification'";
+	  $set[]="status_comment_notify='$status_comment_notification'";
             if ($avatar != $curu['avatar'])
                 $set[]='avatar='.sqlesc(htmlspecialchars($avatar));
             if ($username != $curu['username']) {

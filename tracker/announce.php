@@ -1,34 +1,6 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////////////
-// xbtit - Bittorrent tracker/frontend
-//
-// Copyright (C) 2004 - 2007  Btiteam
-//
-//    This file is part of xbtit.
-//
-// Redistribution and use in source and binary forms, with or without modification,
-// are permitted provided that the following conditions are met:
-//
-//   1. Redistributions of source code must retain the above copyright notice,
-//      this list of conditions and the following disclaimer.
-//   2. Redistributions in binary form must reproduce the above copyright notice,
-//      this list of conditions and the following disclaimer in the documentation
-//      and/or other materials provided with the distribution.
-//   3. The name of the author may not be used to endorse or promote products
-//      derived from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-// IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
-// TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-////////////////////////////////////////////////////////////////////////////////////
+
+// CyBerFuN
 
 ignore_user_abort(1);
 
@@ -197,7 +169,7 @@ if (mysql_num_rows($res) > 0)
 // only for internal tracked torrent!
 $res_tor =mysql_query("SELECT UNIX_TIMESTAMP(data) as data, uploader FROM {$TABLE_PREFIX}files WHERE external='no' AND info_hash='".$info_hash."'");
 if (mysql_num_rows($res_tor)==0)
-   show_error("Torrent is not authorized for use on this tracker.");
+   show_error("Please Upload it at $BASEURL / then it can be tracked.");
 
 
 
@@ -212,14 +184,14 @@ $pid = AddSlashes(StripSlashes($pid));
 
 // if PID empty string or not send by client
 if ($pid=="" || !$pid)
-   show_error("Please redownload the torrent. PID system is active and pid was not found in the torrent");
+   show_error("Please redownload the torrent. PiD system is active and PiD was not found in the torrent");
 }
 
 // PID turned on
 if ($PRIVATE_ANNOUNCE) {
   $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE pid='".$pid."' LIMIT 1");
   if (!$respid || mysql_num_rows($respid)!=1)
-     show_error("Invalid PID (private announce): $pid. Please redownload torrent from $BASEURL.");
+     show_error("Invalid PiD (private announce): $pid. Please redownload torrent from $BASEURL.");
   else
       {
       $rowpid=mysql_fetch_assoc($respid);
@@ -570,14 +542,52 @@ function collectBytes($peer, $hash, $left, $downloaded=0, $uploaded=0, $pid="")
 
     $peerid=$peer["peer_id"];
 
+    ################################################################################################
+    # Speed stats in peers with filename
+       
+    $row=mysql_fetch_assoc(mysql_query("SELECT lastupdate, uploaded, downloaded FROM {$TABLE_PREFIX}peers WHERE infohash=\"$hash\" AND " . (isset($GLOBALS["trackerid"]) ? "sequence=\"${GLOBALS["trackerid"]}\"" : "peer_id=\"$peerid\"")));    
+ 
+        $annint=time()-$row["lastupdate"];
+        $updiff=$uploaded-$row["uploaded"];
+        $dldiff=$downloaded-$row["downloaded"];
+        
+    # End       
+    ################################################################################################
+
     if (!$GLOBALS["countbytes"])
     {
+/*
         quickQuery("UPDATE {$TABLE_PREFIX}peers SET lastupdate=UNIX_TIMESTAMP(), downloaded=$downloaded, uploaded=$uploaded, pid=\"$pid\" where infohash=\"$hash\" AND " . (isset($GLOBALS["trackerid"]) ? "sequence=\"${GLOBALS["trackerid"]}\"" : "peer_id=\"$peerid\""));
+*/
+
+    ################################################################################################
+    # Speed stats in peers with filename
+
+        quickQuery("UPDATE {$TABLE_PREFIX}peers SET lastupdate=UNIX_TIMESTAMP(), downloaded=$downloaded, uploaded=$uploaded, pid=\"$pid\", announce_interval=$annint, upload_difference=$updiff, download_difference=$dldiff where infohash=\"$hash\" AND " . (isset($GLOBALS["trackerid"]) ? "sequence=\"${GLOBALS["trackerid"]}\"" : "peer_id=\"$peerid\""));
+
+    # End       
+    ################################################################################################
+
+
+	
         return;
     }
     $diff = bcsub($peer["bytes"], $left);
+/*
     quickQuery("UPDATE {$TABLE_PREFIX}peers set " . (($diff != 0) ? "bytes=\"$left\"," : ""). " lastupdate=UNIX_TIMESTAMP(), downloaded=$downloaded, uploaded=$uploaded, pid=\"$pid\" where infohash=\"$hash\" AND " . (isset($GLOBALS["trackerid"]) ? "sequence=\"".$GLOBALS["trackerid"]."\"" : "peer_id=\"$peerid\""));
+*/
 
+
+    ################################################################################################
+    # Speed stats in peers with filename
+
+    quickQuery("UPDATE {$TABLE_PREFIX}peers set " . (($diff != 0) ? "bytes=\"$left\"," : ""). " lastupdate=UNIX_TIMESTAMP(), downloaded=$downloaded, uploaded=$uploaded, pid=\"$pid\", announce_interval=$annint, upload_difference=$updiff, download_difference=$dldiff where infohash=\"$hash\" AND " . (isset($GLOBALS["trackerid"]) ? "sequence=\"".$GLOBALS["trackerid"]."\"" : "peer_id=\"$peerid\""));
+
+    # End       
+    ################################################################################################
+
+
+	
     // Anti-negative clause
     if (((float)$diff) > 0)
         summaryAdd("dlbytes", $diff);
@@ -622,9 +632,10 @@ if (!isset($status["leecher"]))
     $status["leecher"]=0;
 if (!isset($status["seeder"]))
     $status["seeder"]=0;
-
+/*
 if ($status["seeder"]>=$GLOBALS["maxseeds"] || $status["leecher"]>=$GLOBALS["maxleech"])
    show_error("Sorry max peers reached! Redownload torrent from $BASEURL");
+*/
 // end select
 
 unset($status);
@@ -705,7 +716,7 @@ switch ($event)
        killPeer($peer_id, $info_hash, $left);
 
        sendRandomPeers($info_hash);
-
+// cyberfun
        // update user uploaded/downloaded
        if (!$LIVESTATS)
             @mysql_query("UPDATE {$TABLE_PREFIX}users SET uploaded=IFNULL(uploaded,0)+$uploaded, downloaded=IFNULL(downloaded,0)+$downloaded WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")." AND id>1 LIMIT 1");

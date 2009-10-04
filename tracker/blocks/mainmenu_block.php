@@ -47,12 +47,12 @@ if (!$CURUSER)
 elseif ($CURUSER["uid"]==1)
        // anonymous=guest
     {
-   print("<td class=\"lista\" align=\"center\" style=\"text-align:center;\">".$language["WELCOME"]." " . $CURUSER["username"] ." \n");
+   print("<td class=\"lista\" align=\"center\" style=\"text-align:center;\">".$language["WELCOME"]." " . $CURUSER["username"] . warn($CURUSER) . " \n");
    print("<a href=\"index.php?page=login\">(".$language["LOGIN"].")</a></td>\n");
     }
 else
     {
-    print("<td class=\"lista\" align=\"center\" style=\"text-align:center;\">".$language["WELCOME_BACK"]." " . $CURUSER["username"] ." \n");
+    print("<td class=\"lista\" align=\"center\" style=\"text-align:center;\">".$language["WELCOME_BACK"]." " . $CURUSER["username"] . warn($CURUSER) . " \n");
     print("<a href=\"logout.php\">(".$language["LOGOUT"].")</a></td></tr></table>\n");
     }
 ?>
@@ -68,10 +68,18 @@ if ($CURUSER["view_torrents"]=="yes")
    }
 if ($CURUSER["can_upload"]=="yes")
    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=upload\">".$language["MNU_UPLOAD"]."</a></td>\n");
+/*
 if ($CURUSER["view_users"]=="yes")
    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=users\">".$language["MNU_MEMBERS"]."</a></td>\n");
 if ($CURUSER["view_news"]=="yes")
    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=viewnews\">".$language["MNU_NEWS"]."</a></td>\n");
+*/
+
+if ($CURUSER["view_users"]=="yes")
+{
+   print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=staff\">".$language["STAFF"]."</a></td>\n");
+}
+
 if ($CURUSER["view_forum"]=="yes")
    {
    if ($GLOBALS["FORUMLINK"]=="" || $GLOBALS["FORUMLINK"]=="internal" || $GLOBALS["FORUMLINK"]=="smf")

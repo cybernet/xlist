@@ -1,4 +1,21 @@
+
+
+<!-- ################################################################################################
+     # Speed stats in peers with filename -->
+       
+<table width="100%" class="lista" border="0">
+       <tr>
+         <td align="center" class="header"><tag:peers.filename />&nbsp;&nbsp;&nbsp;&nbsp;<tag:peers.size /></td>
+       </tr>
+</table>
+
 <if:NOPEERS>
+        
+<!-- # End       
+     ############################################################################################ -->
+    
+
+	
 <table width="100%" class="lista" border="0">
        <tr>
          <td align="center" class="lista"><tag:language.NO_PEERS /></td>
@@ -24,7 +41,22 @@ function windowunder(link)
          <td align="center" class="header"><tag:language.PEER_STATUS /></td>
          <td align="center" class="header"><tag:language.PEER_CLIENT /></td>
          <td align="center" class="header"><tag:language.DOWNLOADED /></td>
+         
+
+<!-- ################################################################################################
+     # Speed stats in peers with filename -->
+
+         <td align="center" class="header"><tag:language.SPEED /> <font color=red>&#9660</font></td>
+
          <td align="center" class="header"><tag:language.UPLOADED /></td>
+         
+         <td align="center" class="header"><tag:language.SPEED /> <font color=green>&#9650</font></td>
+
+<!-- # End       
+     ############################################################################################ -->
+
+
+	
          <td align="center" class="header"><tag:language.RATIO /></td>
          <td align="center" class="header"><tag:language.SEEN /></td></tr>
          <!-- peers' listing -->
@@ -41,7 +73,21 @@ function windowunder(link)
          <td align="center" class="lista"><tag:peers[].STATUS /></td>
          <td align="center" class="lista"><tag:peers[].CLIENT /></td>
          <td align="center" class="lista"><tag:peers[].DOWNLOADED /></td>
+         
+
+<!-- ################################################################################################
+     # Speed stats in peers with filename -->
+
+         <td align="center" class="lista"><tag:peers[].DLSPEED /></td>
+               
+         
          <td align="center" class="lista"><tag:peers[].UPLOADED /></td>
+         
+         
+         <td align="center" class="lista"><tag:peers[].UPSPEED /></td>
+
+<!-- # End       
+     ############################################################################################ -->
          <td align="center" class="lista"><tag:peers[].RATIO /></td>
          <td align="center" class="lista"><tag:peers[].SEEN /></td>
        </tr>

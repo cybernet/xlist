@@ -16,7 +16,55 @@ function windowunder(link)
   window.opener.document.location=link;
   window.close();
 }
+function disable_button(state)
+{
+ document.getElementById('ty').disabled=(state=='1'?true:false);
+}
+
+at=new sack();
+
+function ShowUpdate()
+{
+  var mytext=at.response + '';
+  var myout=mytext.split('|');
+  document.getElementById('thanks_div').style.display='block';
+  document.getElementById('loading').style.display='none';
+  document.getElementById('thanks_div').innerHTML = myout[0]; //at.response;
+  disable_button(myout[1]);
+}
+
+function thank_you(ia)
+{
+  disable_button('1');
+  at.resetData();
+  at.onLoading=show_wait;
+  at.requestFile='thanks.php';
+  at.setVar('infohash',"'"+ia+"'");
+  at.setVar('thanks',1);
+  at.onCompletion = ShowUpdate;
+  at.runAJAX();
+}
+
+function ShowThank(ia)
+{
+  at.resetData();
+  at.onLoading=show_wait;
+  at.requestFile='thanks.php';
+  at.setVar('infohash',"'"+ia+"'");
+  at.onCompletion = ShowUpdate;
+  at.runAJAX();
+}
+
+function show_wait()
+{
+  document.getElementById('thanks_div').style.display='none';
+  document.getElementById('loading').style.display='block';
+}
 </script>
+<script type="text/javascript" src="jscript/prototype.js"></script>
+<script type="text/javascript" src="jscript/scriptaculous.js?load=effects"></script>
+<script type="text/javascript" src="jscript/lightbox.js"></script>
+<link rel="stylesheet" href="jscript/lightbox.css" type="text/css" media="screen" />
     <div align="center">
       <table width="100%" class="lista" border="0" cellspacing="5" cellpadding="5">
         <tr>
@@ -35,9 +83,45 @@ function windowunder(link)
           <td align="right" class="header"><tag:language.INFO_HASH /></td>
           <td class="lista" align="center"><tag:torrent.info_hash /></td>
         </tr>
+        <if:IMAGEIS>
+        <tr>
+          <td align="right" class="header" valign="top"><tag:language.IMAGE /></td>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.image />" title="view image" rel="lightbox"><img src="<tag:uploaddir /><tag:torrent.image />" width=<tag:width />></a></td>
+        </tr>
+        </if:IMAGEIS>
+        <tr>
+          <td align="right" class="header"><tag:language.SHARE_ON_FB /></td>
+		  <td class="lista" align="center"><tag:show_fblink /></td>
+        </tr>
+         <tr>
+<td align="right" class="header" valign="top"><tag:language.THANKS_USERS /></td>
+          <td class="lista" align="center">
+              <form action="thanks.php" method="post" onsubmit="return false">
+              <div id="thanks_div" name="thanks_div" style="display:block;"></div>
+              <div id="loading" name="loading" style="display:none;"><img src="images/ajax-loader.gif" alt="" title="ajax-loader" /></div>
+              <input type="button" id="ty" disabled="disabled" value="<tag:language.THANKS_YOU />" onclick="thank_you('<tag:torrent.info_hash />')" />
+              </form>
+              <script type="text/javascript">ShowThank('<tag:torrent.info_hash />');</script>
+          </td>
+        </tr>
         <tr>
           <td align="right" class="header" valign="top"><tag:language.DESCRIPTION /></td>
           <td class="lista" align="center"><tag:torrent.description /></td>
+        </tr>
+<tr>
+      <td align="right" class="header" valign="top"><tag:language.SCREEN /></td>
+      <td class="lista">
+      <table class="lista" border="0" cellspacing="0" cellpadding="0">
+        <if:SCREENIS1>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen1 />" title="view image" rel="lightbox"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen1 />"></a></td>
+        </if:SCREENIS1>
+        <if:SCREENIS2>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen2 />" title="view image" rel="lightbox"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen2 />"></a></td>
+        </if:SCREENIS2>
+        <if:SCREENIS3>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen3 />" title="view image" rel="lightbox"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen3 />"></a></td>
+        </if:SCREENIS3>
+        </table></td>
         </tr>
         <tr>
           <td align="right" class="header"><tag:language.CATEGORY_FULL /></td>
@@ -124,14 +208,38 @@ function windowunder(link)
           <td colspan="3" class="lista" align="center"><tag:language.NO_COMMENTS /></td>
         </tr>
         <else:NO_COMMENTS>
-        <loop:comments>
+                <loop:comments>
         <tr>
-          <td class="header"><tag:comments[].user /></td>
-          <td class="header"><tag:comments[].date /></td>
-          <td class="header" align="right"><tag:comments[].delete /></td>
+        <td align="left" class="header" colspan="2">
+        <table width="100%">
+        <td align="right"><tag:comments[].delete /></td>
+        </table>
+        </td>
         </tr>
         <tr>
-          <td colspan="3" class="lista" align="center"><tag:comments[].comment /></td>
+        <td class="header" align="left" valign="top">
+        <table width="140">
+        <tr>
+          <td>
+          <tag:comments[].user />
+          <br />
+          <tag:comments[].date />
+          <br />
+          <tag:comments[].elapsed />
+          <br />
+          <tag:comments[].avatar />
+          <br />
+          <tag:comments[].ratio />
+          <br />
+          <tag:comments[].uploaded />
+          <br />
+          <tag:comments[].downloaded />
+          </td>
+        </tr>
+        </table>
+        </td>
+        <td class="lista" width="100%" valign="top" style="padding:10px">
+        <tag:comments[].comment /></td>
         </tr>
         </loop:comments>
         </if:NO_COMMENTS>

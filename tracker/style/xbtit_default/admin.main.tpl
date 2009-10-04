@@ -24,6 +24,8 @@ function update_cat(newimage)
     <table border="0" class="lista" align="center" width="100%">
   <tr><td class="block" align="center"><b>xBtit Infos:</b></td></tr>
   <tr><td class="lista"><tag:admin.xbtit_version /></td></tr>
+<tr><td class="block" align="center"><b><tag:language.PM_NOTIFY_INFO /></b></td></tr>
+<tr><td class="lista"><tag:admin.email_notification_version /></td></tr>
   <tr><td class="block" align="center"><b>Some statistic/system info:</b></td></tr>
   <tr><td class="lista"><tag:admin.lastsanity /></td></tr>
   <tr><td class="lista"><tag:admin.lastscrape /></td></tr>
