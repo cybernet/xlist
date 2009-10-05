@@ -1,6 +1,6 @@
 <?php
 
-// CyBerFuN Tracker .::. iRC
+// CyBerFuN Tracker .::. DeTAiLS
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
 // Modified By CyBerNe7
