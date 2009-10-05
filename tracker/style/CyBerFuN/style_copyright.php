@@ -1,3 +1,3 @@
 <?php
-$design_copyright='<a href="http://cyberfun.ro" target="_blank">CyBerFuN</a>';
+$design_copyright='[&nbsp;&nbsp;<u>CyBerFuN xBTiT By cybernet</u>: <a href="http://tracker.cyberfun.ro/" target="_blank">CyBerFuN Tracker</a>&nbsp;]';
 ?>

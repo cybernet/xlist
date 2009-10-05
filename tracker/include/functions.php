@@ -182,10 +182,10 @@ function print_debug($level=3, $key=' - ') {
 
 function print_version() {
 global $STYLEPATH;
-include($STYLEPATH.'/fuck.php');
+include($CURRENTPATH.'/cyberfun_footer.php');
   global $tracker_version;
-
-  return $google_analytics;
+  return '[&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">Btiteam</a>&nbsp;]';
+  return $cyberfun_footer;
 }
 
 function print_designer() {
@@ -195,7 +195,7 @@ function print_designer() {
      include($STYLEPATH.'/style_copyright.php');
      $design_copyright='[&nbsp;&nbsp;<u>Powered By</u>: '.$design_copyright.'&nbsp;&nbsp;]&nbsp;';
   } else
-     $design_copyright='';
+     $design_copyright='[&nbsp;&nbsp;<u>CyBerFuN xBTiT By cybernet</u>: <a href="http://tracker.cyberfun.ro/" target="_blank">CyBerFuN Tracker</a>&nbsp;]';
   return $design_copyright;
 }
 
