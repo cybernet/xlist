@@ -25,4 +25,5 @@ $language["BLOCK_LASTTORRENT"]="Latest Uploaded Torrent";
 $language["BLOCK_LASTTORRENT_MARQ"]="Latest Uploaded Torrents";
 $language["TORRENT_DETAILS"]="View details";
 $language["TWITTER"]="Twitter Updates";
+$language["BLOCK_CAT"]="Categories";
 ?>
