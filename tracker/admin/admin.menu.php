@@ -83,7 +83,10 @@ else
                     "description"=>$language["ACP_SEARCH_DIFF"]),
                           4=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=warned_users" ,
-                    "description"=>"Warned users")
+                    "description"=>"Warned users"),
+                          5=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=duplicates" ,
+                    "description"=>$language["DUPLICATES"])
                     )
             ),
 

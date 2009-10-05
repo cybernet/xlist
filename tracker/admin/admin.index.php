@@ -102,9 +102,9 @@ switch ($do)
       $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.invitations.tpl"))));
       break;
 
-    case 'cyberfun_torrents':
-      include("$ADMIN_PATH/admin.cyberfun_torrents.php");
-      $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.cyberfun_torrents.tpl"))));
+    case 'duplicates':
+      include("$ADMIN_PATH/admin.duplicates.php");
+      $tpl->set("main_content",set_block($language["DUPLICATES"],"center",$admintpl->fetch(load_template("admin.duplicates.tpl"))));
       break;
 
     case 'visible':

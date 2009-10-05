@@ -335,4 +335,7 @@ $language["SETTING_IRC_SERVER"]="Irc Server (without irc://)";
 $language["SETTING_IRC_PORT"]="Irc Port";
 $language["SETTING_IRC_CHANNEL"]="Irc Channel (without #)";
 // irc ends
+$language["DUPLICATES"]="Duplicates";
+$language["ERROR"]="Error";
+$language["ERR_USERS_NOT_FOUND"]="No users found!";
 ?>
