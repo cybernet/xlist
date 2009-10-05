@@ -1107,7 +1107,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('price_name', '999999'),
 ('irc_server', 'irc.freenode.net'),
 ('irc_port', '6667'),
-('irc_channel', 'cyberfun');
+('irc_channel', 'test_only');
 
 -- --------------------------------------------------------
 
