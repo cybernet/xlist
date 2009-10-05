@@ -1129,7 +1129,12 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}style` (
 INSERT INTO `{$db_prefix}style` (`id`, `style`, `style_url`) VALUES
 (5, 'CyBerFuN', 'style/CyBerFuN'),
 (7, 'CReD', 'style/redline'),
-(8, 'CyBerFuN Dark', 'style/mesh');
+(8, 'CyBerFuN Dark', 'style/mesh'),
+(1, 'xBtit_Default', 'style/xbtit_default'),
+(2, 'Mint Green', 'style/mintgreen'),
+(3, 'Dark Lair', 'style/darklair'),
+(4, 'The Hive', 'style/thehive'),
+(6, 'Holiday Spirit', 'style/holiday-spirit');
 
 -- --------------------------------------------------------
 
