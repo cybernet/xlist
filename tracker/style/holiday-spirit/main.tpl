@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="<tag:main_css />" type="text/css" />
   <tag:more_css />
   <tag:main_jscript />
+<script type="text/javascript" src="/jscript/overlib.js"></script>
 </head>
 <body>
 <div id="main">
