@@ -470,6 +470,10 @@ Mod by losmi -visible torrent
                
             $status=1;
          }
+// Announce new Uploaded torrents in ShoutBoX start
+         global $BASEURL;
+         do_sqlquery("INSERT INTO {$TABLE_PREFIX}chat (uid, time, name, text) VALUES (0,".time().", 'System','[color=red]NEW TORRENT[/color]: [url=$BASEURL/index.php?page=torrent-details&id=$hash]".$filename."[/url]')");
+// Announce new Uploaded torrents in ShoutBoX ends
       }
       else
           {
