@@ -39,7 +39,8 @@ if ($CURUSER["view_torrents"]=="yes")
    }
 if ($CURUSER["can_upload"]=="yes")
    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=upload\">".$language["MNU_UPLOAD"]."</a></td>\n");
-$row = do_sqlquery("SELECT `activated` FROM `{$TABLE_PREFIX}modules` WHERE `name`='irc'", true);
+global $CACHE_DURATION;
+$row = do_sqlquery("SELECT `activated` FROM `{$TABLE_PREFIX}modules` WHERE `name`='irc'", true, $CACHE_DURATION);
 $res = mysql_fetch_assoc($row);
 if ($res["activated"] == 'yes' && ($CURUSER["view_users"]=="yes"))
 // link in the menu fixed by cybernet / http://tracker.cyberfun.ro/
