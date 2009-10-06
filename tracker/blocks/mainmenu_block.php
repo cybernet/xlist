@@ -45,12 +45,11 @@ $res = mysql_fetch_assoc($row);
 if ($res["activated"] == 'yes' && ($CURUSER["view_users"]=="yes"))
 // link in the menu fixed by cybernet / http://tracker.cyberfun.ro/
    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=modules&amp;module=irc\">".$language["MNU_IRC"]."</a></td>\n");
-/*
+
 if ($CURUSER["view_users"]=="yes")
    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=users\">".$language["MNU_MEMBERS"]."</a></td>\n");
 if ($CURUSER["view_news"]=="yes")
    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=viewnews\">".$language["MNU_NEWS"]."</a></td>\n");
-*/
 if ($CURUSER["view_users"]=="yes")
 {
    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=staff\">".$language["STAFF"]."</a></td>\n");
