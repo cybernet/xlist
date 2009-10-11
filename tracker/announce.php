@@ -74,9 +74,9 @@ function summaryAdd($column, $value, $abs = false)
 
 // connect to db
 if ($GLOBALS["persist"])
-    $conres=mysql_pconnect($dbhost, $dbuser, $dbpass) or show_error("Tracker errore - mysql_connect: " . mysql_error());
+    $conres = mysql_pconnect($dbhost, $dbuser, $dbpass) or show_error("Tracker errore - mysql_connect: " . mysql_error());
 else
-    $conres=mysql_connect($dbhost, $dbuser, $dbpass) or show_error("Tracker errore - mysql_connect: " . mysql_error());
+    $conres = mysql_connect($dbhost, $dbuser, $dbpass) or show_error("Tracker errore - mysql_connect: " . mysql_error());
 
     mysql_select_db($database) or show_error("Tracker error - $database - ".mysql_error());
 
@@ -111,7 +111,7 @@ else
     $peer_id = bin2hex($_GET["peer_id"]);
 }
 
-$iscompact=(isset($_GET["compact"])?$_GET["compact"]=='1':false);
+$iscompact = (isset($_GET["compact"])?$_GET["compact"]=='1':false);
 
 // controll if client can handle gzip
 if ($GZIP_ENABLED)
@@ -167,7 +167,7 @@ if (mysql_num_rows($res) > 0)
 
 
 // only for internal tracked torrent!
-$res_tor =mysql_query("SELECT UNIX_TIMESTAMP(data) as data, uploader FROM {$TABLE_PREFIX}files WHERE external='no' AND info_hash='".$info_hash."'");
+$res_tor = mysql_query("SELECT UNIX_TIMESTAMP(data) as data, uploader FROM {$TABLE_PREFIX}files WHERE external='no' AND info_hash='".$info_hash."'");
 if (mysql_num_rows($res_tor)==0)
    show_error("Please Upload it at $BASEURL / then it can be tracked.");
 
@@ -194,22 +194,22 @@ if ($PRIVATE_ANNOUNCE) {
      show_error("Invalid PiD (private announce): $pid. Please redownload torrent from $BASEURL.");
   else
       {
-      $rowpid=mysql_fetch_assoc($respid);
+      $rowpid = mysql_fetch_assoc($respid);
       if ($rowpid["can_download"]!="yes" && $PRIVATE_ANNOUNCE)
          show_error("Sorry your level ($rowpid[level]) is not allowed to download from $BASEURL.");
       //waittime
       elseif ($rowpid["WT"]>0) {
-        $wait=0;
+        $wait = 0;
         if (intval($rowpid['downloaded'])>0)
-           $ratio=number_format($rowpid['uploaded']/$rowpid['downloaded'],2);
+           $ratio = number_format($rowpid['uploaded']/$rowpid['downloaded'],2);
         else
             $ratio=0.0;
 
-        $added=mysql_fetch_assoc($res_tor);
+        $added = mysql_fetch_assoc($res_tor);
         $vz = $added["data"];
         $timer = floor((time() - $vz) / 3600);
         if($ratio<1.0 && $rowpid['id']!=$added["uploader"]){
-            $wait=$rowpid["WT"];
+            $wait = $rowpid["WT"];
         }
         $wait -=$timer;
         if ($wait<=0)$wait=0;
@@ -230,26 +230,26 @@ if ($PRIVATE_ANNOUNCE) {
       }
     else
       {
-      $rowpid=mysql_fetch_assoc($respid);
+      $rowpid = mysql_fetch_assoc($respid);
       if ($rowpid["can_download"]!="yes")
          show_error("Sorry your level ($rowpid[level]) is not allowed to download from $BASEURL.");
       //waittime
       elseif ($rowpid["WT"]>0) {
         $wait=0;
         if (intval($rowpid['downloaded'])>0)
-           $ratio=number_format($rowpid['uploaded']/$rowpid['downloaded'],2);
+           $ratio = number_format($rowpid['uploaded']/$rowpid['downloaded'],2);
         else
-            $ratio=0.0;
+            $ratio = 0.0;
 
-        $added=mysql_fetch_assoc($res_tor);
+        $added = mysql_fetch_assoc($res_tor);
         $vz = $added["data"];
         $timer = floor((time() - $vz) / 3600);
         if($ratio<1.0 && $rowpid['id']!=$added["uploader"]){
-            $wait=$rowpid["WT"];
+            $wait = $rowpid["WT"];
         }
         $wait -=$timer;
         if ($wait<=0)
-            $wait=0;
+            $wait = 0;
         elseif($wait!=0 && $left!=0)
             {show_error($rowpid["username"]." your Waiting Time = ".$wait." h");}
       }
@@ -451,9 +451,9 @@ function sendRandomPeers($info_hash)
 
 
     if ($GLOBALS["NAT"])
-        $where="WHERE infohash=\"$info_hash\" AND natuser = 'N'";
+        $where = "WHERE infohash=\"$info_hash\" AND natuser = 'N'";
     else
-        $where="WHERE infohash=\"$info_hash\"";
+        $where = "WHERE infohash=\"$info_hash\"";
 
     $query = "SELECT ".((isset($_GET["no_peer_id"]) && $_GET["no_peer_id"] == 1) ? "" : "peer_id,")."ip, port FROM {$TABLE_PREFIX}peers ".$where." ORDER BY RAND() LIMIT ".$GLOBALS["maxpeers"];
 
@@ -540,16 +540,16 @@ function collectBytes($peer, $hash, $left, $downloaded=0, $uploaded=0, $pid="")
 
   global $TABLE_PREFIX;
 
-    $peerid=$peer["peer_id"];
+    $peerid = $peer["peer_id"];
 
     ################################################################################################
     # Speed stats in peers with filename
        
-    $row=mysql_fetch_assoc(mysql_query("SELECT lastupdate, uploaded, downloaded FROM {$TABLE_PREFIX}peers WHERE infohash=\"$hash\" AND " . (isset($GLOBALS["trackerid"]) ? "sequence=\"${GLOBALS["trackerid"]}\"" : "peer_id=\"$peerid\"")));    
+    $row = mysql_fetch_assoc(mysql_query("SELECT lastupdate, uploaded, downloaded FROM {$TABLE_PREFIX}peers WHERE infohash=\"$hash\" AND " . (isset($GLOBALS["trackerid"]) ? "sequence=\"${GLOBALS["trackerid"]}\"" : "peer_id=\"$peerid\"")));    
  
-        $annint=time()-$row["lastupdate"];
-        $updiff=$uploaded-$row["uploaded"];
-        $dldiff=$downloaded-$row["downloaded"];
+        $annint = time()-$row["lastupdate"];
+        $updiff = $uploaded-$row["uploaded"];
+        $dldiff = $downloaded-$row["downloaded"];
         
     # End       
     ################################################################################################
@@ -646,18 +646,18 @@ mysql_free_result($results);
 if ($LIVESTATS)
   {
      // changed peer_id with pid/ip 485
-     $resstat=mysql_query("SELECT uploaded, downloaded FROM {$TABLE_PREFIX}peers WHERE ".($PRIVATE_ANNOUNCE?"pid=\"$pid\"":"ip=\"$ip\"")." AND infohash=\"$info_hash\"");
+     $resstat = mysql_query("SELECT uploaded, downloaded FROM {$TABLE_PREFIX}peers WHERE ".($PRIVATE_ANNOUNCE?"pid=\"$pid\"":"ip=\"$ip\"")." AND infohash=\"$info_hash\"");
      if ($resstat && mysql_num_rows($resstat)>0)
          {
-         $livestat=mysql_fetch_assoc($resstat);
+         $livestat = mysql_fetch_assoc($resstat);
          // only if uploaded/downloaded are >= stored data in peer list
          //if ($uploaded>=$livestat["uploaded"])
-               $newup=max(0,($uploaded-$livestat["uploaded"]));
+               $newup = max(0,($uploaded-$livestat["uploaded"]));
          //else
          //      $newup=$uploaded;
 
          //if ($downloaded>=$livestat["downloaded"])
-               $newdown=max(0,($downloaded-$livestat["downloaded"]));
+               $newdown = max(0,($downloaded-$livestat["downloaded"]));
          //else
          //      $newdown=$downloaded;
          // rev 485
@@ -669,11 +669,11 @@ if ($LIVESTATS)
        // begin history - also this is registered live or not
        if ($LOG_HISTORY)
          {
-          $resu=mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
+          $resu = mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
           // if found at least one user should be 1
           if ($resu && mysql_num_rows($resu)==1)
             {
-              $curuid=mysql_fetch_assoc($resu);
+              $curuid = mysql_fetch_assoc($resu);
               quickQuery("UPDATE {$TABLE_PREFIX}history set uploaded=IFNULL(uploaded,0)+$newup, downloaded=IFNULL(downloaded,0)+$newdown WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
             }
           mysql_free_result($resu);
@@ -695,11 +695,11 @@ switch ($event)
        // begin history
        if ($LOG_HISTORY)
          {
-          $resu=mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
+          $resu = mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
           // if found at least one user should be 1
           if ($resu && mysql_num_rows($resu)==1)
             {
-              $curuid=mysql_fetch_assoc($resu);
+              $curuid = mysql_fetch_assoc($resu);
               quickQuery("UPDATE {$TABLE_PREFIX}history set active='yes',agent='".getagent($agent,$peer_id)."' WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
               // record is not present, create it (only if not seeder: original seeder don't exist in history table, other already exists)
               if (mysql_affected_rows()==0 && $left>0)
@@ -724,11 +724,11 @@ switch ($event)
        // begin history - if LIVESTAT, only the active/agent part
        if ($LOG_HISTORY)
          {
-          $resu=mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
+          $resu = mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
           // if found at least one user should be 1
           if ($resu && mysql_num_rows($resu)==1)
             {
-              $curuid=mysql_fetch_assoc($resu);
+              $curuid = mysql_fetch_assoc($resu);
               quickQuery("UPDATE {$TABLE_PREFIX}history set active='no',".($LIVESTATS?"":" uploaded=IFNULL(uploaded,0)+$uploaded, downloaded=IFNULL(downloaded,0)+$downloaded,")." agent='".getagent($agent,$peer_id)."' WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
             }
           mysql_free_result($resu);
@@ -765,11 +765,11 @@ switch ($event)
         // begin history
         if ($LOG_HISTORY)
           {
-           $resu=mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
+           $resu = mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
            // if found at least one user should be 1
            if ($resu && mysql_num_rows($resu)==1)
              {
-               $curuid=mysql_fetch_assoc($resu);
+               $curuid = mysql_fetch_assoc($resu);
                // if user has already completed this torrent, mysql will give error because of unique index (uid+infohash)
                // upload/download will be updated on stop event...
                // record should already exist (created on stated event)
