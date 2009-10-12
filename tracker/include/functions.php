@@ -181,6 +181,7 @@ function print_debug($level=3, $key=' - ') {
 }
 
 function print_version() {
+$CURRENTPATH = dirname(__FILE__);
 global $STYLEPATH;
 include($CURRENTPATH.'/cyberfun_footer.php');
   global $tracker_version;
