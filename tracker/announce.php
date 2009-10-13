@@ -160,7 +160,7 @@ $nip = ip2long($ip);
 $res = mysql_query("SELECT * FROM {$TABLE_PREFIX}bannedip WHERE $nip >= first AND $nip <= last") or error_log(__FILE__." - ".__LINE__);
 if (mysql_num_rows($res) > 0)
  {
-   show_error("You are not authorized to use this tracker (".$SITENAME.") -- Your IP address (".$ip.") is BANNED.");
+   show_error("You are not authorized to use (".$SITENAME.") -- Your IP address (".$ip.") is BANNED.");
    die();
 }
 // end banned IP
@@ -211,7 +211,7 @@ if ($PRIVATE_ANNOUNCE) {
         if($ratio<1.0 && $rowpid['id']!=$added["uploader"]){
             $wait = $rowpid["WT"];
         }
-        $wait -=$timer;
+        $wait -= $timer;
         if ($wait<=0)$wait=0;
         elseif($wait!=0 && $left!=0){show_error($rowpid["username"]." your Waiting Time = ".$wait." h");}
       }
@@ -235,7 +235,7 @@ if ($PRIVATE_ANNOUNCE) {
          show_error("Sorry your level ($rowpid[level]) is not allowed to download from $BASEURL.");
       //waittime
       elseif ($rowpid["WT"]>0) {
-        $wait=0;
+        $wait = 0;
         if (intval($rowpid['downloaded'])>0)
            $ratio = number_format($rowpid['uploaded']/$rowpid['downloaded'],2);
         else
@@ -268,7 +268,7 @@ if (!isset($GLOBALS["ip_override"]))
 
 if (isset($_GET["numwant"]))
     if ($_GET["numwant"] < $GLOBALS["maxpeers"] && $_GET["numwant"] >= 0)
-        $GLOBALS["maxpeers"]=$_GET["numwant"];
+        $GLOBALS["maxpeers"] = $_GET["numwant"];
 
 if (isset($_GET["trackerid"]))
 {
@@ -626,12 +626,12 @@ $results = mysql_query("SELECT status, count(status) FROM {$TABLE_PREFIX}peers W
 $status = array();
 
 while ($resstat = mysql_fetch_row($results))
-  $status[$resstat[0]]=$resstat[1];
+  $status[$resstat[0]] = $resstat[1];
 
 if (!isset($status["leecher"]))
-    $status["leecher"]=0;
+    $status["leecher"] = 0;
 if (!isset($status["seeder"]))
-    $status["seeder"]=0;
+    $status["seeder"] = 0;
 /*
 if ($status["seeder"]>=$GLOBALS["maxseeds"] || $status["leecher"]>=$GLOBALS["maxleech"])
    show_error("Sorry max peers reached! Redownload torrent from $BASEURL");
