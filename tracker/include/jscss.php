@@ -1,4 +1,6 @@
-<?php
+<?
+// CyBerFuN.ro & xList.ro
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -30,7 +32,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-$morescript='
+$morescript = '
 	<!--[if lt IE 7.]>
 	<script defer type="text/javascript" src="'.$BASEURL.'/jscript/pngfix.js"></script>
 	<![endif]-->
@@ -43,6 +45,6 @@ $morescript='
         <script type="text/javascript" language="javascript" src="ajaxstarrater/js/rating.js"></script>
 ';
 
-$morecss='<link rel="stylesheet" type="text/css" href="ajaxstarrater/css/rating.css" />
+$morecss = '<link rel="stylesheet" type="text/css" href="ajaxstarrater/css/rating.css" />
 <meta name="google-site-verification" content="4t88g1Vej9cHGPVLl2shr9DGCkhPm7rWmyg6itUuqnE" />';
 ?>

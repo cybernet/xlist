@@ -1,10 +1,10 @@
-<?php
+<?
 
-// CyBerFuN
+// CyBerFuN.ro & xList.ro
 
 function do_sanity() {
 
-         global $clean_interval, $XBTT_USE, $PRIVATE_ANNOUNCE, $TORRENTSDIR, $CURRENTPATH,$LIVESTATS,$LOG_HISTORY, $TABLE_PREFIX;
+         global $clean_interval, $XBTT_USE, $PRIVATE_ANNOUNCE, $TORRENTSDIR, $CURRENTPATH, $LIVESTATS, $LOG_HISTORY, $TABLE_PREFIX;
 
 if ($XBTT_USE) {
  $res = do_sqlquery("SELECT uid FROM xbt_files_users as u INNER JOIN xbt_files as x ON u.fid=x.fid WHERE u.left = '0' AND x.flags='0' AND u.active='1'");
@@ -12,7 +12,7 @@ if ($XBTT_USE) {
    {
        while ($arr = mysql_fetch_assoc($res))
        {
-       $x=$arr["uid"];
+       $x = $arr["uid"];
        quickQuery("UPDATE {$TABLE_PREFIX}users SET seedbonus = seedbonus+".$GLOBALS["bonus"]."*".$clean_interval."/3600 WHERE id = '$x'");
        }
    } }else
@@ -22,7 +22,7 @@ if ($XBTT_USE) {
    {
        while ($arr = mysql_fetch_assoc($res))
        {
-       $x=$arr['pid'];
+       $x = $arr['pid'];
        quickQuery("UPDATE {$TABLE_PREFIX}users SET seedbonus = seedbonus+".$GLOBALS["bonus"]."*".$clean_interval."/3600 WHERE pid = '$x'");
        }
    } }
@@ -33,18 +33,18 @@ if ($XBTT_USE) {
          {
              list($hash, $seeders, $leechers, $bytes, $filename) = $row;
 
-         $timeout=time()-(intval($GLOBALS["report_interval"]*2));
+         $timeout=time() - (intval($GLOBALS["report_interval"] * 2));
 
          // for testing purpose -- begin
-         $resupd=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}peers where lastupdate < ".$timeout ." AND infohash='$hash'");
-         if (mysql_num_rows($resupd)>0)
+         $resupd = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}peers where lastupdate < ".$timeout ." AND infohash='$hash'");
+         if (mysql_num_rows($resupd) > 0)
             {
             while ($resupdate = mysql_fetch_array($resupd))
               {
-                  $uploaded=max(0,$resupdate["uploaded"]);
-                  $downloaded=max(0,$resupdate["downloaded"]);
-                  $pid=$resupdate["pid"];
-                  $ip=$resupdate["ip"];
+                  $uploaded = max(0,$resupdate["uploaded"]);
+                  $downloaded = max(0,$resupdate["downloaded"]);
+                  $pid = $resupdate["pid"];
+                  $ip = $resupdate["ip"];
                   // update user->peer stats only if not livestat
                   if (!$LIVESTATS)
                     {
@@ -57,8 +57,8 @@ if ($XBTT_USE) {
                   // update dead peer to non active in history table
                   if ($LOG_HISTORY)
                      {
-                          $resuser=do_sqlquery("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")." ORDER BY lastconnect DESC LIMIT 1");
-                          $curu=@mysql_fetch_row($resuser);
+                          $resuser = do_sqlquery("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")." ORDER BY lastconnect DESC LIMIT 1");
+                          $curu = @mysql_fetch_row($resuser);
                           quickquery("UPDATE {$TABLE_PREFIX}history SET active='no' WHERE uid=$curu[0] AND infohash='$hash'");
                      }
 
@@ -93,12 +93,12 @@ if ($XBTT_USE) {
          quickQuery("DELETE readposts FROM {$TABLE_PREFIX}readposts LEFT JOIN users ON readposts.userid = users.id WHERE users.id IS NULL");
          
          // deleting orphan image in torrent's folder (if image code is enabled)
-         $tordir=realpath("$CURRENTPATH/../$TORRENTSDIR");
+         $tordir = realpath("$CURRENTPATH/../$TORRENTSDIR");
          if ($dir = @opendir($tordir."/"));
            {
             while(false !== ($file = @readdir($dir)))
                {
-                   if ($ext = substr(strrchr($file, "."), 1)=="png")
+                   if ($ext = substr(strrchr($file, "."), 1) == "png")
                        unlink("$tordir/$file");
                }
             @closedir($dir);

@@ -1,5 +1,5 @@
-<?php
-// CyBerFuN
+<?
+// CyBerFuN.ro & xList.ro
 
 error_reporting(E_ALL ^ E_NOTICE);
 
@@ -7,11 +7,11 @@ error_reporting(E_ALL ^ E_NOTICE);
 // Emulate register_globals off
 #
 
-ini_set("memory_limit","-1");
+ini_set("memory_limit", "-1");
 set_time_limit(0);
 
 if (ini_get('register_globals')) {
-  $superglobals = array($_SERVER, $_ENV,$_FILES, $_COOKIE, $_POST, $_GET);
+  $superglobals = array($_SERVER, $_ENV, $_FILES, $_COOKIE, $_POST, $_GET);
   if (isset($_SESSION))
     array_unshift($superglobals, $_SESSION);
   foreach ($superglobals as $superglobal)
@@ -28,7 +28,7 @@ if(get_magic_quotes_gpc()){
       if(is_array($val))
         remove_magic_quotes($array[$key]);
       elseif (is_string($val))
-        $array[$key] = str_replace(array('\\\\','\\\"',"\'"),array('\\','\"',"'"),$val);
+        $array[$key] = str_replace(array('\\\\', '\\\"', "\'"), array('\\', '\"', "'"),$val);
   }
 
   remove_magic_quotes($_POST);
@@ -53,8 +53,8 @@ require_once $CURRENTPATH.'/class.captcha.php';
 require_once $CURRENTPATH.'/class.ajaxpoll.php';
 
 if (!isset($TRACKER_ANNOUNCEURLS)) {
-  $TRACKER_ANNOUNCEURLS=array();
-  $TRACKER_ANNOUNCEURLS[]=$BASEURL.'/announce.php';
+  $TRACKER_ANNOUNCEURLS = array();
+  $TRACKER_ANNOUNCEURLS[] = $BASEURL.'/announce.php';
 }
 
 function load_css($css_name) {
@@ -68,13 +68,13 @@ function load_css($css_name) {
 
 /*Mod by losmi - visible mod
 Operation #3*/
-function updateVisible($hash,$visible)
+function updateVisible($hash, $visible)
 {
     global $TABLE_PREFIX;
     $query = "UPDATE {$TABLE_PREFIX}files 
                    SET visible=".(int)$visible."
                    WHERE info_hash ='$hash'";
-    do_sqlquery($query,true);
+    do_sqlquery($query, true);
    
 }
 /*End mod by losmi - visible mod
@@ -120,26 +120,26 @@ function load_language($mod_language_name) {
   return $THIS_BASEPATH.'/language/english/'.$mod_language_name;
 }
 
-function get_combo($select, $opts=array()) {
-  $name=(isset($opts['name']))?' name="'.$opts['name'].'"':'';
-  $complete=(isset($opts['complete']))?(bool)$opts['complete']:false;
-  $default=(isset($opts['default']))?$opts['default']:NULL;
-  $id=(isset($opts['id']))?$opts['id']:'id';
-  $value=(isset($opts['value']))?$opts['value']:'value';
-  $combo='';
+function get_combo($select, $opts = array()) {
+  $name = (isset($opts['name']))?' name="'.$opts['name'].'"':'';
+  $complete = (isset($opts['complete']))?(bool)$opts['complete']:false;
+  $default = (isset($opts['default']))?$opts['default']:NULL;
+  $id = (isset($opts['id']))?$opts['id']:'id';
+  $value = (isset($opts['value']))?$opts['value']:'value';
+  $combo = '';
 
   if ($complete)
-    $combo.='<select'.$name.'>';
+    $combo .= '<select'.$name.'>';
 
   foreach ($select as $option) {
-    $combo.="\n".'<option ';
-    if ( (!is_null($default)) && ($option[$id]==$default) )
-      $combo.='selected="selected" ';
-    $combo.='value="'.$option[$id].'">'.unesc($option[$value]).'</option>';
+    $combo .= "\n".'<option ';
+    if ( (!is_null($default)) && ($option[$id] == $default) )
+      $combo .= 'selected="selected" ';
+    $combo .= 'value="'.$option[$id].'">'.unesc($option[$value]).'</option>';
   }
 
   if ($complete)
-    $combo.='</select>';
+    $combo .= '</select>';
 
   return $combo;
 }
@@ -148,31 +148,31 @@ function get_microtime() {
   return strtok(microtime(), ' ') + strtok('');
 }
 
-function cut_string($ori_string,$cut_after) {
-  $rchars=array('_','.','-');
-  $ori_string=str_replace($rchars,' ',$ori_string);
-  if (strlen($ori_string)>$cut_after && $cut_after>0)
-    return substr($ori_string,0,$cut_after).'...';
+function cut_string($ori_string, $cut_after) {
+  $rchars = array('_', '.', '-');
+  $ori_string = str_replace($rchars, ' ', $ori_string);
+  if (strlen($ori_string) > $cut_after && $cut_after > 0)
+    return substr($ori_string, 0, $cut_after).'...';
   return $ori_string;
 }
 
-function print_debug($level=3, $key=' - ') {
+function print_debug($level = 3, $key = ' - ') {
     global $time_start, $gzip, $num_queries, $cached_querys;
-    $time_end=get_microtime();
+    $time_end = get_microtime();
     switch ($level) {
         case '4':
             if (function_exists('memory_get_usage')) {
-                $memory='[ Memory: '.makesize(memory_get_usage());
+                $memory = '[ Memory: '.makesize(memory_get_usage());
                 if (function_exists('memory_get_peak_usage'))
-                    $memory.='|'.makesize(memory_get_peak_usage());
-                $return[]=$memory.' ]';
+                    $memory .= '|'.makesize(memory_get_peak_usage());
+                $return[] = $memory.' ]';
             }
         case '3':
-            $return[]='[ GZIP: '.$gzip.' ]';
+            $return[] = '[ GZIP: '.$gzip.' ]';
         case '2':
-            $return[]='[ Script Execution: '.number_format(($time_end-$time_start),4).' sec. ]';
+            $return[] = '[ Script Execution: '.number_format(($time_end-$time_start), 4).' sec. ]';
         case '1':
-            $return[]='[ Queries: '.$num_queries.'|'.$cached_querys.' ]';
+            $return[] = '[ Queries: '.$num_queries.'|'.$cached_querys.' ]';
             break;
         default:
             return '';
@@ -194,9 +194,9 @@ function print_designer() {
 
   if (file_exists($STYLEPATH.'/style_copyright.php')) {
      include($STYLEPATH.'/style_copyright.php');
-     $design_copyright='[&nbsp;&nbsp;<u>Powered By</u>: '.$design_copyright.'&nbsp;&nbsp;]&nbsp;';
+     $design_copyright = '[&nbsp;&nbsp;<u>Powered By</u>: '.$design_copyright.'&nbsp;&nbsp;]&nbsp;';
   } else
-     $design_copyright='[&nbsp;&nbsp;<u>CyBerFuN xBTiT By cybernet</u>: <a href="http://tracker.cyberfun.ro/" target="_blank">CyBerFuN Tracker</a>&nbsp;]';
+     $design_copyright = '[&nbsp;&nbsp;<u>CyBerFuN xBTiT By cybernet</u>: <a href="http://tracker.cyberfun.ro/" target="_blank">CyBerFuN Tracker</a>&nbsp;]';
   return $design_copyright;
 }
 
@@ -206,37 +206,37 @@ function print_designer() {
 function check_online($session_id, $location) {
   global $TABLE_PREFIX, $CURUSER;
 
-  $location=sqlesc($location);
-  $ip=getip();
-  $uid=max(0,$CURUSER['uid']);
-  $suffix=sqlesc($CURUSER['suffixcolor']);
-  $prefix=sqlesc($CURUSER['prefixcolor']);
-  $uname=sqlesc($CURUSER['username']);
-  $ugroup=sqlesc($CURUSER['level']);
-  $warn=sqlesc($CURUSER['warn']);
-  if ($uid==1)
-    $where="WHERE session_id='$session_id'";
+  $location = sqlesc($location);
+  $ip = getip();
+  $uid = max(0,$CURUSER['uid']);
+  $suffix = sqlesc($CURUSER['suffixcolor']);
+  $prefix = sqlesc($CURUSER['prefixcolor']);
+  $uname = sqlesc($CURUSER['username']);
+  $ugroup = sqlesc($CURUSER['level']);
+  $warn = sqlesc($CURUSER['warn']);
+  if ($uid == 1)
+    $where = "WHERE session_id='$session_id'";
   else
-    $where="WHERE user_id='$uid' OR session_id='$session_id'";
+    $where = "WHERE user_id='$uid' OR session_id='$session_id'";
 
   @quickQuery("UPDATE {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, location=$location, user_id=$uid, warn=$warn, lastaction=UNIX_TIMESTAMP() $where");
   // record don't already exist, then insert it
-  if (mysql_affected_rows()==0) { 
+  if (mysql_affected_rows() == 0) { 
     @quickQuery("UPDATE {$TABLE_PREFIX}users SET lastconnect=NOW() WHERE id=$uid AND id>1");
     @quickQuery("INSERT INTO {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, user_id=$uid, user_ip='$ip', location=$location, warn=$warn, lastaction=UNIX_TIMESTAMP()");
   }
 
-  $timeout=time()-900; // 15 minutes
+  $timeout = time() - 900; // 15 minutes
   @quickQuery("UPDATE {$TABLE_PREFIX}users SET lastconnect=NOW() WHERE id IN (SELECT user_id FROM {$TABLE_PREFIX}online ol WHERE ol.lastaction<$timeout AND ol.user_id>1)");
   @quickQuery("DELETE FROM {$TABLE_PREFIX}online WHERE lastaction<$timeout");
 }
 
 //Disallow special characters in username
 
-function straipos($haystack,$array,$offset=0) {
+function straipos($haystack, $array, $offset = 0) {
   $occ = array();
-  for ($i=0,$len=count($array);$i<$len;$i++) {
-    $pos = strpos($haystack,$array[$i],$offset);
+  for ($i = 0, $len = count($array); $i < $len; $i++) {
+    $pos = strpos($haystack, $array[$i], $offset);
     if (is_bool($pos))
           continue;
     $occ[$pos] = $i;
@@ -245,15 +245,15 @@ function straipos($haystack,$array,$offset=0) {
       return false;
   ksort($occ);
   reset($occ);
-  list($key,$value) = each($occ);
-  return array($key,$value);
+  list($key, $value) = each($occ);
+  return array($key, $value);
 }
 
 // Even if you're missing PHP 4.3.0, the MHASH extension might be of use.
 // Someone was kind enought to email this code snippit in.
-if (function_exists('mhash')&&(!function_exists('sha1'))&&defined('MHASH_SHA1')) {
+if (function_exists('mhash') && (!function_exists('sha1')) && defined('MHASH_SHA1')) {
   function sha1($str) {
-    return bin2hex(mhash(MHASH_SHA1,$str));
+    return bin2hex(mhash(MHASH_SHA1, $str));
   }
 }
 
@@ -326,37 +326,37 @@ function userlogin() {
   $res = do_sqlquery("SELECT u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = $id LIMIT 1;") or sqlerr(__FILE__, __LINE__);
   $row = mysql_fetch_array($res);
   if (!$row) {
-    $id=1;
+    $id = 1;
     $res = do_sqlquery("SELECT u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;") or sqlerr(__FILE__, __LINE__);
     $row = mysql_fetch_array($res);
   }
   if (!isset($_COOKIE['pass'])) $_COOKIE['pass'] = '';
   if (($_COOKIE['pass']!=md5($row['random'].$row['password'].$row['random'])) && $id!=1) {
-    $id=1;
+    $id = 1;
     $res = do_sqlquery("SELECT u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;") or sqlerr(__FILE__, __LINE__);
     $row = mysql_fetch_array($res);
   }
 
-  if ($id>1)
+  if ($id > 1)
     quickQuery("UPDATE {$TABLE_PREFIX}users SET lip=".$nip.", cip='".AddSlashes($ip)."' WHERE id = $id") or sqlerr(__FILE__, __LINE__);
 
   // CHECK FOR INSTALLATION FOLDER WITHOUT INSTALL.ME
-  if ($row['id_level']==8 && (file_exists('install.php') || file_exists('upgrade.php'))) // only owner level
-    $err_msg_install='<div align="center" style="color:red; font-size:12pt; font-weight: bold;">SECURITY WARNING: Delete install.php & upgrade.php!</div>';
+  if ($row['id_level'] == 8 && (file_exists('install.php') || file_exists('upgrade.php'))) // only owner level
+    $err_msg_install = '<div align="center" style="color:red; font-size:12pt; font-weight: bold;">SECURITY WARNING: Delete install.php & upgrade.php!</div>';
   else
-    $err_msg_install='';
+    $err_msg_install = '';
 
   $GLOBALS['CURUSER'] = $row;
   unset($row);
 }
 
-function dbconn($do_clean=false) {
+function dbconn($do_clean = false) {
   global $dbhost, $dbuser, $dbpass, $database, $language;
 
   if ($GLOBALS['persist'])
-    $conres=mysql_pconnect($dbhost, $dbuser, $dbpass);
+    $conres = mysql_pconnect($dbhost, $dbuser, $dbpass);
   else
-    $conres=mysql_connect($dbhost, $dbuser, $dbpass);
+    $conres = mysql_connect($dbhost, $dbuser, $dbpass);
 
   if (!$conres) {
     switch (mysql_errno()) {
@@ -382,14 +382,14 @@ function cleandata() {
 
   global $clean_interval;
 
-  if ($clean_interval==0)
+  if ($clean_interval == 0)
     return;
 
   $now = time();
   $res = do_sqlquery("SELECT last_time FROM {$TABLE_PREFIX}tasks WHERE task='sanity'");
   $row = mysql_fetch_array($res);
   if (!$row) {
-    do_sqlquery("INSERT INTO {$TABLE_PREFIX}tasks (task, last_time) VALUES ('sanity',$now)");
+    do_sqlquery("INSERT INTO {$TABLE_PREFIX}tasks (task, last_time) VALUES ('sanity', $now)");
     return;
   }
   $ts = $row[0];
@@ -409,7 +409,7 @@ function updatedata() {
   require_once $CURRENTPATH.'/getscrape.php';
   global $update_interval;
 
-  if ($update_interval==0)
+  if ($update_interval == 0)
     return;
 
   $now = time();
@@ -417,7 +417,7 @@ function updatedata() {
   $res = do_sqlquery("SELECT last_time FROM {$TABLE_PREFIX}tasks WHERE task='update'");
   $row = @mysql_fetch_array($res);
   if (!$row) {
-    do_sqlquery("INSERT INTO {$TABLE_PREFIX}tasks (task, last_time) VALUES ('update',$now)");
+    do_sqlquery("INSERT INTO {$TABLE_PREFIX}tasks (task, last_time) VALUES ('update', $now)");
     return;
   }
   $ts = $row[0];
@@ -434,13 +434,13 @@ function updatedata() {
 
   // get the url to scrape, take 5 torrent at a time (try to getting multiscrape)
   $row = mysql_fetch_row($res);
-  $resurl=do_sqlquery("SELECT info_hash FROM {$TABLE_PREFIX}files WHERE external='yes' AND announce_url='".$row[0]."' ORDER BY lastupdate ASC LIMIT 5");
-  if (!$resurl || mysql_num_rows($resurl)==0)
+  $resurl = do_sqlquery("SELECT info_hash FROM {$TABLE_PREFIX}files WHERE external='yes' AND announce_url='".$row[0]."' ORDER BY lastupdate ASC LIMIT 5");
+  if (!$resurl || mysql_num_rows($resurl) == 0)
     return
 
-  $combinedinfohash=array();
-  while ($rhash=mysql_fetch_row($resurl))
-    $combinedinfohash[]=$rhash[0];
+  $combinedinfohash = array();
+  while ($rhash = mysql_fetch_row($resurl))
+    $combinedinfohash[] = $rhash[0];
 
   //scrape($row["announce_url"],$row["info_hash"]);
   scrape($row[0],implode("','",$combinedinfohash));
@@ -449,7 +449,7 @@ function updatedata() {
 function pager($rpp, $count, $href, $opts = array()) {
   global $language;
 
-  $pages=($rpp==0)?1:ceil($count / $rpp);
+  $pages=($rpp == 0)?1:ceil($count / $rpp);
 
   if (!isset($opts['lastpagedefault']))
     $pagedefault = 1;
@@ -462,13 +462,13 @@ function pager($rpp, $count, $href, $opts = array()) {
   $pagename='pages';
 
   if (isset($opts['pagename'])) {
-    $pagename=$opts['pagename'];
+    $pagename = $opts['pagename'];
     if (isset($_GET[$opts['pagename']]))
-      $page = max(1 ,intval($_GET[$opts['pagename']]));
+      $page = max(1, intval($_GET[$opts['pagename']]));
     else
       $page = $pagedefault;
   } elseif (isset($_GET['pages'])) {
-    $page = max(1,intval(0 + $_GET['pages']));
+    $page = max(1, intval(0 + $_GET['pages']));
     if ($page < 0)
       $page = $pagedefault;
   } else
@@ -476,16 +476,16 @@ function pager($rpp, $count, $href, $opts = array()) {
 
   $pager = '';
 
-  if ($pages>1) {
-    $pager.="\n".'<form name="change_page'.$pagename.'" method="post" action="index.php">'."\n".'<select class="drop_pager" name="pages" onchange="location=document.change_page'.$pagename.'.pages.options[document.change_page'.$pagename.'.pages.selectedIndex].value" size="1">';
-    for ($i = 1; $i<=$pages;$i++) 
-        $pager.="\n<option ".($i==$page?'selected="selected"':'')."value=\"$href$pagename=$i\">$i</option>";
+  if ($pages > 1) {
+    $pager .= "\n".'<form name="change_page'.$pagename.'" method="post" action="index.php">'."\n".'<select class="drop_pager" name="pages" onchange="location=document.change_page'.$pagename.'.pages.options[document.change_page'.$pagename.'.pages.selectedIndex].value" size="1">';
+    for ($i = 1; $i <= $pages; $i++) 
+        $pager .= "\n<option ".($i==$page?'selected="selected"':'')."value=\"$href$pagename=$i\">$i</option>";
     $pager.="\n</select>";
   }
 
   $mp = $pages;// - 1;
-  $begin=($page > 3?($page<$pages-2?$page-2:$pages-2):1);
-  $end=($pages>$begin+2?($begin+2<$pages?$begin+2:$pages):$pages);
+  $begin = ($page > 3?($page < $pages-2?$page-2:$pages-2):1);
+  $end = ($pages > $begin + 2?($begin+2<$pages?$begin+2:$pages):$pages);
   if ($page > 1) {
     $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename=1\">&nbsp;&laquo;</a></span>";
     $pager .= "\n<span class=\"pager\"><a href=\"{$href}$pagename=".($page-1)."\">&lt;&nbsp;</a></span>";
@@ -500,60 +500,60 @@ function pager($rpp, $count, $href, $opts = array()) {
     }
 
     if ($page < $mp && $mp >= 1) {
-      $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename=".($page+1)."\">&nbsp;&gt;</a></span>";
-      $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename=$pages\">&nbsp;&raquo;</a></span>";
+      $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename = ".($page+1)."\">&nbsp;&gt;</a></span>";
+      $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename = $pages\">&nbsp;&raquo;</a></span>";
     }
 
     $pagertop = "$pager\n</form>";
-    $pagerbottom = str_replace("change_page","change_page1",$pagertop)."\n";
+    $pagerbottom = str_replace("change_page","change_page1", $pagertop)."\n";
   } else {
     $pagertop = "$pager\n</form>";
-    $pagerbottom = str_replace("change_page","change_page1",$pagertop)."\n";
+    $pagerbottom = str_replace("change_page","change_page1", $pagertop)."\n";
   }
 
   $start = ($page-1) * $rpp;
-  if ($pages<2) {
+  if ($pages < 2) {
     // only 1 page??? don't need pager ;)
-    $pagertop='';
-    $pagerbottom='';
+    $pagertop = '';
+    $pagerbottom = '';
   }
 
-  return array($pagertop, $pagerbottom, "LIMIT $start,$rpp");
+  return array($pagertop, $pagerbottom, "LIMIT $start, $rpp");
 }
 
 // give back categories recorset
 function genrelist() {
-  global $TABLE_PREFIX,$CACHE_DURATION;
+  global $TABLE_PREFIX, $CACHE_DURATION;
 
   return get_result('SELECT * FROM '.$TABLE_PREFIX.'categories ORDER BY sort_index, id', true, $CACHE_DURATION);
 }
 
 // this returns all the categories with subs into a select
-function categories($val='') {
-  global $TABLE_PREFIX,$CACHE_DURATION;
+function categories($val = '') {
+  global $TABLE_PREFIX, $CACHE_DURATION;
 
   $return="\n".'<select name="category"><option value="0">----</option>';
 
-  $c_q=get_result("SELECT c.id, c.name, sc.id as sid, sc.name as sname FROM {$TABLE_PREFIX}categories c LEFT JOIN {$TABLE_PREFIX}categories sc on c.id=sc.sub where c.sub='0' ORDER BY c.sort_index, sc.sort_index, c.id, sc.id",true,$CACHE_DURATION);
-  $b_sub=0;
+  $c_q = get_result("SELECT c.id, c.name, sc.id as sid, sc.name as sname FROM {$TABLE_PREFIX}categories c LEFT JOIN {$TABLE_PREFIX}categories sc on c.id=sc.sub where c.sub='0' ORDER BY c.sort_index, sc.sort_index, c.id, sc.id", true, $CACHE_DURATION);
+  $b_sub = 0;
   foreach ($c_q as $c) {
-    $cid=$c['id'];
-    $name=unesc($c['name']);
+    $cid = $c['id'];
+    $name = unesc($c['name']);
 
-    if ($b_sub!=$cid && $b_sub!=0)
-      $return.="\n</optgroup>";
+    if ($b_sub != $cid && $b_sub != 0)
+      $return .= "\n</optgroup>";
 
     // lets see if it has sub-categories.
     if (empty($c['sid'])) {
-      $b_sub=0;
-      $return.= "\n<option".(($cid==$val)?' selected="selected"':'').' value="'.$cid.'">'.$name.'</option>';
+      $b_sub = 0;
+      $return .= "\n<option".(($cid == $val)?' selected="selected"':'').' value="'.$cid.'">'.$name.'</option>';
     } else {
-      if ($b_sub!=$cid) {
-        $return.="\n<optgroup label='$name'>";
-        $b_sub=$cid;
+      if ($b_sub != $cid) {
+        $return .= "\n<optgroup label='$name'>";
+        $b_sub = $cid;
       }
       $sub = $c['sid'];
-      $return.= "\n<option".(($sub==$val)?' selected="selected"':'').' value="'.$sub.'">'.unesc($c['sname']).'</option>';
+      $return .= "\n<option".(($sub == $val)?' selected="selected"':'').' value="'.$sub.'">'.unesc($c['sname']).'</option>';
     }
   }
 
@@ -561,11 +561,11 @@ function categories($val='') {
 }
 
 // this returns all the subcategories
-function sub_categories($val='') {
+function sub_categories($val = '') {
   global $TABLE_PREFIX;
 
-  $return="\n<select name='sub_category'><option value='0'>---</option>";
-  $c_q = get_result("SELECT id, name FROM {$TABLE_PREFIX}categories WHERE sub='0' ORDER BY sort_index, id",true,$CACHE_DURATION);
+  $return = "\n<select name='sub_category'><option value='0'>---</option>";
+  $c_q = get_result("SELECT id, name FROM {$TABLE_PREFIX}categories WHERE sub='0' ORDER BY sort_index, id", true, $CACHE_DURATION);
   foreach($c_q as $c) {
     $cid = $c['id'];
     $name = unesc($c['name']);
@@ -613,7 +613,7 @@ function language_list() {
   return get_result('SELECT * FROM '.$TABLE_PREFIX.'language ORDER BY language;', true, $CACHE_DURATION);
 }
 
-function flag_list($with_unknown=false) {
+function flag_list($with_unknown = false) {
   global $TABLE_PREFIX, $CACHE_DURATION;
 
   return get_result('SELECT * FROM '.$TABLE_PREFIX.'countries '.(!$with_unknown?'WHERE id<>100':'').' ORDER BY name;', true, $CACHE_DURATION);
@@ -631,7 +631,7 @@ function rank_list() {
   return get_result('SELECT * FROM '.$TABLE_PREFIX.'users_level ORDER BY id_level;', true, $CACHE_DURATION);
 }
            
-function stdfoot($normalpage=true, $update=true, $adminpage=false, $torrentspage=false, $forumpage=false) {
+function stdfoot($normalpage = true, $update = true, $adminpage = false, $torrentspage = false, $forumpage = false) {
   global $STYLEPATH, $tpl, $no_columns;
 
   $tpl->set('main_footer',bottom_menu()."<br />\n");
@@ -667,17 +667,17 @@ function format_comment($text, $strip_html = true) {
   if ($strip_html)
     $text = htmlspecialchars($text);
   $text = unesc($text);
-  $f=@fopen('badwords.txt','r');
-  if ($f && filesize ('badwords.txt')!=0) {
-    $bw=fread($f,filesize('badwords.txt'));
-    $badwords=explode("\n",$bw);
-    for ($i=0,$total=count($badwords);$i<$total;++$i)
-      $badwords[$i]=trim($badwords[$i]);
-    $text=str_replace($badwords,'*censored*',$text);
+  $f = @fopen('badwords.txt','r');
+  if ($f && filesize ('badwords.txt') != 0) {
+    $bw = fread($f,filesize('badwords.txt'));
+    $badwords = explode("\n", $bw);
+    for ($i = 0, $total = count($badwords); $i < $total;++$i)
+      $badwords[$i] = trim($badwords[$i]);
+    $text = str_replace($badwords, '*censored*', $text);
   }
   @fclose($f);
 
-  $text=bbcode($text);
+  $text = bbcode($text);
 
   // [*]
   $text = preg_replace('/\[\*\]/', '<li>', $text);
@@ -685,7 +685,7 @@ function format_comment($text, $strip_html = true) {
   // Maintain spacing
   $text = str_replace('  ', ' &nbsp;', $text);
 
-  $smilies=array_merge($smilies, $privatesmilies);
+  $smilies = array_merge($smilies, $privatesmilies);
   reset($smilies);
   while (list($code, $url) = each($smilies))
     $text = str_replace($code, '<img border="0" src="'.$BASEURL.'/images/smilies/'.$url.'" alt="'.$url.'" />', $text);
@@ -693,58 +693,58 @@ function format_comment($text, $strip_html = true) {
   return $text;
 }
 
-function image_or_link($image,$pers_style='',$link='') {
+function image_or_link($image, $pers_style = '',$link = '') {
   global $STYLEURL, $STYLEPATH;
 
-  if ($image=='')
+  if ($image == '')
     return $link;
   if (!file_exists($image))
       return $link;
   // replace realpath with url
-  return '<img src="'.str_replace($STYLEPATH,$STYLEURL,$image).'" border="0" '.$pers_style.' alt="'.$link.'"/>';
+  return '<img src="'.str_replace($STYLEPATH, $STYLEURL, $image).'" border="0" '.$pers_style.' alt="'.$link.'"/>';
 }
 
-function success_msg($heading='Success!',$string,$close=false) {
-  global $language,$STYLEPATH, $tpl, $page, $STYLEURL;
+function success_msg($heading = 'Success!', $string, $close = false) {
+  global $language, $STYLEPATH, $tpl, $page, $STYLEURL;
 
   $suc_tpl=new bTemplate();
-  $suc_tpl->set('success_title',$heading);
-  $suc_tpl->set('success_message',$string);
-  $suc_tpl->set('success_image',$STYLEURL.'/images/success.gif');
-  $tpl->set('main_content',set_block($heading,'center',$suc_tpl->fetch(load_template('success.tpl'))));
+  $suc_tpl->set('success_title', $heading);
+  $suc_tpl->set('success_message', $string);
+  $suc_tpl->set('success_image', $STYLEURL.'/images/success.gif');
+  $tpl->set('main_content', set_block($heading,'center', $suc_tpl->fetch(load_template('success.tpl'))));
 }
 
-function err_msg($heading='Error!',$string,$close=false) {
-  global $language,$STYLEPATH, $tpl, $page,$STYLEURL;
+function err_msg($heading = 'Error!', $string, $close=false) {
+  global $language, $STYLEPATH, $tpl, $page,$STYLEURL;
 
   // just in case not found the language
   if (!$language['BACK'])
-    $language['BACK']='Back';
+    $language['BACK'] = 'Back';
 
   $err_tpl=new bTemplate();
-  $err_tpl->set('error_title',$heading);
-  $err_tpl->set('error_message',$string);
-  $err_tpl->set('error_image',$STYLEURL.'/images/error.gif');
-  $err_tpl->set('language',$language);
+  $err_tpl->set('error_title', $heading);
+  $err_tpl->set('error_message', $string);
+  $err_tpl->set('error_image', $STYLEURL.'/images/error.gif');
+  $err_tpl->set('language', $language);
   if ($close)
     $err_tpl->set('error_footer','<a href="javascript: window.close();">'.$language['CLOSE'].'</a>');
   else
     $err_tpl->set('error_footer','<a href="javascript: history.go(-1);">'.$language['BACK'].'</a>');
 
-  $tpl->set('main_content',set_block($heading,'center',$err_tpl->fetch(load_template('error.tpl'))));
+  $tpl->set('main_content', set_block($heading, 'center', $err_tpl->fetch(load_template('error.tpl'))));
 }
 
-function information_msg($heading='Error!',$string,$close=false) {
-  global $language,$STYLEPATH, $tpl, $page,$STYLEURL;
+function information_msg($heading = 'Error!', $string, $close=false) {
+  global $language, $STYLEPATH, $tpl, $page, $STYLEURL;
   // just in case not found the language
   if (!$language['BACK'])
-    $language['BACK']='Back';
+    $language['BACK'] = 'Back';
 
   $err_tpl=new bTemplate();
-  $err_tpl->set('information_title',$heading);
-  $err_tpl->set('information_message',$string);
-  $err_tpl->set('information_image',$STYLEURL.'/images/error.gif');
-  $err_tpl->set('language',$language);
+  $err_tpl->set('information_title', $heading);
+  $err_tpl->set('information_message', $string);
+  $err_tpl->set('information_image', $STYLEURL.'/images/error.gif');
+  $err_tpl->set('language', $language);
 
   if ($close)
     $err_tpl->set('information_footer','<a href="javascript: window.close();">'.$language['CLOSE'].'</a>');
@@ -752,9 +752,9 @@ function information_msg($heading='Error!',$string,$close=false) {
     $err_tpl->set('information_footer','<a href="javascript: history.go(-1);">'.$language['BACK'].'</a>');
 
 
-  $tpl->set('main_content',set_block($heading,'center',$err_tpl->fetch(load_template('information.tpl'))));
+  $tpl->set('main_content', set_block($heading, 'center', $err_tpl->fetch(load_template('information.tpl'))));
 
-  stdfoot(true,false);
+  stdfoot(true, false);
   die();
 }
 
@@ -767,24 +767,24 @@ function get_content($file) {
 
   ob_start();
   include($file);
-  $content=ob_get_contents();
+  $content = ob_get_contents();
   ob_end_clean();
 
   return $content;
 }
 
-function set_block($block_title,$alignement,$block_content,$width100=true) {
+function set_block($block_title, $alignement, $block_content, $width100 = true) {
   global $STYLEPATH, $TABLE_PREFIX, $language;
 
-  $blocktpl=new bTemplate();
-  $blocktpl->set('block_width',($width100?'width="100%"':''));
-  $blocktpl->set('block_title',$block_title);
-  $blocktpl->set('block_align',$alignement);
-  $blocktpl->set('block_content',$block_content);
+  $blocktpl = new bTemplate();
+  $blocktpl->set('block_width', ($width100?'width="100%"':''));
+  $blocktpl->set('block_title', $block_title);
+  $blocktpl->set('block_align', $alignement);
+  $blocktpl->set('block_content', $block_content);
   return $blocktpl->fetch(load_template('block.tpl'));
 }
 
-function get_block($block_title,$alignement,$block,$use_cache=true,$width100=true) {
+function get_block($block_title, $alignement, $block, $use_cache = true, $width100 = true) {
   global $STYLEPATH, $TABLE_PREFIX, $language, $CACHE_DURATION, $CURUSER;
 
   $blocktpl=new bTemplate();
@@ -792,8 +792,8 @@ function get_block($block_title,$alignement,$block,$use_cache=true,$width100=tru
   $blocktpl->set('block_title',$block_title);
   $blocktpl->set('block_align',$alignement);
 
-  $cache_file=realpath(dirname(__FILE__).'/..').'/cache/'.md5($block.$CURUSER['id_level']).'.txt';
-  $use_cache=($use_cache)?$CACHE_DURATION>0:false;
+  $cache_file = realpath(dirname(__FILE__).'/..').'/cache/'.md5($block.$CURUSER['id_level']).'.txt';
+  $use_cache = ($use_cache)?$CACHE_DURATION > 0:false;
     
   if ($use_cache) {
     // read cache
@@ -805,24 +805,24 @@ function get_block($block_title,$alignement,$block,$use_cache=true,$width100=tru
 
   ob_start();
   include(realpath(dirname(__FILE__).'/..').'/blocks/'.$block.'_block.php');
-  $block_content=ob_get_contents();
+  $block_content = ob_get_contents();
   ob_end_clean();
 
   if ($use_cache) {
     // write cache file
-    $fp=fopen($cache_file,'w');
-    fputs($fp,$block_content);
+    $fp = fopen($cache_file, 'w');
+    fputs($fp, $block_content);
     fclose($fp);
   }
 
-  $blocktpl->set('block_content',$block_content);
+  $blocktpl->set('block_content', $block_content);
   return $blocktpl->fetch(load_template('block.tpl'));
 }
 
-function block_begin($title='-',$colspan=1,$calign='justify') {
+function block_begin($title='-', $colspan = 1, $calign = 'justify') {
 }
 
-function block_end($colspan=1) {
+function block_end($colspan = 1) {
 }
 
 function makesize($bytes) {
@@ -861,24 +861,24 @@ function redirect($redirecturl) {
     die();
 }
 
-function textbbcode($form,$name,$content='') {
-  $tpl_bbcode=new bTemplate();
-  $tpl_bbcode->set('form_name',$form);
-  $tpl_bbcode->set('object_name',$name);
-  $tpl_bbcode->set('content',$content);
+function textbbcode($form, $name, $content = '') {
+  $tpl_bbcode = new bTemplate();
+  $tpl_bbcode->set('form_name', $form);
+  $tpl_bbcode->set('object_name', $name);
+  $tpl_bbcode->set('content', $content);
   $tbbcode='<table width="100%" cellpadding="1" cellspacing="1">';
 
   global $smilies, $STYLEPATH, $language;
-  $count=0;
+  $count = 0;
   reset($smilies);
-  $tbbcode.='<tr>';
-  while ((list($code, $url) = each($smilies)) && $count<16) {
-    $tbbcode.="\n<td><a href=\"javascript: SmileIT('".str_replace("'","\'",$code)."',document.forms.$form.$name);\"><img border=\"0\" src=\"images/smilies/$url\" alt=\"$url\" /></a></td>";
+  $tbbcode .= '<tr>';
+  while ((list($code, $url) = each($smilies)) && $count < 16) {
+    $tbbcode .= "\n<td><a href=\"javascript: SmileIT('".str_replace("'","\'",$code)."',document.forms.$form.$name);\"><img border=\"0\" src=\"images/smilies/$url\" alt=\"$url\" /></a></td>";
     $count++;
   }
-  $tbbcode.="\n</tr>\n</table>";
-  $tpl_bbcode->set('smilies_table',$tbbcode);
-  $tpl_bbcode->set('language',$language);
+  $tbbcode .= "\n</tr>\n</table>";
+  $tpl_bbcode->set('smilies_table', $tbbcode);
+  $tpl_bbcode->set('language', $language);
   return $tpl_bbcode->fetch(load_template('txtbbcode.tpl'));
 }
 
@@ -896,9 +896,9 @@ function get_date_time($timestamp = 0) {
   return gmdate('d/m/Y H:i:s');
 }
 
-function stderr($heading, $text,$close=false) {
-  err_msg($heading,$text,$close);
-  stdfoot(true,false);
+function stderr($heading, $text, $close = false) {
+  err_msg($heading, $text, $close);
+  stdfoot(true, false);
   die();
 }
 
@@ -918,13 +918,13 @@ function get_elapsed_time($ts) {
   $weeks = floor($days / 7);
   $days -= $weeks * 7;
   if ($weeks > 0)
-    return $weeks.' week'.(($weeks==1)?'':'s');
+    return $weeks.' week'.(($weeks == 1)?'':'s');
   if ($days > 0)
-    return $days.' day'.(($days==1)?'':'s');
+    return $days.' day'.(($days == 1)?'':'s');
   if ($hours > 0)
-    return $hours.' hour'.(($hours==1)?'':'s');
+    return $hours.' hour'.(($hours == 1)?'':'s');
   if ($mins > 0)
-    return $mins.' min'.(($mins==1)?'':'s');
+    return $mins.' min'.(($mins == 1)?'':'s');
   return '< 1 min';
 }
 
@@ -936,8 +936,8 @@ function gmtime() {
   return strtotime(get_date_time());
 }
 
-function sqlerr($file='',$line='') {
-    $file=(($file!=''&&$line!='')? '<p>in '.$file.', line '.$line.'</p>' : '');
+function sqlerr($file = '', $line = '') {
+    $file = (($file != ''&& $line != '')? '<p>in '.$file.', line '.$line.'</p>' : '');
 ?>
   <table border="0" bgcolor="" align=left cellspacing=0 cellpadding=10 style="background: blue">
     <tr>
@@ -958,7 +958,7 @@ function peercolor($num) {
 }
 
 // v.1.3
-function write_log($text,$reason='add') {
+function write_log($text, $reason = 'add') {
   global $CURUSER, $LOG_ACTIVE, $TABLE_PREFIX;
 
   if ($LOG_ACTIVE)
@@ -966,12 +966,12 @@ function write_log($text,$reason='add') {
 }
 
 function DateFormat($seconds) {
-  while ($seconds>31536000) {
+  while ($seconds > 31536000) {
     $years++;
     $seconds -= 31536000;
     }
 
-  while ($seconds>2419200) {
+  while ($seconds > 2419200) {
     $months++;
     $seconds -= 2419200;
     }
@@ -996,13 +996,13 @@ function DateFormat($seconds) {
     $seconds -= 60;
     }
 
-  $years=($years==0)?'':($years.' '.(($years==1)?YEAR:YEARS).', ');
-    $months=($months==0)?'':($months.' '.(($months==1)?MONTH:MONTHS).', ');
-    $weeks=($weeks==0)?'':($weeks.' '.(($weeks==1)?WEEK:WEEKS).', ');
-    $days=($days==0)?'':($days.' '.(($days==1)?DAY:DAYS).', ');
-    $hours=($hours==0)?'':($hours.' '.(($hours==1)?HOUR:HOURS).', ');
-    $minutes=($minutes==0)?'':($minutes.' '.(($minutes==1)?MINUTE:MINUTES).' '.WORD_AND.' ');
-    $seconds=($seconds.' '.(($seconds==1)?SECOND:SECONDS));
+  $years = ($years == 0)?'':($years.' '.(($years == 1)?YEAR:YEARS).', ');
+    $months = ($months == 0)?'':($months.' '.(($months == 1)?MONTH:MONTHS).', ');
+    $weeks = ($weeks == 0)?'':($weeks.' '.(($weeks == 1)?WEEK:WEEKS).', ');
+    $days = ($days == 0)?'':($days.' '.(($days == 1)?DAY:DAYS).', ');
+    $hours = ($hours == 0)?'':($hours.' '.(($hours == 1)?HOUR:HOURS).', ');
+    $minutes = ($minutes == 0)?'':($minutes.' '.(($minutes == 1)?MINUTE:MINUTES).' '.WORD_AND.' ');
+    $seconds = ($seconds.' '.(($seconds == 1)?SECOND:SECONDS));
     return $years.$months.$weeks.$days.$hours.$minutes.$seconds;
 }
 
@@ -1010,7 +1010,7 @@ function smf_passgen($username, $pwd) {
   $passhash = sha1(strtolower($username) . $pwd);
   $salt=substr(md5(rand()), 0, 4);
 
-  return array($passhash,$salt);
+  return array($passhash, $salt);
 }
 
 function set_smf_cookie($id, $passhash, $salt) {
