@@ -1,4 +1,7 @@
-<?php
+<?
+
+// CyBerFuN.ro & xList.ro
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -40,12 +43,12 @@ if(isset($_GET['pollId'])){
 
   if(isset($_GET['optionId'])){
     $optionId = $_GET['optionId'];
-    $optionId = preg_replace("/[^0-9]/si","",$optionId);
+    $optionId = preg_replace("/[^0-9]/si", "", $optionId);
   }
   $pollId = $_GET['pollId'];
-  $pollId = preg_replace("/[^0-9]/si","",$pollId);
+  $pollId = preg_replace("/[^0-9]/si", "", $pollId);
 
-  $userID = intval(0+$CURUSER['uid']);
+  $userID = intval( 0+ $CURUSER['uid']);
 
 
   // Insert new vote into the database

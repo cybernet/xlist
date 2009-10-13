@@ -1,4 +1,7 @@
-<?php
+<?
+
+// CyBerFuN.ro & xList.ro
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -34,22 +37,22 @@ require_once("include/functions.php");
 require_once("include/config.php");
 
 if (isset($_GET["style"]))
-    $style=intval($_GET["style"]);
+    $style = intval($_GET["style"]);
 else
-    $style=1;
+    $style  1;
 if (isset($_GET["returnto"]))
-   $url=urldecode($_GET["returnto"]);
+   $url = urldecode($_GET["returnto"]);
 else
-   $url="index.php";
+   $url = "index.php";
 if (isset($_GET["langue"]))
-   $langue=intval($_GET["langue"]);
+   $langue = intval($_GET["langue"]);
 else
-   $langue=1;
+   $langue = 1;
 
 dbconn();
 
 // guest don't need to change language!
-if (!$CURUSER || $CURUSER["uid"]==1)
+if (!$CURUSER || $CURUSER["uid"] == 1)
   {
   redirect($url);
   exit;

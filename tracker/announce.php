@@ -1,6 +1,6 @@
-<?php
+<?
 
-// CyBerFuN
+// CyBerFuN.ro & xList.ro
 
 ignore_user_abort(1);
 

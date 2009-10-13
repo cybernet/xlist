@@ -1,4 +1,7 @@
-<?php
+<?
+
+// CyBerFuN.ro & xList.ro
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -35,7 +38,7 @@ if (!defined("IN_BTIT"))
       die("non direct access!");
 
 
-if (!$CURUSER || $CURUSER["uid"]==1)
+if (!$CURUSER || $CURUSER["uid"] == 1)
    {
    stderr($language["ERROR"],$language["ONLY_REG_COMMENT"]);
 }
@@ -51,7 +54,7 @@ else
 
 if (isset($_GET["action"]))
  {
-  if ($CURUSER["delete_torrents"]=="yes" && $_GET["action"]=="delete")
+  if ($CURUSER["delete_torrents"]=="yes" && $_GET["action"] == "delete")
     {
      do_sqlquery("DELETE FROM {$TABLE_PREFIX}comments WHERE id=$cid");
      redirect("index.php?page=torrent-details&id=$id#comments");
@@ -59,19 +62,19 @@ if (isset($_GET["action"]))
     }
  }
 
-$tpl_comment=new bTemplate();
+$tpl_comment = new bTemplate();
 
-$tpl_comment->set("language",$language);
-$tpl_comment->set("comment_id",$id);
-$tpl_comment->set("comment_username",$CURUSER["username"]);
-$tpl_comment->set("comment_comment",textbbcode("comment","comment",htmlspecialchars(unesc($comment))));
+$tpl_comment->set("language", $language);
+$tpl_comment->set("comment_id", $id);
+$tpl_comment->set("comment_username", $CURUSER["username"]);
+$tpl_comment->set("comment_comment", textbbcode("comment", "comment", htmlspecialchars(unesc($comment))));
 
 
 if (isset($_POST["info_hash"])) {
-   if ($_POST["confirm"]==$language["FRM_CONFIRM"]) {
+   if ($_POST["confirm"] == $language["FRM_CONFIRM"]) {
    $comment = addslashes($_POST["comment"]);
-      $user=AddSlashes($CURUSER["username"]);
-      if ($user=="") $user="Anonymous";
+      $user = AddSlashes($CURUSER["username"]);
+      if ($user == "") $user="Anonymous";
 global $BASEURL, $SITENAME, $language;
 
 $res1 = mysql_fetch_assoc(mysql_query("SELECT comment_notify, uploader, anonymous FROM {$TABLE_PREFIX}files WHERE info_hash = '$id'")) or sqlerr();
@@ -100,7 +103,7 @@ $SITENAME
 EOD;
 	if($comment_email_notify == "true" && $senderid != $arr1 && $anonym_check = "false")
 	{ini_set("sendmail_from","");
-   if (mysql_errno()==0)
+   if (mysql_errno() == 0)
      {
       send_mail($email,$npmn,$body);
       }
@@ -115,10 +118,10 @@ EOD;
 # Comment preview by miskotes
 #############################
 
-if ($_POST["confirm"]==$language["FRM_PREVIEW"]) {
+if ($_POST["confirm"] == $language["FRM_PREVIEW"]) {
 
-$tpl_comment->set("PREVIEW",TRUE,TRUE);
-$tpl_comment->set("comment_preview",set_block($language["COMMENT_PREVIEW"],"center",format_comment($comment),false));
+$tpl_comment->set("PREVIEW", TRUE, TRUE);
+$tpl_comment->set("comment_preview", set_block($language["COMMENT_PREVIEW"], "center", format_comment($comment), false));
 
 #####################
 # Comment preview end
@@ -130,6 +133,6 @@ $tpl_comment->set("comment_preview",set_block($language["COMMENT_PREVIEW"],"cent
   }
 }
 else
-    $tpl_comment->set("PREVIEW",FALSE,TRUE);
+    $tpl_comment->set("PREVIEW", FALSE, TRUE);
 
 ?>

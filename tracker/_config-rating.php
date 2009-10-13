@@ -1,4 +1,7 @@
-<?php
+<?
+
+// CyBerFuN.ro & xList.ro
+
 /*
 Page:           _config-rating.php
 Created:        Aug 2006

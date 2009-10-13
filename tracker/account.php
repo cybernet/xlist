@@ -77,7 +77,7 @@ if ($act == "confirm") {
 
       $random = intval($_GET["confirm"]);
       $random2 = rand(10000, 60000);
-      $res = do_sqlquery("UPDATE {$TABLE_PREFIX}users SET id_level=3".(($FORUMLINK == "smf") ? ", random=$random2" : "")." WHERE id_level=2 AND random=$random",true);
+      $res = do_sqlquery("UPDATE {$TABLE_PREFIX}users SET id_level=3".(($FORUMLINK == "smf") ? ", random=$random2" : "")." WHERE id_level=2 AND random=$random", true);
       if (!$res)
          die("ERROR: " . mysql_error() . "\n");
       else {
@@ -115,13 +115,13 @@ if ($_POST["conferma"]) {
                 }
             }
             else
-          if ($VALIDATION=="user")
+          if ($VALIDATION == "user")
              {
                success_msg($language["ACCOUNT_CREATED"],$language["EMAIL_SENT"]);
                stdfoot();
                exit();
              }
-          else if ($VALIDATION=="none")
+          else if ($VALIDATION == "none")
                {
                success_msg($language["ACCOUNT_CREATED"],$language["ACCOUNT_CONGRATULATIONS"]);
                stdfoot();
@@ -149,34 +149,34 @@ if ($_POST["conferma"]) {
        }
 }
 else {
-    $tpl_account=new bTemplate();
+    $tpl_account = new bTemplate();
     tabella($act);
 }
 
 
 
-function tabella($action,$dati=array()) {
+function tabella($action, $dati = array()) {
 
-   global $SITENAME, $INVITATIONSON, $code, $inviter,  $idflag, $link, $idlangue, $idstyle, $CURUSER,$USE_IMAGECODE, $TABLE_PREFIX, $language, $tpl_account, $THIS_BASEPATH;
+   global $SITENAME, $INVITATIONSON, $code, $inviter, $idflag, $link, $idlangue, $idstyle, $CURUSER, $USE_IMAGECODE, $TABLE_PREFIX, $language, $tpl_account, $THIS_BASEPATH;
 
 
    if ($action=="signup" || $action == "invite")
      {
           $tpl_account->set("BY_INVITATION", false, true);
-          $dati["username"]="";
-          $dati["email"]="";
-          $dati["language"]=$idlangue;
+          $dati["username"] = "";
+          $dati["email"] = "";
+          $dati["language"] = $idlangue;
 
      }
 
    // avoid error with js
-   $language["DIF_PASSWORDS"]=AddSlashes($language["DIF_PASSWORDS"]);
-   $language["INSERT_PASSWORD"]=AddSlashes($language["INSERT_PASSWORD"]);
-   $language["USER_PWD_AGAIN"]=AddSlashes($language["USER_PWD_AGAIN"]);
-   $language["INSERT_USERNAME"]=AddSlashes($language["INSERT_USERNAME"]);
-   $language["ERR_NO_EMAIL"]=AddSlashes($language["ERR_NO_EMAIL"]);
-   $language["ERR_NO_EMAIL_AGAIN"]=AddSlashes($language["ERR_NO_EMAIL_AGAIN"]);
-   $language["DIF_EMAIL"]=AddSlashes($language["DIF_EMAIL"]);
+   $language["DIF_PASSWORDS"] = AddSlashes($language["DIF_PASSWORDS"]);
+   $language["INSERT_PASSWORD"] = AddSlashes($language["INSERT_PASSWORD"]);
+   $language["USER_PWD_AGAIN"] = AddSlashes($language["USER_PWD_AGAIN"]);
+   $language["INSERT_USERNAME"] = AddSlashes($language["INSERT_USERNAME"]);
+   $language["ERR_NO_EMAIL"] = AddSlashes($language["ERR_NO_EMAIL"]);
+   $language["ERR_NO_EMAIL_AGAIN"] = AddSlashes($language["ERR_NO_EMAIL_AGAIN"]);
+   $language["DIF_EMAIL"] = AddSlashes($language["DIF_EMAIL"]);
 
    $tpl_account->set("language",$language);
    $tpl_account->set("account_action",$action);
@@ -188,7 +188,7 @@ function tabella($action,$dati=array()) {
    $tpl_account->set("account_IDcountry",$idflag);
    $tpl_account->set("account_username",$dati["username"]);
    $tpl_account->set("dati",$dati);
-   $tpl_account->set("DEL",$action=="delete",true);
+   $tpl_account->set("DEL",$action == "delete",true);
    $tpl_account->set("DISPLAY_FULL", $action == "signup" || $action == "invite",true);
 
     //begin invitation system by dodge
@@ -200,40 +200,40 @@ function tabella($action,$dati=array()) {
     }
     //end invitation system
 
-   if ($action=="del")
+   if ($action == "del")
       $tpl_account->set("account_from_delete_confirm","<input type=\"submit\" name=\"elimina\" value=\"".$language["FRM_DELETE"]."\" />&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"submit\" name=\"elimina\" value=\"".$language["FRM_CANCEL"]."\" />");
    else
       $tpl_account->set("account_from_delete_confirm","<input type=\"submit\" name=\"conferma\" value=\"".$language["FRM_CONFIRM"]."\" />&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"reset\" name=\"annulla\" value=\"".$language["FRM_CANCEL"]."\" />");
    
-  $lres=language_list();
+  $lres = language_list();
 
-   $option="\n<select name=\"language\" size=\"1\">";
+   $option = "\n<select name=\"language\" size=\"1\">";
    foreach($lres as $langue)
      {
-       $option.="\n<option ";
-       if ($langue["id"]==$dati["language"])
-          $option.="\"selected\" ";
-       $option.="value=\"".$langue["id"]."\">".$langue["language"]."</option>";
+       $option .= "\n<option ";
+       if ($langue["id"] == $dati["language"])
+          $option .= "\"selected\" ";
+       $option .= "value=\"".$langue["id"]."\">".$langue["language"]."</option>";
      }
    $option.="\n</select>";
 
-   $tpl_account->set("account_combo_language",$option);
+   $tpl_account->set("account_combo_language", $option);
 
-   $sres=style_list();
-   $option="\n<select name=\"style\" size=\"1\">";
+   $sres = style_list();
+   $option = "\n<select name=\"style\" size=\"1\">";
    foreach($sres as $style)
      {
-       $option.="\n<option ";
-       if ($style["id"]==$dati["style"])
-          $option.="\"selected\" ";
-       $option.="value=\"".$style["id"]."\">".$style["style"]."</option>";
+       $option .= "\n<option ";
+       if ($style["id"] == $dati["style"])
+          $option .= "\"selected\" ";
+       $option .= "value=\"".$style["id"]."\">".$style["style"]."</option>";
      }
-   $option.="\n</select>";
+   $option .= "\n</select>";
 
-   $tpl_account->set("account_combo_style",$option);
+   $tpl_account->set("account_combo_style", $option);
 
-   $fres=flag_list();
-   $option="\n<select name=\"flag\" size=\"1\">\n<option value='0'>---</option>";
+   $fres = flag_list();
+   $option = "\n<select name=\"flag\" size=\"1\">\n<option value='0'>---</option>";
 
    $thisip = $_SERVER["REMOTE_ADDR"];
    $remotedns = gethostbyaddr($thisip);
@@ -248,84 +248,84 @@ function tabella($action,$dati=array()) {
 
    foreach($fres as $flag)
     {
-        $option.="\n<option ";
-            if ($flag["id"]==$dati["flag"] || ($flag["domain"]==$remotedns && $action=="signup"))
-              $option.="\"selected\" ";
-            $option.="value=\"".$flag["id"]."\">".$flag["name"]."</option>";
+        $option .= "\n<option ";
+            if ($flag["id"] == $dati["flag"] || ($flag["domain"] == $remotedns && $action == "signup"))
+              $option .= "\"selected\" ";
+            $option .= "value=\"".$flag["id"]."\">".$flag["name"]."</option>";
     }
-   $option.="\n</select>";
+   $option .= "\n</select>";
 
-   $tpl_account->set("account_combo_country",$option);
+   $tpl_account->set("account_combo_country", $option);
 
-   $zone=date('Z',time());
-   $daylight=date('I',time())*3600;
-   $os=$zone-$daylight;
-   if($os!=0){ $timeoff=$os/3600; } else { $timeoff=0; }
+   $zone = date('Z',time());
+   $daylight = date('I',time())*3600;
+   $os = $zone-$daylight;
+   if($os != 0){ $timeoff = $os / 3600; } else { $timeoff = 0; }
 
-   if(!$CURUSER || $CURUSER["uid"]==1)
-      $dati["time_offset"]=$timeoff;
+   if(!$CURUSER || $CURUSER["uid"] == 1)
+      $dati["time_offset"] = $timeoff;
 
-   $tres=timezone_list();
-   $option="<select name=\"timezone\">";
+   $tres = timezone_list();
+   $option = "<select name=\"timezone\">";
    foreach($tres as $timezone)
      {
-       $option.="\n<option ";
-       if ($timezone["difference"]==$dati["time_offset"])
-          $option.="selected=\"selected\" ";
-       $option.="value=\"".$timezone["difference"]."\">".unesc($timezone["timezone"])."</option>";
+       $option .= "\n<option ";
+       if ($timezone["difference"] == $dati["time_offset"])
+          $option .= "selected=\"selected\" ";
+       $option .= "value=\"".$timezone["difference"]."\">".unesc($timezone["timezone"])."</option>";
      }
-   $option.="\n</select>";
+   $option .= "\n</select>";
 
-   $tpl_account->set("account_combo_timezone",$option);
+   $tpl_account->set("account_combo_timezone", $option);
 
 // -----------------------------
 // Captcha hack
 // -----------------------------
 // if set to use secure code: try to display imagecode
-if ($USE_IMAGECODE && $action!="mod")
+if ($USE_IMAGECODE && $action != "mod")
   {
    if (extension_loaded('gd'))
      {
        $arr = gd_info();
-       if ($arr['FreeType Support']==1)
+       if ($arr['FreeType Support'] == 1)
         {
-         $p=new ocr_captcha();
+         $p = new ocr_captcha();
 
-         $tpl_account->set("CAPTCHA",true,true);
+         $tpl_account->set("CAPTCHA", true, true);
 
-         $tpl_account->set("account_captcha",$p->display_captcha(true));
+         $tpl_account->set("account_captcha", $p->display_captcha(true));
 
-         $private=$p->generate_private();
+         $private = $p->generate_private();
       }
      else
        {
          include("$THIS_BASEPATH/include/security_code.php");
          $scode_index = rand(0, count($security_code) - 1);
-         $scode="<input type=\"hidden\" name=\"security_index\" value=\"$scode_index\" />\n";
-         $scode.=$security_code[$scode_index]["question"];
-         $tpl_account->set("scode_question",$scode);
-         $tpl_account->set("CAPTCHA",false,true);
+         $scode = "<input type=\"hidden\" name=\"security_index\" value=\"$scode_index\" />\n";
+         $scode .= $security_code[$scode_index]["question"];
+         $tpl_account->set("scode_question", $scode);
+         $tpl_account->set("CAPTCHA", false, true);
        }
      }
      else
        {
          include("$THIS_BASEPATH/include/security_code.php");
          $scode_index = rand(0, count($security_code) - 1);
-         $scode="<input type=\"hidden\" name=\"security_index\" value=\"$scode_index\" />\n";
-         $scode.=$security_code[$scode_index]["question"];
-         $tpl_account->set("scode_question",$scode);
-         $tpl_account->set("CAPTCHA",false,true);
+         $scode = "<input type=\"hidden\" name=\"security_index\" value=\"$scode_index\" />\n";
+         $scode .= $security_code[$scode_index]["question"];
+         $tpl_account->set("scode_question", $scode);
+         $tpl_account->set("CAPTCHA", false, true);
        }
    }
 elseif ($action!="mod")
    {
        include("$THIS_BASEPATH/include/security_code.php");
        $scode_index = rand(0, count($security_code) - 1);
-       $scode="<input type=\"hidden\" name=\"security_index\" value=\"$scode_index\" />\n";
-       $scode.=$security_code[$scode_index]["question"];
-       $tpl_account->set("scode_question",$scode);
+       $scode = "<input type=\"hidden\" name=\"security_index\" value=\"$scode_index\" />\n";
+       $scode .= $security_code[$scode_index]["question"];
+       $tpl_account->set("scode_question", $scode);
        // we will request simple operation to user
-       $tpl_account->set("CAPTCHA",false,true);
+       $tpl_account->set("CAPTCHA", false, true);
   }
 // -----------------------------
 // Captcha hack
@@ -334,26 +334,26 @@ elseif ($action!="mod")
 
 function aggiungiutente() {
 
-global $INVITATIONSON, $VALID_INV,  $SITENAME, $SITEEMAIL, $BASEURL, $VALIDATION, $USERLANG, $USE_IMAGECODE, $TABLE_PREFIX, $XBTT_USE, $language, $THIS_BASEPATH, $FORUMLINK, $db_prefix;
+global $INVITATIONSON, $VALID_INV, $SITENAME, $SITEEMAIL, $BASEURL, $VALIDATION, $USERLANG, $USE_IMAGECODE, $TABLE_PREFIX, $XBTT_USE, $language, $THIS_BASEPATH, $FORUMLINK, $db_prefix;
 
-$utente=mysql_escape_string($_POST["user"]);
-$pwd=mysql_escape_string($_POST["pwd"]);
-$pwd1=mysql_escape_string($_POST["pwd1"]);
-$email=mysql_escape_string($_POST["email"]);
-$pm_mail_notify=sqlesc($_POST["pm_mail_notification"]);$status_comment_notify=sqlesc($_POST["status_comment_notify"]);
-$idlangue=intval($_POST["language"]);
-$idstyle=intval($_POST["style"]);
-$idflag=intval($_POST["flag"]);
-$timezone=intval($_POST["timezone"]);
+$utente = mysql_escape_string($_POST["user"]);
+$pwd = mysql_escape_string($_POST["pwd"]);
+$pwd1 = mysql_escape_string($_POST["pwd1"]);
+$email = mysql_escape_string($_POST["email"]);
+$pm_mail_notify = sqlesc($_POST["pm_mail_notification"]);$status_comment_notify = sqlesc($_POST["status_comment_notify"]);
+$idlangue = intval($_POST["language"]);
+$idstyle = intval($_POST["style"]);
+$idflag = intval($_POST["flag"]);
+$timezone = intval($_POST["timezone"]);
 
 if (strtoupper($utente) == strtoupper("Guest")) {
-        err_msg($language["ERROR"],$language["ERR_GUEST_EXISTS"]);
+        err_msg($language["ERROR"], $language["ERR_GUEST_EXISTS"]);
         stdfoot();
         exit;
         }
 
 if ($pwd != $pwd1) {
-    err_msg($language["ERROR"],$language["DIF_PASSWORDS"]);
+    err_msg($language["ERROR"], $language["DIF_PASSWORDS"]);
     stdfoot();
     exit;
     }
@@ -377,13 +377,13 @@ $ceiling = 999999;
 srand((double)microtime()*1000000);
 $random = rand($floor, $ceiling);
 
-if ($utente=="" || $pwd=="" || $email=="") {
+if ($utente == "" || $pwd == "" || $email == "") {
    return -1;
    exit;
 }
 
-$res=do_sqlquery("SELECT email FROM {$TABLE_PREFIX}users WHERE email='$email'");
-if (mysql_num_rows($res)>0)
+$res = do_sqlquery("SELECT email FROM {$TABLE_PREFIX}users WHERE email='$email'");
+if (mysql_num_rows($res) > 0)
    {
    return -2;
    exit;
@@ -420,12 +420,12 @@ if ($USE_IMAGECODE)
      $arr = gd_info();
      if ($arr['FreeType Support'] == 1)
       {
-        $public=$_POST['public_key'];
-        $private=$_POST['private_key'];
+        $public = $_POST['public_key'];
+        $private = $_POST['private_key'];
 
-          $p=new ocr_captcha();
+          $p = new ocr_captcha();
 
-          if ($p->check_captcha($public,$private) != true)
+          if ($p->check_captcha($public, $private) != true)
               {
               err_msg($language["ERROR"],$language["ERR_IMAGE_CODE"]);
               stdfoot();
