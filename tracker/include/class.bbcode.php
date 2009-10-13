@@ -1,4 +1,6 @@
-<?php
+<?
+// CyBerFuN
+
 /* * * * * * * * * * * * * * * * * * * *
 * BB Code parser by James Wilson
 * Copyright (c) 2007, James Wilson, drakewilson@gmail.com
@@ -43,7 +45,7 @@
 * echo "<textarea>".dehtml($post)."</textarea>";
 * * * * * * * * * * * * * * * * * * * */
 
-$img_count=0;
+$img_count = 0;
 // 3 functions for the bbcode. Have to be declared outside the function to be able to call bbcode more than once.
 function dosize($matches) {
   return '<span style="font-size: '.(50*$matches[1]).'%">'.$matches[2].'</span>';
@@ -54,15 +56,15 @@ function noparsed($matches) {
 }
 
 function formatlist($matches) {
-  if ($matches[2]=='') {
-    $end='</ul>';
-    $content.='<ul>';
+  if ($matches[2] == '') {
+    $end = '</ul>';
+    $content .= '<ul>';
   } elseif(is_numeric($matches[2])) {
-    $end='</ol>';
-    $content.='<ol type="1">';
+    $end = '</ol>';
+    $content .= '<ol type="1">';
   } else {
-    $end='</ol>';
-    $content.='<ol type="a">';
+    $end = '</ol>';
+    $content .= '<ol type="a">';
   }
 
   return $content.str_replace('[*]',"\n".'<li>',$matches[3]).$end;
@@ -77,26 +79,26 @@ function parseimage($matches) {
 
 function bbcode($content) {
   // Fix & to be &amp; unless it's already &amp; or a special character like  &#9600;  or some regualr ones like <,>,",(c), . More can be found here: http://www.utexas.edu/learn/html/spchar.html  But they can use the decimal verisons if the want those
-  $content=preg_replace('/&(?!(amp|[#0-9]+|lt|gt|quot|copy|nbsp);)/ix','&amp;',$content);
+  $content = preg_replace('/&(?!(amp|[#0-9]+|lt|gt|quot|copy|nbsp);)/ix','&amp;', $content);
 
   // But some special chars are bad, at least according to vB, so strip them. Most are just blank characters used to bypass filters, except for &#8238; which is just awesome!
-  $content=str_replace(array('&#160;','&#173;','&#8205;','&#8204;','&#8237;','&#8238;'),'',$content);
+  $content = str_replace(array('&#160;','&#173;','&#8205;','&#8204;','&#8237;','&#8238;'),'', $content);
 
   // Change new lines to <br />. nl2br function probably would work also. It's probably the same as this though. And gets rid of htmlchars. htmlentities screws up the &amp; stuff.
-  $content=str_replace(array('<','>','\'','"',"\r\n","\r","\n"),array('&lt;','&gt;','&#39;','&quot;','<br />','<br />','<br />'),$content);
+  $content = str_replace(array('<','>','\'','"',"\r\n","\r","\n"),array('&lt;','&gt;','&#39;','&quot;','<br />','<br />','<br />'), $content);
 
   // No parse. Just replace [, ], and :// to their HTML equivalents
-  $content=preg_replace_callback('/\[noparse\](.+?)\[\/noparse\]/i','noparsed',$content);
+  $content = preg_replace_callback('/\[noparse\](.+?)\[\/noparse\]/i','noparsed', $content);
 
   // [url=uri]text[/url]
-  $content=preg_replace('(\[(URL|url)\=((http|ftp|https):\/\/[a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\](.+?)\[\/(URL|url)\])', '<a href="$2">$4</a>', $content);
+  $content = preg_replace('(\[(URL|url)\=((http|ftp|https):\/\/[a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\](.+?)\[\/(URL|url)\])', '<a href="$2">$4</a>', $content);
   // For people too lazy to put http:// on the uri. /Shouldn't/ be XSSable
-  $content=preg_replace('(\[(URL|url)\=([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\](.+?)\[\/(URL|url)\])', '<a href="http://$2">$3</a>', $content);
+  $content = preg_replace('(\[(URL|url)\=([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\](.+?)\[\/(URL|url)\])', '<a href="http://$2">$3</a>', $content);
 
   // [url]uri[/url]
-  $content=preg_replace('(\[url\]((http|ftp|https):\/\/([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*))\[\/url\])','<a href="$2&#58;&#47;&#47;$3">$2&#58;&#47;&#47;$3</a>',$content);
+  $content = preg_replace('(\[url\]((http|ftp|https):\/\/([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*))\[\/url\])','<a href="$2&#58;&#47;&#47;$3">$2&#58;&#47;&#47;$3</a>',$content);
   // lazy http:// people...
-  $content=preg_replace('(\[url\]([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\[\/url\])','<a href="http&#58;&#47;&#47;$1">http&#58;&#47;&#47;$1</a>',$content);
+  $content = preg_replace('(\[url\]([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\[\/url\])','<a href="http&#58;&#47;&#47;$1">http&#58;&#47;&#47;$1</a>',$content);
 // YouTube Vids
     $content = preg_replace("/\[video=[^\s'\"<>]*youtube.*.*v=([^\s'\"<>]+)\]/ims", "<object width=\"320\" height=\"265\"><param name=\"movie\" value=\"http://www.youtube.com/v/\\1\"></param><embed src=\"http://www.youtube.com/v/\\1\" type=\"application/x-shockwave-flash\" width=\"320\" height=\"265\"></embed></object>", $content);
     // Google Vids
@@ -104,56 +106,56 @@ function bbcode($content) {
 
   // Images. They have to have http://. src attributes are XSSable in IE 6.0, Netscape, and Opera. http://ha.ckers.org/xss.html. Even though it's hard to do without () or \, best not to mess around with it.
 
-  $content=preg_replace_callback('/\[img\]((http|ftp|https):\/\/([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*))\[\/img\]/i','parseimage',$content);
-  $content=preg_replace_callback('/\[img=((http|ftp|https):\/\/([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*))\]/i','parseimage',$content);
+  $content = preg_replace_callback('/\[img\]((http|ftp|https):\/\/([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*))\[\/img\]/i','parseimage', $content);
+  $content = preg_replace_callback('/\[img=((http|ftp|https):\/\/([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*))\]/i','parseimage', $content);
 
   // http://www.google.com -> <a href="http://www.google.com">http://www.google.com</a>
-  $content=preg_replace('/(?<![href|src]=)(["|\']http|ftp|https):\/\/([^(|\s|=|\]|\[|\<|\>)]*["|\'])/i','<a href="$1://$2">$1://$2</a>',$content);
+  $content = preg_replace('/(?<![href|src]=)(["|\']http|ftp|https):\/\/([^(|\s|=|\]|\[|\<|\>)]*["|\'])/i','<a href="$1://$2">$1://$2</a>', $content);
 
   // Email. Do people even use this?
-  $content=preg_replace('(\[email\]([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]+)@([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]+)\[\/email\])','<a href="mailto:$1@$2">$1@$2</a>',$content);
+  $content = preg_replace('(\[email\]([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]+)@([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]+)\[\/email\])','<a href="mailto:$1@$2">$1@$2</a>',$content);
 
   // bold, italics, underline
-  while (preg_match('/\[b\](.+?)\[\/b\]/i',$content))
-    $content=preg_replace('/\[b\](.+?)\[\/b\]/i','<b>$1</b>',$content);
-  while (preg_match('/\[i\](.+?)\[\/i\]/i',$content))
-    $content=preg_replace('/\[i\](.+?)\[\/i\]/i','<i>$1</i>',$content);
-  while (preg_match('/\[u\](.+?)\[\/u\]/i',$content))
-    $content=preg_replace('/\[u\](.+?)\[\/u\]/i','<font style="text-decoration: underline;">$1</font>',$content);
+  while (preg_match('/\[b\](.+?)\[\/b\]/i', $content))
+    $content = preg_replace('/\[b\](.+?)\[\/b\]/i','<b>$1</b>', $content);
+  while (preg_match('/\[i\](.+?)\[\/i\]/i', $content))
+    $content = preg_replace('/\[i\](.+?)\[\/i\]/i','<i>$1</i>', $content);
+  while (preg_match('/\[u\](.+?)\[\/u\]/i', $content))
+    $content = preg_replace('/\[u\](.+?)\[\/u\]/i','<font style="text-decoration: underline;">$1</font>', $content);
 
   // font color. Word type, like [color=red]RED[/color]
-  while (preg_match('/\[color=([a-z]+)\](.+?)\[\/color\]/i',$content))
-    $content=preg_replace('/\[color=([a-z]+)\](.+?)\[\/color\]/i','<font color="$1">$2</font>',$content);
+  while (preg_match('/\[color=([a-z]+)\](.+?)\[\/color\]/i', $content))
+    $content = preg_replace('/\[color=([a-z]+)\](.+?)\[\/color\]/i','<font color="$1">$2</font>', $content);
   // Number type, like [color=696969]GREY[/color]
-  while (preg_match('/\[color=([0-9]{3,6})\](.+?)\[\/color\]/i',$content))
-    $content=preg_replace('/\[color=([0-9]{3,6})\](.+?)\[\/color\]/i','<span style="color: #$1;">$2</span>',$content);
+  while (preg_match('/\[color=([0-9]{3,6})\](.+?)\[\/color\]/i', $content))
+    $content = preg_replace('/\[color=([0-9]{3,6})\](.+?)\[\/color\]/i','<span style="color: #$1;">$2</span>', $content);
 
   // code
-  while (preg_match('/\[code\](.+?)\[\/code\]/i',$content))
-    $content=preg_replace('/\[code\](.+?)\[\/code\]/i','<br /><b>Code</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="code"><tr><td>\\1</td></tr></table><br />',$content);
+  while (preg_match('/\[code\](.+?)\[\/code\]/i', $content))
+    $content = preg_replace('/\[code\](.+?)\[\/code\]/i','<br /><b>Code</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="code"><tr><td>\\1</td></tr></table><br />', $content);
 
   // Quotes!
   global $language;
-  while (preg_match('/\[quote\](.+?)\[\/quote\]/i',$content))
-    $content = preg_replace('/\[quote\](.+?)\[\/quote\]/i','<br /><b>'.$language['QUOTE'].':</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="quote"><tr><td >\\1</td></tr></table><br />',$content);
-  while (preg_match('/\[quote=(.+?)\](.+?)\[\/quote\]/i',$content))
-    $content = preg_replace('/\[quote=(.+?)\](.+?)\[\/quote\]/i','<br /><b>\\1 '.$language['WROTE'].':</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="quote"><tr><td>\\2</td></tr></table><br />',$content);
+  while (preg_match('/\[quote\](.+?)\[\/quote\]/i', $content))
+    $content = preg_replace('/\[quote\](.+?)\[\/quote\]/i','<br /><b>'.$language['QUOTE'].':</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="quote"><tr><td >\\1</td></tr></table><br />', $content);
+  while (preg_match('/\[quote=(.+?)\](.+?)\[\/quote\]/i', $content))
+    $content = preg_replace('/\[quote=(.+?)\](.+?)\[\/quote\]/i','<br /><b>\\1 '.$language['WROTE'].':</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="quote"><tr><td>\\2</td></tr></table><br />', $content);
   // .userquoteinfo { font-size:85%; font-weight: bold; font-style: italic; }
 
   // Size. 1,2,3,4 = 75, 125, 175, 225.  Algo: 25 + 50 * size
   while (preg_match('/\[size=([1-7])\](.+?)\[\/size\]/i',$content))
-    $content = preg_replace_callback('/\[size=([1-7])\](.+?)\[\/size\]/i','dosize',$content);
+    $content = preg_replace_callback('/\[size=([1-7])\](.+?)\[\/size\]/i','dosize', $content);
 
   //Lists
   while (preg_match('/\[list(=(a|1))?\](.+?)\[\/list\]/i',$content))
-    $content=preg_replace_callback('/\[list(=(a|1))?\](.+?)\[\/list\]/i','formatlist',$content);
+    $content = preg_replace_callback('/\[list(=(a|1))?\](.+?)\[\/list\]/i','formatlist', $content);
 
   return $content;
 }
 
 function dehtml($content) {
-  $content=preg_replace('/&(?!(amp|[#0-9]+|lt|gt|quot|copy|nbsp);)/ix','&amp;',$content);
-  $content=str_replace(array('&#160;','&#173;','&#8205;','&#8204;','&#8237;','&#8238;'),'',$content);
-  return str_replace(array('<','>','\'','"'),array('&lt;','&gt;','&#39;','&quot;'),$content);
+  $content = preg_replace('/&(?!(amp|[#0-9]+|lt|gt|quot|copy|nbsp);)/ix','&amp;', $content);
+  $content = str_replace(array('&#160;','&#173;','&#8205;','&#8204;','&#8237;','&#8238;'),'',$content);
+  return str_replace(array('<','>','\'','"'),array('&lt;','&gt;','&#39;','&quot;'), $content);
 }
 ?>

@@ -1,4 +1,6 @@
-<?php
+<?
+// CyBerFuN.ro & xList.ro
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -40,7 +42,7 @@ class rss_reader {
     function get_tag_value($text, $tag) {
         $StartPos = strpos($text, '<'.$tag)+strlen($tag)+2;
         $EndPos   = strpos($text, '</'.$tag);
-        $text=($EndPos > $StartPos)?substr($text, $StartPos, ($EndPos - $StartPos)):'';
+        $text = ($EndPos > $StartPos)?substr($text, $StartPos, ($EndPos - $StartPos)):'';
 
         return str_replace(array('<![CDATA[',']]>'), '', $text);
     }
@@ -51,28 +53,28 @@ class rss_reader {
     //      (title,link,description,item=>
     //             array(title,link,description,category,comments,pubDate,guid)))
     function rss_to_array($rss_flux) {
-        $fullrss=explode('<channel>',$rss_flux);
+        $fullrss = explode('<channel>', $rss_flux);
         array_shift($fullrss);
-        $rss=array();
-        $i=0;
+        $rss = array();
+        $i = 0;
         foreach($fullrss as $r) {
-            $rss[$i]['title']=$this->get_tag_value($r,'title');
-            $rss[$i]['link']=$this->get_tag_value($r,'link');
-            $rss[$i]['description']=$this->get_tag_value($r,'description');
-            $rss[$i]['copyright']=$this->get_tag_value($r,'copyright');
-            $rss[$i]['language']=$this->get_tag_value($r,'language');
-            $rss[$i]['lastBuildDate']=$this->get_tag_value($r,'lastBuildDate');
-            $items=explode('<item>',$r);
+            $rss[$i]['title'] = $this->get_tag_value($r, 'title');
+            $rss[$i]['link'] = $this->get_tag_value($r, 'link');
+            $rss[$i]['description'] = $this->get_tag_value($r, 'description');
+            $rss[$i]['copyright'] = $this->get_tag_value($r, 'copyright');
+            $rss[$i]['language'] = $this->get_tag_value($r, 'language');
+            $rss[$i]['lastBuildDate'] = $this->get_tag_value($r,'lastBuildDate');
+            $items = explode('<item>', $r);
             array_shift($items);
-            $j=0;
+            $j = 0;
             foreach($items as $item) {
-                $rss[$i]['item'][$j]['title']=$this->get_tag_value($item,'title');
-                $rss[$i]['item'][$j]['link']=$this->get_tag_value($item,'link');
-                $rss[$i]['item'][$j]['description']=$this->get_tag_value($item,'description');
-                $rss[$i]['item'][$j]['category']=$this->get_tag_value($item,'category');
-                $rss[$i]['item'][$j]['comments']=$this->get_tag_value($item,'comments');
-                $rss[$i]['item'][$j]['pubDate']=$this->get_tag_value($item,'pubDate');
-                $rss[$i]['item'][$j]['guid']=$this->get_tag_value($item,'guid');
+                $rss[$i]['item'][$j]['title'] = $this->get_tag_value($item, 'title');
+                $rss[$i]['item'][$j]['link'] = $this->get_tag_value($item, 'link');
+                $rss[$i]['item'][$j]['description'] = $this->get_tag_value($item, 'description');
+                $rss[$i]['item'][$j]['category'] = $this->get_tag_value($item, 'category');
+                $rss[$i]['item'][$j]['comments'] = $this->get_tag_value($item, 'comments');
+                $rss[$i]['item'][$j]['pubDate'] = $this->get_tag_value($item, 'pubDate');
+                $rss[$i]['item'][$j]['guid'] = $this->get_tag_value($item, 'guid');
                 $j++;
             }
             $i++;
