@@ -1,34 +1,37 @@
-<?php
+<?
+
+// CyBerFuN.ro & xList.ro
+
 if (!defined("IN_BTIT"))
       die("non direct access!");
 
 require_once(load_language("lang_account.php"));
 
 if (!isset($_POST["language"])) $_POST["language"] = max(1,$btit_settings["default_language"]);
-$idlang=intval($_POST["language"]);
+$idlang = intval($_POST["language"]);
 
 
-if (isset($_GET["uid"])) $id=intval($_GET["uid"]);
- else $id="";
-if (isset($_GET["returnto"])) $link=urldecode($_GET["returnto"]);
- else $link="";
-if (isset($_GET["act"])) $act=$_GET["act"];
- else $act="signup";
-if (isset($_GET["language"])) $idlangue=intval($_GET["language"]);
- else $idlangue=max(1,$btit_settings["default_language"]);
-if (isset($_GET["style"])) $idstyle=intval($_GET["style"]);
- else $idstyle="";
-if (isset($_GET["flag"])) $idflag=intval($_GET["flag"]);
- else $idflag="";
+if (isset($_GET["uid"])) $id = intval($_GET["uid"]);
+ else $id = "";
+if (isset($_GET["returnto"])) $link = urldecode($_GET["returnto"]);
+ else $link = "";
+if (isset($_GET["act"])) $act = $_GET["act"];
+ else $act = "signup";
+if (isset($_GET["language"])) $idlangue = intval($_GET["language"]);
+ else $idlangue = max(1,$btit_settings["default_language"]);
+if (isset($_GET["style"])) $idstyle = intval($_GET["style"]);
+ else $idstyle = "";
+if (isset($_GET["flag"])) $idflag = intval($_GET["flag"]);
+ else $idflag = "";
 
 if (isset($_POST["uid"]) && isset($_POST["act"]))
   {
-if (isset($_POST["uid"])) $id=intval($_POST["uid"]);
- else $id="";
-if (isset($_POST["returnto"])) $link=urldecode($_POST["returnto"]);
- else $link="";
+if (isset($_POST["uid"])) $id = intval($_POST["uid"]);
+ else $id = "";
+if (isset($_POST["returnto"])) $link = urldecode($_POST["returnto"]);
+ else $link = "";
 if (isset($_POST["act"])) $act=$_POST["act"];
- else $act="";
+ else $act = "";
   }
 
 //start Invitation System by dodge
@@ -53,46 +56,46 @@ if(!$_POST["conferma"] && $INVITATIONSON)
 //end Invitation System
 
 // already logged?
-if ($act=="signup" && isset($CURUSER["uid"]) && $CURUSER["uid"]!=1) {
-        $url="index.php";
+if ($act == "signup" && isset($CURUSER["uid"]) && $CURUSER["uid"] != 1) {
+        $url = "index.php";
         redirect($url);
 }
 
 
-$res=do_sqlquery("SELECT count(*) FROM {$TABLE_PREFIX}users WHERE id>1",true);
-$nusers=mysql_fetch_row($res);
-$numusers=$nusers[0];
+$res = do_sqlquery("SELECT count(*) FROM {$TABLE_PREFIX}users WHERE id>1", true);
+$nusers = mysql_fetch_row($res);
+$numusers = $nusers[0];
 
-if ($act=="signup" && $MAX_USERS!=0 && $numusers>=$MAX_USERS && !$INVITATIONSON)
+if ($act == "signup" && $MAX_USERS != 0 && $numusers >= $MAX_USERS && !$INVITATIONSON)
    {
    stderr($language["ERROR"],$language["REACHED_MAX_USERS"]);
 }
 
-if ($act=="confirm") {
+if ($act == "confirm") {
 
       global $FORUMLINK, $db_prefix;
 
-      $random=intval($_GET["confirm"]);
-      $random2=rand(10000, 60000);
-      $res=do_sqlquery("UPDATE {$TABLE_PREFIX}users SET id_level=3".(($FORUMLINK=="smf") ? ", random=$random2" : "")." WHERE id_level=2 AND random=$random",true);
+      $random = intval($_GET["confirm"]);
+      $random2 = rand(10000, 60000);
+      $res = do_sqlquery("UPDATE {$TABLE_PREFIX}users SET id_level=3".(($FORUMLINK == "smf") ? ", random=$random2" : "")." WHERE id_level=2 AND random=$random",true);
       if (!$res)
          die("ERROR: " . mysql_error() . "\n");
       else {
-          if($FORUMLINK=="smf")
+          if($FORUMLINK == "smf")
           {
-              $get=mysql_fetch_assoc(mysql_query("SELECT smf_fid FROM {$TABLE_PREFIX}users WHERE id_level=3 AND random=$random2"));
+              $get = mysql_fetch_assoc(mysql_query("SELECT smf_fid FROM {$TABLE_PREFIX}users WHERE id_level=3 AND random=$random2"));
               do_sqlquery("UPDATE {$db_prefix}members SET ID_GROUP=13 WHERE ID_MEMBER=".$get["smf_fid"]);  
           }
-          success_msg($language["ACCOUNT_CREATED"],$language["ACCOUNT_CONGRATULATIONS"]);
+          success_msg($language["ACCOUNT_CREATED"], $language["ACCOUNT_CONGRATULATIONS"]);
           stdfoot();
           exit;
           }
 }
 
 if ($_POST["conferma"]) {
-    if ($act=="signup" || $act == "invite") {
-       $ret=aggiungiutente();
-       if ($ret==0)
+    if ($act == "signup" || $act == "invite") {
+       $ret = aggiungiutente();
+       if ($ret == 0)
           {
             if ($INVITATIONSON == "true")
             {
@@ -397,15 +400,15 @@ if(!eregi($regex,$email))
 // valid email check end
 
 // duplicate username
-$res=do_sqlquery("SELECT username FROM {$TABLE_PREFIX}users WHERE username='$utente'");
-if (mysql_num_rows($res)>0)
+$res = do_sqlquery("SELECT username FROM {$TABLE_PREFIX}users WHERE username='$utente'");
+if (mysql_num_rows($res) > 0)
    {
    return -4;
    exit;
 }
 // duplicate username
 
-if (strpos(mysql_escape_string($utente), " ")==true)
+if (strpos(mysql_escape_string($utente), " ") == true)
    {
    return -7;
    exit;
@@ -415,7 +418,7 @@ if ($USE_IMAGECODE)
   if (extension_loaded('gd'))
     {
      $arr = gd_info();
-     if ($arr['FreeType Support']==1)
+     if ($arr['FreeType Support'] == 1)
       {
         $public=$_POST['public_key'];
         $private=$_POST['private_key'];
@@ -432,8 +435,8 @@ if ($USE_IMAGECODE)
        else
          {
            include("$THIS_BASEPATH/include/security_code.php");
-           $scode_index=intval($_POST["security_index"]);
-           if ($security_code[$scode_index]["answer"]!=$_POST["scode_answer"])
+           $scode_index = intval($_POST["security_index"]);
+           if ($security_code[$scode_index]["answer"] != $_POST["scode_answer"])
               {
               err_msg($language["ERROR"],$language["ERR_IMAGE_CODE"]);
               stdfoot();
@@ -444,8 +447,8 @@ if ($USE_IMAGECODE)
      else
        {
          include("$THIS_BASEPATH/include/security_code.php");
-         $scode_index=intval($_POST["security_index"]);
-         if ($security_code[$scode_index]["answer"]!=$_POST["scode_answer"])
+         $scode_index = intval($_POST["security_index"]);
+         if ($security_code[$scode_index]["answer"] != $_POST["scode_answer"])
             {
             err_msg($language["ERROR"],$language["ERR_IMAGE_CODE"]);
             stdfoot();
@@ -456,8 +459,8 @@ if ($USE_IMAGECODE)
 else
   {
     include("$THIS_BASEPATH/include/security_code.php");
-    $scode_index=intval($_POST["security_index"]);
-    if ($security_code[$scode_index]["answer"]!=$_POST["scode_answer"])
+    $scode_index = intval($_POST["security_index"]);
+    if ($security_code[$scode_index]["answer"] != $_POST["scode_answer"])
        {
        err_msg($language["ERROR"],$language["ERR_IMAGE_CODE"]);
        stdfoot();
@@ -465,23 +468,23 @@ else
      }
   }
 
-$bannedchar=array("\\", "/", ":", "*", "?", "\"", "@", "$", "'", "`", ",", ";", ".", "<", ">", "!", "£", "%", "^", "&", "(", ")", "+", "=", "#", "~");
-if (straipos(mysql_escape_string($utente), $bannedchar)==true)
+$bannedchar = array("\\", "/", ":", "*", "?", "\"", "@", "$", "'", "`", ",", ";", ".", "<", ">", "!", "£", "%", "^", "&", "(", ")", "+", "=", "#", "~");
+if (straipos(mysql_escape_string($utente), $bannedchar) == true)
    {
    return -8;
    exit;
 }
 
-if(strlen(mysql_real_escape_string($pwd))<4)
+if(strlen(mysql_real_escape_string($pwd)) < 4)
    {
    return -9;
    exit;
 }
 
-$pid=md5(uniqid(rand(),true));
-do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, status_comment_notify, pm_mail_notify, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '" . md5($pwd) . "', $random, $idlevel, '$email', $status_comment_notify, $pm_mail_notify, $idstyle, $idlangue, $idflag, NOW(), NOW(),'$pid', '".$timezone."')",true);
+$pid = md5(uniqid(rand(), true));
+do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, status_comment_notify, pm_mail_notify, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '" . md5($pwd) . "', $random, $idlevel, '$email', $status_comment_notify, $pm_mail_notify, $idstyle, $idlangue, $idflag, NOW(), NOW(),'$pid', '".$timezone."')", true);
 
-$newuid=mysql_insert_id();
+$newuid = mysql_insert_id();
 
 //begin invitation system by dodge
 if ($INVITATIONSON == "true")
@@ -500,15 +503,15 @@ if ($INVITATIONSON == "true")
 
 // Continue to create smf members if they disable smf mode
 // $test=do_sqlquery("SELECT COUNT(*) FROM {$db_prefix}members");
-$test=do_sqlquery("SHOW TABLES LIKE '{$db_prefix}members'");
+$test = do_sqlquery("SHOW TABLES LIKE '{$db_prefix}members'");
 
-if ($FORUMLINK=="smf" || mysql_num_rows($test))
+if ($FORUMLINK == "smf" || mysql_num_rows($test))
 {
-    $smfpass=smf_passgen($utente, $pwd);
-    $flevel=$idlevel+10;
+    $smfpass = smf_passgen($utente, $pwd);
+    $flevel = $idlevel + 10;
 
     do_sqlquery("INSERT INTO {$db_prefix}members (memberName, dateRegistered, ID_GROUP, realName, passwd, emailAddress, memberIP, memberIP2, is_activated, passwordSalt) VALUES ('$utente', UNIX_TIMESTAMP(), $flevel, '$utente', '$smfpass[0]', '$email', '".getip()."', '".getip()."', 1, '$smfpass[1]')");
-    $fid=mysql_insert_id();
+    $fid = mysql_insert_id();
     do_sqlquery("UPDATE `{$db_prefix}settings` SET `value` = $fid WHERE `variable` = 'latestMember'");
     do_sqlquery("UPDATE `{$db_prefix}settings` SET `value` = '$utente' WHERE `variable` = 'latestRealName'");
     do_sqlquery("UPDATE `{$db_prefix}settings` SET `value` = UNIX_TIMESTAMP() WHERE `variable` = 'memberlist_updated'");
@@ -518,7 +521,7 @@ if ($FORUMLINK=="smf" || mysql_num_rows($test))
 // xbt
 if ($XBTT_USE)
    {
-   $resin=do_sqlquery("INSERT INTO xbt_users (uid, torrent_pass) VALUES ($newuid,'$pid')");
+   $resin=do_sqlquery("INSERT INTO xbt_users (uid, torrent_pass) VALUES ($newuid, '$pid')");
    }
 
     if ($INVITATIONSON == "true")
@@ -538,13 +541,13 @@ if ($XBTT_USE)
         write_log("Signup new user $utente ($email)", "add");
     }
     else
-if ($VALIDATION=="user")
+if ($VALIDATION == "user")
    {
-   ini_set("sendmail_from","");
-   if (mysql_errno()==0)
+   ini_set("sendmail_from", "");
+   if (mysql_errno() == 0)
      {
-      send_mail($email,$language["ACCOUNT_CONFIRM"],$language["ACCOUNT_MSG"]."\n\n".$BASEURL."/index.php?page=account&act=confirm&confirm=$random&language=$idlangue");
-      write_log("Signup new user $utente ($email)","add");
+      send_mail($email, $language["ACCOUNT_CONFIRM"], $language["ACCOUNT_MSG"]."\n\n".$BASEURL."/index.php?page=account&act=confirm&confirm=$random&language=$idlangue");
+      write_log("Signup new user $utente ($email)", "add");
       }
    else
        die(mysql_error());
