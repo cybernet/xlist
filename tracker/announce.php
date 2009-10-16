@@ -213,7 +213,9 @@ if ($PRIVATE_ANNOUNCE) {
         }
         $wait -= $timer;
         if ($wait <= 0)$wait = 0;
-        elseif($wait != 0 && $left != 0){show_error($rowpid["username"]." your Waiting Time = ".$wait." h");}
+        elseif($wait != 0 && $left != 0){
+               show_error($rowpid["username"]." your Waiting Time = ".$wait." h");
+                                        }
       }
       //end
   }
