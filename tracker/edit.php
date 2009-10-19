@@ -16,7 +16,7 @@ if (!defined("IN_BTIT"))
 $link = urldecode($_GET["returnto"]);
 
 if ($link == "")
-   $link="index.php?page=torrents";
+   $link = "index.php?page=torrents";
 
 // save editing and got back from where i come
 
@@ -31,7 +31,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
 
    if ($_POST["comment"] == '')
         {
-        stderr("Error!","You must specify description.");
+        stderr("Error!", "You must specify description.");
    }
  
       /*Mod by losmi -visible start*/
@@ -140,7 +140,7 @@ $userfile = $_FILES["userfile"];
 		$file_size3 = makesize1($file_size3);
 		if (isset($_FILES["userfile"]))
 		{
-			if ($_FILES["userfile"]["name"] =='')
+			if ($_FILES["userfile"]["name"] == '')
 			{
 			// do nothing...
 			}
@@ -148,7 +148,7 @@ $userfile = $_FILES["userfile"];
 			{
 				if ($file_size > $GLOBALS["file_limit"])
 				{
-                    err_msg($language["ERROR"],$language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size);
+                    err_msg($language["ERROR"], $language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size);
                     stdfoot();
                     exit();
 				}
@@ -156,7 +156,7 @@ $userfile = $_FILES["userfile"];
 				{
 					if (@move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile))
 					{
-                    	do_sqlquery("UPDATE {$TABLE_PREFIX}files SET image='".$file_name."' WHERE info_hash='" . $torhash . "'",true);
+                    	do_sqlquery("UPDATE {$TABLE_PREFIX}files SET image='".$file_name."' WHERE info_hash='" . $torhash . "'", true);
 						$image_drop = "" . $_POST["userfileold"]. "";
 
 						if (!empty($image_drop))
@@ -164,14 +164,14 @@ $userfile = $_FILES["userfile"];
 					}
 					else
 					{
-                        err_msg($language["ERROR"],$language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
+                        err_msg($language["ERROR"], $language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
                         stdfoot();
                         exit();
 					}
 				}
 				else
 				{
-                    err_msg ($language["ERROR"],$language["ILEGAL_UPLOAD"]);
+                    err_msg ($language["ERROR"], $language["ILEGAL_UPLOAD"]);
 					stdfoot();
 					exit;
 				}
@@ -179,7 +179,7 @@ $userfile = $_FILES["userfile"];
 		}
 		if (isset($_FILES["screen1"]))
 		{
-			if ($_FILES["screen1"]["name"] =='')
+			if ($_FILES["screen1"]["name"] == '')
 			{
 			// do nothing...
 			}
@@ -187,7 +187,7 @@ $userfile = $_FILES["userfile"];
 			{
 				if ($file_size1 > $GLOBALS["file_limit"])
 				{
-                    err_msg($language["ERROR"],$language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size1);
+                    err_msg($language["ERROR"], $language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size1);
                     stdfoot();
                     exit();
 				}
@@ -195,7 +195,7 @@ $userfile = $_FILES["userfile"];
 				{
 					if (@move_uploaded_file($_FILES['screen1']['tmp_name'], $uploadfile1))
 					{
-                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen1='".$file_name_s1."' WHERE info_hash='" . $torhash . "'",true);
+                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen1='".$file_name_s1."' WHERE info_hash='" . $torhash . "'", true);
 						$image_drop = "" . $_POST["userfileold1"]. "";
 
 						if (!empty($image_drop))
@@ -203,14 +203,14 @@ $userfile = $_FILES["userfile"];
 					}
 					else
 					{
-                        err_msg($language["ERROR"],$language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
+                        err_msg($language["ERROR"], $language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
                         stdfoot();
                         exit();
 					}
 				}
 				else
 				{
-                    err_msg ($language["ERROR"],$language["ILEGAL_UPLOAD"]);
+                    err_msg ($language["ERROR"], $language["ILEGAL_UPLOAD"]);
 					stdfoot();
 					exit;
 				}
@@ -234,7 +234,7 @@ $userfile = $_FILES["userfile"];
 				{
 					if (@move_uploaded_file($_FILES['screen2']['tmp_name'], $uploadfile2))
 					{
-                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen2='".$file_name_s2."' WHERE info_hash='" . $torhash . "'",true);
+                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen2='".$file_name_s2."' WHERE info_hash='" . $torhash . "'", true);
 						$image_drop = "" . $_POST["userfileold2"]. "";
 
 						if (!empty($image_drop))
@@ -249,7 +249,7 @@ $userfile = $_FILES["userfile"];
 				}
 				else
 				{
-                    err_msg ($language["ERROR"],$language["ILEGAL_UPLOAD"]);
+                    err_msg ($language["ERROR"], $language["ILEGAL_UPLOAD"]);
 					stdfoot();
 					exit;
 				}
@@ -257,7 +257,7 @@ $userfile = $_FILES["userfile"];
 		}
 		if (isset($_FILES["screen3"]))
 		{
-			if ($_FILES["screen3"]["name"] =='')
+			if ($_FILES["screen3"]["name"] == '')
 			{
 			// do nothing...
 			}
@@ -265,7 +265,7 @@ $userfile = $_FILES["userfile"];
 			{
 				if ($file_size3 > $GLOBALS["file_limit"])
 				{
-                    err_msg($language["ERROR"],$language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size3);
+                    err_msg($language["ERROR"], $language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size3);
                     stdfoot();
                     exit();
 				}
@@ -273,7 +273,7 @@ $userfile = $_FILES["userfile"];
 				{
 					if (@move_uploaded_file($_FILES['screen3']['tmp_name'], $uploadfile3))
 					{
-                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen3='".$file_name_s3."' WHERE info_hash='" . $torhash . "'",true);
+                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen3='".$file_name_s3."' WHERE info_hash='" . $torhash . "'", true);
 						$image_drop = "" . $_POST["userfileold3"]. "";
 
 						if (!empty($image_drop))
@@ -281,20 +281,20 @@ $userfile = $_FILES["userfile"];
 					}
 					else
 					{
-                        err_msg($language["ERROR"],$language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
+                        err_msg($language["ERROR"], $language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
                         stdfoot();
                         exit();
 					}
 				}
 				else
 				{
-                    err_msg ($language["ERROR"],$language["ILEGAL_UPLOAD"]);
+                    err_msg ($language["ERROR"], $language["ILEGAL_UPLOAD"]);
 					stdfoot();
 					exit;
 				}
 			}
 		}
-   do_sqlquery("UPDATE {$TABLE_PREFIX}files SET comment_notify='" . $_POST["comment_notify"] . "' WHERE info_hash='" . $torhash . "'",true);
+   do_sqlquery("UPDATE {$TABLE_PREFIX}files SET comment_notify='" . $_POST["comment_notify"] . "' WHERE info_hash='" . $torhash . "'", true);
    redirect($link);
    exit();
    }
@@ -310,38 +310,38 @@ if (isset($_GET["info_hash"])) {
 
    if ($XBTT_USE)
       {
-       $tseeds="f.seeds+ifnull(x.seeders,0) as seeds";
-       $tleechs="f.leechers+ifnull(x.leechers,0) as leechers";
-       $tcompletes="f.finished+ifnull(x.completed,0) as finished";
-       $ttables="{$TABLE_PREFIX}files f LEFT JOIN xbt_files x ON x.info_hash=f.bin_hash";
+       $tseeds = "f.seeds+ifnull(x.seeders,0) as seeds";
+       $tleechs = "f.leechers+ifnull(x.leechers,0) as leechers";
+       $tcompletes = "f.finished+ifnull(x.completed,0) as finished";
+       $ttables = "{$TABLE_PREFIX}files f LEFT JOIN xbt_files x ON x.info_hash=f.bin_hash";
       }
    else
        {
-       $tseeds="f.seeds as seeds";
-       $tleechs="f.leechers as leechers";
-       $tcompletes="f.finished as finished";
-       $ttables="{$TABLE_PREFIX}files f";
+       $tseeds = "f.seeds as seeds";
+       $tleechs = "f.leechers as leechers";
+       $tcompletes = "f.finished as finished";
+       $ttables = "{$TABLE_PREFIX}files f";
        }
 
-  $query ="SELECT f.image, f.screen1, f.screen2, f.screen3, f.info_hash, f.filename, f.visible, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.category as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.uploader FROM $ttables WHERE f.info_hash ='" . AddSlashes($_GET["info_hash"]) . "'";
+  $query = "SELECT f.image, f.screen1, f.screen2, f.screen3, f.info_hash, f.filename, f.visible, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.category as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.uploader FROM $ttables WHERE f.info_hash ='" . AddSlashes($_GET["info_hash"]) . "'";
   $res = do_sqlquery($query,true);
   $results = mysql_fetch_assoc($res);
 
-  if (!$results || mysql_num_rows($res)==0)
-     err_msg($language["ERROR"],$language["TORRENT_EDIT_ERROR"]);
+  if (!$results || mysql_num_rows($res) == 0)
+     err_msg($language["ERROR"], $language["TORRENT_EDIT_ERROR"]);
 
   else {
 
-    if (!$CURUSER || $CURUSER["uid"]<2 || ($CURUSER["edit_torrents"]=="no" && $CURUSER["uid"]!=$results["uploader"]))
+    if (!$CURUSER || $CURUSER["uid"] < 2 || ($CURUSER["edit_torrents"] == "no" && $CURUSER["uid"] != $results["uploader"]))
        {
            stderr($language["ERROR"],$language["CANT_EDIT_TORR"]);
        }
 
-    $torrenttpl=new bTemplate();
-    $torrenttpl->set("language",$language);
-    $row=$res[0];
-    $torrenttpl->set("imageon",$GLOBALS["imageon"] == "true", TRUE);
-    $torrenttpl->set("screenon",$GLOBALS["screenon"] == "true", TRUE);
+    $torrenttpl = new bTemplate();
+    $torrenttpl->set("language", $language);
+    $row = $res[0];
+    $torrenttpl->set("imageon", $GLOBALS["imageon"] == "true", TRUE);
+    $torrenttpl->set("screenon", $GLOBALS["screenon"] == "true", TRUE);
 /*
     $s = "<select name=\"type\">\n<option value=\"0\">(".$language["CHOOSE_ONE"].")</option>\n";
     $cats = genrelist();
@@ -365,41 +365,41 @@ if (isset($_GET["info_hash"])) {
               $current_level = getLevelVisible($CURUSER['id_level']);
               $level_ok = false;
 
-              if ($current_level>=$rez_level )
+              if ($current_level >= $rez_level )
                  {
-                  $torrenttpl->set("LEVEL_VISIBLE_OK",true,FALSE);
+                  $torrenttpl->set("LEVEL_VISIBLE_OK", true, FALSE);
                  }
               else
                  {
-                  $torrenttpl->set("LEVEL_VISIBLE_OK",false,TRUE);
+                  $torrenttpl->set("LEVEL_VISIBLE_OK", false, TRUE);
                  }
              unset($rez);
 
-              $users_level =do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users_level ORDER BY id",true);
-               $torrent['visible'] ="<select name='visible'>";
+              $users_level = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users_level ORDER BY id", true);
+               $torrent['visible'] = "<select name='visible'>";
               while ($row = mysql_fetch_assoc($users_level))
                 {
-                    if($row['id_level']>=3)
+                    if($row['id_level'] >= 3)
                     {
-                        if($results["visible"] == $row['id_level']){$selected ='selected';} else{$selected='';}
+                        if($results["visible"] == $row['id_level']){$selected ='selected';} else{$selected = '';}
                         $torrent['visible'] .= "<option value=".$row['id_level']." ".$selected.">".$row['level']."</option>" ;
                         
                     }
                 }
-                $torrent['visible'] .="</select>"; 
+                $torrent['visible'] .= "</select>"; 
                 
             /*End sticky by losmi*/
-    $torrent["link"]="index.php?page=edit&info_hash=".$results["info_hash"]."&returnto=".urlencode($link);
-    $torrent["filename"]=$results["filename"];
-    $torrent["info_hash"]=$results["info_hash"];
-    $torrent["description"]=textbbcode("edit","comment",unesc($results["comment"]));
-    $torrent["size"]=makesize($results["size"]);
+    $torrent["link"] = "index.php?page=edit&info_hash=".$results["info_hash"]."&returnto=".urlencode($link);
+    $torrent["filename"] = $results["filename"];
+    $torrent["info_hash"] = $results["info_hash"];
+    $torrent["description"] = textbbcode("edit", "comment", unesc($results["comment"]));
+    $torrent["size"] = makesize($results["size"]);
 
     include(dirname(__FILE__)."/include/offset.php");
 
-    $torrent["date"]=date("d/m/Y",$results["data"]-$offset);
-    $torrent["complete"]=$results["finished"]." ".$language["X_TIMES"];
-    $torrent["peers"]=$language["SEEDERS"] .": " .$results["seeds"].",".$language["LEECHERS"] .": ". $results["leechers"]."=". ($results["leechers"]+$results["seeds"]). " ". $language["PEERS"];
+    $torrent["date"] = date("d/m/Y",$results["data"]-$offset);
+    $torrent["complete"] = $results["finished"]." ".$language["X_TIMES"];
+    $torrent["peers"] = $language["SEEDERS"] .": " .$results["seeds"].",".$language["LEECHERS"] .": ". $results["leechers"]."=". ($results["leechers"] + $results["seeds"]). " ". $language["PEERS"];
     $torrent["cat_combo"]= categories($results["cat_name"]); //$s;
 // email_notification
 		$res1 = mysql_fetch_assoc(mysql_query("SELECT comment_notify FROM {$TABLE_PREFIX}files WHERE info_hash = '" . AddSlashes($_GET["info_hash"]) . "'")) or sqlerr();
@@ -407,16 +407,16 @@ if (isset($_GET["info_hash"])) {
 //		$torrent["ed2klink"]=$results["ed2klink"];
 		if ($arr1 == "true")
         {
-          $torrent["COMMENT_NOTIFY_TRUE"]= "checked=\"checked\"";
-          $torrent["COMMENT_NOTIFY_FALSE"]= "";
+          $torrent["COMMENT_NOTIFY_TRUE"] = "checked=\"checked\"";
+          $torrent["COMMENT_NOTIFY_FALSE"] = "";
         }
 		else
 		{
-			$torrent["COMMENT_NOTIFY_TRUE"]= "";
-			$torrent["COMMENT_NOTIFY_FALSE"]= "checked=\"checked\"";
+			$torrent["COMMENT_NOTIFY_TRUE"] = "";
+			$torrent["COMMENT_NOTIFY_FALSE"] = "checked=\"checked\"";
 		}
 
-    $torrenttpl->set("torrent",$torrent);
+    $torrenttpl->set("torrent", $torrent);
 
     unset($results);
     mysql_free_result($res);
