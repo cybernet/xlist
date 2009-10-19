@@ -242,7 +242,7 @@ $userfile = $_FILES["userfile"];
 					}
 					else
 					{
-                        err_msg($language["ERROR"],$language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
+                        err_msg($language["ERROR"], $language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
                         stdfoot();
                         exit();
 					}
@@ -334,7 +334,7 @@ if (isset($_GET["info_hash"])) {
 
     if (!$CURUSER || $CURUSER["uid"] < 2 || ($CURUSER["edit_torrents"] == "no" && $CURUSER["uid"] != $results["uploader"]))
        {
-           stderr($language["ERROR"],$language["CANT_EDIT_TORR"]);
+           stderr($language["ERROR"], $language["CANT_EDIT_TORR"]);
        }
 
     $torrenttpl = new bTemplate();
@@ -404,7 +404,7 @@ if (isset($_GET["info_hash"])) {
 // email_notification
 		$res1 = mysql_fetch_assoc(mysql_query("SELECT comment_notify FROM {$TABLE_PREFIX}files WHERE info_hash = '" . AddSlashes($_GET["info_hash"]) . "'")) or sqlerr();
 		$arr1 = $res1["comment_notify"];
-//		$torrent["ed2klink"]=$results["ed2klink"];
+//		$torrent["ed2klink"] = $results["ed2klink"];
 		if ($arr1 == "true")
         {
           $torrent["COMMENT_NOTIFY_TRUE"] = "checked=\"checked\"";
