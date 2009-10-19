@@ -2,6 +2,12 @@
 
 // CyBerFuN.ro & xList.ro
 
+// CyBerFuN .::. My Panel
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By CyBerNe7
+
 if (!defined("IN_BTIT"))
       die("non direct access!");
 
