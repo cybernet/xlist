@@ -1,6 +1,6 @@
 <?php
 
-// CyBerFuN
+// CyBerFuN.ro & xList.ro
 
 if (!defined("IN_BTIT"))
       die("non direct access!");
@@ -9,21 +9,21 @@ if (!defined("IN_BTIT"))
 
 $link = urldecode($_GET["returnto"]);
 
-if ($link=="")
+if ($link == "")
    $link="index.php?page=torrents";
 
 // save editing and got back from where i come
 
 if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
 
-   if ($_POST["action"]==$language["FRM_CONFIRM"]) {
+   if ($_POST["action"] == $language["FRM_CONFIRM"]) {
 
-   if ($_POST["name"]=='')
+   if ($_POST["name"] == '')
         {
         stderr("Error!","You must specify torrent name.");
    }
 
-   if ($_POST["comment"]=='')
+   if ($_POST["comment"] == '')
         {
         stderr("Error!","You must specify description.");
    }
@@ -35,10 +35,10 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
     $visible = sqlesc($_POST["visible"]);
    }
    /*Mod by losmi -visible end*/
-   $fname=htmlspecialchars(AddSlashes(unesc($_POST["name"])));
-   $torhash=AddSlashes($_POST["info_hash"]);
-   write_log("Modified torrent $fname ($torhash)","modify");
-   do_sqlquery("UPDATE {$TABLE_PREFIX}files SET filename='$fname', comment='" . AddSlashes($_POST["comment"]) . "', category=" . intval($_POST["category"]) . "  , visible = $visible WHERE info_hash='" . $torhash . "'",true);
+   $fname = htmlspecialchars(AddSlashes(unesc($_POST["name"])));
+   $torhash = AddSlashes($_POST["info_hash"]);
+   write_log("Modified torrent $fname ($torhash)", "modify");
+   do_sqlquery("UPDATE {$TABLE_PREFIX}files SET filename='$fname', comment='" . AddSlashes($_POST["comment"]) . "', category=" . intval($_POST["category"]) . "  , visible = $visible WHERE info_hash='" . $torhash . "'", true);
 $userfile = $_FILES["userfile"];
         $screen1 = $_FILES["screen1"];
         $screen2 = $_FILES["screen2"];

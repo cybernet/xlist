@@ -65,16 +65,18 @@ else
 
 if(!$CURUSER || $CURUSER["view_torrents"] != "yes")
 {
-    err_msg($language["ERROR"],$language["NOT_AUTHORIZED"]." ".$language["MNU_TORRENT"]."!<br />\n".$language["SORRY"]."...");
+    err_msg($language["ERROR"], $language["NOT_AUTHORIZED"]." ".$language["MNU_TORRENT"]."!<br />\n".$language["SORRY"]."...");
     stdfoot();
     exit();
 }
 
 
-$res = get_result("SELECT f.screen1, f.screen2, f.screen3, f.image, u.warn, f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'",true);
+$res = get_result("SELECT f.screen1, f.screen2, f.screen3, f.image, u.warn, f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'", true);
+
 //die("SELECT f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'");
+
 if (count($res) < 1)
-   stderr($language["ERROR"], "Bad ID!",$GLOBALS["usepopup"]);
+   stderr($language["ERROR"], "Bad ID!", $GLOBALS["usepopup"]);
 $row = $res[0];
 
 $spacer = "&nbsp;&nbsp;";
@@ -83,18 +85,18 @@ $spacer = "&nbsp;&nbsp;";
 $torrenttpl = new bTemplate();
 $torrenttpl->set("language", $language);
 $torrenttpl->set("IMAGEIS",!empty($row["image"]), TRUE);
-      $torrenttpl->set("SCREENIS1",!empty($row["screen1"]), TRUE);
-      $torrenttpl->set("SCREENIS2",!empty($row["screen2"]), TRUE);
-      $torrenttpl->set("SCREENIS3",!empty($row["screen3"]), TRUE);
-      $torrenttpl->set("uploaddir", $uploaddir);
+$torrenttpl->set("SCREENIS1",!empty($row["screen1"]), TRUE);
+$torrenttpl->set("SCREENIS2",!empty($row["screen2"]), TRUE);
+$torrenttpl->set("SCREENIS3",!empty($row["screen3"]), TRUE);
+$torrenttpl->set("uploaddir", $uploaddir);
 if (!empty($row["image"]))
 {
 $image1 = "".$row["image"]."";
 $uploaddir = $GLOBALS["uploaddir"];
-$image_new = "cyberfun_img/$image1"; //url of picture
+$image_new = "$uploaddir/$image1"; //url of picture
 //$image_new = str_replace(' ','%20',$image_new); //take url and replace spaces
 $max_width = "490"; //maximum width allowed for pictures
-$resize_width= "490"; //same as max width
+$resize_width = "490"; //same as max width
 $size = getimagesize("$image_new"); //get the actual size of the picture
 $width = $size[0]; // get width of picture
 $height = $size[1]; // get height of picture
@@ -360,7 +362,7 @@ else {
 
        $comments[$count]["elapsed"] = "(".get_elapsed_time($subrow["data"]) . " ago)";
        $comments[$count]["avatar"] = "<img onload=\"resize_avatar(this);\" src=\"".($subrow["avatar"] && $subrow["avatar"] != "" ? htmlspecialchars($subrow["avatar"]): "$STYLEURL/images/default_avatar.gif" )."\" alt=\"\" />";
-       $comments[$count]["ratio"] = "<img src=\"images/arany.png\">&nbsp;".(intval($subrow['downloaded']) > 0?number_format($subrow['uploaded'] / $subrow['downloaded'], 2):"---");
+       $comments[$count]["ratio"] = "<img src=\"images/arany.png\">&nbsp;".(intval($subrow['downloaded']) > 0 ? number_format($subrow['uploaded'] / $subrow['downloaded'], 2):"---");
        $comments[$count]["uploaded"] = "<img src=\"images/speed_up.png\">&nbsp;".(makesize($subrow["uploaded"]));
        $comments[$count]["downloaded"] = "<img src=\"images/speed_down.png\">&nbsp;".(makesize($subrow["downloaded"]));
        // only users able to delete torrents can delete comments...
