@@ -2,6 +2,12 @@
 
 // CyBerFuN.ro & xList.ro
 
+// CyBerFuN .::. My Panel
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By CyBerNe7
+
 ignore_user_abort(1);
 
 $GLOBALS["peer_id"] = "";
@@ -116,7 +122,7 @@ $iscompact = (isset($_GET["compact"])?$_GET["compact"] == '1':false);
 // controll if client can handle gzip
 if ($GZIP_ENABLED)
     {
-    if (stristr($_SERVER["HTTP_ACCEPT_ENCODING"],"gzip") && extension_loaded('zlib') && ini_get("zlib.output_compression") == 0)
+    if (stristr($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip") && extension_loaded('zlib') && ini_get("zlib.output_compression") == 0)
         {
         if (ini_get('output_handler') != 'ob_gzhandler' && !$iscompact)
             {
@@ -179,7 +185,8 @@ $uploaded = (float)($_GET["uploaded"]);
 $left = (float)($_GET["left"]);
 
 // if private announce turned on
-if ($PRIVATE_ANNOUNCE) {
+if ($PRIVATE_ANNOUNCE) 
+{
 $pid = AddSlashes(StripSlashes($pid));
 
 // if PID empty string or not send by client
@@ -191,12 +198,12 @@ if ($pid == "" || !$pid)
 if ($PRIVATE_ANNOUNCE) {
   $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE pid='".$pid."' LIMIT 1");
   if (!$respid || mysql_num_rows($respid) != 1)
-     show_error("Invalid PiD (private announce): $pid. Please redownload torrent from $BASEURL.");
+     show_error("Invalid PiD (private announce): $pid. Please redownload torrent from $BASEURL");
   else
       {
       $rowpid = mysql_fetch_assoc($respid);
       if ($rowpid["can_download"] != "yes" && $PRIVATE_ANNOUNCE)
-         show_error("Sorry your level ($rowpid[level]) is not allowed to download from $BASEURL.");
+         show_error("Sorry your level ($rowpid[level]) is not allowed to download from $BASEURL");
       //waittime
       elseif ($rowpid["WT"] > 0) {
         $wait = 0;
@@ -350,7 +357,7 @@ function getPeerInfo($user, $hash)
 // Any section of code might need to make a new peer, so this is a function here.
 // I don't want to put it into funcsv2, even though it should, just for consistency's sake.
 
-function start($info_hash, $ip, $port, $peer_id, $left, $downloaded=0, $uploaded=0, $upid="")
+function start($info_hash, $ip, $port, $peer_id, $left, $downloaded = 0, $uploaded = 0, $upid = "")
 {
   global $BASEURL, $TABLE_PREFIX;
 
@@ -653,13 +660,13 @@ if ($LIVESTATS)
          {
          $livestat = mysql_fetch_assoc($resstat);
          // only if uploaded/downloaded are >= stored data in peer list
-         //if ($uploaded>=$livestat["uploaded"])
-               $newup = max(0,($uploaded-$livestat["uploaded"]));
+         //if ($uploaded >= $livestat["uploaded"])
+               $newup = max(0, ($uploaded-$livestat["uploaded"]));
          //else
          //      $newup=$uploaded;
 
          //if ($downloaded>=$livestat["downloaded"])
-               $newdown = max(0,($downloaded-$livestat["downloaded"]));
+               $newdown = max(0, ($downloaded-$livestat["downloaded"]));
          //else
          //      $newdown=$downloaded;
          // rev 485
@@ -705,7 +712,7 @@ switch ($event)
               quickQuery("UPDATE {$TABLE_PREFIX}history set active='yes',agent='".getagent($agent,$peer_id)."' WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
               // record is not present, create it (only if not seeder: original seeder don't exist in history table, other already exists)
               if (mysql_affected_rows() == 0 && $left > 0)
-                 quickQuery("INSERT INTO {$TABLE_PREFIX}history (uid,infohash,active,agent) VALUES (".$curuid["id"].",'$info_hash','yes','".getagent($agent,$peer_id)."')");
+                 quickQuery("INSERT INTO {$TABLE_PREFIX}history (uid,infohash,active,agent) VALUES (".$curuid["id"].",'$info_hash','yes','".getagent($agent, $peer_id)."')");
             }
           mysql_free_result($resu);
        }
