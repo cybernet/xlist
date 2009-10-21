@@ -1,5 +1,12 @@
 <?php
-// CyBerFuN
+
+// CyBerFuN.ro & xList.ro
+
+// xList .::. Users Details
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By CyBerNe7
 
 
 if (!defined("IN_BTIT"))
@@ -11,18 +18,18 @@ require(load_language("lang_userdetails.php"));
 
 $id = intval(0 + $_GET["id"]);
 if (!isset($_GET["returnto"])) $_GET["returnto"] = "";
-$link=rawurlencode($_GET["returnto"]);
+$link = rawurlencode($_GET["returnto"]);
 
 if ($CURUSER["view_users"] != "yes")
    {
-       err_msg($language["ERROR"],$language["NOT_AUTHORIZED"]." ".$language["MEMBERS"]);
+       err_msg($language["ERROR"], $language["NOT_AUTHORIZED"]." ".$language["MEMBERS"]);
        stdfoot();
        die();
    }
 
 if ($id == 1)
    { // trying to view guest details?
-       err_msg($language["ERROR"],$language["GUEST_DETAILS"]);
+       err_msg($language["ERROR"], $language["GUEST_DETAILS"]);
        stdfoot();
        die();
    }
@@ -54,7 +61,7 @@ if ($id > 1) {
    $num = mysql_num_rows($res);
    if ($num == 0)
       {
-       err_msg($language["ERROR"],$language["BAD_ID"]);
+       err_msg($language["ERROR"], $language["BAD_ID"]);
        stdfoot();
        die();
        }
@@ -64,7 +71,7 @@ if ($id > 1) {
 }
 else
       {
-       err_msg($language["ERROR"],$language["BAD_ID"]);
+       err_msg($language["ERROR"], $language["BAD_ID"]);
        stdfoot();
        die();
        }
@@ -74,7 +81,7 @@ include("include/offset.php");
 // user's ratio
 if (intval($row["downloaded"]) > 0)
  {
-   $sr = $row["uploaded"]/$row["downloaded"];
+   $sr = $row["uploaded"] / $row["downloaded"];
    if ($sr >= 4)
      $s = "images/smilies/thumbsup.gif";
    else if ($sr >= 2)
@@ -262,7 +269,7 @@ if ($sanq[0] > 0)
    $tortpl = array();
    $i = 0;
 
-    list($pagertop, $pagerbottom, $limit) = pager(($utorrents==0?15:$utorrents), $sanq[0], "index.php?page=userdetails&amp;id=$id&amp;pagename=active&amp;",array("pagename" => "active"));
+    list($pagertop, $pagerbottom, $limit) = pager(($utorrents == 0?15:$utorrents), $sanq[0], "index.php?page=userdetails&amp;id=$id&amp;pagename=active&amp;",array("pagename" => "active"));
     $userdetailtpl->set("pagertopact", $pagertop);
     if ($XBTT_USE)
             $anq = do_sqlquery("SELECT '127.0.0.1' as ip, f.info_hash as infohash, f.filename, f.size, IF(p.left=0,'seeder','leecher') as status, p.downloaded, p.uploaded, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished

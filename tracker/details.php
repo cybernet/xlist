@@ -2,9 +2,10 @@
 
 // CyBerFuN.ro & xList.ro
 
-// CyBerFuN Tracker .::. DeTAiLS
+// xList .::. DeTAiLS
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
+// http://xlist.ro/
 // Modified By CyBerNe7
 
 
@@ -343,7 +344,7 @@ else {
      if($CURUSER["uid"] > 1)
        $torrenttpl->set("INSERT_COMMENT", TRUE, TRUE);
      else
-       $torrenttpl->set("INSERT_COMMENT",false,TRUE);
+       $torrenttpl->set("INSERT_COMMENT", false, TRUE);
      $comments = array();
      $count = 0;
      while ($subrow = mysql_fetch_array($subres)) {
