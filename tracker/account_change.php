@@ -39,7 +39,7 @@ require_once("include/config.php");
 if (isset($_GET["style"]))
     $style = intval($_GET["style"]);
 else
-    $style  1;
+    $style = 1;
 if (isset($_GET["returnto"]))
    $url = urldecode($_GET["returnto"]);
 else
