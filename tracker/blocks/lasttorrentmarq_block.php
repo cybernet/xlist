@@ -1,4 +1,4 @@
-<?php
+<?
 
 if (!$CURUSER || $CURUSER["view_torrents"]=="no")
    {

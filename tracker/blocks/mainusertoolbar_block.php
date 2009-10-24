@@ -4,38 +4,38 @@
 
 global $INVITATIONSON, $CURUSER, $FORUMLINK, $db_prefix, $XBTT_USE;
 
-  if (isset($CURUSER) && $CURUSER && $CURUSER["uid"]>1)
+  if (isset($CURUSER) && $CURUSER && $CURUSER["uid"] > 1)
   {
   print("<form name=\"jump1\" action=\"index.php\" method=\"post\">\n");
 ?>
 <table cellpadding="0" cellspacing="0" width="100%">
 <tr>
 <?php
-$style=style_list();
-$langue=language_list();
+$style = style_list();
+$langue = language_list();
 if ($XBTT_USE)
    {
-    $udownloaded="u.downloaded+IFNULL(x.downloaded,0)";
-    $uuploaded="u.uploaded+IFNULL(x.uploaded,0)";
-    $utables="{$TABLE_PREFIX}users u LEFT JOIN xbt_users x ON x.uid=u.id";
+    $udownloaded = "u.downloaded+IFNULL(x.downloaded,0)";
+    $uuploaded = "u.uploaded+IFNULL(x.uploaded,0)";
+    $utables = "{$TABLE_PREFIX}users u LEFT JOIN xbt_users x ON x.uid=u.id";
    }
 else
     {
-    $udownloaded="u.downloaded";
-    $uuploaded="u.uploaded";
-    $utables="{$TABLE_PREFIX}users u";
+    $udownloaded = "u.downloaded";
+    $uuploaded = "u.uploaded";
+    $utables = "{$TABLE_PREFIX}users u";
 }
 
-$resuser=do_sqlquery("SELECT seedbonus, $udownloaded as downloaded,$uuploaded as uploaded FROM $utables WHERE u.id=".$CURUSER["uid"]);
-$rowuser= mysql_fetch_array($resuser);
+$resuser= do_sqlquery("SELECT seedbonus, $udownloaded as downloaded,$uuploaded as uploaded FROM $utables WHERE u.id=".$CURUSER["uid"]);
+$rowuser = mysql_fetch_array($resuser);
 
 print("<td style=\"text-align:center;\" align=\"center\">".$language["USER_LEVEL"].": ".$CURUSER["level"]."</td>\n");
 print("<td class=\"green\" align=\"center\">&uarr;&nbsp;".makesize($rowuser['uploaded']));
 print("</td><td class=\"red\" align=\"center\">&darr;&nbsp;".makesize($rowuser['downloaded']));
-print("</td><td class=\"yellow\" align=\"center\">(SR ".($rowuser['downloaded']>0?number_format($rowuser['uploaded']/$rowuser['downloaded'],2):"---").")</td>\n");
-print("<td class=\"green\" align=\"center\"><a href=index.php?page=modules&module=seedbonus>(BON ".($rowuser['seedbonus']>0?number_format($rowuser['seedbonus'],2):"---").")</a></td>\n");
+print("</td><td class=\"yellow\" align=\"center\">(SR ".($rowuser['downloaded'] > 0 ? number_format($rowuser['uploaded'] / $rowuser['downloaded'], 2):"---").")</td>\n");
+print("<td class=\"green\" align=\"center\"><a href=index.php?page=modules&module=seedbonus>(BON ".($rowuser['seedbonus'] > 0 ? number_format($rowuser['seedbonus'], 2):"---").")</a></td>\n");
 
-if ($CURUSER["admin_access"]=="yes")
+if ($CURUSER["admin_access"] == "yes")
    print("\n<td align=\"center\" style=\"text-align:center;\"><a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."\">".$language["MNU_ADMINCP"]."</a></td>\n");
 
 print("<td style=\"text-align:center;\" align=\"center\"><a href=\"index.php?page=usercp&amp;uid=".$CURUSER["uid"]."\">".$language["USER_CP"]."</a></td>\n");
@@ -43,20 +43,20 @@ print("<td style=\"text-align:center;\" align=\"center\"><a href=\"index.php?pag
 if($INVITATIONSON)
 {
     require(load_language("lang_usercp.php"));
-    $resinvs=do_sqlquery("SELECT invitations FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"]);
-    $arrinvs=mysql_fetch_row($resinvs);
-    $invs=$arrinvs[0];
-    print("<td style=\"text-align:center;\" align=\"center\"><a href=\"index.php?page=usercp&do=invite&action=read&uid=".$CURUSER["uid"]."\">".$language["INVITATIONS"]." ".($invs>0?"(".$invs.")":"")."</a></td>\n");
+    $resinvs = do_sqlquery("SELECT invitations FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"]);
+    $arrinvs = mysql_fetch_row($resinvs);
+    $invs = $arrinvs[0];
+    print("<td style=\"text-align:center;\" align=\"center\"><a href=\"index.php?page=usercp&do=invite&action=read&uid=".$CURUSER["uid"]."\">".$language["INVITATIONS"]." ".($invs > 0 ? "(".$invs.")":"")."</a></td>\n");
 }
 
-if($FORUMLINK=="smf")
-    $resmail=do_sqlquery("SELECT unreadMessages FROM {$db_prefix}members WHERE ID_MEMBER=".$CURUSER["smf_fid"]);
+if($FORUMLINK == "smf")
+    $resmail = do_sqlquery("SELECT unreadMessages FROM {$db_prefix}members WHERE ID_MEMBER=".$CURUSER["smf_fid"]);
 else
-    $resmail=do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}messages WHERE readed='no' AND receiver=$CURUSER[uid]");
-if ($resmail && mysql_num_rows($resmail)>0)
+    $resmail = do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}messages WHERE readed='no' AND receiver=$CURUSER[uid]");
+if ($resmail && mysql_num_rows($resmail) > 0)
    {
-    $mail=mysql_fetch_row($resmail);
-    if ($mail[0]>0)
+    $mail = mysql_fetch_row($resmail);
+    if ($mail[0] > 0)
        print("<td style=\"text-align:center;\" align=\"center\"><a href=\"index.php?page=usercp&amp;uid=".$CURUSER["uid"]."&amp;do=pm&amp;action=list\">".$language["MAILBOX"]."</a> (<font color=\"#FF0000\"><b>$mail[0]</b></font>)</td>\n");
     else
         print("<td style=\"text-align:center;\" align=\"center\"><a href=\"index.php?page=usercp&amp;uid=".$CURUSER["uid"]."&amp;do=pm&amp;action=list\">".$language["MAILBOX"]."</a></td>\n");
@@ -68,7 +68,7 @@ print("\n<td style=\"text-align:center;\"><select name=\"style\" size=\"1\" onch
 foreach($style as $a)
                {
                print("<option ");
-               if ($a["id"]==$CURUSER["style"])
+               if ($a["id"] == $CURUSER["style"])
                   print("selected=\"selected\"");
                print(" value=\"account_change.php?style=".$a["id"]."&amp;returnto=".urlencode($_SERVER['REQUEST_URI'])."\">".$a["style"]."</option>");
                }
@@ -78,12 +78,12 @@ print("\n<td style=\"text-align:center;\"><select name=\"langue\" size=\"1\" onc
 foreach($langue as $a)
                {
                print("<option ");
-               if ($a["id"]==$CURUSER["language"])
+               if ($a["id"] == $CURUSER["language"])
                   print("selected=\"selected\"");
                print(" value=\"account_change.php?langue=".$a["id"]."&amp;returnto=".urlencode($_SERVER['REQUEST_URI'])."\">".$a["language"]."</option>");
                }
 print("</select></td>");
-//print("<td class=lista align=center>".USER_LASTACCESS.": ".date("d/m/Y H:i:s",$CURUSER["lastconnect"])."</td>\n");
+// print("<td class=lista align=center>".USER_LASTACCESS.": ".date("d/m/Y H:i:s",$CURUSER["lastconnect"])."</td>\n");
 ?>
 </tr>
 </table>
@@ -113,6 +113,6 @@ else
     </tr>
     </table>
     </form>
-    <?php
+<?
 }
 ?>

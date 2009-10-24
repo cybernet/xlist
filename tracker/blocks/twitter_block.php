@@ -20,6 +20,6 @@ new TWTR.Widget({
       links: '#618ea1'
     }
   }
-}).render().setProfile('cyberfun_ro').start();
+}).render().setProfile('xlist_ro').start();
 </script>");
 ?>
