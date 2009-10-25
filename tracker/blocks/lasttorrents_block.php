@@ -1,14 +1,20 @@
 <?php
-// CyBerFuN
+// CyBerFuN.ro & xList.ro
+
+// xList .::. Last Torrents Block
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By CyBerNe7
 
 global $CURUSER;
-if (!$CURUSER || $CURUSER["view_torrents"]=="no")
+if (!$CURUSER || $CURUSER["view_torrents"] == "no")
    {
     // do nothing
    }
 else
     {
-  global $BASEURL, $STYLEPATH, $dblist, $XBTT_USE,$btit_settings;
+  global $BASEURL, $STYLEPATH, $dblist, $XBTT_USE, $btit_settings;
 
   block_begin(LAST_TORRENTS);
 
@@ -61,9 +67,9 @@ if ($hover=="")
 // End baloon hack DT
 
        if ($GLOBALS["usepopup"])
-           echo "\n\t<td width=\"45%\" class=\"lista\" style=\"padding-left:10px;\"><a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id="  . $data['hash'] . "');\" onmouseover=\" return overlib('<img src=cyberfun_img/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">" . $filename . "</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">Multi.</span>)")."</td>";
+           echo "\n\t<td width=\"45%\" class=\"lista\" style=\"padding-left:10px;\"><a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id="  . $data['hash'] . "');\" onmouseover=\" return overlib('<img src=".$GLOBALS["uploaddir"]."/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">" . $filename . "</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">Multi.</span>)")."</td>";
        else
-     echo "\n\t<td width=\"45%\" class=\"lista\" style=\"padding-left:10px;\"><a href=\"index.php?page=torrent-details&amp;id=" . $data['hash'] . "\" onmouseover=\" return overlib('<img src=cyberfun_img/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">" . $filename . "</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">Multi.</span>)")."</td>";
+     echo "\n\t<td width=\"45%\" class=\"lista\" style=\"padding-left:10px;\"><a href=\"index.php?page=torrent-details&amp;id=" . $data['hash'] . "\" onmouseover=\" return overlib('<img src=".$GLOBALS["uploaddir"]."/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">" . $filename . "</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">Multi.</span>)")."</td>";
        echo "\n\t<td align=\"center\" class=\"lista\" width=\"45\" style=\"text-align: center;\"><a href=\"index.php?page=torrents&amp;category=$data[catid]\">" . image_or_link( ($data["image"] == "" ? "" : "$STYLEPATH/images/categories/" . $data["image"]), "", $data["cname"]) . "</a></td>";
 
     //waitingtime
