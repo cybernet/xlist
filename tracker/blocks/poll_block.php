@@ -1,57 +1,34 @@
-<?php
-/////////////////////////////////////////////////////////////////////////////////////
-// xbtit - Bittorrent tracker/frontend
-//
-// Copyright (C) 2004 - 2007  Btiteam
-//
-//    This file is part of xbtit.
-//
-// Redistribution and use in source and binary forms, with or without modification,
-// are permitted provided that the following conditions are met:
-//
-//   1. Redistributions of source code must retain the above copyright notice,
-//      this list of conditions and the following disclaimer.
-//   2. Redistributions in binary form must reproduce the above copyright notice,
-//      this list of conditions and the following disclaimer in the documentation
-//      and/or other materials provided with the distribution.
-//   3. The name of the author may not be used to endorse or promote products
-//      derived from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-// IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
-// TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-////////////////////////////////////////////////////////////////////////////////////
+<?
+// CyBerFuN.ro & xList.ro
+
+// xList .::. Poll Block
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By CyBerNe7
 
 
 
-     $res =do_sqlquery("SELECT * FROM {$TABLE_PREFIX}polls WHERE status='true'") or die(mysql_error());
-     $result=mysql_fetch_array($res);
-     $pid=$result["pid"];
+     $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}polls WHERE status='true'") or die(mysql_error());
+     $result = mysql_fetch_array($res);
+     $pid = $result["pid"];
 if($result){
-     $res2=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}poll_voters WHERE pid='$pid'") or die(mysql_error());
-     $question=$result["poll_question"];
+     $res2 = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}poll_voters WHERE pid='$pid'") or die(mysql_error());
+     $question = $result["poll_question"];
      block_begin("Poll: $question");
      print("<tr><td class=blocklist align=center>\n");
      print("<table cellspacing=2 cellpading=2>\n");
 if(!isset ($CURUSER)) global $CURUSER;
 $total_votes = 0;
-$check=0;
-if($CURUSER["id_level"]<3 || (isset($_POST['showres']) && $_POST['showres'] == 'Show Results')) $check=1;
-else $check=0;
-while($voters=mysql_fetch_array($res2)){
-if($CURUSER["uid"]==$voters["memberid"]) $check=1;
+$check = 0;
+if($CURUSER["id_level"] < 3 || (isset($_POST['showres']) && $_POST['showres'] == 'Show Results')) $check=1;
+else $check = 0;
+while($voters = mysql_fetch_array($res2)){
+if($CURUSER["uid"] == $voters["memberid"]) $check = 1;
 }
 
 
-        if($check==1){  
+        if($check == 1){  
             
             $poll_answers = unserialize(stripslashes($result["choices"]));
             
@@ -81,7 +58,7 @@ if($CURUSER["uid"]==$voters["memberid"]) $check=1;
 
 
 
-    elseif($check==0){
+    elseif($check == 0){
 // Show poll form
 
 
@@ -117,10 +94,10 @@ if($CURUSER["uid"]==$voters["memberid"]) $check=1;
 <?php
 }               
 if(isset($_POST['submit']) && $_POST['submit'] == 'Submit' && isset($_POST['poll_vote']) && $check!=1){
-    $voteid=$_POST['poll_vote'];
-    $memberid=$CURUSER["uid"];
-    $ip= $_SERVER['REMOTE_ADDR'];
-    $new_poll_array=array();
+    $voteid = $_POST['poll_vote'];
+    $memberid = $CURUSER["uid"];
+    $ip = $_SERVER['REMOTE_ADDR'];
+    $new_poll_array = array();
     do_sqlquery("INSERT INTO {$TABLE_PREFIX}poll_voters SET ip='$ip', votedate='".time()."', pid='$pid', memberid='$memberid'");
     $poll_answers = unserialize(stripslashes($result["choices"]));
     reset($poll_answers);
@@ -132,8 +109,8 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Submit' && isset($_POST['poll
         if($id==$voteid) $votes++;
         $new_poll_array[] = array( $id, $choice, $votes);
     }
-    $votings= addslashes(serialize($new_poll_array));
-    $uvotes=$result["votes"]+1;
+    $votings = addslashes(serialize($new_poll_array));
+    $uvotes = $result["votes"]+1;
     do_sqlquery("UPDATE {$TABLE_PREFIX}polls SET choices='$votings' WHERE pid='$pid'");
     do_sqlquery("UPDATE {$TABLE_PREFIX}polls SET votes='$uvotes' WHERE pid='$pid'");
     redirect($_SERVER['REQUEST_URI']);

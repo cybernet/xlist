@@ -1,6 +1,12 @@
-<?php
+<?
 
-// CyBerFuN
+// CyBerFuN.ro & xList.ro
+
+// xList .::. Menu Block
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By CyBerNe7
 
 global $CURUSER;
 
@@ -8,31 +14,31 @@ global $CURUSER;
    //print("<tr><td class=\"lista\" align=\"center\">\n");
    print("<table class=\"lista\" width=\"100%\" cellspacing=\"0\">\n<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php\">".$language["MNU_INDEX"]."</a></td></tr>\n");
 
-   if ($CURUSER["view_torrents"]=="yes")
+   if ($CURUSER["view_torrents"] == "yes")
       {
       print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=torrents\">".$language["MNU_TORRENT"]."</a></td></tr>\n");
       print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=extra-stats\">".$language["MNU_STATS"]."</a></td></tr>\n");
       }
-   if ($CURUSER["can_upload"]=="yes")
+   if ($CURUSER["can_upload"] == "yes")
       print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=upload\">".$language["MNU_UPLOAD"]."</a></td></tr>\n");
-   if ($CURUSER["view_users"]=="yes")
+   if ($CURUSER["view_users"] == "yes")
       print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=users\">".$language["MNU_MEMBERS"]."</a></td></tr>\n");
-   if ($CURUSER["view_news"]=="yes")
+   if ($CURUSER["view_news"] == "yes")
       print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=viewnews\">".$language["MNU_NEWS"]."</a></td></tr>\n");
-if ($CURUSER["view_users"]=="yes")
+if ($CURUSER["view_users"] == "yes")
 {
    print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=staff\">".$language["STAFF"]."</a></td></tr>\n");
 }
-   if ($CURUSER["view_forum"]=="yes")
+   if ($CURUSER["view_forum"] == "yes")
       {
-        if ($GLOBALS["FORUMLINK"]=="" || $GLOBALS["FORUMLINK"]=="internal" || $GLOBALS["FORUMLINK"]=="smf")
+        if ($GLOBALS["FORUMLINK"] == "" || $GLOBALS["FORUMLINK"]=="internal" || $GLOBALS["FORUMLINK"] == "smf")
            print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=forum\">".$language["MNU_FORUM"]."</a></td></tr>\n");
-        elseif ($GLOBALS["FORUMLINK"]=="smf")
+        elseif ($GLOBALS["FORUMLINK"] == "smf")
            print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"".$GLOBALS["FORUMLINK"]."\">".$language["MNU_FORUM"]."</a></td></tr>\n");
         else
             print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"".$GLOBALS["FORUMLINK"]."\">".$language["MNU_FORUM"]."</a></td></tr>\n");
       }
-   if ($CURUSER["uid"]==1 || !$CURUSER)
+   if ($CURUSER["uid"] == 1 || !$CURUSER)
       print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=login\">".$language["LOGIN"]."</a></td></tr>\n</table>\n");
    else
        print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"logout.php\">".$language["LOGOUT"]."</a></td></tr>\n</table>\n");

@@ -1,34 +1,12 @@
-<?php
-/////////////////////////////////////////////////////////////////////////////////////
-// xbtit - Bittorrent tracker/frontend
-//
-// Copyright (C) 2004 - 2007  Btiteam
-//
-//    This file is part of xbtit.
-//
-// Redistribution and use in source and binary forms, with or without modification,
-// are permitted provided that the following conditions are met:
-//
-//   1. Redistributions of source code must retain the above copyright notice,
-//      this list of conditions and the following disclaimer.
-//   2. Redistributions in binary form must reproduce the above copyright notice,
-//      this list of conditions and the following disclaimer in the documentation
-//      and/or other materials provided with the distribution.
-//   3. The name of the author may not be used to endorse or promote products
-//      derived from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-// IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
-// TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-////////////////////////////////////////////////////////////////////////////////////
+<?
+
+// CyBerFuN.ro & xList.ro
+
+// xList .::. ShoutBoX Block
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By CyBerNe7
 
 require_once("include/smilies.php");
 if (!isset($CURUSER)) global $CURUSER;
@@ -49,11 +27,11 @@ function PopMoreSmiles(form,name) {
 }
 
 </script>
-<?php
+<?
 function clean_shoutbox(){
   $f=@fopen("chat.php","w");
   if($f){
-    fwrite($f, "<?php\n?>");
+    fwrite($f, "<?\n?>");
   }
   @fclose($f);
   redirect($_SERVER["PHP_SELF"]);
@@ -71,14 +49,14 @@ function format_shout($text)
 
     $s = unesc($s);
 
-    $f=@fopen("badwords.txt","r");
-    if ($f && filesize ("badwords.txt")!=0)
+    $f = @fopen("badwords.txt","r");
+    if ($f && filesize ("badwords.txt") != 0)
        {
-       $bw=fread($f,filesize("badwords.txt"));
-       $badwords=explode("\n",$bw);
-       for ($i=0;$i<count($badwords);++$i)
-           $badwords[$i]=trim($badwords[$i]);
-       $s = str_replace($badwords,"*censured*",$s);
+       $bw = fread($f,filesize("badwords.txt"));
+       $badwords = explode("\n", $bw);
+       for ($i = 0;$i < count($badwords);++$i)
+           $badwords[$i] = trim($badwords[$i]);
+       $s = str_replace($badwords, "*censured*", $s);
        }
     @fclose($f);
 
@@ -155,12 +133,12 @@ function smile() {
 <div align="center">
   <table cellpadding="1" cellspacing="1">
   <tr>
-  <?php
+  <?
 
   global $smilies, $count;
   reset($smilies);
 
-  while ((list($code, $url) = each($smilies)) && $count<20)
+  while ((list($code, $url) = each($smilies)) && $count < 20)
         {
         print("\n<td><a href=\"javascript: SmileIT('".str_replace("'","\'",$code)."')\"><img border=\"0\" src=\"images/smilies/$url\" alt=\"$code\" /></a></td>");
         $count++;
@@ -169,7 +147,7 @@ function smile() {
   </tr>
   </table>
 </div>
-<?php
+<?
 }
 
 function safehtml($string)
@@ -188,8 +166,8 @@ $validcharset=array(
 "Shift_JIS",
 "EUC-JP");
 
-   if (in_array($GLOBALS["charset"],$validcharset))
-      return htmlentities($string,ENT_COMPAT,$GLOBALS["charset"]);
+   if (in_array($GLOBALS["charset"], $validcharset))
+      return htmlentities($string, ENT_COMPAT, $GLOBALS["charset"]);
    else
        return htmlentities($string);
 }
@@ -205,7 +183,7 @@ fclose($file);
 return $n ? $n : FALSE;
 }
 
-if (!file_exists("chat.php")) file_save("chat.php","<?php\n\$msg = ".var_export($msg,TRUE)."\n?>");
+if (!file_exists("chat.php")) file_save("chat.php","<?\n\$msg = ".var_export($msg,TRUE)."\n?>");
 
 include "chat.php";
 /*
@@ -231,11 +209,11 @@ if (!empty($_POST['mess']) && !empty($_POST['pseudo']))
 $msg2 = array_reverse($msg);
 echo '<div align="left" class="chat"><table width="95%" align="center"> <tr><td>';
 include("include/offset.php");
-for ($i=0;$i<10 && $i<count($msg2);++$i)
+for ($i = 0;$i < 10 && $i < count($msg2);++$i)
 {
   $sql="SELECT u.id as uid,prefixcolor,suffixcolor FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id_level=u.id_level WHERE u.username='".$msg2[$i]['pseudo']."'";
   $res = do_sqlquery($sql);
-  $result=mysql_fetch_assoc($res);
+  $result = mysql_fetch_assoc($res);
   // user or level don't exit in db
   if (!$result)
     echo '<b>'.'</b>&nbsp;&nbsp;&nbsp;['.date("d/m/y H:i",$msg2[$i]['date']-$offset).']'.'&nbsp;&nbsp;<b>'.$msg2[$i]['pseudo'].'</b>:&nbsp;&nbsp;&nbsp;'.format_shout($msg2[$i]['texte']).'<hr>';
@@ -248,12 +226,12 @@ for ($i=0;$i<10 && $i<count($msg2);++$i)
 }
 echo "</td></tr></table></div>";
 
-file_save("chat.php", "<?php\n\$msg = ".var_export($msg,TRUE)."\n?>");
+file_save("chat.php", "<?\n\$msg = ".var_export($msg,TRUE)."\n?>");
 
 unset ($_POST['pseudo']);
 unset ($_POST['mess']);
 
-if ($CURUSER["uid"]>1)
+if ($CURUSER["uid"] > 1)
 {
 /*
 header("Expires: Mon, 1 Jan 1990 01:00:00 GMT");
@@ -263,31 +241,31 @@ header("Pragma: no-cache");
 */
 ?>
 <div class="miniform" align="center">
-<form method="post" name="shout" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-<input type="hidden" name="pseudo" value="<?php echo $CURUSER["username"]?>" /><br />
+<form method="post" name="shout" action="<? echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+<input type="hidden" name="pseudo" value="<? echo $CURUSER["username"]?>" /><br />
 <input name="mess" size="70" maxlength="100" />
 <br />
-<a href="javascript: PopMoreSmiles('shout','mess')">Emoticons</a> &nbsp; &nbsp; &nbsp;<input name="submit" type="submit" value="<?php echo $language["FRM_CONFIRM"]; ?>" />&nbsp;&nbsp;
-<input name="submit" type="submit" value="<?php echo $language["FRM_REFRESH"]; ?>" />&nbsp;&nbsp;
-<?php
+<a href="javascript: PopMoreSmiles('shout','mess')">Emoticons</a> &nbsp; &nbsp; &nbsp;<input name="submit" type="submit" value="<? echo $language["FRM_CONFIRM"]; ?>" />&nbsp;&nbsp;
+<input name="submit" type="submit" value="<? echo $language["FRM_REFRESH"]; ?>" />&nbsp;&nbsp;
+<?
 $messages = count($msg);
 if ($messages > 0){
-if ($CURUSER["edit_torrents"]=="yes"){
+if ($CURUSER["edit_torrents"] == "yes"){
 ?>
-    <input type="submit" name="action" value="<?php echo $language["FRM_CLEAN"]; ?>" /> &nbsp; &nbsp; &nbsp;<a href="javascript: Pophistory()"><?php echo $language["HISTORY"]; ?></a>
-<?php
+    <input type="submit" name="action" value="<? echo $language["FRM_CLEAN"]; ?>" /> &nbsp; &nbsp; &nbsp;<a href="javascript: Pophistory()"><? echo $language["HISTORY"]; ?></a>
+<?
 if (isset($_POST['action']) && $_POST['action'] == 'Clean') clean_shoutbox();
 }
 else {
 ?>
-<a href="javascript: Pophistory()"><?php echo $language["HISTORY"]; ?></a>
-<?php
+<a href="javascript: Pophistory()"><? echo $language["HISTORY"]; ?></a>
+<?
   }
 }
 ?>
 </form>
 </div>
-<?php
+<?
 }
 else
     print("<div align=\"center\"><a href=\"javascript: Pophistory()\">".$language["HISTORY"]."</a>\n<br />".$language["ERR_MUST_BE_LOGGED_SHOUT"]."</div>");
