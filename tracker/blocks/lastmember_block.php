@@ -30,8 +30,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
+// CyBerFuN.ro & xList.ro
+
+// xList .::. Last Member Block
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By CyBerNe7
+
 global $CURUSER;
-if (!$CURUSER || $CURUSER["view_users"]=="no")
+if (!$CURUSER || $CURUSER["view_users"] == "no")
    {
     // do nothing
    }
@@ -43,7 +51,7 @@ else
      $a = @mysql_fetch_assoc(do_sqlquery("SELECT id,username FROM {$TABLE_PREFIX}users WHERE
      id_level<>1 AND id_level<>2 ORDER BY id DESC LIMIT 1"));
      if($a){
-      if ($CURUSER["view_users"]=="yes")
+      if ($CURUSER["view_users"] == "yes")
       $latestuser = "<a href=\"index.php?page=userdetails&amp;id=" . $a["id"] . "\">" . $a["username"] . "</a>";
      else
      $latestuser = $a['username'];

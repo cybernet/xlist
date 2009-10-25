@@ -2,7 +2,7 @@
 
 // CyBerFuN.ro & xList.ro
 
-// xList .::. Login
+// xList .::. Login Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
 // http://xlist.ro/

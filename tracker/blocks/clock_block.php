@@ -30,9 +30,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
+// CyBerFuN.ro & xList.ro
+
+// xList .::. Clock Block
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By CyBerNe7
+
 $clocktype = $GLOBALS["clocktype"];
 require_once("addons/clock/clock.php");
-block_begin("Clock",1,"center");
+block_begin("Clock", 1, "center");
 clock_display($clocktype);
 block_end();
 ?>

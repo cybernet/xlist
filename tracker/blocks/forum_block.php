@@ -1,7 +1,14 @@
 <?php
-// CyBerFuN
 
-global $CURUSER,$CACHE_DURATION, $FORUMLINK, $THIS_BASEPATH, $db_prefix, $block_forumlimit, $btit_settings;
+// CyBerFuN.ro & xList.ro
+
+// xList .::. Forum Block
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By CyBerNe7
+
+global $CURUSER, $CACHE_DURATION, $FORUMLINK, $THIS_BASEPATH, $db_prefix, $block_forumlimit, $btit_settings;
 
 $CACHE_DURATION2 = $CACHE_DURATION;
 // $CACHE_DURATION = 0;
@@ -23,11 +30,11 @@ $row = get_result('SELECT COUNT(*) AS total_topics FROM `'.$topicsTable.'`;', tr
 $topics = $row[0]['total_topics'];
 $row = get_result('SELECT COUNT(*) AS total_posts FROM `'.$postsTable.'`;', true, $CACHE_DURATION);
 $posts = $row[0]['total_posts'];
-$postsAvg = ($posts == 0) ? 0:number_format(($topics / $posts) * 100, 0);
-$realLastPosts=$btit_settings['forumblocktype']; # 0=topics, 1=posts
+$postsAvg = ($posts == 0) ? 0 : number_format(($topics / $posts) * 100, 0);
+$realLastPosts = $btit_settings['forumblocktype']; # 0=topics, 1=posts
 
 # check number of topics
-if ($topics!=0) {
+if ($topics != 0) {
     # inits
     $limit='LIMIT '.((isset($block_forumlimit))?$block_forumlimit:5).';';
     $postsList='';
@@ -36,13 +43,13 @@ if ($topics!=0) {
         $boards = get_result('SELECT ID_BOARD, memberGroups FROM `'.$db_prefix.'boards`;');
         $exclude = ($realLastPosts)?'':'WHERE t.ID_LAST_MSG=m.ID_MSG';
         foreach ($boards as $check) {
-            $forumid=$check['ID_BOARD'];
+            $forumid = $check['ID_BOARD'];
             $read = explode(',',$check['memberGroups']);
             if (!in_array($CURUSER['id_level'] + 10, $read))
                 $exclude .= (($exclude == '')?'WHERE ':' AND ').'m.ID_BOARD!='.$forumid;
         }
         # get posts [ shoult also test for permissions ]
-        $lastPosts=get_result('SELECT m.ID_TOPIC AS tid, m.ID_MSG as pid, t.ID_FIRST_MSG as spid, m.posterTime AS added, m.posterName AS username, m.body as body, m.ID_MEMBER as userid FROM '.$db_prefix.'messages as m LEFT JOIN '.$db_prefix.'topics as t ON m.ID_TOPIC=t.ID_TOPIC '.$exclude.' ORDER BY m.posterTime DESC '.$limit, true, $CACHE_DURATION);
+        $lastPosts = get_result('SELECT m.ID_TOPIC AS tid, m.ID_MSG as pid, t.ID_FIRST_MSG as spid, m.posterTime AS added, m.posterName AS username, m.body as body, m.ID_MEMBER as userid FROM '.$db_prefix.'messages as m LEFT JOIN '.$db_prefix.'topics as t ON m.ID_TOPIC=t.ID_TOPIC '.$exclude.' ORDER BY m.posterTime DESC '.$limit, true, $CACHE_DURATION);
         # format posts
         foreach ($lastPosts as $post) {
             # get topic subject

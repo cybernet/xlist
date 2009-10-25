@@ -1,13 +1,22 @@
 <?
+
+// CyBerFuN.ro & xList.ro
+
+// xList .::. Categories Block
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By CyBerNe7
+
 global $CURUSER;
-if (!$CURUSER || $CURUSER["view_torrents"]=="no")
+if (!$CURUSER || $CURUSER["view_torrents"] == "no")
    {
     // do nothing
    }
 else
     {
 block_begin(BLOCK_CAT);
-function catnumber($val="")
+function catnumber($val = "")
 {
 global $TABLE_PREFIX;
   print("<div id=catnumber style=\"width:100%;overflow:auto\" align=left><table class=\"lista\" cellpadding=\"2\" cellspacing=\"1\" style=\"width:100%;\" align=left>");
@@ -20,14 +29,14 @@ global $TABLE_PREFIX;
         // lets see if it has sub-categories.
         $s_q = mysql_query("SELECT * FROM {$TABLE_PREFIX}categories WHERE sub='$cid'");
         $s_t = mysql_num_rows($s_q);
-            $res=mysql_query("select count(*) as allincat FROM {$TABLE_PREFIX}files where category=".$cid);
+            $res = mysql_query("select count(*) as allincat FROM {$TABLE_PREFIX}files where category=".$cid);
             if ($res)
             {
-            $row=mysql_fetch_array($res);
-            $totalall=$row["allincat"];
+            $row = mysql_fetch_array($res);
+            $totalall = $row["allincat"];
             }
             else
-            $totalall=0;
+            $totalall = 0;
         if($s_t == 0)
         {
         print("<tr><td class=lista align=left><a href='index.php?page=torrents&amp;category=$cid'><font style=\"font-size:11px;\">".$name."</font></a></td><td class=lista align=right><b>".$totalall."</b>&nbsp;</td></tr>");
@@ -37,16 +46,16 @@ global $TABLE_PREFIX;
             while($s = mysql_fetch_array($s_q))
             {
             $sub = $s["id"];
-            $name  = unesc($s["name"]);
-            $name2  = unesc($c["name"]);
-                $res=mysql_query("select count(*) as allincat2 FROM {$TABLE_PREFIX}files where category=".$sub);
+            $name = unesc($s["name"]);
+            $name2 = unesc($c["name"]);
+                $res = mysql_query("select count(*) as allincat2 FROM {$TABLE_PREFIX}files where category=".$sub);
                 if ($res)
                 {
-                $row=mysql_fetch_array($res);
-                $totalall2=$row["allincat2"];
+                $row = mysql_fetch_array($res);
+                $totalall2 = $row["allincat2"];
                 }
                 else
-                $totalall2=0;
+                $totalall2 = 0;
             print("<tr><td class=lista align=left>&nbsp;&raquo;&nbsp;<a href='index.php?page=torrents&amp;category=$sub'><font style=\"font-size:11px;\">".$name."</font></a></td><td class=lista align=right><b>".$totalall2."</b>&nbsp;&nbsp;</td></tr>");
             }
                }

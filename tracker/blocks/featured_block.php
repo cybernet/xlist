@@ -33,9 +33,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
+// CyBerFuN.ro & xList.ro
+
+// xList .::. Featured Block
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By CyBerNe7
+
 require_once ("include/blocks.php");
 if (!isset($CURUSER)) global $CURUSER;
-if (!$CURUSER || $CURUSER["view_news"]=="no")
+if (!$CURUSER || $CURUSER["view_news"] == "no")
    {
        //err_msg(ERROR,NOT_AUTH_VIEW_NEWS."!");
        //stdfoot();
@@ -45,21 +53,21 @@ if (!$CURUSER || $CURUSER["view_news"]=="no")
 }
 else{
 
-global $BASEURL, $STYLEPATH, $dblist, $XBTT_USE,$btit_settings;
+global $BASEURL, $STYLEPATH, $dblist, $XBTT_USE, $btit_settings;
 
     if ($XBTT_USE)
    {
-    $tseeds="f.seeds+ifnull(x.seeders,0) as seeds";
-    $tleechs="f.leechers+ifnull(x.leechers,0) as leechers";
-    $tcompletes="f.finished+ifnull(x.completed,0) as finished";
-    $ttables="{$TABLE_PREFIX}files f LEFT JOIN xbt_files x ON x.info_hash=f.bin_hash";
+    $tseeds = "f.seeds+ifnull(x.seeders,0) as seeds";
+    $tleechs = "f.leechers+ifnull(x.leechers,0) as leechers";
+    $tcompletes = "f.finished+ifnull(x.completed,0) as finished";
+    $ttables = "{$TABLE_PREFIX}files f LEFT JOIN xbt_files x ON x.info_hash=f.bin_hash";
    }
 else
     {
-    $tseeds="f.seeds as seeds";
-    $tleechs="f.leechers as leechers";
+    $tseeds = "f.seeds as seeds";
+    $tleechs = "f.leechers as leechers";
     $tcompletes="f.finished as finished";
-    $ttables="{$TABLE_PREFIX}files f";
+    $ttables = "{$TABLE_PREFIX}files f";
     }
 
 
@@ -123,6 +131,6 @@ $torrent = mysql_query("SELECT f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.
     </div>
    </div></td></tr></table> 
 
-<?php
+<?
 }
 ?>

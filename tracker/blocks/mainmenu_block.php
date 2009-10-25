@@ -1,5 +1,13 @@
-<?php
-// CyBerFuN
+<?
+
+// CyBerFuN.ro & xList.ro
+
+// xList .::. Main Menu Block
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By CyBerNe7
+
    global $CURUSER;
 
 ?>
@@ -79,4 +87,3 @@ if ($CURUSER["view_forum"] == "yes")
 ?>
   </tr>
    </table>
-     

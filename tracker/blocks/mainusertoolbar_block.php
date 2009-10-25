@@ -1,6 +1,12 @@
 <?php
 
-// CyBerFuN
+// CyBerFuN.ro & xList.ro
+
+// xList .::. Main User Toolbar Block
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By CyBerNe7
 
 global $INVITATIONSON, $CURUSER, $FORUMLINK, $db_prefix, $XBTT_USE;
 

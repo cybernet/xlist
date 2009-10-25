@@ -2,7 +2,7 @@
 
 // CyBerFuN.ro & xList.ro
 
-// xList .::. Login
+// xList .::. Last Torrent Marq Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
 // http://xlist.ro/
