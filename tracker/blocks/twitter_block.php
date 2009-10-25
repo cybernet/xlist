@@ -1,4 +1,13 @@
 <?
+
+// CyBerFuN.ro & xList.ro
+
+// xList .::. Twitter Block
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By CyBerNe7
+
 echo("<div id=\"twtr-profile-widget\"></div>
 <script src=\"http://widgets.twimg.com/j/1/widget.js\"></script>
 <link href=\"http://widgets.twimg.com/j/1/widget.css\" type=\"text/css\" rel=\"stylesheet\">
