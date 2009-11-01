@@ -1,9 +1,6 @@
 <?php
 // CyBerFuN
 
-//$btit_url_rss="http://www.btiteam.org/smf/index.php?type=rss;action=.xml;board=83;sa=news";
-//$btit_url_last="http://www.btiteam.org/last_version.txt";
-
 if (!defined("IN_BTIT"))
       die("non direct access!");
 
@@ -11,34 +8,46 @@ if (!defined("IN_ACP"))
       die("non direct access!");
 
 
-$admin=array();
 
-$res=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}tasks");
+if(get_remote_file("http://www.btiteam.org"))
+  {
+  $btit_url_rss="http://www.btiteam.org/smf/index.php?type=rss;action=.xml;board=83;sa=news";
+  $btit_url_last="http://www.btiteam.org/last_version.txt";
+}
+else
+    {      /*if site down*/
+    $btit_url_rss="";
+    $btit_url_last="";
+}
+
+$admin = array();
+
+$res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}tasks");
 if ($res)
    {
     while ($result=mysql_fetch_array($res))
           {
-          if ($result["task"]=="sanity")
-             $admin["lastsanity"]=$language["LAST_SANITY"]."<br />\n".get_date_time($result["last_time"])." (".$language["NEXT"].": ".get_date_time($result["last_time"]+intval($GLOBALS["clean_interval"])).")&nbsp;<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=sanity&amp;action=now\">Do it now!</a><br />";
-          elseif ($result["task"]=="update")
-             $admin["lastscrape"]="<br />\n".$language["LAST_EXTERNAL"]."<br />\n".get_date_time($result["last_time"])." (".$language["NEXT"].": ".get_date_time($result["last_time"]+intval($GLOBALS["update_interval"])).")<br />";
+          if ($result["task"] == "sanity")
+             $admin["lastsanity"] = $language["LAST_SANITY"]."<br />\n".get_date_time($result["last_time"])." (".$language["NEXT"].": ".get_date_time($result["last_time"]+intval($GLOBALS["clean_interval"])).")&nbsp;<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=sanity&amp;action=now\">Do it now!</a><br />";
+          elseif ($result["task"] == "update")
+             $admin["lastscrape"] = "<br />\n".$language["LAST_EXTERNAL"]."<br />\n".get_date_time($result["last_time"])." (".$language["NEXT"].": ".get_date_time($result["last_time"]+intval($GLOBALS["update_interval"])).")<br />";
        }
    }
 
 // check if XBTT tables are present in current db
-$res=do_sqlquery("SHOW TABLES LIKE 'xbt%'");
-$xbt_tables=array('xbt_announce_log','xbt_config','xbt_deny_from_hosts','xbt_files','xbt_files_users','xbt_scrape_log','xbt_users');
-$xbt_in_db=array();
+$res = do_sqlquery("SHOW TABLES LIKE 'xbt%'");
+$xbt_tables = array('xbt_announce_log','xbt_config','xbt_deny_from_hosts','xbt_files','xbt_files_users','xbt_scrape_log','xbt_users');
+$xbt_in_db = array();
 if ($res)
    {
-   while ($result=mysql_fetch_row($res))
+   while ($result = mysql_fetch_row($res))
          {
-             $xbt_in_db[]=$result[0];
+             $xbt_in_db[] = $result[0];
          }
  }
- $ad=array_diff($xbt_tables,$xbt_in_db);
+ $ad=array_diff($xbt_tables, $xbt_in_db);
 
- if (count($ad)==0)
+ if (count($ad) == 0)
     $admin["xbtt_ok"]="<br />\nIT SEEMS THAT ALL XBTT TABLES ARE PRESENT!<br />\n<br />\n";
  else
     $admin["xbtt_ok"]="";
@@ -77,46 +86,46 @@ else
 if (file_exists("badwords.txt"))
   {
   if (is_writable("badwords.txt"))
-        $admin["badwords_ok"]=("Censored words file (badwords.txt)<br />\n<span style=\"color:#BEC635; font-weight: bold;\">is writable</span><br />\n");
+        $admin["badwords_ok"] = ("Censored words file (badwords.txt)<br />\n<span style=\"color:#BEC635; font-weight: bold;\">is writable</span><br />\n");
   else
-        $admin["badwords_ok"]=("Censored words file (badwords.txt)<br />\nis <span style=\"color:#FF0000; font-weight: bold;\">NOT writable</span> (cannot writing tracker's configuration change)<br />\n");
+        $admin["badwords_ok"] = ("Censored words file (badwords.txt)<br />\nis <span style=\"color:#FF0000; font-weight: bold;\">NOT writable</span> (cannot writing tracker's configuration change)<br />\n");
    }
 else
-  $admin["badwords_ok"]=("<br />\nCensored words file (badwords.txt)<br />\n<span style=\"color:#FF0000; font-weight: bold;\">NOT FOUND!</span><br />\n");
+  $admin["badwords_ok"] = ("<br />\nCensored words file (badwords.txt)<br />\n<span style=\"color:#FF0000; font-weight: bold;\">NOT FOUND!</span><br />\n");
 
 
 // check last version on btiteam.org site
-$btit_last=get_cached_version($btit_url_last);
+$btit_last = get_cached_version($btit_url_last);
 if (!$btit_last)
 {
-  $btit_last=get_remote_file($btit_url_last);
+  $btit_last = get_remote_file($btit_url_last);
   if ($btit_last)
-     write_cached_version($btit_url_last,$btit_last);
+     write_cached_version($btit_url_last, $btit_last);
   else
       $btit_last="Last version n/a";
 }
-$current_version=explode(" ", strtolower($tracker_version)); // array('2.0.0','beta','2')
-$last_version=explode("/",strtolower($btit_last));  // array('2.0.0','beta','2')
+$current_version = explode(" ", strtolower($tracker_version)); // array('2.0.0','beta','2')
+$last_version = explode("/",strtolower($btit_last));  // array('2.0.0','beta','2')
 
-$your_version="";$hack_email_notification_url_last="http://xbtitnotify.sourceforge.net/last_version/last_email_notification_version.txt";
+$your_version = "";$hack_email_notification_url_last = "http://xbtitnotify.sourceforge.net/last_version/last_email_notification_version.txt";
 
 // check last version on xbtitnotify.sourceforge.net
-$hack_email_notification_last=get_cached_version($hack_email_notification_url_last);
+$hack_email_notification_last = get_cached_version($hack_email_notification_url_last);
 if (!$hack_email_notification_last)
 {
-  $hack_email_notification_last=get_remote_file($hack_email_notification_url_last);
+  $hack_email_notification_last = get_remote_file($hack_email_notification_url_last);
   if ($hack_email_notification_last)
-     write_cached_version($hack_email_notification_url_last,$hack_email_notification_last);
+     write_cached_version($hack_email_notification_url_last, $hack_email_notification_last);
   else
       $hack_email_notification_last = $language["PM_NOTIFY_NO_INFO"];
 }
 $title_email_notification = "email_notification";
 $res_email_notification_version = get_result("SELECT title, version FROM {$TABLE_PREFIX}hacks WHERE title LIKE '" . $title_email_notification . "'",true);
 $row0_email_notification = $res_email_notification_version[0];
-$row_email_notification = substr($row0_email_notification["version"],0,5);
-$last_email_notification_version=explode("/",strtolower($hack_email_notification_last));
+$row_email_notification = substr($row0_email_notification["version"], 0, 5);
+$last_email_notification_version = explode("/",strtolower($hack_email_notification_last));
 
-$your_email_notification_version="cybernet2u@yahoo.com";
+$your_email_notification_version = "cybernet2u@yahoo.com";
 
 // make further control only if differents
 if ((implode(" ",$current_version)!=implode(" ",$last_version)))

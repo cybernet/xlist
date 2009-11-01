@@ -43,10 +43,13 @@
   ################################################################*/
   
   define("DELETE_CONFIRM", "If you are really sure you want to delete this click OK, othervise Cancel!");
-  $language["ERR_MODERATE_SHOUT"]="You are not authorised to moderate this shout!";
-
+  $language["ERR_MODERATE_SHOUT"] = "You are not authorised to moderate this shout!";
+global $CURUSER;
+if ($CURUSER["view_users"] != "yes") {
+die("Sorry, Shoutbox is not available...");
+}
   # avoid Undefined variable: lastID, seems to be never set...
-  $lastID=0;
+  $lastID = 0;
 
     if (isset($_GET["delete"]))
         $delete = $_GET["delete"]; # getting the delete header
@@ -88,7 +91,7 @@
  }
 
  
-if (isset($_POST["confirm"]) && $_POST["confirm"]==$language["FRM_CANCEL"]) {
+if (isset($_POST["confirm"]) && $_POST["confirm"] == $language["FRM_CANCEL"]) {
     
       header("Location: index.php?page=allshout");
 }
@@ -109,14 +112,14 @@ if (isset($_POST["confirm"]) && $_POST["confirm"]==$language["FRM_CANCEL"]) {
       $row = mysql_fetch_array($res);
               
         # check for valid moderation
-        if ($CURUSER["admin_access"]!="yes" && $CURUSER["uid"]!="".$row[uid]."") {
+        if ($CURUSER["admin_access"] != "yes" && $CURUSER["uid"] != "".$row[uid]."") {
         shoutError();
         
         }
         
         # actual delete
         else {
-        $sql ="DELETE FROM {$TABLE_PREFIX}chat WHERE id = $sid";
+        $sql = "DELETE FROM {$TABLE_PREFIX}chat WHERE id = $sid";
         $results = mysql_query($sql, $conn);
           
         }
@@ -186,7 +189,7 @@ header("Content-Type: text/html; charset=UTF-8");
 
             if (isset($_POST["confirm"]) && $_POST["confirm"]==$language["FRM_PREVIEW"]) {
                             
-            $post = str_replace("\'","'",$post);
+            $post = str_replace("\'", "'", $post);
 
             print "<div class='chatoutput'>".format_shout($post)."</div>";
             
@@ -311,7 +314,7 @@ $name = $name . warn($row);
 
           global $CURUSER;
           
-        if ($CURUSER["admin_access"]!="yes" && $CURUSER["uid"]!="".$uid."") {}
+        if ($CURUSER["admin_access"] != "yes" && $CURUSER["uid"] != "".$uid."") {}
         
         else {
                # edit/delete buttons -->

@@ -48,7 +48,7 @@ class poll {
   function createNewPoller($pollerTitle, $userid, $active) {
     global $db;
 
-    $pollerTitle = mysql_escape_string($pollerTitle);
+    $pollerTitle = mysql_real_escape_string($pollerTitle);
 
     if ($active == 'yes') {
       quickQuery("UPDATE {$this->table_prefix}poller SET active='no', endDate=UNIX_TIMESTAMP() WHERE poller.active='yes'");
@@ -61,8 +61,8 @@ class poll {
   }
 
   /* Add poller options */
-  function addPollerOption($optionText,$pollerOrder) {
-    $optionText = mysql_escape_string($optionText);
+  function addPollerOption($optionText, $pollerOrder) {
+    $optionText = mysql_real_escape_string($optionText);
     quickQuery("insert into {$this->table_prefix}poller_option(pollerID,optionText,pollerOrder)values('".$this->ID."','".$optionText."','".$pollerOrder."')") or die(mysql_error());
     return mysql_insert_id();
   }
@@ -90,8 +90,8 @@ class poll {
   }
 
   /* Update option label */
-  function setOptionData($newText,$order,$optionId) {
-    $newText = mysql_escape_string($newText);
+  function setOptionData($newText, $order,$optionId) {
+    $newText = mysql_real_escape_string($newText);
     quickQuery("update {$this->table_prefix}poller_option set optionText='".$newText."',pollerOrder='$order' where ID='".$optionId."'");
   }
 

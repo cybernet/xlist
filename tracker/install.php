@@ -535,8 +535,8 @@ elseif ($action == 'save_tracker') {
     $val_mode = $_POST["validation"];
     $forum_type = intval($_POST["forumtype"]);
     if($forum_type==1) $forum="";
-    elseif($forum_type==2) $forum="smf";
-    elseif($forum_type==3) $forum=mysql_escape_string($_POST["externalforum"]);
+    elseif($forum_type == 2) $forum = "smf";
+    elseif($forum_type == 3) $forum = mysql_real_escape_string($_POST["externalforum"]);
 
     // getting started
     require (dirname(__FILE__)."/include/settings.php");
@@ -544,9 +544,9 @@ elseif ($action == 'save_tracker') {
     @mysql_connect($dbhost, $dbuser, $dbpass);
     @mysql_select_db($database);
     
-    if($forum=="smf")
+    if($forum == "smf")
     {
-        $smf_lang=str_replace("\\", "/", dirname(__FILE__))."/smf/Themes/default/languages/Errors.english.php";
+        $smf_lang = str_replace("\\", "/", dirname(__FILE__))."/smf/Themes/default/languages/Errors.english.php";
         
         // Lets check the main SMF Settings file is present
         if (!file_exists(dirname(__FILE__)."/smf/Settings.php"))
@@ -555,20 +555,20 @@ elseif ($action == 'save_tracker') {
         // Now to check they've actually installed it by checking the database
         require (dirname(__FILE__)."/smf/Settings.php");
         
-        $smf=mysql_query("SELECT memberName FROM `{$db_prefix}members` LIMIT 1;");
-        if(mysql_num_rows($smf)==0)
+        $smf = mysql_query("SELECT memberName FROM `{$db_prefix}members` LIMIT 1;");
+        if(mysql_num_rows($smf) == 0)
             die($install_lang["smf_err_2"]);
         
         // Now lets check if the SMF English Language file is writable
         if(!is_writable($smf_lang))
             die($install_lang["smf_err_3a"] . $smf_lang . $install_lang["smf_err_3b"]);
 
-        $filename=dirname(__FILE__)."/include/settings.php";
+        $filename = dirname(__FILE__)."/include/settings.php";
         if (file_exists($filename))
         {
             if (is_writable($filename))
             {
-                $filesize=filesize($filename);
+                $filesize = filesize($filename);
                 $fd = fopen($filename, "w");
                 $contents ="<?php\n\n";
                 $contents.="\$dbhost = \"$dbhost\";\n";
@@ -617,8 +617,8 @@ elseif ($action == 'owner') {
 // saving owner account
 elseif ($action == 'save_owner') {
  
-    $forum=$_POST["forumtype"];
-    step ($install_lang["create_owner_account"],$install_lang["step"]."&nbsp;".$install_lang["create_owner_account_step"],"5");
+    $forum = $_POST["forumtype"];
+    step ($install_lang["create_owner_account"],$install_lang["step"]."&nbsp;".$install_lang["create_owner_account_step"], "5");
     
     // getting started
     require (dirname(__FILE__)."/include/settings.php");
@@ -653,8 +653,8 @@ elseif ($action == 'save_owner') {
     }
     // getting variables
     $username = $_POST["username"];
-    $password = mysql_escape_string($_POST["password"]);
-    $password_repeat = mysql_escape_string($_POST["password2"]);
+    $password = mysql_real_escape_string($_POST["password"]);
+    $password_repeat = mysql_real_escape_string($_POST["password2"]);
     $email = $_POST["email"];
     $email_repeat = $_POST["email2"];
     $email = htmlspecialchars(trim($email));
@@ -664,7 +664,7 @@ elseif ($action == 'save_owner') {
     // Create Random number
     $floor = 100000;
     $ceiling = 999999;
-    srand((double)microtime()*1000000);
+    srand((double)microtime() * 1000000);
     $random = rand($floor, $ceiling);
 
     if (empty($username) || empty($password) || empty($password_repeat) || empty($email) || empty($email_repeat)){
@@ -686,17 +686,17 @@ elseif ($action == 'save_owner') {
     owner_error($install_lang["pass_not_same"], $install_lang["back"]);
     }
 
-    $smf_fid=0;
+    $smf_fid = 0;
 
-    if($forum=="smf")
+    if($forum == "smf")
     {
         require (dirname(__FILE__)."/smf/Settings.php");
 
-        $filename=dirname(__FILE__) . '/sql/smf.sql';
-        $fd=fopen($filename, "r");
-        $sql=fread($fd, filesize($filename));
+        $filename = dirname(__FILE__) . '/sql/smf.sql';
+        $fd = fopen($filename, "r");
+        $sql = fread($fd, filesize($filename));
 
-        $sql_lines=str_replace("{\$db_prefix}", $db_prefix, explode(";", $sql));
+        $sql_lines = str_replace("{\$db_prefix}", $db_prefix, explode(";", $sql));
 
         foreach($sql_lines as $v)
         {
@@ -711,7 +711,7 @@ elseif ($action == 'save_owner') {
     @mysql_query("UPDATE `{$db_prefix}settings` SET `value` = '$username' WHERE `variable` = 'latestRealName'");
     @mysql_query("UPDATE `{$db_prefix}settings` SET `value` = UNIX_TIMESTAMP() WHERE `variable` = 'memberlist_updated'");
     
-    $smf_lang="smf/Themes/default/languages/Errors.english.php";
+    $smf_lang = "smf/Themes/default/languages/Errors.english.php";
 
     require_once($smf_lang);
     
@@ -722,15 +722,15 @@ elseif ($action == 'save_owner') {
     
     $txt['registration_disabled'] = "Sorry, registration via SMF is disabled. Registration for this forum must be done via the Tracker <a href=\"$baseurl/index.php?page=signup\">Here</a>.<br /><br />If you already have a tracker account please <a href=\"$baseurl/index.php?action=login\">login here</a> with the same credentials.";
 
-    $fd=fopen($smf_lang, "w");
+    $fd = fopen($smf_lang, "w");
 
-    $foutput="<?php\n\n";
+    $foutput = "<?php\n\n";
 
     foreach($txt as $k => $v)
     {
-        $foutput.="\$txt['$k']   =   '".str_replace("'", "\\'", $v)."';\n";
+        $foutput .= "\$txt['$k']   =   '".str_replace("'", "\\'", $v)."';\n";
     }
-    $foutput.="\n?>";
+    $foutput .= "\n?>";
 
     fwrite($fd,$foutput);
     fclose($fd);

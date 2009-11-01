@@ -14,7 +14,7 @@ require_once ("include/BEncode.php");
 //// Configuration//
 function_exists("sha1") or die("<font color=\"red\">".$language["NOT_SHA"]."</font></body></html>");
 
-if (!$CURUSER || $CURUSER["can_upload"]=="no")
+if (!$CURUSER || $CURUSER["can_upload"] == "no")
    {
     err_msg($language["SORRY"],$language["ERROR"].$language["NOT_AUTHORIZED_UPLOAD"]);
     stdfoot();
@@ -26,8 +26,8 @@ if (isset($_FILES["torrent"]))
    {
    if ($_FILES["torrent"]["error"] != 4)
    {
-      $fd = fopen($_FILES["torrent"]["tmp_name"], "rb") or stderr($language["ERROR"],$language["FILE_UPLOAD_ERROR_1"]);
-      is_uploaded_file($_FILES["torrent"]["tmp_name"]) or stderr($language["ERROR"],$language["FILE_UPLOAD_ERROR_2"]);
+      $fd = fopen($_FILES["torrent"]["tmp_name"], "rb") or stderr($language["ERROR"], $language["FILE_UPLOAD_ERROR_1"]);
+      is_uploaded_file($_FILES["torrent"]["tmp_name"]) or stderr($language["ERROR"], $language["FILE_UPLOAD_ERROR_2"]);
       $length=filesize($_FILES["torrent"]["tmp_name"]);
       if ($length)
         $alltorrent = fread($fd, $length);
@@ -40,20 +40,20 @@ if (isset($_FILES["torrent"]))
       $array = BDecode($alltorrent);
       if (!isset($array))
          {
-          err_msg($language["ERROR"],$language["ERR_PARSER"]);
+          err_msg($language["ERROR"], $language["ERR_PARSER"]);
           stdfoot();
           exit();
          }
       if (!$array)
          {
-          err_msg($language["ERROR"],$language["ERR_PARSER"]);
+          err_msg($language["ERROR"], $language["ERR_PARSER"]);
           stdfoot();
           exit();
          }
-    if (in_array($array["announce"],$TRACKER_ANNOUNCEURLS) && $DHT_PRIVATE)
+    if (in_array($array["announce"], $TRACKER_ANNOUNCEURLS) && $DHT_PRIVATE)
       {
-      $array["info"]["private"]=1;
-      $hash=sha1(BEncode($array["info"]));
+      $array["info"]["private"] = 1;
+      $hash = sha1(BEncode($array["info"]));
       }
     else
       {
@@ -63,9 +63,9 @@ if (isset($_FILES["torrent"]))
       }
 
 if (isset($_POST["filename"]))
-   $filename = mysql_escape_string(htmlspecialchars($_POST["filename"]));
+   $filename = mysql_real_escape_string(htmlspecialchars($_POST["filename"]));
 else
-    $filename = mysql_escape_string(htmlspecialchars($_FILES["torrent"]["name"]));
+    $filename = mysql_real_escape_string(htmlspecialchars($_FILES["torrent"]["name"]));
 
 if (isset($hash) && $hash) $url = $TORRENTSDIR . "/" . $hash . ".btf";
 else $url = 0;
@@ -78,7 +78,7 @@ else $url = 0;
     End Operation #1*/
 
 if (isset($_POST["info"]) && $_POST["info"]!="")
-   $comment = mysql_escape_string($_POST["info"]);
+   $comment = mysql_real_escape_string($_POST["info"]);
 else { // description is now required (same as for edit.php)
 //    $comment = "";
         err_msg($language["ERROR"],$language["EMPTY_DESCRIPTION"]);
@@ -88,11 +88,11 @@ else { // description is now required (same as for edit.php)
 
 // filename not writen by user, we get info directly from torrent.
 if (strlen($filename) == 0 && isset($array["info"]["name"]))
-   $filename = mysql_escape_string(htmlspecialchars($array["info"]["name"]));
+   $filename = mysql_real_escape_string(htmlspecialchars($array["info"]["name"]));
 
 // description not writen by user, we get info directly from torrent.
 if (isset($array["comment"]))
-   $info = mysql_escape_string(htmlspecialchars($array["comment"]));
+   $info = mysql_real_escape_string(htmlspecialchars($array["comment"]));
 else
     $info = "";
 

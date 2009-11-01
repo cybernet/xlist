@@ -67,6 +67,10 @@ function getData($lastID) {
   include("../include/settings.php");   # getting table prefix
   include("../include/offset.php");
 
+global $CURUSER;
+if ($CURUSER["view_users"] != "yes") {
+die("Sorry, Shoutbox is not available...");
+}
     $sql =  "SELECT * FROM {$TABLE_PREFIX}chat WHERE id > ".$lastID." ORDER BY id DESC LIMIT 10";
     $conn = getDBConnection(); # establishes the connection to the database
     $results = mysql_query($sql, $conn);
@@ -81,8 +85,8 @@ function getData($lastID) {
         $name = $row[name];
         $text = $row[text];
 
-$rd=mysql_fetch_row(mysql_query("SELECT warn FROM {$TABLE_PREFIX}users WHERE id=$uid"));
-$row["warn"]=$rd[0];
+$rd = mysql_fetch_row(mysql_query("SELECT warn FROM {$TABLE_PREFIX}users WHERE id=$uid"));
+$row["warn"] = $rd[0];
 unset($rd);
 $name = $name . warn($row);
         

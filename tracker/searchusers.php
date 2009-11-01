@@ -31,10 +31,10 @@
 ////////////////////////////////////////////////////////////////////////////////////
 
 
-define("IN_BTIT",true);
+define("IN_BTIT", true);
 
 
-$THIS_BASEPATH=dirname(__FILE__);
+$THIS_BASEPATH = dirname(__FILE__);
 require("$THIS_BASEPATH/include/functions.php");
 
 dbconn();
@@ -42,39 +42,39 @@ dbconn();
 
 
 // get user's style
-$resheet=mysql_query("SELECT * FROM {$TABLE_PREFIX}style where id=".$CURUSER["style"]."") or die(mysql_error());
+$resheet = mysql_query("SELECT * FROM {$TABLE_PREFIX}style where id=".$CURUSER["style"]."") or die(mysql_error());
 if (!$resheet)
    {
 
-   $STYLEPATH="$THIS_BASEPATH/style/xbtit_default";
-   $STYLEURL="$BASEURL/style/xbtit_default";
-   $style="$BASEURL/style/xbtit_default/main.css";
+   $STYLEPATH = "$THIS_BASEPATH/style/xbtit_default";
+   $STYLEURL = "$BASEURL/style/xbtit_default";
+   $style = "$BASEURL/style/xbtit_default/main.css";
    }
 else
     {
-        $resstyle=mysql_fetch_array($resheet);
-        $STYLEPATH="$THIS_BASEPATH/".$resstyle["style_url"];
-        $style="$BASEURL/".$resstyle["style_url"]."/main.css";
-        $STYLEURL="$BASEURL/".$resstyle["style_url"];
+        $resstyle = mysql_fetch_array($resheet);
+        $STYLEPATH = "$THIS_BASEPATH/".$resstyle["style_url"];
+        $style = "$BASEURL/".$resstyle["style_url"]."/main.css";
+        $STYLEURL = "$BASEURL/".$resstyle["style_url"];
     }
 
 
-$idlang=intval($_GET["language"]);
+$idlang = intval($_GET["language"]);
 
 // getting user language
-if ($idlang==0)
-   $reslang=mysql_query("SELECT * FROM {$TABLE_PREFIX}language WHERE id=".$CURUSER["language"]) or die(mysql_error());
+if ($idlang == 0)
+   $reslang = mysql_query("SELECT * FROM {$TABLE_PREFIX}language WHERE id=".$CURUSER["language"]) or die(mysql_error());
 else
-   $reslang=mysql_query("SELECT * FROM {$TABLE_PREFIX}language WHERE id=$idlang") or die(mysql_error());
+   $reslang = mysql_query("SELECT * FROM {$TABLE_PREFIX}language WHERE id=$idlang") or die(mysql_error());
 
 if (!$reslang)
    {
-   $USERLANG="$THIS_BASEPATH/language/english";
+   $USERLANG = "$THIS_BASEPATH/language/english";
    }
 else
     {
-        $rlang=mysql_fetch_array($reslang);
-        $USERLANG="$THIS_BASEPATH/".$rlang["language_url"];
+        $rlang = mysql_fetch_array($reslang);
+        $USERLANG = "$THIS_BASEPATH/".$rlang["language_url"];
     }
 
 if (!file_exists($USERLANG))
@@ -86,10 +86,10 @@ if (!file_exists($USERLANG))
 require_once(load_language("lang_main.php"));
 
 if (!empty($language["charset"]))
-   $GLOBALS["charset"]=$language["charset"];
+   $GLOBALS["charset"] = $language["charset"];
 
 if (isset($_GET['action']) && $_GET['action'])
-            $action=$_GET['action'];
+            $action = $_GET['action'];
 else $action = '';;
 
 
@@ -104,7 +104,7 @@ else $action = '';;
   <body>
 <?php
 
-if ($action!="find")
+if ($action != "find")
    {
 ?>
 <form action="searchusers.php?action=find" name="users" method="post">
@@ -122,8 +122,8 @@ if ($action!="find")
 }
 else
 {
-  $res=mysql_query("SELECT username FROM {$TABLE_PREFIX}users WHERE id>1 AND username LIKE '%".mysql_escape_string($_POST["user"])."%' ORDER BY username") or die(mysql_error());
-  if (!$res or mysql_num_rows($res)==0)
+  $res = mysql_query("SELECT username FROM {$TABLE_PREFIX}users WHERE id>1 AND username LIKE '%".mysql_real_escape_string($_POST["user"])."%' ORDER BY username") or die(mysql_error());
+  if (!$res or mysql_num_rows($res) == 0)
      {
          print("<center>".$language["NO_USERS_FOUND"]."!<br />");
          print("<a href=searchusers.php>".$language["RETRY"]."</a></center>");
@@ -146,7 +146,7 @@ function SendIT(){
 <?php
      print("\n<td class=\"lista\">
      <select name=\"name\" size=\"1\">");
-     while($result=mysql_fetch_array($res))
+     while($result = mysql_fetch_array($res))
          print("\n<option value=\"".$result["username"]."\">".$result["username"]."</option>");
      print("\n</select>\n</td>");
      print("\n<td class=\"lista\"><input type=\"button\" name=\"confirm\" onclick=\"javascript:SendIT();\" value=\"".$language["FRM_CONFIRM"]."\" /></td>");

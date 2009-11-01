@@ -117,35 +117,35 @@ if ($_POST["conferma"]) {
             else
           if ($VALIDATION == "user")
              {
-               success_msg($language["ACCOUNT_CREATED"],$language["EMAIL_SENT"]);
+               success_msg($language["ACCOUNT_CREATED"], $language["EMAIL_SENT"]);
                stdfoot();
                exit();
              }
           else if ($VALIDATION == "none")
                {
-               success_msg($language["ACCOUNT_CREATED"],$language["ACCOUNT_CONGRATULATIONS"]);
+               success_msg($language["ACCOUNT_CREATED"], $language["ACCOUNT_CONGRATULATIONS"]);
                stdfoot();
                exit();
                }
           else
               {
-               success_msg($language["ACCOUNT_CREATED"],$language["WAIT_ADMIN_VALID"]);
+               success_msg($language["ACCOUNT_CREATED"], $language["WAIT_ADMIN_VALID"]);
                stdfoot();
                exit();
               }
           }
        elseif ($ret==-1)
-         stderr($language["ERROR"],$language["ERR_MISSING_DATA"]);
+         stderr($language["ERROR"], $language["ERR_MISSING_DATA"]);
        elseif ($ret==-3)
-         stderr($language["ERROR"],$language["ERR_NO_EMAIL"]);
+         stderr($language["ERROR"], $language["ERR_NO_EMAIL"]);
        elseif ($ret==-7)
-         stderr($language["ERROR"],"<font color=\"black\">".$language["ERR_NO_SPACE"]."<strong><font color=\"red\">".preg_replace('/\ /', '_', mysql_escape_string($_POST["user"]))."</strong></font></font><br />");
+         stderr($language["ERROR"], "<font color=\"black\">".$language["ERR_NO_SPACE"]."<strong><font color=\"red\">".preg_replace('/\ /', '_', mysql_real_escape_string($_POST["user"]))."</strong></font></font><br />");
        elseif ($ret==-8)
-         stderr($language["ERROR"],$language["ERR_SPECIAL_CHAR"]);
+         stderr($language["ERROR"], $language["ERR_SPECIAL_CHAR"]);
        elseif ($ret==-9)
-         stderr($language["ERROR"],$language["ERR_PASS_LENGTH"]);
+         stderr($language["ERROR"], $language["ERR_PASS_LENGTH"]);
        else
-        stderr($language["ERROR"],$language["ERR_USER_ALREADY_EXISTS"]);
+        stderr($language["ERROR"], $language["ERR_USER_ALREADY_EXISTS"]);
        }
 }
 else {
@@ -243,7 +243,7 @@ function tabella($action, $dati = array()) {
        $remotedns = strtoupper($remotedns);
        preg_match('/^(.+)\.([A-Z]{2,3})$/', $remotedns, $tldm);
        if (isset($tldm[2]))
-              $remotedns = mysql_escape_string($tldm[2]);
+              $remotedns = mysql_real_escape_string($tldm[2]);
      }
 
    foreach($fres as $flag)
@@ -257,9 +257,9 @@ function tabella($action, $dati = array()) {
 
    $tpl_account->set("account_combo_country", $option);
 
-   $zone = date('Z',time());
-   $daylight = date('I',time())*3600;
-   $os = $zone-$daylight;
+   $zone = date('Z', time());
+   $daylight = date('I', time()) * 3600;
+   $os = $zone - $daylight;
    if($os != 0){ $timeoff = $os / 3600; } else { $timeoff = 0; }
 
    if(!$CURUSER || $CURUSER["uid"] == 1)
@@ -336,10 +336,10 @@ function aggiungiutente() {
 
 global $INVITATIONSON, $VALID_INV, $SITENAME, $SITEEMAIL, $BASEURL, $VALIDATION, $USERLANG, $USE_IMAGECODE, $TABLE_PREFIX, $XBTT_USE, $language, $THIS_BASEPATH, $FORUMLINK, $db_prefix;
 
-$utente = mysql_escape_string($_POST["user"]);
-$pwd = mysql_escape_string($_POST["pwd"]);
-$pwd1 = mysql_escape_string($_POST["pwd1"]);
-$email = mysql_escape_string($_POST["email"]);
+$utente = mysql_real_escape_string($_POST["user"]);
+$pwd = mysql_real_escape_string($_POST["pwd"]);
+$pwd1 = mysql_real_escape_string($_POST["pwd1"]);
+$email = mysql_real_escape_string($_POST["email"]);
 $pm_mail_notify = sqlesc($_POST["pm_mail_notification"]);$status_comment_notify = sqlesc($_POST["status_comment_notify"]);
 $idlangue = intval($_POST["language"]);
 $idstyle = intval($_POST["style"]);
@@ -358,7 +358,7 @@ if ($pwd != $pwd1) {
     exit;
     }
 
-if ($VALIDATION=="none")
+if ($VALIDATION == "none")
    $idlevel=3;
 else
    $idlevel=2;
@@ -408,7 +408,7 @@ if (mysql_num_rows($res) > 0)
 }
 // duplicate username
 
-if (strpos(mysql_escape_string($utente), " ") == true)
+if (strpos(mysql_real_escape_string($utente), " ") == true)
    {
    return -7;
    exit;
@@ -469,7 +469,7 @@ else
   }
 
 $bannedchar = array("\\", "/", ":", "*", "?", "\"", "@", "$", "'", "`", ",", ";", ".", "<", ">", "!", "£", "%", "^", "&", "(", ")", "+", "=", "#", "~");
-if (straipos(mysql_escape_string($utente), $bannedchar) == true)
+if (straipos(mysql_real_escape_string($utente), $bannedchar) == true)
    {
    return -8;
    exit;
