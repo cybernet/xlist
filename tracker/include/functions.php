@@ -9,8 +9,11 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 ini_set("memory_limit", "-1");
 set_time_limit(0);
-
-if (ini_get('register_globals')) {
+$php_version=explode(".",phpversion());
+if($php_version[0]<=5 && $php_version[1]<=2)
+{
+    if (ini_get('register_globals'))
+    {
   $superglobals = array($_SERVER, $_ENV, $_FILES, $_COOKIE, $_POST, $_GET);
   if (isset($_SESSION))
     array_unshift($superglobals, $_SESSION);
@@ -19,7 +22,7 @@ if (ini_get('register_globals')) {
       unset($GLOBALS[$global]);
   @ini_set('register_globals', false);
 }
-
+}
 // control if magic_quote_gpc = on
 if(get_magic_quotes_gpc()){
   // function which remove unwanted slashes
@@ -30,7 +33,6 @@ if(get_magic_quotes_gpc()){
       elseif (is_string($val))
         $array[$key] = str_replace(array('\\\\', '\\\"', "\'"), array('\\', '\"', "'"),$val);
   }
-
   remove_magic_quotes($_POST);
   remove_magic_quotes($_GET);
   remove_magic_quotes($_REQUEST);
@@ -759,7 +761,7 @@ function information_msg($heading = 'Error!', $string, $close=false) {
 }
 
 function sqlesc($x) {
-  return '\''.mysql_escape_string($x).'\'';
+  return '\''.mysql_real_escape_string($x).'\'';
 }
 
 function get_content($file) {
