@@ -44,37 +44,37 @@ switch($action)
     case 'tables':
         if (isset($_POST["doit"]) && isset($_POST["tname"]))
           {
-            $table_action=$_POST["doit"];
-            $tables=implode(",",$_POST["tname"]);
+            $table_action = strtoupper($_POST["doit"]);
+            $tables = implode(",",$_POST["tname"]);
             if (isset($_POST["tname"]))
               {
                 switch ($table_action)
                    {
-                    case 'Repair':
-                        $dbres=do_sqlquery("REPAIR TABLE $tables");
+                    case strtoupper($language['DBUTILS_REPAIR']):
+                        $dbres = do_sqlquery("REPAIR TABLE $tables");
                         break;
-                    case 'Analyze':
-                        $dbres=do_sqlquery("ANALYZE TABLE $tables");
+                    case strtoupper($language['DBUTILS_ANALYSE']):
+                        $dbres = do_sqlquery("ANALYZE TABLE $tables");
                         break;
-                    case 'Optimize':
-                        $dbres=do_sqlquery("OPTIMIZE TABLE $tables");
+                    case strtoupper($language['DBUTILS_OPTIMIZE']):
+                        $dbres = do_sqlquery("OPTIMIZE TABLE $tables");
                         break;
-                    case 'Check':
-                        $dbres=do_sqlquery("CHECK TABLE $tables");
+                    case strtoupper($language['DBUTILS_CHECK']):
+                        $dbres = do_sqlquery("CHECK TABLE $tables");
                         break;
-                    case 'Delete':
-                        $dbres=do_sqlquery("DROP TABLE $tables");
+                    case strtoupper($language['DBUTILS_DELETE']):
+                        $dbres = do_sqlquery("DROP TABLE $tables");
                         header("Location: index.php?page=admin&user=".$CURUSER["uid"]."&code=".$CURUSER["random"]."&do=dbutil&action=status");
                         exit();
                         break;
                  }
                  $t=array();
-                 while ($tstatus=mysql_fetch_array($dbres))
+                 while ($tstatus = mysql_fetch_array($dbres))
                       {
-                         $t[$i]["table"]=$tstatus['Table'];
-                         $t[$i]["operation"]=$tstatus['Op'];
-                         $t[$i]["info"]=$tstatus['Msg_type'];
-                         $t[$i]["status"]=$tstatus['Msg_text'];
+                         $t[$i]["table"] = $tstatus['Table'];
+                         $t[$i]["operation"] = $tstatus['Op'];
+                         $t[$i]["info"] = $tstatus['Msg_type'];
+                         $t[$i]["status"] = $tstatus['Msg_text'];
                          $i++;
                  }
                   $admintpl->set("language",$language);
@@ -91,25 +91,25 @@ switch($action)
 
     case 'status':
     default:
-        $dbstatus=do_sqlquery("SHOW TABLE STATUS");
-        if (mysql_num_rows($dbstatus)>0)
+        $dbstatus = do_sqlquery("SHOW TABLE STATUS");
+        if (mysql_num_rows($dbstatus) > 0)
             {
               $admintpl->set("frm_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=dbutil&amp;action=tables");
-              $i=0;
-              $bytes=0;
-              $records=0;
-              $overhead=0;
-              $tables=array();
+              $i = 0;
+              $bytes = 0;
+              $records = 0;
+              $overhead = 0;
+              $tables = array();
               // display current status for tables
-              while ($tstatus=mysql_fetch_array($dbstatus))
+              while ($tstatus = mysql_fetch_array($dbstatus))
                   {
-                  $tables[$i]["name"]=$tstatus['Name'];
-                  $tables[$i]["rows"]=$tstatus['Rows'];
-                  $tables[$i]["length"]=makesize($tstatus['Data_length']+$tstatus['Index_length']);
-                  $tables[$i]["overhead"]=($tstatus['Data_free']==0?"-":makesize($tstatus['Data_free']));
+                  $tables[$i]["name"] = $tstatus['Name'];
+                  $tables[$i]["rows"] = $tstatus['Rows'];
+                  $tables[$i]["length"] = makesize($tstatus['Data_length']+$tstatus['Index_length']);
+                  $tables[$i]["overhead"] = ($tstatus['Data_free']==0?"-":makesize($tstatus['Data_free']));
                   $i++;
-                  $bytes+=$tstatus['Data_length']+$tstatus['Index_length'];
-                  $records+=$tstatus['Rows'];
+                  $bytes += $tstatus['Data_length']+$tstatus['Index_length'];
+                  $records += $tstatus['Rows'];
                   $overhead+=$tstatus['Data_free'];
                 }
                 $admintpl->set("language",$language);
