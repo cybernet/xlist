@@ -57,7 +57,7 @@ else
 
 
 if ($id > 1) {
-   $res = do_sqlquery("SELECT u.seedbonus, u.invited_by, u.invitations, u.custom_title, u.warn, u.warnreason,u.warns, u.warnadded, u.warnaddedby, u.avatar,u.email,u.cip,u.username,$udownloaded as downloaded,$uuploaded as uploaded,UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id", true);
+   $res = do_sqlquery("SELECT u.seedbonus, u.invited_by, u.invitations, u.custom_title, u.warn, u.warnreason, u.warns, u.warnadded, u.warnaddedby, u.avatar, u.email, u.cip, u.username, $udownloaded as downloaded,$uuploaded as uploaded, UNIX_TIMESTAMP(u.joined) as joined, UNIX_TIMESTAMP(u.lastconnect) as lastconnect, u.modcomment, u.supcomment, ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id", true);
    $num = mysql_num_rows($res);
    if ($num == 0)
       {
@@ -172,6 +172,10 @@ elseif ($GLOBALS["FORUMLINK"] == "smf")
    $posts_per_day = number_format(round($forum["posts"] / $memberdays,2),2);
    $userdetailtpl-> set("userdetail_forum_posts", $forum["posts"] . " &nbsp; [" . sprintf($language["POSTS_PER_DAY"], $posts_per_day) . "]");
    unset($forum);
+$userdetailtpl-> set("comment_access", (($CURUSER["edit_users"]=="yes" || $CURUSER["admin_access"]=="yes")?TRUE:FALSE), TRUE);
+$userdetailtpl-> set("modcomment", $row["modcomment"]);
+$userdetailtpl-> set("supcomment", $row["supcomment"]);
+$userdetailtpl-> set("id", $id);
 }
 
 

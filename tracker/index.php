@@ -14,7 +14,7 @@ if (file_exists("install.unlock") && file_exists("install.php"))
 define("IN_BTIT",true);
 
 
-$THIS_BASEPATH=dirname(__FILE__);
+$THIS_BASEPATH = dirname(__FILE__);
 
 include("$THIS_BASEPATH/btemplate/bTemplate.php");
 
@@ -246,6 +246,13 @@ switch ($pageID) {
         require("$THIS_BASEPATH/news.php");
         $tpl->set("main_content",set_block($language["MANAGE_NEWS"],"center",$newstpl->fetch(load_template("news.tpl"))));
         $tpl->set("main_title",$btit_settings["name"]." .::. "."News");
+        break;
+   case 'mod_comment':
+        require("$THIS_BASEPATH/mod_comment.php");
+        break;
+
+    case 'sup_comment':
+        require("$THIS_BASEPATH/sup_comment.php");
         break;
 
     case 'peers':
