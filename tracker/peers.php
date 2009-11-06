@@ -90,9 +90,15 @@ while ($row = mysql_fetch_array($res))
     $peers[$i]["FLAG"]="<img src=\"images/flag/".$rowuser[2]."\" alt=\"".unesc($rowuser[3])."\" />";
   else
     $peers[$i]["FLAG"]="<img src=\"images/flag/unknown.gif\" alt=\"".UNKNOWN."\" />";
-
+// Peer Connectable by Petr1fied starts
 if (!$XBTT_USE)
-  $peers[$i]["PORT"]=$row["port"];
+{
+    if ($GLOBALS["NAT"])
+        $peers[$i]["PORT"]="<b><font color='".(($row["natuser"]=="Y")?"red":"green")."'>".$row["port"]."</font></b>";
+    else
+        $peers[$i]["PORT"]=$row["port"];
+}
+// Peer Connectable by Petr1fied ends
   $stat=floor((($tsize - $row["bytes"]) / $tsize) *100);
   $progress="<table width=\"100\" cellspacing=\"0\" cellpadding=\"0\"><tr><td class=\"progress\" align=\"left\">";
   $progress.="<img height=\"10\" width=\"".number_format($stat,0)."\" src=\"$STYLEURL/images/progress.jpg\" alt=\"\" /></td></tr></table>";
