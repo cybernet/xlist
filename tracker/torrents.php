@@ -45,7 +45,7 @@ if(isset($_GET["search"]))
 $category = (!isset($_GET["category"])?0:explode(";",$_GET["category"]));
 // sanitize categories id
 if (is_array($category))
-    $category = array_map("intval",$category);
+    $category = array_map("intval", $category);
 else
     $category = 0;
 
@@ -128,7 +128,7 @@ if ($count > 0) {
     else
         $order = "data";
 
-    $qry_order=str_replace(array("leechers","seeds","finished"),array($tleechs,$tseeds, $tcompletes),$order);
+    $qry_order = str_replace(array("leechers","seeds","finished"),array($tleechs,$tseeds, $tcompletes),$order);
 /*Mod by losmi - visible mod*/
     if (isset($_GET["by"]))
         $by = htmlspecialchars(mysql_real_escape_string($_GET["by"]));
@@ -146,7 +146,7 @@ if ($count > 0) {
     else
         $query = "SELECT f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where ORDER BY $qry_order $by $limit";
     // End the queries
-       $results = get_result($query,true);
+       $results = get_result($query, true);
 }
 
 
@@ -288,10 +288,10 @@ if ($hover == "")
    if (intval($CURUSER["WT"]) > 0)
       {
       $wait = 0;
-      $resuser = get_result("SELECT * FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"],true,$CACHE_DURATION);
+      $resuser = get_result("SELECT * FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"], true, $CACHE_DURATION);
       $rowuser = $resuser[0];
       $wait = 0;
-      if (intval($rowuser['downloaded'])>0) $ratio=number_format($rowuser['uploaded']/$rowuser['downloaded'],2);
+      if (intval($rowuser['downloaded']) > 0) $ratio = number_format($rowuser['uploaded'] / $rowuser['downloaded'], 2);
       else $ratio = 0.0;
       $vz = $data["added"];
       $timer = floor((time() - $vz) / 3600);
@@ -369,7 +369,7 @@ if ($hover == "")
           $speed = $language["NA"];
        }
            else if ($data["speed"] > 2097152) {
-                $speed = round($data["speed"]/1048576,2) . " MB/sec";
+                $speed = round($data["speed"] / 1048576, 2) . " MB/sec";
        }
            else {
                    $speed = round($data["speed"] / 1024, 2) . " KB/sec";

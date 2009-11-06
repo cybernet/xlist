@@ -451,7 +451,7 @@ function updatedata() {
 function pager($rpp, $count, $href, $opts = array()) {
   global $language;
 
-  $pages=($rpp == 0)?1:ceil($count / $rpp);
+  $pages = ($rpp == 0)?1:ceil($count / $rpp);
 
   if (!isset($opts['lastpagedefault']))
     $pagedefault = 1;
@@ -480,7 +480,7 @@ function pager($rpp, $count, $href, $opts = array()) {
 
   if ($pages > 1) {
     $pager .= "\n".'<form name="change_page'.$pagename.'" method="post" action="index.php">'."\n".'<select class="drop_pager" name="pages" onchange="location=document.change_page'.$pagename.'.pages.options[document.change_page'.$pagename.'.pages.selectedIndex].value" size="1">';
-    for ($i = 1; $i <= $pages; $i++) 
+    for ($i = 1; $i <= $pages;$i++) 
         $pager .= "\n<option ".($i==$page?'selected="selected"':'')."value=\"$href$pagename=$i\">$i</option>";
     $pager.="\n</select>";
   }
@@ -494,7 +494,7 @@ function pager($rpp, $count, $href, $opts = array()) {
   }
 
   if ($count) {
-    for ($i = $begin; $i <= $end; $i++) {
+    for ($i = $begin;$i<=$end;$i++) {
       if ($i != $page)
         $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename=$i\">$i</a></span>";
       else
@@ -502,8 +502,8 @@ function pager($rpp, $count, $href, $opts = array()) {
     }
 
     if ($page < $mp && $mp >= 1) {
-      $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename = ".($page+1)."\">&nbsp;&gt;</a></span>";
-      $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename = $pages\">&nbsp;&raquo;</a></span>";
+      $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename=".($page+1)."\">&nbsp;&gt;</a></span>";
+      $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename=$pages\">&nbsp;&raquo;</a></span>";
     }
 
     $pagertop = "$pager\n</form>";
