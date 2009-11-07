@@ -9,11 +9,8 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 ini_set("memory_limit", "-1");
 set_time_limit(0);
-$php_version=explode(".",phpversion());
-if($php_version[0]<=5 && $php_version[1]<=2)
-{
-    if (ini_get('register_globals'))
-    {
+
+if (ini_get('register_globals')) {
   $superglobals = array($_SERVER, $_ENV, $_FILES, $_COOKIE, $_POST, $_GET);
   if (isset($_SESSION))
     array_unshift($superglobals, $_SESSION);
@@ -22,7 +19,7 @@ if($php_version[0]<=5 && $php_version[1]<=2)
       unset($GLOBALS[$global]);
   @ini_set('register_globals', false);
 }
-}
+
 // control if magic_quote_gpc = on
 if(get_magic_quotes_gpc()){
   // function which remove unwanted slashes
@@ -33,6 +30,7 @@ if(get_magic_quotes_gpc()){
       elseif (is_string($val))
         $array[$key] = str_replace(array('\\\\', '\\\"', "\'"), array('\\', '\"', "'"),$val);
   }
+
   remove_magic_quotes($_POST);
   remove_magic_quotes($_GET);
   remove_magic_quotes($_REQUEST);
@@ -58,7 +56,23 @@ if (!isset($TRACKER_ANNOUNCEURLS)) {
   $TRACKER_ANNOUNCEURLS = array();
   $TRACKER_ANNOUNCEURLS[] = $BASEURL.'/announce.php';
 }
-
+/*Mod by losmi - sticky mod*/
+function getLevel($cur_level)
+{
+    global $TABLE_PREFIX;
+    $query = "SELECT id, id_level FROM {$TABLE_PREFIX}users_level";
+    $rez = do_sqlquery($query,true);
+    
+    while($row = mysql_fetch_assoc($rez))
+    {
+        if($row['id'] == $cur_level)
+        {
+            return $row['id_level'];
+        }
+    }
+    return 0;
+}
+/*End mod by losmi - sticky mod*/
 function load_css($css_name) {
   // control if input template name exist in current user's stylepath, else return default
   global $BASEURL, $STYLEPATH, $STYLEURL;
@@ -187,7 +201,7 @@ $CURRENTPATH = dirname(__FILE__);
 global $STYLEPATH;
 include($CURRENTPATH.'/cyberfun_footer.php');
   global $tracker_version;
-  return '[&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">Btiteam</a>&nbsp;]';
+  return '';
   return $cyberfun_footer;
 }
 
@@ -196,7 +210,7 @@ function print_designer() {
 
   if (file_exists($STYLEPATH.'/style_copyright.php')) {
      include($STYLEPATH.'/style_copyright.php');
-     $design_copyright = '[&nbsp;&nbsp;<u>Powered By</u>: '.$design_copyright.'&nbsp;&nbsp;]&nbsp;';
+     $design_copyright = ''.$design_copyright.'';
   } else
      $design_copyright = '[&nbsp;&nbsp;<u>CyBerFuN xBTiT By cybernet</u>: <a href="http://tracker.cyberfun.ro/" target="_blank">CyBerFuN Tracker</a>&nbsp;]';
   return $design_copyright;
@@ -321,8 +335,7 @@ function userlogin() {
 <?php
     die();
   }
-
-  // guest
+// guest
     $id = (!isset($_COOKIE['uid']))?1:max(1, $_COOKIE['uid']);
 
   $res = do_sqlquery("SELECT u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = $id LIMIT 1;") or sqlerr(__FILE__, __LINE__);
@@ -761,7 +774,7 @@ function information_msg($heading = 'Error!', $string, $close=false) {
 }
 
 function sqlesc($x) {
-  return '\''.mysql_real_escape_string($x).'\'';
+  return '\''.mysql_escape_string($x).'\'';
 }
 
 function get_content($file) {

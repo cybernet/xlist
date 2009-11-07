@@ -514,35 +514,36 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}featured` (
 --
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
-  `info_hash` varchar(40) NOT NULL default '',
-  `filename` varchar(250) NOT NULL default '',
-  `url` varchar(250) NOT NULL default '',
-  `info` varchar(250) NOT NULL default '',
-  `data` datetime NOT NULL default '0000-00-00 00:00:00',
-  `size` bigint(20) NOT NULL default '0',
+  `info_hash` varchar(40) NOT NULL DEFAULT '',
+  `filename` varchar(250) NOT NULL DEFAULT '',
+  `url` varchar(250) NOT NULL DEFAULT '',
+  `info` varchar(250) NOT NULL DEFAULT '',
+  `data` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `size` bigint(20) NOT NULL DEFAULT '0',
   `comment` text,
-  `comment_notify` varchar(50) NOT NULL default 'true',
-  `category` int(10) unsigned NOT NULL default '6',
-  `external` enum('yes','no') NOT NULL default 'no',
-  `announce_url` varchar(100) NOT NULL default '',
-  `uploader` int(10) NOT NULL default '1',
-  `lastupdate` datetime NOT NULL default '0000-00-00 00:00:00',
-  `anonymous` enum('true','false') NOT NULL default 'false',
-  `lastsuccess` datetime NOT NULL default '0000-00-00 00:00:00',
-  `dlbytes` bigint(20) unsigned NOT NULL default '0',
-  `seeds` int(10) unsigned NOT NULL default '0',
-  `leechers` int(10) unsigned NOT NULL default '0',
-  `finished` int(10) unsigned NOT NULL default '0',
-  `lastcycle` int(10) unsigned NOT NULL default '0',
-  `lastSpeedCycle` int(10) unsigned NOT NULL default '0',
-  `speed` bigint(20) unsigned NOT NULL default '0',
+  `comment_notify` varchar(50) NOT NULL DEFAULT 'true',
+  `category` int(10) unsigned NOT NULL DEFAULT '6',
+  `external` enum('yes','no') NOT NULL DEFAULT 'no',
+  `announce_url` varchar(100) NOT NULL DEFAULT '',
+  `uploader` int(10) NOT NULL DEFAULT '1',
+  `lastupdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `anonymous` enum('true','false') NOT NULL DEFAULT 'false',
+  `lastsuccess` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `dlbytes` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `seeds` int(10) unsigned NOT NULL DEFAULT '0',
+  `leechers` int(10) unsigned NOT NULL DEFAULT '0',
+  `finished` int(10) unsigned NOT NULL DEFAULT '0',
+  `lastcycle` int(10) unsigned NOT NULL DEFAULT '0',
+  `lastSpeedCycle` int(10) unsigned NOT NULL DEFAULT '0',
+  `speed` bigint(20) unsigned NOT NULL DEFAULT '0',
   `bin_hash` blob NOT NULL,
   `image` varchar(255) NOT NULL,
   `screen1` varchar(255) NOT NULL,
   `screen2` varchar(255) NOT NULL,
   `screen3` varchar(255) NOT NULL,
-  `visible` int(11) NOT NULL default '1',
-  PRIMARY KEY  (`info_hash`),
+  `visible` int(11) NOT NULL DEFAULT '1',
+  `sticky` enum('0','1') NOT NULL DEFAULT '0',
+  PRIMARY KEY (`info_hash`),
   KEY `filename` (`filename`),
   KEY `category` (`category`),
   KEY `uploader` (`uploader`),
@@ -1379,3 +1380,23 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}visible` (
 
 INSERT INTO `{$db_prefix}visible` (`id`, `color`, `level`) VALUES
 (1, '#000;', 7);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}sticky`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}sticky` (
+  `id` int(11) NOT NULL,
+  `color` varchar(255) NOT NULL DEFAULT '#bce1ac;',
+  `level` int(11) NOT NULL DEFAULT '3',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `{$db_prefix}sticky`
+--
+
+INSERT INTO `{$db_prefix}sticky` (`id`, `color`, `level`) VALUES
+(1, '#bce1ac;', 3);

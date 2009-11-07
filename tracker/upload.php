@@ -70,14 +70,25 @@ else
 if (isset($hash) && $hash) $url = $TORRENTSDIR . "/" . $hash . ".btf";
 else $url = 0;
 
+
+    /*Mod by losmi - sticky mod
+    Operation #1*/
+    if (isset($_POST["sticky"]) && $_POST["sticky"] == 'on')
+       $sticky =  mysql_real_escape_string(1);
+    else { 
+           $sticky = mysql_real_escape_string(0);
+      }
+    /*End mod by losmi - sticky mod
+    End Operation #1*/
+
     /*Mod by losmi - visiblity mod*/
     $visible = 3;
-    if (isset($_POST["visible"]) && $_POST["visible"]!="")
+    if (isset($_POST["visible"]) && $_POST["visible"] != "")
         $visible = sqlesc($_POST["visible"]);
     /*End mod by losmi - visiblity mod
     End Operation #1*/
 
-if (isset($_POST["info"]) && $_POST["info"]!="")
+if (isset($_POST["info"]) && $_POST["info"] != "")
    $comment = mysql_real_escape_string($_POST["info"]);
 else { // description is now required (same as for edit.php)
 //    $comment = "";
@@ -124,13 +135,13 @@ if (!isset($array["announce"]))
 }
 
       $categoria = intval(0+$_POST["category"]);
-      $anonyme=sqlesc($_POST["anonymous"]);
-      $curuid=intval($CURUSER["uid"]);
+      $anonyme = sqlesc($_POST["anonymous"]);
+      $curuid = intval($CURUSER["uid"]);
 // email_notification
 	  if (isset($_POST["comment_notify"])) $comment_notify = sqlesc($_POST["comment_notify"]);
 
       // category check
-      $rc=do_sqlquery("SELECT id FROM {$TABLE_PREFIX}categories WHERE id=$categoria",true);
+      $rc = do_sqlquery("SELECT id FROM {$TABLE_PREFIX}categories WHERE id=$categoria",true);
       if (mysql_num_rows($rc)==0)
          {
              err_msg($language["ERROR"],$language["WRITE_CATEGORY"]);
@@ -139,7 +150,7 @@ if (!isset($array["announce"]))
       }
       @mysql_free_result($rs);
 
-      $announce=str_replace(array("\r\n","\r","\n"),"",$array["announce"]);
+      $announce = str_replace(array("\r\n","\r","\n"),"",$array["announce"]);
 
       if ($categoria==0)
          {
@@ -393,7 +404,7 @@ if (!isset($array["announce"]))
 //      if ($announce!=$BASEURL."/announce.php")
         
       if (in_array($announce,$TRACKER_ANNOUNCEURLS)){
-         $internal=true;
+         $internal = true;
          // inserting into xbtt table
          if ($XBTT_USE)
               do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$hash ON DUPLICATE KEY UPDATE flags=0",true);
@@ -401,7 +412,7 @@ if (!isset($array["announce"]))
       }else
           {
           // maybe we find our announce in announce list??
-             $internal=false;
+             $internal = false;
              if (isset($array["announce-list"]) && is_array($array["announce-list"]))
                 {
                 for ($i=0;$i<count($array["announce-list"]);$i++)
@@ -426,9 +437,20 @@ if (!isset($array["announce"]))
       $status = do_sqlquery($query); //makeTorrent($hash, true);
 
       /*
+Operation #2
+Mod by losmi -sticky torrent
+*/
+if($sticky != 0)
+            {
+            updateSticky($hash,$sticky);
+            }
+/*
+End operation #2
+Mod by losmi -sticky torrent
+      /*
 Mod by losmi -visible torrent
 */
-if($visible!=3)
+if($visible != 3)
             {
             updateVisible($hash,$visible);
             }
@@ -437,7 +459,7 @@ Mod by losmi -visible torrent
 */
       if ($status)
          {
-         $mf=@move_uploaded_file($_FILES["torrent"]["tmp_name"] , $TORRENTSDIR . "/" . $hash . ".btf");
+         $mf = @move_uploaded_file($_FILES["torrent"]["tmp_name"] , $TORRENTSDIR . "/" . $hash . ".btf");
          if (!$mf)
            {
            // failed to move file
@@ -453,14 +475,14 @@ Mod by losmi -visible torrent
             {
                 require_once("./include/getscrape.php");
                 scrape($announce,$hash);
-                $status=2;
+                $status = 2;
                 write_log("Uploaded new torrent $filename - EXT ($hash)","add");
             }
          else
              {
               if ($DHT_PRIVATE)
                    {
-                   $alltorrent=bencode($array);
+                   $alltorrent = bencode($array);
                    $fd = fopen($TORRENTSDIR . "/" . $hash . ".btf", "rb+");
                    fwrite($fd,$alltorrent);
                    fclose($fd);
@@ -468,7 +490,7 @@ Mod by losmi -visible torrent
                 // with pid system active or private flag (dht disabled), tell the user to download the new torrent
                 write_log("Uploaded new torrent $filename ($hash)","add");
                
-            $status=1;
+            $status = 1;
          }
 // Announce new Uploaded torrents in ShoutBoX start
          global $BASEURL;
@@ -484,12 +506,35 @@ Mod by losmi -visible torrent
           }
 
 } else {
-$status=0;
+$status = 0;
 }
 
-$uploadtpl=new bTemplate();
+$uploadtpl = new bTemplate();
 
-      /*
+/*
+Mod by losmi -sticky torrent
+*/
+
+    $query = "SELECT * FROM {$TABLE_PREFIX}sticky";
+    $rez = do_sqlquery($query,true);
+    $rez = mysql_fetch_assoc($rez);
+    $rez_level = $rez['level'];
+    $current_level = getLevel($CURUSER['id_level']);
+    $level_ok = false;
+    
+if ($CURUSER["uid"] > 1 && $current_level >= $rez_level && $CURUSER['can_upload'] == 'yes')
+   {
+    $uploadtpl->set("LEVEL_OK",true,FALSE);
+   }
+else
+   {
+    $uploadtpl->set("LEVEL_OK",false,TRUE);
+   }
+   unset($rez);
+/*
+Mod by losmi -sticky torrent
+*/
+/*
 Mod by losmi -visible torrent
 */
 
@@ -500,7 +545,7 @@ Mod by losmi -visible torrent
     $current_level = getLevelVisible($CURUSER['id_level']);
     $level_ok = false;
 
-if ($CURUSER["uid"]>1 && $current_level>=$rez_level && $CURUSER['can_upload']=='yes')
+if ($CURUSER["uid"] > 1 && $current_level >= $rez_level && $CURUSER['can_upload'] == 'yes')
    {
     $uploadtpl->set("LEVEL_VISIBLE_OK",true,FALSE);
    }
@@ -509,17 +554,17 @@ else
     $uploadtpl->set("LEVEL_VISIBLE_OK",false,TRUE);
    }
    unset($rez);
-   $users_level =do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users_level ORDER BY id",true);
-   $visible ="<select name='visible'>";
+   $users_level = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users_level ORDER BY id",true);
+   $visible = "<select name='visible'>";
   while ($row = mysql_fetch_assoc($users_level))
     {
-        if($row['id_level']>=3)
+        if($row['id_level'] >= 3)
         {
             $visible .= "<option value=".$row['id_level'].">".$row['level']."</option>" ;
             
         }
     }
-    $visible .="</select>"; 
+    $visible .= "</select>"; 
     $uploadtpl->set('visible',$visible);
 /*
 Mod by losmi -visible torrent
@@ -565,13 +610,13 @@ case 0:
 case 1:
     if ($PRIVATE_ANNOUNCE || $DHT_PRIVATE) {       
         $uploadtpl->set("MSG_DOWNLOAD_PID",$language["MSG_DOWNLOAD_PID"]);
-        $tplfile="upload_finish";
+        $tplfile = "upload_finish";
         $uploadtpl->set("DOWNLOAD","<br /><a href=\"download.php?id=$hash&f=".urlencode($filename).".torrent\">".$language["DOWNLOAD"]."</a><br /><br />");
     }
-    $tplfile="upload_finish";
+    $tplfile = "upload_finish";
     break;
 case 2: 
-    $tplfile="upload_finish";
+    $tplfile = "upload_finish";
 
       ###################################################################
       # Append tracker announce

@@ -32,4 +32,5 @@ $language["CHECK_FOLDERS_PERM"]="Please check the folder permissons and try agai
 $language["ILEGAL_UPLOAD"]="Ilegal upload!! This is not a image<br>Please press back and try again";
 $language["IMAGE"]="Image";
 $language["SCREEN"]="Screenshots";
+$language["PROFILE_COMMENT_MAIL_NOTIFY"]="Comment e-mail notification";
 ?>
