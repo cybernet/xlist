@@ -493,6 +493,50 @@ INSERT INTO `{$db_prefix}countries` (`id`, `name`, `flagpic`, `domain`) VALUES
 -- --------------------------------------------------------
 
 --
+
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}faq` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `cat_id` int(11) NOT NULL,
+  `active` enum('-1','0','1') NOT NULL DEFAULT '1',
+  `date` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `{$db_prefix}faq`
+--
+
+INSERT INTO `{$db_prefix}faq` (`id`, `title`, `description`, `cat_id`, `active`, `date`) VALUES
+(1, 'test3', 'test4', 1, '-1', '0000-00-00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}faq_group`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}faq_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `active` enum('-1','0','1') NOT NULL DEFAULT '1',
+  `sort_index` int(11) NOT NULL,
+  `date` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `{$db_prefix}faq_group`
+--
+
+INSERT INTO `{$db_prefix}faq_group` (`id`, `title`, `description`, `active`, `sort_index`, `date`) VALUES
+(1, 'test', 'test2', '1', 1, '0000-00-00');
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `{$db_prefix}featured`
 --
 

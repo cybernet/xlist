@@ -338,4 +338,14 @@ $language["SETTING_IRC_CHANNEL"]="Irc Channel (without #)";
 $language["DUPLICATES"]="Duplicates";
 $language["ERROR"]="Error";
 $language["ERR_USERS_NOT_FOUND"]="No users found!";
+// sticky start
+$language["ACP_STICKY_TORRENTS"]="Sticky settings";
+$language["STICKY_SETTINGS"]="Sticky settings";
+$language["COLOR"]="Color";
+$language["LEVEL_STICKY"]="Who can add sticky torrents? (default: Uploader)";
+// sticky end
+//FAQ
+$language["ACP_FAQ_GROUP"]="Faq groups";
+$language["ACP_FAQ"]="Faq";
+$language["ACP_FAQ_QUESTION"]="Faq questions";
 ?>

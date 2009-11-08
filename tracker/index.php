@@ -327,6 +327,14 @@ switch ($pageID) {
         $tpl->set("main_content",set_block($SITENAME . " " . $language["STAFF"],"center",$stafftpl->fetch(load_template("staff.tpl"))));
         $tpl->set("main_title",$btit_settings["name"]." .::. "."Staff");
         break;
+
+/*Mod by losmi - faq mod*/
+    case 'faq':
+        require("$THIS_BASEPATH/faq.php");
+        $tpl->set("main_content",set_block($language["MNU_FAQ"],"center",$faqtpl->fetch(load_template("faq.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->F.A.Q.");
+        break;
+/*End mod by losmi faq - mod*/
     
     case 'index':
     case '':

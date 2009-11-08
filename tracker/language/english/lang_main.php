@@ -232,7 +232,7 @@ $language['MORE_THAN_2']='items found, displaying first';
 $language['NA']='N/A';
 $language['NAME']='Name';
 $language['NEED_COOKIES']='Note: You need cookies enabled to log in.';
-$language['NEW_COMMENT']='Insert your comment...';
+$language['NEW_COMMENT']='Add a comment';
 $language['NEW_COMMENT_T']='New Comment';
 $language['NEWS']='the news';
 $language['NEWS_DESCRIPTION']='News:';
@@ -462,4 +462,16 @@ $language["NEED_MORE_POINTS"]="[need more points]";
 $language["CHANGE_USERNAME"]="Change username (price - ";
 $language['SEEDBONUS_MOD_LOGIN']='Please <a href="index.php?page=login">login</a> on the site using your account.';
 $language["MNU_IRC"]="iRC";
+$language["STICKY_TORRENT"]="<b>Sticky</b>";
+$language["STICKY_TORRENT_EXPLAIN"]="(Always on top of the torrent list)";
+//FAQ
+$language["MNU_FAQ"]="F.A.Q.";
+$language["FAQ_NAME"]="Faq group name";
+$language["FAQ_TEXT"]="Faq group description";
+$language["FAQ_SORT_INDEX"]="Faq group sort index";
+$language["FAQ_ADD"]="Insert Faq group";
+$language["FAQ_QUESTION"]="Faq question";
+$language["FAQ_ANSWER"]="Answer";
+$language["FAQ_QUESTION_ADD"]="Insert Faq guestion/answer";
+$language["FAQ_QUESTION_SEARCH_ALL"]="Search all...";
 ?>
