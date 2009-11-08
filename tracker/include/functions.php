@@ -73,6 +73,37 @@ function getLevel($cur_level)
     return 0;
 }
 /*End mod by losmi - sticky mod*/
+/*Mod by losmi - sticky mod
+Operation #3*/
+function updateSticky($hash,$sticky)
+{
+    global $TABLE_PREFIX;
+    $query = "UPDATE {$TABLE_PREFIX}files 
+                   SET sticky='$sticky'
+                   WHERE info_hash ='$hash'";
+    do_sqlquery($query,true);
+   
+}
+/*End mod by losmi - sticky mod
+End Operation #3*/
+/*Mod by losmi - faq mod */
+function genrelistfaq($append='',$table='faq')
+     {
+
+     global $TABLE_PREFIX;
+
+    $ret = array();
+    $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}$table WHERE active != '-1' ".$append." ORDER BY id");
+
+    while ($row = mysql_fetch_assoc($res))
+        $ret[] = $row;
+
+    unset($row);
+    mysql_free_result($res);
+
+    return $ret;
+}
+/*End mod by losmi - faq mod*/
 function load_css($css_name) {
   // control if input template name exist in current user's stylepath, else return default
   global $BASEURL, $STYLEPATH, $STYLEURL;
