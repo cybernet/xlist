@@ -23,7 +23,7 @@ $res = do_sqlquery("SELECT filename, size FROM {$TABLE_PREFIX}files WHERE info_h
     # End       
     ################################################################################################
 if ($res) {
-   $row=mysql_fetch_array($res);
+   $row = mysql_fetch_array($res);
    if ($row) {
       $tsize=0+$row["size"];
 
@@ -59,86 +59,95 @@ while ($row = mysql_fetch_array($res))
 {
   // for user name instead of peer
  if ($XBTT_USE)
-    $resu=do_sqlquery("SELECT u.username,u.id,c.flagpic,c.name FROM {$TABLE_PREFIX}users u LEFT JOIN {$TABLE_PREFIX}countries c ON c.id=u.flag WHERE u.id='".$row["uid"]."'");
+    $resu = TRUE;
  elseif ($PRIVATE_ANNOUNCE)
-    $resu=do_sqlquery("SELECT u.username,u.id,c.flagpic,c.name FROM {$TABLE_PREFIX}users u LEFT JOIN {$TABLE_PREFIX}countries c ON c.id=u.flag WHERE u.pid='".$row["pid"]."'");
+    $resu = do_sqlquery("SELECT u.username,u.id,c.flagpic,c.name FROM {$TABLE_PREFIX}users u LEFT JOIN {$TABLE_PREFIX}countries c ON c.id=u.flag WHERE u.pid='".$row["pid"]."'");
  else
-    $resu=do_sqlquery("SELECT u.username,u.id,c.flagpic,c.name FROM {$TABLE_PREFIX}users u LEFT JOIN {$TABLE_PREFIX}countries c ON c.id=u.flag WHERE u.cip='".$row["ip"]."'");
+    $resu = do_sqlquery("SELECT u.username,u.id,c.flagpic,c.name FROM {$TABLE_PREFIX}users u LEFT JOIN {$TABLE_PREFIX}countries c ON c.id=u.flag WHERE u.cip='".$row["ip"]."'");
 
  if ($resu)
     {
-    $rowuser=mysql_fetch_row($resu);
-    if ($rowuser && $rowuser[1]>1)
+    if($XBTT_USE)
+    {
+        $rowuser[0] = $row["username"];
+        $rowuser[1] = $row["uid"];
+        $rowuser[2] = $row["flagpic"];
+        $rowuser[3] = $row["name"];
+    }
+else
+    {
+    $rowuser = mysql_fetch_row($resu);
+    if ($rowuser && $rowuser[1] > 1)
       {
       if ($GLOBALS["usepopup"]){
-       $peers[$i]["USERNAME"]="<a href=\"javascript: windowunder('index.php?page=userdetails&amp;id=$rowuser[1]')\">".unesc($rowuser[0])."</a>";
-       $peers[$i]["PM"]="<a href=\"javascript: windowunder('index.php?page=usercp&amp;do=pm&amp;action=edit&amp;uid=$CURUSER[uid]&amp;what=new&amp;to=".urlencode(unesc($rowuser[0]))."')\">".image_or_link("$STYLEPATH/images/pm.png","","PM")."</a>";
+       $peers[$i]["USERNAME"] = "<a href=\"javascript: windowunder('index.php?page=userdetails&amp;id=$rowuser[1]')\">".unesc($rowuser[0])."</a>";
+       $peers[$i]["PM"] = "<a href=\"javascript: windowunder('index.php?page=usercp&amp;do=pm&amp;action=edit&amp;uid=$CURUSER[uid]&amp;what=new&amp;to=".urlencode(unesc($rowuser[0]))."')\">".image_or_link("$STYLEPATH/images/pm.png","","PM")."</a>";
   }    else {
-        $peers[$i]["USERNAME"]="<a href=\"index.php?page=userdetails&amp;id=$rowuser[1]\">".unesc($rowuser[0])."</a>";
-        $peers[$i]["PM"]="<a href=\"index.php?page=usercp&amp;do=pm&amp;action=edit&amp;uid=$CURUSER[uid]&amp;what=new&amp;to=".urlencode(unesc($rowuser[0]))."\">".image_or_link("$STYLEPATH/images/pm.png","","PM")."</a>";
+        $peers[$i]["USERNAME"] = "<a href=\"index.php?page=userdetails&amp;id=$rowuser[1]\">".unesc($rowuser[0])."</a>";
+        $peers[$i]["PM"] = "<a href=\"index.php?page=usercp&amp;do=pm&amp;action=edit&amp;uid=$CURUSER[uid]&amp;what=new&amp;to=".urlencode(unesc($rowuser[0]))."\">".image_or_link("$STYLEPATH/images/pm.png","","PM")."</a>";
        }
       }
     else
       {
-       $peers[$i]["USERNAME"]=$language["GUEST"];
-       $peers[$i]["PM"]="";
+       $peers[$i]["USERNAME"] = $language["GUEST"];
+       $peers[$i]["PM"] = "";
     }
   }
-  if ($row["flagpic"]!="" && $row["flagpic"]!="unknown.gif")
-    $peers[$i]["FLAG"]="<img src=\"images/flag/".$row["flagpic"]."\" alt=\"".unesc($row["name"])."\" />";
-  elseif ($rowuser[2]!="" && !empty($rowuser[2]))
-    $peers[$i]["FLAG"]="<img src=\"images/flag/".$rowuser[2]."\" alt=\"".unesc($rowuser[3])."\" />";
+  if ($row["flagpic"] != "" && $row["flagpic"] != "unknown.gif")
+    $peers[$i]["FLAG"] = "<img src=\"images/flag/".$row["flagpic"]."\" alt=\"".unesc($row["name"])."\" />";
+  elseif ($rowuser[2] != "" && !empty($rowuser[2]))
+    $peers[$i]["FLAG"] = "<img src=\"images/flag/".$rowuser[2]."\" alt=\"".unesc($rowuser[3])."\" />";
   else
-    $peers[$i]["FLAG"]="<img src=\"images/flag/unknown.gif\" alt=\"".UNKNOWN."\" />";
+    $peers[$i]["FLAG"] = "<img src=\"images/flag/unknown.gif\" alt=\"".UNKNOWN."\" />";
 // Peer Connectable by Petr1fied starts
 if (!$XBTT_USE)
 {
     if ($GLOBALS["NAT"])
-        $peers[$i]["PORT"]="<b><font color='".(($row["natuser"]=="Y")?"red":"green")."'>".$row["port"]."</font></b>";
+        $peers[$i]["PORT"] = "<b><font color='".(($row["natuser"]=="Y")?"red":"green")."'>".$row["port"]."</font></b>";
     else
-        $peers[$i]["PORT"]=$row["port"];
+        $peers[$i]["PORT"] = $row["port"];
 }
 // Peer Connectable by Petr1fied ends
-  $stat=floor((($tsize - $row["bytes"]) / $tsize) *100);
-  $progress="<table width=\"100\" cellspacing=\"0\" cellpadding=\"0\"><tr><td class=\"progress\" align=\"left\">";
-  $progress.="<img height=\"10\" width=\"".number_format($stat,0)."\" src=\"$STYLEURL/images/progress.jpg\" alt=\"\" /></td></tr></table>";
-$peers[$i]["PROGRESS"]=$stat."%<br />" . $progress;
+  $stat = floor((($tsize - $row["bytes"]) / $tsize) * 100);
+  $progress = "<table width=\"100\" cellspacing=\"0\" cellpadding=\"0\"><tr><td class=\"progress\" align=\"left\">";
+  $progress .= "<img height=\"10\" width=\"".number_format($stat,0)."\" src=\"$STYLEURL/images/progress.jpg\" alt=\"\" /></td></tr></table>";
+$peers[$i]["PROGRESS"] = $stat."%<br />" . $progress;
 
-$peers[$i]["STATUS"]=$row["status"];
-$peers[$i]["CLIENT"]=htmlspecialchars(getagent(unesc($row["client"]),unesc($row["peer_id"])));
-  $dled=makesize($row["downloaded"]);
-  $upld=makesize($row["uploaded"]);
-$peers[$i]["DOWNLOADED"]=$dled;
+$peers[$i]["STATUS"] = $row["status"];
+$peers[$i]["CLIENT"] = htmlspecialchars(getagent(unesc($row["client"]),unesc($row["peer_id"])));
+  $dled = makesize($row["downloaded"]);
+  $upld = makesize($row["uploaded"]);
+$peers[$i]["DOWNLOADED"] = $dled;
 
 
     ################################################################################################
     # Speed stats in peers with filename
 
-            if ($row['status']=='seeder') $transferrateDL="<i>seeder</i>";             
+            if ($row['status']=='seeder') $transferrateDL = "<i>seeder</i>";             
               else if ($row['download_difference'] > '0' && $row['announce_interval'] > '0')
-                $transferrateDL=round(round($row['download_difference']/$row['announce_interval'])/1000, 2)." KB/sec";
-                else $transferrateDL="0 KB/sec";
+                $transferrateDL = round(round($row['download_difference'] / $row['announce_interval']) / 1000, 2)." KB/sec";
+                else $transferrateDL = "0 KB/sec";
               
-if ($transferrateDL >= 6.50) $color="green";
-else if ($transferrateDL >= 3.00) $color="orange";
-else if ($transferrateDL >= 0.01) $color="red";
-else if($row['status']=='seeder') $color="#00D900";
-else $color="";
-              $peers[$i]["DLSPEED"]="<font color=$color>$transferrateDL</font>";
+if ($transferrateDL >= 6.50) $color = "green";
+else if ($transferrateDL >= 3.00) $color = "orange";
+else if ($transferrateDL >= 0.01) $color = "red";
+else if($row['status']=='seeder') $color = "#00D900";
+else $color = "";
+              $peers[$i]["DLSPEED"] = "<font color=$color>$transferrateDL</font>";
 
 
-$peers[$i]["UPLOADED"]=$upld;
+$peers[$i]["UPLOADED"] = $upld;
 
 
             if ($row['upload_difference'] > '0' && $row['announce_interval'] > '0')
-              $transferrateUP=round(round($row['upload_difference']/$row['announce_interval'])/1000, 2)." KB/sec";
-              else $transferrateUP="0 KB/sec";
+              $transferrateUP = round(round($row['upload_difference']/$row['announce_interval'])/1000, 2)." KB/sec";
+              else $transferrateUP = "0 KB/sec";
               
-if ($transferrateUP >= 6.50) $color="green";
-else if ($transferrateUP >= 3.00) $color="orange";
-else if ($transferrateUP >= 0.01) $color="red";
-else $color="";
-              $peers[$i]["UPSPEED"]="<font color=$color>$transferrateUP</font>";
+if ($transferrateUP >= 6.50) $color = "green";
+else if ($transferrateUP >= 3.00) $color = "orange";
+else if ($transferrateUP >= 0.01) $color = "red";
+else $color = "";
+              $peers[$i]["UPSPEED"] = "<font color=$color>$transferrateUP</font>";
 
     # End       
     ################################################################################################
@@ -147,13 +156,13 @@ else $color="";
 	
 
 //Peer Ratio
-  if (intval($row["downloaded"])>0) {
-     $ratio=number_format($row["uploaded"]/$row["downloaded"],2);}
-  else {$ratio='&#8734;';}
-  $peers[$i]["RATIO"]=$ratio;
+  if (intval($row["downloaded"]) > 0) {
+     $ratio = number_format($row["uploaded"] / $row["downloaded"], 2);}
+  else {$ratio = '&#8734;';}
+  $peers[$i]["RATIO"] = $ratio;
 //End Peer Ratio
 
-  $peers[$i]["SEEN"]=get_elapsed_time($row["lastupdate"])." ago";
+  $peers[$i]["SEEN"] = get_elapsed_time($row["lastupdate"])." ago";
 $i++;
 }
 

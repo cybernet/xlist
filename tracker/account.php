@@ -20,7 +20,7 @@ if (isset($_GET["act"])) $act = $_GET["act"];
 if (isset($_GET["language"])) $idlangue = intval($_GET["language"]);
  else $idlangue = max(1,$btit_settings["default_language"]);
 if (isset($_GET["style"])) $idstyle = intval($_GET["style"]);
- else $idstyle = "";
+ else $idstyle = max(1,$btit_settings["default_style"]);
 if (isset($_GET["flag"])) $idflag = intval($_GET["flag"]);
  else $idflag = "";
 
@@ -166,7 +166,7 @@ function tabella($action, $dati = array()) {
           $dati["username"] = "";
           $dati["email"] = "";
           $dati["language"] = $idlangue;
-
+          $dati["style"] = $idstyle;
      }
 
    // avoid error with js
@@ -215,7 +215,7 @@ function tabella($action, $dati = array()) {
           $option .= "\"selected\" ";
        $option .= "value=\"".$langue["id"]."\">".$langue["language"]."</option>";
      }
-   $option.="\n</select>";
+   $option .= "\n</select>";
 
    $tpl_account->set("account_combo_language", $option);
 
@@ -359,9 +359,9 @@ if ($pwd != $pwd1) {
     }
 
 if ($VALIDATION == "none")
-   $idlevel=3;
+   $idlevel = 3;
 else
-   $idlevel=2;
+   $idlevel = 2;
 //begin invitation system by dodge
     if ($INVITATIONSON == "true")
     {
@@ -388,11 +388,16 @@ if (mysql_num_rows($res) > 0)
    return -2;
    exit;
 }
+
 // valid email check - by vibes
+/*
 $regex = "^[_+a-z0-9-]+(\.[_+a-z0-9-]+)*"
                 ."@[a-z0-9-]+(\.[a-z0-9-]{1,})*"
                 ."\.([a-z]{2,}){1}$";
-if(!eregi($regex,$email))
+*/
+
+$regex = '/\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/i';
+if(!preg_match($regex,$email))
    {
    return -3;
    exit;
@@ -521,7 +526,7 @@ if ($FORUMLINK == "smf" || mysql_num_rows($test))
 // xbt
 if ($XBTT_USE)
    {
-   $resin=do_sqlquery("INSERT INTO xbt_users (uid, torrent_pass) VALUES ($newuid, '$pid')");
+   $resin = do_sqlquery("INSERT INTO xbt_users (uid, torrent_pass) VALUES ($newuid, '$pid')");
    }
 
     if ($INVITATIONSON == "true")

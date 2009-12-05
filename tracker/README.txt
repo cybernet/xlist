@@ -42,7 +42,7 @@ The opensource free support forum is http://www.btiteam.org
 # REQUIREMENTS #
 #--------------#
 - Web server with Apache or Lighttp installed and running
-- PHP 4.1 or higher
+- PHP 4.3 or higher (If you use php 4, you'll have to rename the phpmailer's folder phpmailer->phpmailer5 and phpmailer4->phpmailer)
 - Mysql 4.1 or higher
 
 #----------------#
@@ -79,4 +79,5 @@ TreeTopClimber
 Many thanks to all guys who participated for the testing and for addons/styles etc.
 
 Btiteam
+
 
