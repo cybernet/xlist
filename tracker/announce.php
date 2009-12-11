@@ -2,7 +2,7 @@
 
 // CyBerFuN.ro & xList.ro
 
-// CyBerFuN .::. My Panel
+// CyBerFuN .::. Announce
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
 // http://xlist.ro/
@@ -148,7 +148,7 @@ header("Pragma: no-cache");
 $agent = mysql_real_escape_string($_SERVER["HTTP_USER_AGENT"]);
 // Deny access made with a browser...
 
-if (preg_match("/^Mozilla|^Opera|^Links|^Lynx/i", $agent))
+if (ereg("^Mozilla\\/", $agent) || ereg("^Opera\\/", $agent) || ereg("^Links ", $agent) || ereg("^Lynx\\/", $agent))
 {
     header("HTTP/1.0 500 Bad Request");
     die("This a a bittorrent application and can't be loaded into a browser");
@@ -328,13 +328,13 @@ function getPeerInfo($user, $hash)
     // If "trackerid" is set, let's try that
     if (isset($GLOBALS["trackerid"]))
     {
-        $query = "SELECT peer_id,bytes,ip,port,status,lastupdate,sequence FROM {$TABLE_PREFIX}peers WHERE sequence=\"".$GLOBALS["trackerid"]."\" AND infohash=\"$hash\"";
+        $query = "SELECT peer_id, bytes, ip, port, status, lastupdate, sequence FROM {$TABLE_PREFIX}peers WHERE sequence=\"".$GLOBALS["trackerid"]."\" AND infohash=\"$hash\"";
         $results = mysql_query($query) or show_error("Tracker error: invalid torrent");
         $data = mysql_fetch_assoc($results);
         if (!$data || $data["peer_id"] != $user)
         {
             // Damn, but don't crash just yet.
-            $query = "SELECT peer_id,bytes,ip,port,status,lastupdate,sequence from {$TABLE_PREFIX}peers where peer_id=\"$user\" AND infohash=\"$hash\"";
+            $query = "SELECT peer_id, bytes, ip, port, status, lastupdate, sequence from {$TABLE_PREFIX}peers where peer_id=\"$user\" AND infohash=\"$hash\"";
             $results = mysql_query($query) or showError("Tracker error: invalid torrent");
             $data = mysql_fetch_assoc($results);
         }
@@ -782,7 +782,7 @@ switch ($event)
                // if user has already completed this torrent, mysql will give error because of unique index (uid+infohash)
                // upload/download will be updated on stop event...
                // record should already exist (created on stated event)
-               quickQuery("UPDATE {$TABLE_PREFIX}history SET date=UNIX_TIMESTAMP(),active='yes',agent='".getagent($agent,$peer_id)."' WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
+               quickQuery("UPDATE {$TABLE_PREFIX}history SET date=UNIX_TIMESTAMP(), active='yes', agent='".getagent($agent,$peer_id)."' WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
                // record is not present, create it
                if (mysql_affected_rows() == 0)
                   quickQuery("INSERT INTO {$TABLE_PREFIX}history (uid,infohash,date,active,agent) VALUES (".$curuid["id"].",'$info_hash',UNIX_TIMESTAMP(),'yes','".getagent($agent,$peer_id)."')");
