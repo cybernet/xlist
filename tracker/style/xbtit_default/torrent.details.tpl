@@ -77,7 +77,63 @@ function show_wait()
         </tr>
         <tr>
           <td align="right" class="header"><tag:language.TORRENT /></td>
-          <td class="lista" align="center"><a href="download.php?id=<tag:torrent.info_hash />&amp;f=<tag:torrent.filename />.torrent"><tag:torrent.filename /></a></td>
+          <td class="lista" align="center"><a href="download.php?id=<tag:torrent.info_hash />&amp;f=<tag:torrent.filename />.torrent"onClick="javascript:pageTracker._trackPageview('/download/<tag:torrent.info_hash />');"><tag:torrent.filename /></a></td>
+        </tr>
+        <tr>
+          <td align="right" class="header">Share this torrent</td>
+          <td class="lista" align="center">
+
+
+<a href="#" onClick='javascript:PostToTwitter()'><img src="http://twitter.com/favicon.ico" alt="Tweet this"></a>
+
+<script>
+function PostToTwitter()
+{
+var ShareURL = window.location.href;
+
+window.open('http://twitter.com/home?status=Check out this torrent '+encodeURIComponent(ShareURL));
+return false;
+}
+</script>
+
+<a href="#" onClick='javascript:PostToFacebook()'><img src="http://facebook.com/favicon.ico" alt="Share on Facebook"></a>
+
+<script>
+function PostToFacebook()
+{
+var ShareURL = window.location.href;
+
+window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(ShareURL)+'&t=BitToxic.com torrent');
+return false;
+}
+</script>
+
+
+<a href="javascript:PostToMyspace()"><img src="http://myspace.com/favicon.ico" alt="Share on MySpace"></a>
+
+<script>
+function PostToMyspace()
+{
+var ShareURL = window.location.href;
+
+window.open('http://www.myspace.com/index.cfm?fuseaction=postto&c=Check out this torrent&l=2&u='+encodeURIComponent(ShareURL)+'&r='+encodeURIComponent(ShareURL));
+
+}
+</script>
+
+<a href="javascript:PostToDigg()"><img src="http://digg.com/favicon.ico" alt="Digg this"></a>
+
+<script>
+function PostToDigg()
+{
+var ShareURL = window.location.href;
+
+window.open('http://digg.com/submit?url='+encodeURIComponent(ShareURL)+'&title=BitToxic.com torrent');
+
+}
+</script>
+
+</td>
         </tr>
         <tr>
           <td align="right" class="header"><tag:language.INFO_HASH /></td>
@@ -86,7 +142,7 @@ function show_wait()
         <if:IMAGEIS>
         <tr>
           <td align="right" class="header" valign="top"><tag:language.IMAGE /></td>
-          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.image />" title="view image" rel="lightbox"><img src="<tag:uploaddir /><tag:torrent.image />" width=<tag:width />></a></td>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.image />"onClick="javascript:pageTracker._trackPageview('/poster/info_hash/<tag:torrent.image />');" title="view image" rel="lightbox"><img src="<tag:uploaddir /><tag:torrent.image />" width=<tag:width />></a></td>
         </tr>
         </if:IMAGEIS>
         <tr>
@@ -99,7 +155,7 @@ function show_wait()
               <form action="thanks.php" method="post" onsubmit="return false">
               <div id="thanks_div" name="thanks_div" style="display:block;"></div>
               <div id="loading" name="loading" style="display:none;"><img src="images/ajax-loader.gif" alt="" title="ajax-loader" /></div>
-              <input type="button" id="ty" disabled="disabled" value="<tag:language.THANKS_YOU />" onclick="thank_you('<tag:torrent.info_hash />')" />
+              <input type="button" id="ty" disabled="disabled" value="<tag:language.THANKS_YOU />" onclick="thank_you('<tag:torrent.info_hash />')"onClick="javascript:pageTracker._trackPageview('/thank_you/info_hash/<tag:torrent.info_hash />');" />
               </form>
               <script type="text/javascript">ShowThank('<tag:torrent.info_hash />');</script>
           </td>
@@ -113,13 +169,13 @@ function show_wait()
       <td class="lista">
       <table class="lista" border="0" cellspacing="0" cellpadding="0">
         <if:SCREENIS1>
-          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen1 />" title="view image" rel="lightbox"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen1 />"></a></td>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen1 />"onClick="javascript:pageTracker._trackPageview('/poster/info_hash/th_1/<tag:torrent.image />');" title="view image" rel="lightbox"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen1 />"></a></td>
         </if:SCREENIS1>
         <if:SCREENIS2>
-          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen2 />" title="view image" rel="lightbox"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen2 />"></a></td>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen2 />"onClick="javascript:pageTracker._trackPageview('/poster/info_hash/th_2/<tag:torrent.image />');" title="view image" rel="lightbox"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen2 />"></a></td>
         </if:SCREENIS2>
         <if:SCREENIS3>
-          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen3 />" title="view image" rel="lightbox"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen3 />"></a></td>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen3 />"onClick="javascript:pageTracker._trackPageview('/poster/info_hash/th_3/<tag:torrent.image />');" title="view image" rel="lightbox"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen3 />"></a></td>
         </if:SCREENIS3>
         </table></td>
         </tr>
