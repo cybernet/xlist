@@ -145,10 +145,6 @@ window.open('http://digg.com/submit?url='+encodeURIComponent(ShareURL)+'&title=B
           <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.image />"onClick="javascript:pageTracker._trackPageview('/poster/info_hash/<tag:torrent.image />');" title="view image" rel="lightbox"><img src="<tag:uploaddir /><tag:torrent.image />" width=<tag:width />></a></td>
         </tr>
         </if:IMAGEIS>
-        <tr>
-          <td align="right" class="header"><tag:language.SHARE_ON_FB /></td>
-		  <td class="lista" align="center"><tag:show_fblink /></td>
-        </tr>
          <tr>
 <td align="right" class="header" valign="top"><tag:language.THANKS_USERS /></td>
           <td class="lista" align="center">
