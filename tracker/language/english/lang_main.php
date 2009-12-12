@@ -437,7 +437,6 @@ $language['PM_NOTIFY_OFFICIAL_RELEASE']='Here!';
 $language['PM_NOTIFY_VERSION']='You have the latest Hack email_notification version installed.';
 $language["CUSTOM_TITLE"]="Custom title";
 $language["STAFF"]="Staff";
-$language['SHARE_ON_FB']='Share on facebook';
 $language["FILE_UPLOAD_TO_BIG"]="File size to big for upload!! Limit";
 $language["IMAGE_WAS"]="Image size";
 $language["MOVE_IMAGE_TO"]="Could not move image to";

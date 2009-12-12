@@ -421,5 +421,4 @@ $language['WT']='WT';
 $language['X_TIMES']='time(s)';
 $language['YES']='Da';
 $language['LAST_IP']='Ultimul IP';
-$language['SHARE_ON_FB']='Adauga in facebook';
 ?>
