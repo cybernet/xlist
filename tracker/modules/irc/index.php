@@ -1,4 +1,4 @@
-<?
+<?php
 
 // CyBerFuN Tracker .::. iRC
 // http://tracker.cyberfun.ro/
@@ -120,7 +120,7 @@ If you cannot enter the chatroom then your web browser's Java Plugin may need to
 <br>or else use a client like <a href='http://www.mirc.com'>mIRC</a> instead.
 </small></div>
 </div>
-<?
+<?php
 }
 else
     print("<div align=\"center\">\n<br />".$language["ERR_MUST_BE_LOGGED_SHOUT"]."</div>");
