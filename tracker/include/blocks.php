@@ -1,5 +1,11 @@
-<?
+<?php
 // CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. Blocks
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
 
 global $USERLANG;
 require_once(load_language('lang_blocks.php'));

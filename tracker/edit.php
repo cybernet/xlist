@@ -2,7 +2,7 @@
 
 // CyBerFuN.ro & xList.ro
 
-// CyBerFuN .::. My Panel
+// CyBerFuN .::. Edit
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
 // http://xlist.ro/

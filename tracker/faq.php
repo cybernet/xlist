@@ -34,9 +34,9 @@
 if (!defined("IN_BTIT"))
       die("non direct access!");
 
-if ($limit>0)
-  $limitqry="LIMIT $limit";
-$res=do_sqlquery("SELECT f.title AS title, f.id AS id, f.description AS description ,fg.title AS cat_title, fg.id AS cat_id, fg.sort_index AS sort_index 
+if ($limit > 0)
+  $limitqry = "LIMIT $limit";
+$res = do_sqlquery("SELECT f.title AS title, f.id AS id, f.description AS description ,fg.title AS cat_title, fg.id AS cat_id, fg.sort_index AS sort_index 
                     FROM {$TABLE_PREFIX}faq f 
                     INNER JOIN {$TABLE_PREFIX}faq_group fg on f.cat_id=fg.id 
                     WHERE f.active = '1' AND fg.active = '1' GROUP BY f.id ORDER BY fg.sort_index DESC $limitqry");
@@ -44,18 +44,18 @@ $res=do_sqlquery("SELECT f.title AS title, f.id AS id, f.description AS descript
 
 
 $faqtpl = new bTemplate();
-$faqtpl -> set("language",$language);
+$faqtpl->set("language",$language);
 
 
-$faq=array();
-$i=0;
+$faq = array();
+$i = 0;
 
-$faqtpl -> set("faq_exists", (mysql_num_rows($res) > 0),TRUE);
+$faqtpl->set("faq_exists", (mysql_num_rows($res) > 0),TRUE);
 
 include("$THIS_BASEPATH/include/offset.php");
 
-$id='';
-while ($rows=mysql_fetch_array($res))
+$id = '';
+while ($rows = mysql_fetch_array($res))
   {
       
         if($id != $rows['cat_id'])
@@ -96,7 +96,7 @@ while ($rows=mysql_fetch_array($res))
     
   }
 
-$faqtpl -> set("faq", $faq);
-$faqtpl -> set("faq2", $faq2);
+$faqtpl->set("faq", $faq);
+$faqtpl->set("faq2", $faq2);
 
 ?>

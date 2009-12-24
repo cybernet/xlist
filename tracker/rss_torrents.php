@@ -1,4 +1,11 @@
 <?php
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. rss
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
 require_once("include/functions.php");
 require_once("include/config.php");
 

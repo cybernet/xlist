@@ -1,6 +1,11 @@
 <?php
-// CyBerFuN
+// CyBerFuN.ro & xList.ro
 
+// CyBerFuN .::. inDeX
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
 
 if (file_exists("install.unlock") && file_exists("install.php"))
    {

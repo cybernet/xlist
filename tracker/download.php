@@ -1,6 +1,11 @@
-<?
-
+<?php
 // CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. download
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
 
 $THIS_BASEPATH = dirname(__FILE__);
 $mysiteurl = "[xlist.ro]";

@@ -1,6 +1,11 @@
-<?
-
+<?php
 // CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. sanity
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
 
 function do_sanity() {
 

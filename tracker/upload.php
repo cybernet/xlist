@@ -1,6 +1,11 @@
 <?php
-// CyBerFuN
+// CyBerFuN.ro & xList.ro
 
+// CyBerFuN .::. Upload
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
 if (!defined("IN_BTIT"))
       die("non direct access!");
 

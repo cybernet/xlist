@@ -1,6 +1,11 @@
-<?
-
+<?php
 // CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. comment
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
@@ -54,7 +59,7 @@ else
 
 if (isset($_GET["action"]))
  {
-  if ($CURUSER["delete_torrents"]=="yes" && $_GET["action"] == "delete")
+  if ($CURUSER["delete_torrents"] == "yes" && $_GET["action"] == "delete")
     {
      do_sqlquery("DELETE FROM {$TABLE_PREFIX}comments WHERE id=$cid");
      redirect("index.php?page=torrent-details&id=$id#comments");

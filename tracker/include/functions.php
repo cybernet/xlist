@@ -1,5 +1,11 @@
-<?
+<?php
 // CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. Functions
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
 
 error_reporting(E_ALL ^ E_NOTICE);
 

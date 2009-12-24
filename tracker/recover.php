@@ -1,4 +1,12 @@
 <?php
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. recover
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -36,8 +44,8 @@ if (!defined("IN_BTIT"))
 
 require_once(load_language("lang_recover.php"));
 
-if (isset($_GET["act"])) $act=$_GET["act"];
-  else $act="recover";
+if (isset($_GET["act"])) $act = $_GET["act"];
+  else $act = "recover";
 
 
 

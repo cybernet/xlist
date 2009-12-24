@@ -1,4 +1,11 @@
 <?php
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. rpc
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
 /*
 Page:           rpc.php
 Created:        Aug 2006

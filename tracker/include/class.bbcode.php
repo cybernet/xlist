@@ -1,5 +1,11 @@
-<?
-// CyBerFuN
+<?php
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. BBCode
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
 
 /* * * * * * * * * * * * * * * * * * * *
 * BB Code parser by James Wilson

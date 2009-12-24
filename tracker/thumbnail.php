@@ -1,4 +1,12 @@
-<?
+<?php
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. thumbnail
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
+
 function thumb($filename,$x,$y=0)
 {
 $t=getimagesize($filename) or die('Illegal type');

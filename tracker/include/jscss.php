@@ -1,5 +1,11 @@
-<?
+<?php
 // CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. jscss
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend

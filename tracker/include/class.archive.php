@@ -1,5 +1,11 @@
-<?
-// CyBerFuN
+<?php
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. archive
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
 /*--------------------------------------------------
  | TAR/GZIP/BZIP2/ZIP ARCHIVE CLASSES 2.1
  | By Devin Doucette

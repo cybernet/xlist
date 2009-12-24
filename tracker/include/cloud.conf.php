@@ -1,4 +1,12 @@
 <?php
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. cloud
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
+
 include 'settings.php';
 mysql_connect("$dbhost", $dbuser, $dbpass);
 mysql_select_db($database);

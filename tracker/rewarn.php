@@ -1,4 +1,12 @@
 <?php
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. rewarn
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
+
 # first check for direct linking
 if(!defined('IN_BTIT'))die('non direct access!');
 # then require functions (is this needed?)

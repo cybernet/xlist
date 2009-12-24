@@ -1,5 +1,11 @@
 <?php
-// CyBerFuN
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. ajaxpoll
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
 
 class poll {
   var $ID;

@@ -1,6 +1,11 @@
-<?
-
+<?php
 // CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. delete
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
 
 
 if (!defined("IN_BTIT"))
