@@ -131,6 +131,6 @@ $torrent = mysql_query("SELECT f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.
     </div>
    </div></td></tr></table> 
 
-<?
+<?php
 }
 ?>
