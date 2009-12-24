@@ -26,7 +26,7 @@ if (!$units) {$units = 10;}
 if (!$static) {$static = FALSE;}
 
 // get votes, values, ips for the current rating bar
-$query=mysql_query("SELECT total_votes, total_value, used_ips FROM $rating_dbname.$rating_tableName WHERE id='$id' ")or die(" Error: ".mysql_error());
+$query = mysql_query("SELECT total_votes, total_value, used_ips FROM $rating_dbname.$rating_tableName WHERE id='".$id."' ")or die(" Error: ".mysql_error());
 
 
 // insert the id in the DB if it doesn't exist already
@@ -45,10 +45,10 @@ if ($numbers['total_votes'] < 1) {
 	$count=$numbers['total_votes']; //how many votes total
 }
 $current_rating=$numbers['total_value']; //total number of rating added together and stored
-$tense=($count==1) ? "vote" : "votes"; //plural form votes/vote
+$tense = ($count==1) ? "vote" : "votes"; //plural form votes/vote
 
 // determine whether the user has voted, so we know how to draw the ul/li
-$voted=mysql_num_rows(mysql_query("SELECT used_ips FROM $rating_dbname.$rating_tableName WHERE used_ips LIKE '%".$ip."%' AND id='".$id."' ")); 
+$voted = mysql_num_rows(mysql_query("SELECT used_ips FROM $rating_dbname.$rating_tableName WHERE used_ips LIKE '%".$ip."%' AND id='".$id."' ")); 
 
 // now draw the rating bar
 $rating_width = @number_format($current_rating/$count,2)*$rating_unitwidth;
