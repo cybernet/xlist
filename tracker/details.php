@@ -84,6 +84,25 @@ $spacer = "&nbsp;&nbsp;";
 
 
 $torrenttpl = new bTemplate();
+// Snatchers hack by DT dec 2008
+$sres = mysql_query("SELECT * FROM {$TABLE_PREFIX}history WHERE infohash = '$id' AND date IS NOT NULL ORDER BY date DESC LIMIT 10 ");
+$srow = mysql_num_rows($sres);
+
+	if ($srow)
+
+       $snatchers = array();
+       $plus = 0;
+
+    while ($srow = mysql_fetch_array($sres))
+
+{
+$res = mysql_query("SELECT prefixcolor, suffixcolor, users.id, username, level FROM {$TABLE_PREFIX}users users INNER JOIN {$TABLE_PREFIX}users_level users_level ON users.id_level=users_level.id WHERE users.id='".$srow["uid"]."'") or die(mysql_error());
+$result = mysql_fetch_array($res);
+$snatchers[$plus]["snatch"]="<a href=index.php?page=userdetails&id=$result[id]>".unesc($result["prefixcolor"]).unesc($result["username"]).unesc($result["suffixcolor"])."</a>&nbsp;";
+$plus++;
+}
+$torrenttpl->set("snatchers",$snatchers);
+// Snatchers hack end
 $torrenttpl->set("language", $language);
 $torrenttpl->set("IMAGEIS",!empty($row["image"]), TRUE);
 $torrenttpl->set("SCREENIS1",!empty($row["screen1"]), TRUE);

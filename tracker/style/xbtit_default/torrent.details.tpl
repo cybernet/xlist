@@ -233,6 +233,13 @@ window.open('http://digg.com/submit?url='+encodeURIComponent(ShareURL)+'&title=B
           <td align="right" class="header"><tag:language.PEERS /></td>
           <td class="lista" align="center"><tag:torrent.seeds />, <tag:torrent.leechers /> = <tag:torrent.peers /></td>
         </tr>
+		<tr>
+          <td align="right" class="header">Last 10 Snatchers</td>
+          <td align="right" class="lista">
+          <loop:snatchers>
+          <tag:snatchers[].snatch />
+          </loop:snatchers> </td>
+        </tr>
         <if:EXTERNAL>
         <tr>
           <td valign="middle" align="right" class="header"><tag:torrent.update_url /></td>
