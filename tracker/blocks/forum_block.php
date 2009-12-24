@@ -61,14 +61,14 @@ if ($topics != 0) {
         }
     } else {
         # get posts based if can read
-        $lastPosts = get_result('SELECT p.topicid as tid, p.id as pid, t.subject, p.added, p.body, p.userid FROM '.$topicsTable.' as t LEFT JOIN '.$postsTable.' as p ON p.topicid=t.id LEFT JOIN '.$TABLE_PREFIX.'forums as f ON f.id=t.id WHERE f.minclassread<='.$CURUSER['id_level'].(($realLastPosts)?'':' AND p.id=t.lastpost').' ORDER BY p.added DESC '.$limit);
+        $lastPosts = get_result('SELECT p.topicid as tid, p.id as pid, t.subject, p.added, p.body, p.userid FROM '.$topicsTable.' as t LEFT JOIN '.$postsTable.' as p ON p.topicid=t.id LEFT JOIN '.$TABLE_PREFIX.'forums as f ON f.id=t.forumid WHERE f.minclassread<='.$CURUSER['id_level'].(($realLastPosts)?'':' AND p.id=t.lastpost').' ORDER BY p.added DESC '.$limit);
         # format posts
         foreach($lastPosts as $post) {
             # get username
             $user = get_result('SELECT ul.prefixcolor, u.username, u.warn, ul.suffixcolor FROM '.$TABLE_PREFIX.'users_level as ul LEFT JOIN '.$TABLE_PREFIX.'users as u ON u.id_level=ul.id WHERE u.id='.$post['userid'].' LIMIT 1;', true, $CACHE_DURATION);
             if (isset($user[0])) {
                 $user = $user[0];
-                $post['username'] = $user['prefixcolor'].$user['username'].$user['suffixcolor'];
+                $post['username'] = unesc($user['prefixcolor'].$user['username'].$user['suffixcolor']);
             } else $post['username'] = '[DELETED USER]';
             $postsList .= '<tr><td class="lista"><b><a href="'.$btit_settings['url'].'/index.php?page=forum&amp;action=viewtopic&amp;topicid='.$post['tid'].'&amp;msg='.$post['pid'].'#'.$post['pid'].'">'.htmlspecialchars(unesc($post['subject'])).'</a></b><br />'.$language['LAST_POST_BY'].' <a href="'.$btit_settings['url'].'/index.php?page=userdetails&amp;id='.$post['userid'].'">'.$post['username'].warn($user).'</a><br />On '.get_date_time($post['added']).'</td></tr>';
         }
