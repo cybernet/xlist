@@ -119,6 +119,6 @@ else
     </tr>
     </table>
     </form>
-<?
+<?php
 }
 ?>
