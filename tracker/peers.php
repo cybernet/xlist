@@ -186,5 +186,5 @@ else
 $peerstpl->set("XBTT",$XBTT_USE,TRUE);
 $peerstpl->set("XBTT2",$XBTT_USE,TRUE);
 $peerstpl->set("peers",$peers);
-
+}
 ?>
