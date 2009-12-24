@@ -1,4 +1,4 @@
-<?
+<?php
 
 // CyBerFuN.ro & xList.ro
 
@@ -6,7 +6,7 @@
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
 // http://xlist.ro/
-// Modified By CyBerNe7
+// Modified By cybernet2u
 
   #################################################################
   #

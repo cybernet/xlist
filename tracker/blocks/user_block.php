@@ -1,6 +1,12 @@
 <?php
 
+// CyBerFuN.ro & xList.ro
 
+// xList .::. user Block
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
 
 global $CURUSER, $user, $USERLANG, $FORUMLINK, $db_prefix;
 

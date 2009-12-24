@@ -1,4 +1,5 @@
-<?
+<?php
+
 // CyBerFuN.ro & xList.ro
 
 // xList .::. Top Torrents Block
