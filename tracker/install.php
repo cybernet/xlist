@@ -53,7 +53,7 @@ echo ("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
 echo ("<head>");
 echo ("<meta http-equiv=\"content-type\" content=\"text/html; charset=".(isset($install_lang["charset"])?$install_lang["charset"]:"ISO-8859-1")."\" />");
 echo ("<title>".$GLOBALS["btit_installer"]."&nbsp;".$GLOBALS["current_btit_version"]."</title>");
-echo ("<link rel=\"stylesheet\" href=\"style/xbtit_default/main.css\" type=\"text/css\" />");
+echo ("<link rel=\"stylesheet\" href=\"style/frosted/main.css\" type=\"text/css\" />");
 echo ("</head>");
 echo ("<body>");
 echo ("<div id=\"main\" />");
@@ -92,7 +92,7 @@ function load_lang_file()
         echo ("<head>");
         echo ("<meta http-equiv=\"content-type\" content=\"text/html; charset=ISO-8859-1\" />");
         echo ("<title>".$GLOBALS["btit_installer"]."&nbsp;".$GLOBALS["current_btit_version"]." - Language Error</title>");
-        echo ("<link rel=\"stylesheet\" href=\"style/xbtit_default/main.css\" type=\"text/css\" />");
+        echo ("<link rel=\"stylesheet\" href=\"style/frosted/main.css\" type=\"text/css\" />");
         echo ("</head>");
         echo ("<body style=\"font-family: sans-serif;\"><div style=\"width: 600px;\">");
         echo ("<p>A critical language error has occurred.</p>");

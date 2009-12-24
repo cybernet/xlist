@@ -3,14 +3,14 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 24, 2009 at 05:40 PM
+-- Generation Time: Dec 24, 2009 at 08:17 PM
 -- Server version: 5.1.37
 -- PHP Version: 5.2.10-2ubuntu6.3
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- Database: `xxxxxxxx`
+-- Database: `xl_1play`
 --
 
 -- --------------------------------------------------------
@@ -27,11 +27,14 @@ CREATE TABLE IF NOT EXISTS `tags` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `id_2` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `tags`
 --
+
+INSERT INTO `tags` (`id`, `tag`, `count`, `ip`) VALUES
+(1, 'xList.ro', '22', '127.0.0.1');
 
 
 -- --------------------------------------------------------
