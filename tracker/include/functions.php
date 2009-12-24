@@ -110,7 +110,7 @@ function load_css($css_name) {
 
   if (@file_exists($STYLEPATH.'/'.$css_name))
     return $STYLEURL.'/'.$css_name;
-  return $BASEURL.'/style/xbtit_default/'.$css_name;
+  return $BASEURL.'/style/CyBerFuN/'.$css_name;
 }
 
 /*Mod by losmi - visible mod

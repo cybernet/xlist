@@ -124,8 +124,8 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 (23, 'lasttorrentmarq', 'c', 1, 1, 'BLOCK_LASTTORRENT_MARQ', '', 3, 8),
 (24, 'twitter', 'l', 6, 0, 'TWITTER', 'no', 3, 8),
 (25, 'categories', 'l', 1, 0, 'BLOCK_CAT', 'no', 3, 8),
-(27, 'login', 'c', 0, 1, 'LOGIN', 'no', 1, 1),
-(130, 'cloud', 't', 2, 1, 'BLOCK_CLOUD', 'no', 1, 8);
+(26, 'login', 'c', 0, 1, 'LOGIN', 'no', 1, 1),
+(27, 'cloud', 't', 4, 1, 'BLOCK_CLOUD', 'no', 3, 8);
 
 -- --------------------------------------------------------
 
