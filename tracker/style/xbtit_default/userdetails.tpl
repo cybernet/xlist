@@ -161,39 +161,6 @@
 
 </table>
 
-<!-- Begin Admin Control Panel -->
-<if:comment_access>
-<table width=100%>
-  <tr>
-    <td class="block" align=center colspan=3><b><tag:language.ADMIN_CONTROLS /></b></td>
-  </tr>
-  <!-- Begin User comment -->
-  <form method="post" action="index.php?page=mod_comment&amp;id=<tag:id />">
-  <input type="hidden" name="returnto" value="index.php?page=userdetails&amp;id=<tag:id />"> 
-  <tr>
-    <td class="header"><tag:language.USERCOMMENT /></td>
-    <td class="lista"><textarea cols="50" rows="4" name="modcomment"><tag:modcomment /></textarea></td>
-    <td class="lista" valign="middle"><center><input type="submit" class="btn" value="<tag:language.UPDATE />"></center></td>
-  </tr>
-  </form>
-  <!-- end User comment -->
-
-  <!-- support comment -->
-  <form method="post" action="index.php?page=sup_comment&amp;id=<tag:id />">
-  <input type="hidden" name="returnto" value="index.php?page=userdetails&amp;id=<tag:id />"> 
-  <tr>
-    <td class=header><tag:language.HELPED_FOR /></td>
-    <td align=left class=lista><textarea cols="50" rows="4" name="supcomment"><tag:supcomment /></textarea></td>
-    <td class="lista" valign="middle"><center><input type="submit" class="btn" value="<tag:language.UPDATE />"></center></td>
-  </tr>
-  </form>
-</table>
-<!-- end support comment -->
-
-<else:comment_access>
-</if:comment_access>
-<!-- End Admin Control Panel -->
-
 <if:warn_access>
 <table class="lista" width="100%"> 
    <tr>

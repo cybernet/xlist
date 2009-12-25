@@ -252,13 +252,6 @@ switch ($pageID) {
         $tpl->set("main_content",set_block($language["MANAGE_NEWS"],"center",$newstpl->fetch(load_template("news.tpl"))));
         $tpl->set("main_title",$btit_settings["name"]." .::. "."News");
         break;
-   case 'mod_comment':
-        require("$THIS_BASEPATH/mod_comment.php");
-        break;
-
-    case 'sup_comment':
-        require("$THIS_BASEPATH/sup_comment.php");
-        break;
 
     case 'peers':
         require("$THIS_BASEPATH/peers.php");

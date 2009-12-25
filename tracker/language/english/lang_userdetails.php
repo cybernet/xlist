@@ -37,7 +37,4 @@ $language['NO_HISTORY']         = 'No history to display...';
 $language['USER_INVITATIONS']   = 'Invitations';
 $language['USER_INVITED_BY']    = 'Invited By';
 $language["POINTS"]             = "Points";
-$language["ADMIN_CONTROLS"]     = "Admin Controls";
-$language["USERCOMMENT"]        = "User Comment:";
-$language["HELPED_FOR"]         = "Helped with:";
 ?>
