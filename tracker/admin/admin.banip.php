@@ -1,4 +1,13 @@
 <?php
+
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. Admin - BanIP
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -43,18 +52,18 @@ switch ($action)
 
     case 'delete':
 
-        if ($_GET['ip']=="")
+        if ($_GET['ip'] == "")
             err_msg(ERROR,INVALID_ID);
         //delete the ip from db
-        $id = max(0,$_GET['ip']);
+        $id = max(0, $_GET['ip']);
         do_sqlquery("DELETE FROM {$TABLE_PREFIX}bannedip WHERE id=".$id,true);
-        success_msg($language["SUCCESS"],$language["BAN_DELETED"]);
-        stdfoot(true,false);
+        success_msg($language["SUCCESS"], $language["BAN_DELETED"]);
+        stdfoot(true, false);
         break;
 
     case 'write':
-        if ($_POST['firstip']=="" || $_POST['lastip']=="")
-            stderr($language["ERROR"],$language["BAN_NO_IP_WRITE"]);
+        if ($_POST['firstip'] == "" || $_POST['lastip'] == "")
+            stderr($language["ERROR"], $language["BAN_NO_IP_WRITE"]);
         else
          {
             //ban the ip for real
@@ -64,7 +73,7 @@ switch ($action)
             $firstip = sprintf("%u", ip2long($firstip));
             $lastip = sprintf("%u", ip2long($lastip));
             if ($firstip == -1 || $lastip == -1)
-                 err_msg($language["ERROR"],$language["BAN_IP_ERROR"]);
+                 err_msg($language["ERROR"], $language["BAN_IP_ERROR"]);
             else{
                  $comment = sqlesc($comment);
                  $added = sqlesc(time());
@@ -76,16 +85,16 @@ switch ($action)
     case '':
     case 'read':
     default:
-        $banned=array();
+        $banned = array();
         $getbanned = do_sqlquery("SELECT b.*, u.username FROM {$TABLE_PREFIX}bannedip b LEFT JOIN {$TABLE_PREFIX}users u ON u.id=b.addedby ORDER BY b.added DESC",true);
         $rowsbanned = @mysql_num_rows($getbanned);
         $admintpl->set("frm_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=banip&amp;action=write");
-        $i=0;
-        if ($rowsbanned>0)
+        $i = 0;
+        if ($rowsbanned > 0)
         {
-           $admintpl->set("no_records",false,true);
+           $admintpl->set("no_records", false, true);
 
-           while ($arr=mysql_fetch_assoc($getbanned))
+           while ($arr = mysql_fetch_assoc($getbanned))
               {
               $banned[$i]["first_ip"] = long2ip($arr["first"]);
               $banned[$i]["last_ip"] = long2ip($arr["last"]);
@@ -98,10 +107,10 @@ switch ($action)
 
         }
         else
-           $admintpl->set("no_records",true,true);
+           $admintpl->set("no_records", true, true);
 
-        $admintpl->set("bannedip",$banned);
-        $admintpl->set("language",$language);
+        $admintpl->set("bannedip", $banned);
+        $admintpl->set("language", $language);
     }
 
 ?>

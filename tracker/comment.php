@@ -1,7 +1,8 @@
 <?php
+
 // CyBerFuN.ro & xList.ro
 
-// CyBerFuN .::. comment
+// CyBerFuN .::. Comment
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
 // http://xlist.ro/
@@ -45,7 +46,7 @@ if (!defined("IN_BTIT"))
 
 if (!$CURUSER || $CURUSER["uid"] == 1)
    {
-   stderr($language["ERROR"],$language["ONLY_REG_COMMENT"]);
+   stderr($language["ERROR"], $language["ONLY_REG_COMMENT"]);
 }
 
 $comment = ($_POST["comment"]);
@@ -54,7 +55,7 @@ $id = $_GET["id"];
 if (isset($_GET["cid"]))
     $cid = intval($_GET["cid"]);
 else
-    $cid=0;
+    $cid = 0;
 
 
 if (isset($_GET["action"]))

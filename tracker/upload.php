@@ -1,4 +1,5 @@
 <?php
+
 // CyBerFuN.ro & xList.ro
 
 // CyBerFuN .::. Upload
@@ -6,6 +7,38 @@
 // http://www.cyberfun.ro/
 // http://xlist.ro/
 // Modified By cybernet2u
+
+/////////////////////////////////////////////////////////////////////////////////////
+// xbtit - Bittorrent tracker/frontend
+//
+// Copyright (C) 2004 - 2007  Btiteam
+//
+//    This file is part of xbtit.
+//
+// Redistribution and use in source and binary forms, with or without modification,
+// are permitted provided that the following conditions are met:
+//
+//   1. Redistributions of source code must retain the above copyright notice,
+//      this list of conditions and the following disclaimer.
+//   2. Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
+//   3. The name of the author may not be used to endorse or promote products
+//      derived from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+// IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+// TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+////////////////////////////////////////////////////////////////////////////////////
+
 if (!defined("IN_BTIT"))
       die("non direct access!");
 
@@ -97,7 +130,7 @@ if (isset($_POST["info"]) && $_POST["info"] != "")
    $comment = mysql_real_escape_string($_POST["info"]);
 else { // description is now required (same as for edit.php)
 //    $comment = "";
-        err_msg($language["ERROR"],$language["EMPTY_DESCRIPTION"]);
+        err_msg($language["ERROR"], $language["EMPTY_DESCRIPTION"]);
         stdfoot();
         exit();
   }
@@ -123,10 +156,10 @@ if (isset($upfile["length"]))
 else if (isset($upfile["files"]))
      {
 // multifiles torrent
-         $size=0;
+         $size = 0;
          foreach ($upfile["files"] as $file)
                  {
-                 $size+=(float)($file["length"]);
+                 $size += (float)($file["length"]);
                  }
      }
 else
@@ -147,7 +180,7 @@ if (!isset($array["announce"]))
 
       // category check
       $rc = do_sqlquery("SELECT id FROM {$TABLE_PREFIX}categories WHERE id=$categoria",true);
-      if (mysql_num_rows($rc)==0)
+      if (mysql_num_rows($rc) == 0)
          {
              err_msg($language["ERROR"],$language["WRITE_CATEGORY"]);
              stdfoot();
@@ -157,7 +190,7 @@ if (!isset($array["announce"]))
 
       $announce = trim($array["announce"]);
 
-      if ($categoria==0)
+      if ($categoria == 0)
          {
              err_msg($language["ERROR"],$language["WRITE_CATEGORY"]);
              stdfoot();
@@ -280,7 +313,7 @@ if (!isset($array["announce"]))
 			{
 				if ($file_size > $GLOBALS["file_limit"])
 				{
-                    err_msg($language["ERROR"],$language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size);
+                    err_msg($language["ERROR"], $language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size);
                     stdfoot();
                     exit();
 				}
@@ -291,14 +324,14 @@ if (!isset($array["announce"]))
 					}
 					else
 					{
-                        err_msg($language["ERROR"],$language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
+                        err_msg($language["ERROR"], $language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
                         stdfoot();
                         exit();
 					}
 				}
 				else
 				{
-                    err_msg ($language["ERROR"],$language["ILEGAL_UPLOAD"]);
+                    err_msg ($language["ERROR"], $language["ILEGAL_UPLOAD"]);
 					stdfoot();
 					exit;
 				}
@@ -314,7 +347,7 @@ if (!isset($array["announce"]))
 			{
 				if ($file_size1 > $GLOBALS["file_limit"])
 				{
-                    err_msg($language["ERROR"],$language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size1);
+                    err_msg($language["ERROR"], $language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size1);
                     stdfoot();
                     exit();
 				}
@@ -325,14 +358,14 @@ if (!isset($array["announce"]))
 					}
 					else
 					{
-                        err_msg($language["ERROR"],$language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
+                        err_msg($language["ERROR"], $language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
                         stdfoot();
                         exit();
 					}
 				}
 				else
 				{
-                    err_msg ($language["ERROR"],$language["ILEGAL_UPLOAD"]);
+                    err_msg ($language["ERROR"], $language["ILEGAL_UPLOAD"]);
 					stdfoot();
 					exit;
 				}
@@ -348,7 +381,7 @@ if (!isset($array["announce"]))
 			{
 				if ($file_size2 > $GLOBALS["file_limit"])
 				{
-                    err_msg($language["ERROR"],$language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size2);
+                    err_msg($language["ERROR"], $language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size2);
                     stdfoot();
                     exit();
 				}
@@ -359,14 +392,14 @@ if (!isset($array["announce"]))
 					}
 					else
 					{
-                        err_msg($language["ERROR"],$language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
+                        err_msg($language["ERROR"], $language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
                         stdfoot();
                         exit();
 					}
 				}
 				else
 				{
-                    err_msg ($language["ERROR"],$language["ILEGAL_UPLOAD"]);
+                    err_msg ($language["ERROR"], $language["ILEGAL_UPLOAD"]);
 					stdfoot();
 					exit;
 				}
@@ -382,7 +415,7 @@ if (!isset($array["announce"]))
 			{
 				if ($file_size3 > $GLOBALS["file_limit"])
 				{
-                    err_msg($language["ERROR"],$language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size3);
+                    err_msg($language["ERROR"], $language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size3);
                     stdfoot();
                     exit();
 				}
@@ -393,14 +426,14 @@ if (!isset($array["announce"]))
 					}
 					else
 					{
-                        err_msg($language["ERROR"],$language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
+                        err_msg($language["ERROR"], $language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
                         stdfoot();
                         exit();
 					}
 				}
 				else
 				{
-                    err_msg ($language["ERROR"],$language["ILEGAL_UPLOAD"]);
+                    err_msg ($language["ERROR"], $language["ILEGAL_UPLOAD"]);
 					stdfoot();
 					exit;
 				}
@@ -408,7 +441,7 @@ if (!isset($array["announce"]))
 		}
 //      if ($announce!=$BASEURL."/announce.php")
         
-      if (in_array($announce,$TRACKER_ANNOUNCEURLS)){
+      if (in_array($announce, $TRACKER_ANNOUNCEURLS)){
          $internal = true;
          // inserting into xbtt table
          if ($XBTT_USE)
@@ -432,7 +465,7 @@ if (!isset($array["announce"]))
               if ($internal)
                 {
                 // ok, we found our announce, so it's internal and we will set our announce as main
-                   $array["announce"]=$TRACKER_ANNOUNCEURLS[0];
+                   $array["announce"] = $TRACKER_ANNOUNCEURLS[0];
                    $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, url, info, category, data, size, comment, comment_notify, uploader,anonymous, bin_hash, image, screen1, screen2, screen3) VALUES (\"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$comment_notify,$curuid,$anonyme,0x$hash, '$file_name', '$file_name_s1', '$file_name_s2', '$file_name_s3')";
                 }
               else
@@ -447,7 +480,7 @@ Mod by losmi -sticky torrent
 */
 if($sticky != 0)
             {
-            updateSticky($hash,$sticky);
+            updateSticky($hash, $sticky);
             }
 /*
 End operation #2
@@ -457,7 +490,7 @@ Mod by losmi -visible torrent
 */
 if($visible != 3)
             {
-            updateVisible($hash,$visible);
+            updateVisible($hash, $visible);
             }
 /*
 Mod by losmi -visible torrent
@@ -471,15 +504,15 @@ Mod by losmi -visible torrent
              do_sqlquery("DELETE FROM {$TABLE_PREFIX}files WHERE info_hash=\"$hash\"",true);
              if ($XBTT_USE)
                   do_sqlquery("UPDATE xbt_files SET flags=1 WHERE info_hash=0x$hash",true);
-             stderr($language["ERROR"],$language["ERR_MOVING_TORR"]);
+             stderr($language["ERROR"], $language["ERR_MOVING_TORR"]);
          }
          // try to chmod new moved file, on some server chmod without this could result 600, seems to be php bug
          @chmod($TORRENTSDIR . "/" . $hash . ".btf",0766);
 //         if ($announce!=$BASEURL."/announce.php")
-        if (!in_array($announce,$TRACKER_ANNOUNCEURLS))
+        if (!in_array($announce, $TRACKER_ANNOUNCEURLS))
             {
                 require_once("./include/getscrape.php");
-                scrape($announce,$hash);
+                scrape($announce, $hash);
                 $status = 2;
                 write_log("Uploaded new torrent $filename - EXT ($hash)","add");
             }
@@ -489,7 +522,7 @@ Mod by losmi -visible torrent
                    {
                    $alltorrent = bencode($array);
                    $fd = fopen($TORRENTSDIR . "/" . $hash . ".btf", "rb+");
-                   fwrite($fd,$alltorrent);
+                   fwrite($fd, $alltorrent);
                    fclose($fd);
                    }
                 // with pid system active or private flag (dht disabled), tell the user to download the new torrent
@@ -504,7 +537,7 @@ Mod by losmi -visible torrent
       }
       else
           {
-              err_msg($language["ERROR"],$language["ERR_ALREADY_EXIST"]);
+              err_msg($language["ERROR"], $language["ERR_ALREADY_EXIST"]);
               unlink($_FILES["torrent"]["tmp_name"]);
               stdfoot();
               die();
@@ -521,7 +554,7 @@ Mod by losmi -sticky torrent
 */
 
     $query = "SELECT * FROM {$TABLE_PREFIX}sticky";
-    $rez = do_sqlquery($query,true);
+    $rez = do_sqlquery($query, true);
     $rez = mysql_fetch_assoc($rez);
     $rez_level = $rez['level'];
     $current_level = getLevel($CURUSER['id_level']);
@@ -544,7 +577,7 @@ Mod by losmi -visible torrent
 */
 
     $query = "SELECT * FROM {$TABLE_PREFIX}visible";
-    $rez = do_sqlquery($query,true);
+    $rez = do_sqlquery($query, true);
     $rez = mysql_fetch_assoc($rez);
     $rez_level = $rez['level'];
     $current_level = getLevelVisible($CURUSER['id_level']);
@@ -570,12 +603,12 @@ else
         }
     }
     $visible .= "</select>"; 
-    $uploadtpl->set('visible',$visible);
+    $uploadtpl->set('visible', $visible);
 /*
 Mod by losmi -visible torrent
 */
-$uploadtpl->set("language",$language);
-$uploadtpl->set("upload_script","index.php");
+$uploadtpl->set("language", $language);
+$uploadtpl->set("upload_script", "index.php");
 // email_notification
 	  $status_comment_notify = mysql_fetch_assoc(do_sqlquery("SELECT status_comment_notify FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"]));
 	  $status_comment = $status_comment_notify["status_comment_notify"];
@@ -593,30 +626,30 @@ $uploadtpl->set("upload_script","index.php");
 switch ($status) {
 case 0:
       foreach ($TRACKER_ANNOUNCEURLS as $taurl)
-            $announcs=$announcs."$taurl<br />";
+            $announcs = $announcs."$taurl<br />";
             
       $category = (!isset($_GET["category"])?0:explode(";",$_GET["category"]));
       // sanitize categories id
       if (is_array($category))
-          $category = array_map("intval",$category);
+          $category = array_map("intval", $category);
       else
           $category = 0;
 
-      $combo_categories=categories( $category[0] );
+      $combo_categories = categories( $category[0] );
 
-      $bbc= textbbcode("upload","info");
-      $uploadtpl->set("upload.announces",$announcs);
-      $uploadtpl->set("upload_categories_combo",$combo_categories);
+      $bbc = textbbcode("upload", "info");
+      $uploadtpl->set("upload.announces", $announcs);
+      $uploadtpl->set("upload_categories_combo", $combo_categories);
       $uploadtpl->set("textbbcode",  $bbc);
-      $uploadtpl->set("imageon",$GLOBALS["imageon"] == "true", TRUE);
-      $uploadtpl->set("screenon",$GLOBALS["screenon"] == "true", TRUE);
-      $tplfile="upload";
+      $uploadtpl->set("imageon", $GLOBALS["imageon"] == "true", TRUE);
+      $uploadtpl->set("screenon", $GLOBALS["screenon"] == "true", TRUE);
+      $tplfile = "upload";
     break;
 case 1:
     if ($PRIVATE_ANNOUNCE || $DHT_PRIVATE) {       
-        $uploadtpl->set("MSG_DOWNLOAD_PID",$language["MSG_DOWNLOAD_PID"]);
+        $uploadtpl->set("MSG_DOWNLOAD_PID", $language["MSG_DOWNLOAD_PID"]);
         $tplfile = "upload_finish";
-        $uploadtpl->set("DOWNLOAD","<br /><a href=\"download.php?id=$hash&f=".urlencode($filename).".torrent\">".$language["DOWNLOAD"]."</a><br /><br />");
+        $uploadtpl->set("DOWNLOAD", "<br /><a href=\"download.php?id=$hash&f=".urlencode($filename).".torrent\">".$language["DOWNLOAD"]."</a><br /><br />");
     }
     $tplfile = "upload_finish";
     break;

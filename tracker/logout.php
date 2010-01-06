@@ -1,4 +1,13 @@
 <?php
+
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. Logout
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -31,7 +40,7 @@
 ////////////////////////////////////////////////////////////////////////////////////
 
 
-$THIS_BASEPATH=dirname(__FILE__);
+$THIS_BASEPATH = dirname(__FILE__);
 
 require("include/functions.php");
 
@@ -39,7 +48,7 @@ logoutcookie();
 
 dbconn();
 
-if ($GLOBALS["FORUMLINK"]=="smf")
+if ($GLOBALS["FORUMLINK"] == "smf")
 {
     require($THIS_BASEPATH.'/smf/SSI.php');
     require($THIS_BASEPATH.'/smf/Sources/Subs-Auth.php');

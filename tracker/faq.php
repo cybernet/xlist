@@ -1,4 +1,13 @@
 <?php
+
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. Faq
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -44,13 +53,13 @@ $res = do_sqlquery("SELECT f.title AS title, f.id AS id, f.description AS descri
 
 
 $faqtpl = new bTemplate();
-$faqtpl->set("language",$language);
+$faqtpl->set("language", $language);
 
 
 $faq = array();
 $i = 0;
 
-$faqtpl->set("faq_exists", (mysql_num_rows($res) > 0),TRUE);
+$faqtpl->set("faq_exists", (mysql_num_rows($res) > 0), TRUE);
 
 include("$THIS_BASEPATH/include/offset.php");
 
@@ -60,13 +69,13 @@ while ($rows = mysql_fetch_array($res))
       
         if($id != $rows['cat_id'])
     {
-        $faq[$i]["posted_date"] = date("d/m/Y H:i",$rows["news_date"]-$offset);
+        $faq[$i]["posted_date"] = date("d/m/Y H:i", $rows["news_date"] - $offset);
         $faq[$i]["faq_group_title"] = unesc($rows["cat_title"]);
         $faq[$i]["faq_title"] = unesc($rows["title"]);
         $faq[$i]["faq_text"] = format_comment($rows["description"]);
         $faq[$i]["faq_link"] = unesc("index.php?page=faq#".$rows['id']);
         //faq2
-        $faq2[$i]["posted_date"] = date("d/m/Y H:i",$rows["date"]-$offset);
+        $faq2[$i]["posted_date"] = date("d/m/Y H:i",$rows["date"] - $offset);
         $faq2[$i]["faq_group_title"] = unesc(" <tr>
              <td class='header' align='center'>
               <b>".$rows["cat_title"]."</b>
@@ -79,12 +88,12 @@ while ($rows = mysql_fetch_array($res))
     }
     else 
     {
-        $faq[$i]["posted_date"] = date("d/m/Y H:i",$rows["news_date"]-$offset);
+        $faq[$i]["posted_date"] = date("d/m/Y H:i", $rows["news_date"] - $offset);
         $faq[$i]["faq_title"] = unesc($rows["title"]);
         $faq[$i]["faq_text"] = format_comment($rows["description"]);
         $faq[$i]["faq_link"] = unesc("index.php?page=faq#".$rows['id']);
         //faq2
-        $faq2[$i]["posted_date"] = date("d/m/Y H:i",$rows["news_date"]-$offset);
+        $faq2[$i]["posted_date"] = date("d/m/Y H:i", $rows["news_date"] - $offset);
         $faq2[$i]["faq_title"] = unesc($rows["title"]);
         $faq2[$i]["faq_text"] = format_comment($rows["description"]);
         $faq2[$i]["faq_link"] = unesc($rows['id']);

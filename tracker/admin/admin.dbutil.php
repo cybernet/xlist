@@ -1,4 +1,13 @@
 <?php
+
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. Admin - DButil
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -77,10 +86,10 @@ switch($action)
                          $t[$i]["status"] = $tstatus['Msg_text'];
                          $i++;
                  }
-                  $admintpl->set("language",$language);
-                  $admintpl->set("results",$t);
-                  $admintpl->set("db_status",false,true);
-                  $admintpl->set("table_result",true,true);
+                  $admintpl->set("language", $language);
+                  $admintpl->set("results", $t);
+                  $admintpl->set("db_status", false, true);
+                  $admintpl->set("table_result", true, true);
 
               }
         }
@@ -108,17 +117,17 @@ switch($action)
                   $tables[$i]["length"] = makesize($tstatus['Data_length']+$tstatus['Index_length']);
                   $tables[$i]["overhead"] = ($tstatus['Data_free']==0?"-":makesize($tstatus['Data_free']));
                   $i++;
-                  $bytes += $tstatus['Data_length']+$tstatus['Index_length'];
+                  $bytes += $tstatus['Data_length'] + $tstatus['Index_length'];
                   $records += $tstatus['Rows'];
-                  $overhead+=$tstatus['Data_free'];
+                  $overhead += $tstatus['Data_free'];
                 }
-                $admintpl->set("language",$language);
-                $admintpl->set("tables",$tables);
-                $admintpl->set("db_status",true,true);
-                $admintpl->set("table_count",$i);
-                $admintpl->set("table_bytes",makesize($bytes));
-                $admintpl->set("table_records",$records);
-                $admintpl->set("table_overhead",makesize($overhead));
+                $admintpl->set("language", $language);
+                $admintpl->set("tables", $tables);
+                $admintpl->set("db_status", true, true);
+                $admintpl->set("table_count", $i);
+                $admintpl->set("table_bytes", makesize($bytes));
+                $admintpl->set("table_records", $records);
+                $admintpl->set("table_overhead", makesize($overhead));
                 unset($tables);
                 unset($bytes);
                 unset($records);

@@ -1,4 +1,13 @@
 <?php
+
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. Users
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -102,14 +111,14 @@ else
                  
           if (!$CURUSER || $CURUSER["admin_access"] == "yes") {
           
-          $searchip=htmlspecialchars($_GET["sip"]);
-          if ($searchip!="") $where.=" AND u.cip LIKE '%$searchip%'";
+          $searchip = htmlspecialchars($_GET["sip"]);
+          if ($searchip != "") $where .= " AND u.cip LIKE '%$searchip%'";
           
-          $searchmail=htmlspecialchars($_GET["smail"]);           
-          if ($searchmail!="") $where.=" AND u.email LIKE '%$searchmail%'";
+          $searchmail = htmlspecialchars($_GET["smail"]);           
+          if ($searchmail != "") $where .= " AND u.email LIKE '%$searchmail%'";
           
-          $getpid=htmlspecialchars($_GET["pid"]);;
-          if ($getpid!="") $where.=" AND u.pid LIKE '%$getpid%'";
+          $getpid = htmlspecialchars($_GET["pid"]);;
+          if ($getpid != "") $where .= " AND u.pid LIKE '%$getpid%'";
           }
           
           #
@@ -144,11 +153,11 @@ $userstpl->set("users_search", $search);
 
           #
           ################################# End
-$userstpl->set("users_search_level", $level==0 ? " selected=\"selected\" " : "");
+$userstpl->set("users_search_level", $level == 0 ? " selected=\"selected\" " : "");
 
-$res=do_sqlquery("SELECT id,level FROM {$TABLE_PREFIX}users_level WHERE id_level>1 ORDER BY id_level");
-$select="";
-while($row=mysql_fetch_array($res))
+$res = do_sqlquery("SELECT id,level FROM {$TABLE_PREFIX}users_level WHERE id_level>1 ORDER BY id_level");
+$select = "";
+while($row = mysql_fetch_array($res))
   {    // start while
   $select .= "<option value='".$row["id"]."'";
   if ($level == $row["id"])
@@ -174,7 +183,7 @@ if ($CURUSER["delete_users"] == "yes")
           
 $query = "select prefixcolor, suffixcolor, u.id, $udownloaded as downloaded, $uuploaded as uploaded, IF($udownloaded>0,$uuploaded/$udownloaded,0) as ratio, username, level, UNIX_TIMESTAMP(joined) AS joined,UNIX_TIMESTAMP(lastconnect) AS lastconnect, flag, flagpic, c.name as name, u.warn, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id>1 $where ORDER BY $order $by $limit";
 
-$rusers=do_sqlquery($query, true);
+$rusers = do_sqlquery($query, true);
 $userstpl->set("no_users", ($count == 0), TRUE);
 
 include ("$CURRENTPATH/offset.php");
@@ -192,19 +201,19 @@ while ($row_user = mysql_fetch_array($rusers))
                        
 //user ratio
 if (intval($row_user["downloaded"]) > 0)
-  $ratio=number_format($row_user["uploaded"] / $row_user["downloaded"],2);
+  $ratio = number_format($row_user["uploaded"] / $row_user["downloaded"], 2);
 else
-  $ratio='&#8734;';
+  $ratio = '&#8734;';
 
 $users[$i]["ratio"] = $ratio;
                        
 if ($CURUSER["uid"] > 1 && $CURUSER["uid"] != $row_user["id"])
   $users[$i]["pm"] = "<a href=\"index.php?page=usercp&amp;do=pm&amp;action=edit&amp;uid=$CURUSER[uid]&amp;what=new&amp;to=".urlencode(unesc($row_user["username"]))."\">".image_or_link("$STYLEPATH/images/pm.png","",$language["USERS_PM"])."</a>";
 if ($CURUSER["edit_users"] == "yes" && $CURUSER["uid"] != $row_user["id"])
-  $users[$i]["edit"] = "<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=users&amp;action=edit&amp;uid=".$row_user["id"]."\">".image_or_link("$STYLEPATH/images/edit.png","",$language["EDIT"])."</a>";
-if ($CURUSER["delete_users"]=="yes" && $CURUSER["uid"] != $row_user["id"])
+  $users[$i]["edit"] = "<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=users&amp;action=edit&amp;uid=".$row_user["id"]."\">".image_or_link("$STYLEPATH/images/edit.png","", $language["EDIT"])."</a>";
+if ($CURUSER["delete_users"] == "yes" && $CURUSER["uid"] != $row_user["id"])
 
-  $users[$i]["delete"] = "<a onclick=\"return confirm('".AddSlashes($language["DELETE_CONFIRM"])."')\" href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=users&amp;action=delete&amp;uid=".$row_user["id"]."&amp;smf_fid=".$row_user["smf_fid"]."&amp;returnto=".urlencode("index.php?page=users")."\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>";
+  $users[$i]["delete"] = "<a onclick=\"return confirm('".AddSlashes($language["DELETE_CONFIRM"])."')\" href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=users&amp;action=delete&amp;uid=".$row_user["id"]."&amp;smf_fid=".$row_user["smf_fid"]."&amp;returnto=".urlencode("index.php?page=users")."\">".image_or_link("$STYLEPATH/images/delete.png","", $language["DELETE"])."</a>";
 
     $i++;
   }   // end while

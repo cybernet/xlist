@@ -1,4 +1,13 @@
 <?php
+
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. Admin - Categories
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -38,7 +47,7 @@ if (!defined("IN_ACP"))
       die("non direct access!");
 
 
-function image_combo($current_image="")
+function image_combo($current_image = "")
    {
       global $STYLEPATH, $language, $STYLEURL;
 
@@ -65,23 +74,23 @@ function image_combo($current_image="")
 
 function category_read()
    {
-   global $admintpl,$language,$STYLEURL,$CURUSER,$STYLEPATH;
+   global $admintpl, $language, $STYLEURL, $CURUSER, $STYLEPATH;
 
-     $admintpl->set("category_add",false,true);
+     $admintpl->set("category_add", false, true);
      $admintpl->set("language",$language);
 
      $cres=genrelist();
      for ($i=0;$i<count($cres);$i++)
        {
-         $cres[$i]["name"]=unesc($cres[$i]["name"]);
-         $cres[$i]["image"]="<img src=\"$STYLEURL/images/categories/".$cres[$i]["image"]."\" alt=\"\" border=\"0\" />";
-         $cres[$i]["edit"]="<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=category&amp;action=edit&amp;id=".$cres[$i]["id"]."\">".image_or_link("$STYLEPATH/images/edit.png","",$language["EDIT"])."</a>";
-         $cres[$i]["delete"]="<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=category&amp;action=delete&amp;id=".$cres[$i]["id"]."\" onclick=\"return confirm('".AddSlashes($language["DELETE_CONFIRM"])."')\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>";
+         $cres[$i]["name"] = unesc($cres[$i]["name"]);
+         $cres[$i]["image"] = "<img src=\"$STYLEURL/images/categories/".$cres[$i]["image"]."\" alt=\"\" border=\"0\" />";
+         $cres[$i]["edit"] = "<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=category&amp;action=edit&amp;id=".$cres[$i]["id"]."\">".image_or_link("$STYLEPATH/images/edit.png","",$language["EDIT"])."</a>";
+         $cres[$i]["delete"] = "<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=category&amp;action=delete&amp;id=".$cres[$i]["id"]."\" onclick=\"return confirm('".AddSlashes($language["DELETE_CONFIRM"])."')\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>";
 
 
      }
-     $admintpl->set("categories",$cres);
-     $admintpl->set("category_add_new","<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=category&amp;action=add\">".$language["CATEGORY_ADD"]."</a>");
+     $admintpl->set("categories", $cres);
+     $admintpl->set("category_add_new", "<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=category&amp;action=add\">".$language["CATEGORY_ADD"]."</a>");
 
      unset($cres);
           
@@ -91,24 +100,24 @@ function category_read()
 switch ($action)
   {
    case 'save':
-      if ($_POST["confirm"]==$language["FRM_CONFIRM"])
+      if ($_POST["confirm"] == $language["FRM_CONFIRM"])
         {
-        if ($_POST["category_name"]!="" && $_POST["sort_index"]!="")
+        if ($_POST["category_name"] != "" && $_POST["sort_index"] != "")
           {
-            if ($_GET["mode"]=='new')
-              do_sqlquery("INSERT INTO {$TABLE_PREFIX}categories (name, sort_index, sub, image) VALUES (".sqlesc($_POST["category_name"]).",".max(0,$_POST["sort_index"]).",".max(0,$_POST["sub_category"]).",".sqlesc($_POST["image"]).")",true);
+            if ($_GET["mode"] == 'new')
+              do_sqlquery("INSERT INTO {$TABLE_PREFIX}categories (name, sort_index, sub, image) VALUES (".sqlesc($_POST["category_name"]).",".max(0,$_POST["sort_index"]).",".max(0,$_POST["sub_category"]).",".sqlesc($_POST["image"]).")", true);
             else
-              do_sqlquery("UPDATE {$TABLE_PREFIX}categories SET name=".sqlesc($_POST["category_name"]).",sort_index=".max(0,$_POST["sort_index"]).", sub=".max(0,$_POST["sub_category"]).", image=".sqlesc($_POST["image"])." WHERE id=".max(0,$_GET["id"]),true);
+              do_sqlquery("UPDATE {$TABLE_PREFIX}categories SET name=".sqlesc($_POST["category_name"]).",sort_index=".max(0,$_POST["sort_index"]).", sub=".max(0,$_POST["sub_category"]).", image=".sqlesc($_POST["image"])." WHERE id=".max(0,$_GET["id"]), true);
           }
         else
-            stderr($language["ERROR"],$language["ALL_FIELDS_REQUIRED"]);
+            stderr($language["ERROR"], $language["ALL_FIELDS_REQUIRED"]);
       }
       category_read();
       break;
 
     case 'add':
-        $admintpl->set("category_add",true,true);
-        $admintpl->set("language",$language);
+        $admintpl->set("category_add", true, true);
+        $admintpl->set("language", $language);
         $admintpl->set("category_name","");
         $admintpl->set("frm_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=category&amp;action=save&amp;mode=new");
         $admintpl->set("image_combo",image_combo());
@@ -122,17 +131,17 @@ switch ($action)
         if (isset($_GET["id"]))
           {
             // we should get only 1 style, selected with radio ...
-            $id=max(0,$_GET["id"]);
-            $cres=get_result("SELECT * FROM {$TABLE_PREFIX}categories WHERE id=$id",true);
-            $admintpl->set("category_add",true,true);
-            $admintpl->set("language",$language);
-            $admintpl->set("category_name",$cres[0]["name"]);
-            $admintpl->set("frm_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=category&amp;action=save&amp;mode=edit&amp;id=$id");
-            $admintpl->set("image_combo",image_combo($cres[0]["image"]));
-            $admintpl->set("subcat_combo",sub_categories($cres[0]["sub"]));
-            $admintpl->set("category_sort",$cres[0]["sort_index"]);
-            $admintpl->set("category_image","$STYLEURL/images/categories/".$cres[0]["image"]);
-            $admintpl->set("image_url","$STYLEURL/images/categories/");
+            $id = max(0,$_GET["id"]);
+            $cres = get_result("SELECT * FROM {$TABLE_PREFIX}categories WHERE id=$id", true);
+            $admintpl->set("category_add", true, true);
+            $admintpl->set("language", $language);
+            $admintpl->set("category_name", $cres[0]["name"]);
+            $admintpl->set("frm_action", "index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=category&amp;action=save&amp;mode=edit&amp;id=$id");
+            $admintpl->set("image_combo", image_combo($cres[0]["image"]));
+            $admintpl->set("subcat_combo", sub_categories($cres[0]["sub"]));
+            $admintpl->set("category_sort", $cres[0]["sort_index"]);
+            $admintpl->set("category_image", "$STYLEURL/images/categories/".$cres[0]["image"]);
+            $admintpl->set("image_url", "$STYLEURL/images/categories/");
           }
         break;
 
@@ -140,7 +149,7 @@ switch ($action)
         if (isset($_GET["id"]))
           {
            // we should get only 1 style, selected with radio ...
-           $id=max(0,$_GET["id"]);
+           $id = max(0, $_GET["id"]);
            // delete style from database
            do_sqlquery("DELETE FROM {$TABLE_PREFIX}categories WHERE id=$id",true);
            category_read();

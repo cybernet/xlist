@@ -1,4 +1,13 @@
 <?php
+
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. scrape
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -31,7 +40,7 @@
 ////////////////////////////////////////////////////////////////////////////////////
 
 
-$BASEPATH=dirname(__FILE__);
+$BASEPATH = dirname(__FILE__);
 
 require("$BASEPATH/include/config.php");
 require("$BASEPATH/include/common.php");
@@ -60,9 +69,9 @@ if ($XBTT_USE)
     } else 
        $pid = "";
 
-    $query_string=implode_with_keys("&", $_GET);
+    $query_string = implode_with_keys("&", $_GET);
 
-    if ($pid!="") // private announce
+    if ($pid != "") // private announce
     {
        header("Location: $XBTT_URL/$pid/scrape?" . $query_string);
     }
@@ -81,9 +90,9 @@ if ($XBTT_USE)
 // controll if client can handle gzip
 if ($GZIP_ENABLED)
     {
-     if (stristr($_SERVER["HTTP_ACCEPT_ENCODING"],"gzip") && extension_loaded('zlib') && ini_get("zlib.output_compression") == 0)
+     if (stristr($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip") && extension_loaded('zlib') && ini_get("zlib.output_compression") == 0)
          {
-         if (ini_get('output_handler')!='ob_gzhandler')
+         if (ini_get('output_handler') != 'ob_gzhandler')
              {
              ob_start("ob_gzhandler");
              }
@@ -103,9 +112,9 @@ error_reporting(0);
 
 // connect to db
 if ($GLOBALS["persist"])
-    $conres=mysql_pconnect($dbhost, $dbuser, $dbpass) or show_error("Tracker errore - mysql_connect: " . mysql_error());
+    $conres = mysql_pconnect($dbhost, $dbuser, $dbpass) or show_error("Tracker errore - mysql_connect: " . mysql_error());
 else
-    $conres=mysql_connect($dbhost, $dbuser, $dbpass) or show_error("Tracker errore - mysql_connect: " . mysql_error());
+    $conres = mysql_connect($dbhost, $dbuser, $dbpass) or show_error("Tracker errore - mysql_connect: " . mysql_error());
 
     mysql_select_db($database) or show_error("Tracker errore - $database - ".mysql_error());
 
@@ -126,23 +135,23 @@ $usehash = false;
 $pid = AddSlashes($pid);
 
 // if private announce turned on and PID empty string or not send by client
-if (($pid=="" || !$pid) && $PRIVATE_SCRAPE)
-   show_error("Sorry. Private scrape is ON and PID system is required");
+if (($pid == "" || !$pid) && $PRIVATE_SCRAPE)
+   show_error("Sorry. Private scrape is ON and PiD system is required");
 
 
 if (isset($_GET["info_hash"]))
 {
-  if ($pid!="")
-     $qryStr=substr($_SERVER["QUERY_STRING"],strlen("?pid=$pid"));
+  if ($pid != "")
+     $qryStr = substr($_SERVER["QUERY_STRING"], strlen("?pid=$pid"));
   else
-      $qryStr=$_SERVER["QUERY_STRING"];
+      $qryStr = $_SERVER["QUERY_STRING"];
   // support for multi-scrape
   // more info @ http://wiki.depthstrike.com/index.php/P2P:Programming:Trackers:PHP:Multiscrape
   foreach (explode("&", $qryStr) as $item)
    {
     if (substr($item, 0, 10) == "info_hash=")
       {
-        $ihash=urldecode(substr($item,10));
+        $ihash = urldecode(substr($item,10));
 
         if (strlen($ihash) == 20)
             $ihash = bin2hex($ihash);
@@ -151,7 +160,7 @@ if (isset($_GET["info_hash"]))
         else
             continue; // showError(INVALID_INFO_HASH);
 
-         $newmatches[]=$ihash;
+         $newmatches[] = $ihash;
       }
     }
 
@@ -182,21 +191,21 @@ else
     $query = mysql_query("SELECT f.info_hash, f.seeds, f.leechers, f.finished FROM {$TABLE_PREFIX}files f WHERE external='no' ORDER BY info_hash") or show_error("Database error. Cannot complete request.");
 
 
-$result="d5:filesd";
+$result = "d5:filesd";
 
 while ($row = mysql_fetch_row($query))
 {
     $hash = hex2bin($row[0]);
-    $result.="20:".$hash."d";
-    $result.="8:completei".$row[1]."e";
-    $result.="10:downloadedi".$row[3]."e";
-    $result.="10:incompletei".$row[2]."e";
+    $result .= "20:".$hash."d";
+    $result .= "8:completei".$row[1]."e";
+    $result .= "10:downloadedi".$row[3]."e";
+    $result .= "10:incompletei".$row[2]."e";
     if (isset($namemap[$row[0]]))
-        $result.="4:name".strlen($namemap[$row[0]]).":".$namemap[$row[0]];
-    $result.="e";
+        $result .= "4:name".strlen($namemap[$row[0]]).":".$namemap[$row[0]];
+    $result .= "e";
 }
 
-$result.="ee";
+$result .= "ee";
 
 echo $result;
 

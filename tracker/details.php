@@ -2,11 +2,42 @@
 
 // CyBerFuN.ro & xList.ro
 
-// xList .::. DeTAiLS
+// CyBerFuN .::. Details
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
 // http://xlist.ro/
-// Modified By CyBerNe7
+// Modified By cybernet2u
+
+/////////////////////////////////////////////////////////////////////////////////////
+// xbtit - Bittorrent tracker/frontend
+//
+// Copyright (C) 2004 - 2007  Btiteam
+//
+//    This file is part of xbtit.
+//
+// Redistribution and use in source and binary forms, with or without modification,
+// are permitted provided that the following conditions are met:
+//
+//   1. Redistributions of source code must retain the above copyright notice,
+//      this list of conditions and the following disclaimer.
+//   2. Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
+//   3. The name of the author may not be used to endorse or promote products
+//      derived from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+// IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+// TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+////////////////////////////////////////////////////////////////////////////////////
 
 
 if (!defined("IN_BTIT"))
@@ -98,10 +129,10 @@ $srow = mysql_num_rows($sres);
 {
 $res = mysql_query("SELECT prefixcolor, suffixcolor, users.id, username, level FROM {$TABLE_PREFIX}users users INNER JOIN {$TABLE_PREFIX}users_level users_level ON users.id_level=users_level.id WHERE users.id='".$srow["uid"]."'") or die(mysql_error());
 $result = mysql_fetch_array($res);
-$snatchers[$plus]["snatch"]="<a href=index.php?page=userdetails&id=$result[id]>".unesc($result["prefixcolor"]).unesc($result["username"]).unesc($result["suffixcolor"])."</a>&nbsp;";
+$snatchers[$plus]["snatch"] = "<a href=index.php?page=userdetails&id=$result[id]>".unesc($result["prefixcolor"]).unesc($result["username"]).unesc($result["suffixcolor"])."</a>&nbsp;";
 $plus++;
 }
-$torrenttpl->set("snatchers",$snatchers);
+$torrenttpl->set("snatchers", $snatchers);
 // Snatchers hack end
 $torrenttpl->set("language", $language);
 $torrenttpl->set("IMAGEIS",!empty($row["image"]), TRUE);
@@ -289,7 +320,7 @@ $torrenttpl->set("files", $dfiles);
 
 // end files in torrents
 include(dirname(__FILE__)."/include/offset.php");
-$row["date"] = date("d/m/Y", $row["data"]-$offset);
+$row["date"] = date("d/m/Y", $row["data"] - $offset);
 
 if ($row["anonymous"] == "true")
 {
