@@ -94,7 +94,7 @@ if (intval($row["downloaded"]) > 0)
      $s = "images/smilies/sad.gif";
    else
      $s = "images/smilies/thumbsdown.gif";
-  $ratio = number_format($sr,2)."&nbsp;&nbsp;<img src=\"$s\" alt=\"\" />";
+  $ratio = number_format($sr, 2)."&nbsp;&nbsp;<img src=\"$s\" alt=\"\" />";
  }
 else
    $ratio = '&#8734;';
@@ -104,12 +104,12 @@ $utorrents = intval($CURUSER["torrentsperpage"]);
 $userdetailtpl = new bTemplate();
 $userdetailtpl-> set("language",$language);
 $userdetailtpl-> set("userdetail_username", unesc($row["username"]). warn($row, true));
-//$userdetailtpl-> set("userdetail_no_guest", $CURUSER["uid"]>1, TRUE);
+//$userdetailtpl-> set("userdetail_no_guest", $CURUSER["uid"] > 1, TRUE);
 if ($CURUSER["uid"] > 1 && $id != $CURUSER["uid"])
     $userdetailtpl -> set("userdetail_send_pm", "&nbsp;&nbsp;&nbsp;<a href=\"index.php?page=usercp&amp;do=pm&amp;action=edit&amp;uid=".$CURUSER["uid"]."&amp;what=new&amp;to=".urlencode(unesc($row["username"]))."\">".image_or_link("$STYLEPATH/images/pm.png","",$language["PM"])."</a>");
 if ($CURUSER["edit_users"] == "yes" && $id != $CURUSER["uid"])
     $userdetailtpl -> set("userdetail_edit","&nbsp;&nbsp;&nbsp<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=users&amp;action=edit&amp;uid=$id&amp;returnto=index.php?page=userdetails&amp;id=$id\">".image_or_link("$STYLEPATH/images/edit.png","",$language["EDIT"])."</a>");
-if ($CURUSER["delete_users"] == "yes" && $id!=$CURUSER["uid"])
+if ($CURUSER["delete_users"] == "yes" && $id != $CURUSER["uid"])
     $userdetailtpl -> set("userdetail_delete", "&nbsp;&nbsp;&nbsp<a onclick=\"return confirm('".AddSlashes($language["DELETE_CONFIRM"])."')\" href=index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=users&amp;action=delete&amp;uid=$id&amp;smf_fid=".$row["smf_fid"]."&amp;returnto=".urlencode("index.php?page=users")."\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>");
 $userdetailtpl -> set("userdetail_has_avatar", $row["avatar"] && $row["avatar"] != "", TRUE);
 
@@ -151,7 +151,7 @@ $userdetailtpl -> set("userdetail_local_time", (date("d/m/Y H:i:s",time()-$offse
 $userdetailtpl -> set("userdetail_downloaded", (makesize($row["downloaded"])));
 $userdetailtpl -> set("userdetail_uploaded", (makesize($row["uploaded"])));
 $userdetailtpl -> set("userdetail_ratio", ($ratio));
-$userdetailtpl -> set("userdetail_bonus", (number_format($row["seedbonus"],2)));
+$userdetailtpl -> set("userdetail_bonus", (number_format($row["seedbonus"], 2)));
 $userdetailtpl -> set("userdetail_forum_internal", ( $GLOBALS["FORUMLINK"] == '' || $GLOBALS["FORUMLINK"] == 'internal' || $GLOBALS["FORUMLINK"] == 'smf'), TRUE);
 
 // Only show if forum is internal
@@ -169,7 +169,7 @@ elseif ($GLOBALS["FORUMLINK"] == "smf")
    {
    $forum = mysql_fetch_assoc(mysql_query("SELECT dateRegistered, posts FROM {$db_prefix}members WHERE ID_MEMBER=".$row["smf_fid"]));
    $memberdays = max(1, round( ( time() - $forum["dateRegistered"] ) / 86400 ));
-   $posts_per_day = number_format(round($forum["posts"] / $memberdays,2),2);
+   $posts_per_day = number_format(round($forum["posts"] / $memberdays, 2), 2);
    $userdetailtpl-> set("userdetail_forum_posts", $forum["posts"] . " &nbsp; [" . sprintf($language["POSTS_PER_DAY"], $posts_per_day) . "]");
    unset($forum);
 }
@@ -303,7 +303,7 @@ if ($sanq[0] > 0)
                  $tortpl[$i]["downloaded"] = makesize($torlist->downloaded);
                  $tortpl[$i]["uploaded"] = makesize($torlist->uploaded);
                  if ($torlist->downloaded > 0)
-                      $peerratio = number_format($torlist->uploaded/$torlist->downloaded, 2);
+                      $peerratio = number_format($torlist->uploaded / $torlist->downloaded, 2);
                  else
                       $peerratio = '&#8734;';
                  $tortpl[$i]["peerratio"] = unesc($peerratio);
@@ -323,7 +323,7 @@ if ($sanq[0] > 0)
                  $tortpl[$i]["downloaded"] = makesize($torlist->downloaded);
                  $tortpl[$i]["uploaded"] = makesize($torlist->uploaded);
                  if ($torlist->downloaded > 0)
-                      $peerratio = number_format($torlist->uploaded/$torlist->downloaded, 2);
+                      $peerratio = number_format($torlist->uploaded / $torlist->downloaded, 2);
                  else
                       $peerratio = '&#8734;';
                  $tortpl[$i]["peerratio"] = unesc($peerratio);
@@ -377,7 +377,7 @@ if ($sanq[0] > 0)
                 $torhistory[$i]["downloaded"] = makesize($torlist->downloaded);
                 $torhistory[$i]["uploaded"] = makesize($torlist->uploaded);
                 if ($torlist->downloaded > 0)
-                     $peerratio = number_format($torlist->uploaded/$torlist->downloaded, 2);
+                     $peerratio = number_format($torlist->uploaded / $torlist->downloaded, 2);
                 else
                      $peerratio = '&#8734;';
                 $torhistory[$i]["ratio"] = unesc($peerratio);
@@ -394,11 +394,11 @@ if ($sanq[0] > 0)
                 $torhistory[$i]["filename"] = "<a href=\"index.php?page=torrent-details&amp;id=".$torlist->info_hash."\" title=\"".$language["VIEW_DETAILS"].": ".$torlist->filename."\">".$filename."</a>";
                 $torhistory[$i]["size"] = makesize($torlist->size);
                 $torhistory[$i]["agent"] = htmlspecialchars($torlist->agent);
-                $torhistory[$i]["status"] = ($torlist->active == 'yes'?$language["ACTIVATED"]:'Stopped');
+                $torhistory[$i]["status"] = ($torlist->active == 'yes'? $language["ACTIVATED"]:'Stopped');
                 $torhistory[$i]["downloaded"] = makesize($torlist->downloaded);
                 $torhistory[$i]["uploaded"] = makesize($torlist->uploaded);
                 if ($torlist->downloaded > 0)
-                     $peerratio = number_format($torlist->uploaded/$torlist->downloaded, 2);
+                     $peerratio = number_format($torlist->uploaded / $torlist->downloaded, 2);
                 else
                      $peerratio = '&#8734;';
                 $torhistory[$i]["ratio"] = unesc($peerratio);
