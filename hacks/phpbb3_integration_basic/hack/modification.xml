@@ -1,0 +1,2203 @@
+<hack>
+  <title>phpbb3_integration_basic</title>
+  <author>signo</author>
+  <version>0.9.2r559</version>
+  <!-- database -->
+  <file>
+    <name>"database"</name>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('phpbb3', 'true'), ('phpbb3_prefix', 'phpbb3_'), ('phpbb3_root_path', '');]]></data>
+    </operation>
+  </file>
+  <!-- account.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/account.php"</name>
+    <operation>
+      <search><![CDATA[do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '" . md5($pwd) . "', $random, $idlevel, '$email', $idstyle, $idlangue, $idflag, NOW(), NOW(),'$pid', '".$timezone."')",true);]]></search>
+	  <action>"replace"</action>
+      <data><![CDATA[
+// start hack phpbb3 integration
+
+	// info phpbb3
+	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb_integration = $phpbb3_res["phpbb3"];
+	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
+
+	// default setting from phpbb3
+	$ricavo_default_phpbb = mysql_query("SELECT `config_name`, `config_value` FROM `{$phpbb_db_prefix}config`") or die(mysql_error());
+
+	while ($row_config = mysql_fetch_array($ricavo_default_phpbb, MYSQL_ASSOC))
+	{
+		if ($row_config["config_name"] == "default_timezone")
+		{
+			$default_timezone = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "default_dateformat")
+		{
+			$default_dateformat = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "default_style")
+		{
+			$default_style = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "default_lang")
+		{
+			$default_lang = $row_config["config_value"];
+		}
+	}
+	
+	mysql_free_result($ricavo_default_phpbb);
+	
+	$get_group_info = mysql_query("SELECT `group_colour`, `group_id` FROM `{$phpbb_db_prefix}groups`WHERE `group_name` = 'REGISTERED' ") or die(mysql_error());
+	$get_REGISTERED_info = mysql_fetch_assoc($get_group_info);
+	$REGISTERED_colour = $get_REGISTERED_info["group_colour"];
+	$REGISTERED_id = $get_REGISTERED_info["group_id"];
+	// phpBB3 database info
+
+	// estrapolo utenti gi� presenti in phpbb3
+	// get users already registered in phpBB
+	$query_info_users = "SELECT user_id, username FROM `{$phpbb_db_prefix}users`";
+	$phpbb3_info_users = mysql_query($query_info_users);
+
+	//	creo array con utenti gi� presenti in phpbb3
+	// make an array with users already registered in phpBB
+	while( $phpbb3_users_table = mysql_fetch_row($phpbb3_info_users) )
+	{
+	$phpbb3_username[] =  $phpbb3_users_table[1];
+	}
+	mysql_free_result( $phpbb3_info_users );
+	
+	// estrapolo email gi� presenti in phpbb3
+	// get email already registered in phpBB
+	$query_info_email = "SELECT user_id, user_email FROM `{$phpbb_db_prefix}users`";
+	$phpbb3_info_email = mysql_query($query_info_email);
+
+	// creo array con email gi� presenti in phpbb3
+	// make an array with emails already registered in phpBB
+	while( $phpbb3_email_table = mysql_fetch_row($phpbb3_info_email) )
+	{
+	$phpbb3_user_email[] =  $phpbb3_email_table[1];
+	}
+	mysql_free_result( $phpbb3_info_email );
+
+		if (in_array("$utente", $phpbb3_username))
+		{	
+			// new user on xbtit
+			do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '".md5($pwd)."', $random, $idlevel, '$email', $idstyle, $idlangue, $idflag, NOW(), NOW(),'$pid', '".$timezone."')",true);
+		}
+		elseif (in_array("$email", $phpbb3_user_email))
+		{	
+			// new user on xbtit
+			do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '".md5($pwd)."', $random, $idlevel, '$email', $idstyle, $idlangue, $idflag, NOW(), NOW(),'$pid', '".$timezone."')",true);
+		}
+		else
+		{
+			$pid_phpbb=$_SERVER['REMOTE_ADDR'];
+			$phpbb_user_email_hash	= crc32(strtolower($email)) . strlen($email);
+
+			// new user on xbtit
+			do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '".md5($pwd)."', $random, $idlevel, '$email', $idstyle, $idlangue, $idflag, NOW(), NOW(),'$pid', '".$timezone."')",true);
+	
+			// new user on phpBB3
+			$ricavo_info_users = mysql_fetch_assoc(mysql_query("SELECT language, time_offset FROM `{$TABLE_PREFIX}users` WHERE username = '$utente'"));
+			$id_language = $ricavo_info_users["language"];
+			$xbtit_timezone = $ricavo_info_users["time_offset"];
+
+			// languages from xbtit 2.0.547 to phpbb
+	switch ($id_language) {
+	  case 1:
+      $user_lang = 'en';
+      break;
+      case 2:
+      $user_lang = 'ro';
+      break;
+      case 3:
+      $user_lang = 'pl';
+      break;
+	  case 5:
+      $user_lang = 'nl';
+      break;
+	  case 6:
+      $user_lang = 'it';
+      break;
+	  case 7:
+      $user_lang = 'ru';
+      break;
+	  case 8:
+      $user_lang = 'de';
+      break;
+	  case 9:
+      $user_lang = 'hu';
+      break;
+	  case 10:
+      $user_lang = 'fr';
+      break;
+	  case 11:
+      $user_lang = 'fi';
+      break;
+	  case 12:
+      $user_lang = 'vi';
+      break;
+	  case 13:
+      $user_lang = 'gr';
+      break;
+	  case 14:
+      $user_lang = 'bg';
+      break;
+	  case 15:
+      $user_lang = 'es';
+      break;
+	  case 16:
+      $user_lang = 'br';
+      break;
+	  case 17:
+      $user_lang = 'pt';
+      break;
+      default:
+      $user_lang = "$default_lang"; // default
+	}
+			// timezone from xbtit 2.0.547 to phpb
+			switch ($xbtit_timezone) {
+			case -12:
+			$user_timezone = '-12.00';
+			break;
+			case -11:
+			$user_timezone = '-11.00';
+			break;
+			case -10:
+			$user_timezone = '-10.00';
+			break;
+			case -9:
+			$user_timezone = '-9.00';
+			break;
+			case -8:
+			$user_timezone = '-8.00';
+			break;
+			case -7:
+			$user_timezone = '-7.00';
+			break;
+			case -6:
+			$user_timezone = '-6.00';
+			break;
+			case -5:
+			$user_timezone = '-5.00';
+			break;
+			case -4:
+			$user_timezone = '-4.00';
+			break;
+			case -3:
+			$user_timezone = '-3.00';
+			break;
+			case '-3.5':
+			$user_timezone = '-3.50';
+			break;
+			case -2:
+			$user_timezone = '-2.00';
+			break;
+			case -1:
+			$user_timezone = '-1.00';
+			break;
+			case 0:
+			$user_timezone = '0.00';
+			break;
+			case 1:
+			$user_timezone = '1.00';
+			break;
+			case 2:
+			$user_timezone = '2.00';
+			break;
+			case 3:
+			$user_timezone = '3.00';
+			break;
+			case '3.5':
+			$user_timezone = '3.50';
+			break;
+			case 4:
+			$user_timezone = '4.00';
+			break;
+			case '4.5':
+			$user_timezone = '4.50';
+			break;
+			case 5:
+			$user_timezone = '5.00';
+			break;
+			case '5.5':
+			$user_timezone = '5.50';
+			break;
+			case 6:
+			$user_timezone = '6.00';
+			break;
+			case 7:
+			$user_timezone = '7.00';
+			break;
+			case 8:
+			$user_timezone = '8.00';
+			break;
+			case 9:
+			$user_timezone = '9.00';
+			break;
+			case '9.5':
+			$user_timezone = '9.50';
+			break;
+			case 10:
+			$user_timezone = '10.00';
+			break;
+			case 11:
+			$user_timezone = '11.00';
+			break;
+			case 12:
+			$user_timezone = '12.00';
+			break;
+			default:
+			$user_timezone = "$default_timezone"; // default timezone
+	}
+	
+			// add user on phpbb users
+			do_sqlquery("INSERT INTO `{$phpbb_db_prefix}users` (`user_id`, `user_type`, `group_id`, `user_permissions`, `user_perm_from`, `user_ip`, `user_regdate`, `username`, `username_clean`, `user_password`, `user_passchg`, `user_pass_convert`, `user_email`, `user_email_hash`, `user_birthday`, `user_lastvisit`, `user_lastmark`, `user_lastpost_time`, `user_lastpage`, `user_last_confirm_key`, `user_last_search`, `user_warnings`, `user_last_warning`, `user_login_attempts`, `user_inactive_reason`, `user_inactive_time`, `user_posts`, `user_lang`, `user_timezone`, `user_dst`, `user_dateformat`, `user_style`, `user_rank`, `user_colour`, `user_new_privmsg`, `user_unread_privmsg`, `user_last_privmsg`, `user_message_rules`, `user_full_folder`, `user_emailtime`, `user_topic_show_days`, `user_topic_sortby_type`, `user_topic_sortby_dir`, `user_post_show_days`, `user_post_sortby_type`, `user_post_sortby_dir`, `user_notify`, `user_notify_pm`, `user_notify_type`, `user_allow_pm`, `user_allow_viewonline`, `user_allow_viewemail`, `user_allow_massemail`, `user_options`, `user_avatar`, `user_avatar_type`, `user_avatar_width`, `user_avatar_height`, `user_sig`, `user_sig_bbcode_uid`, `user_sig_bbcode_bitfield`, `user_from`, `user_icq`, `user_aim`, `user_yim`, `user_msnm`, `user_jabber`, `user_website`, `user_occ`, `user_interests`, `user_actkey`, `user_newpasswd`, `user_form_salt`)  VALUES (NULL, '0', '$REGISTERED_id', '', '0', '$pid_phpbb', UNIX_TIMESTAMP(), '$utente', '".strtolower($utente)."', '".md5($pwd)."', UNIX_TIMESTAMP(), '0', '$email', '$phpbb_user_email_hash', '', '0', UNIX_TIMESTAMP(), '0', '', '', '0', '0', '0', '0', '0', '0', '0', '$user_lang', '$user_timezone', '0', '$default_dateformat', '$default_style', '0', '$REGISTERED_colour', '0', '0', '0', '0', '-3', '0', '0', 't', 'd', '0', 't', 'a', '0', '1', '0', '1', '1', '1', '1', '895', '', '0', '0', '0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')");
+	
+			// add user on phpbb user_group
+			$ricavo_user_id = mysql_fetch_assoc(mysql_query("SELECT user_id FROM `{$phpbb_db_prefix}users` WHERE username = '$utente'"));
+			$phpbb3_user_id = $ricavo_user_id["user_id"];
+			do_sqlquery("INSERT INTO `{$phpbb_db_prefix}user_group` (`group_id`, `user_id`, `group_leader`, `user_pending`) VALUES ('$REGISTERED_id', '$phpbb3_user_id', '0', '0')");
+	
+			// update newest_user_id,newest_username, num_users
+			do_sqlquery("UPDATE `{$phpbb_db_prefix}config` SET `config_value` = '$REGISTERED_colour' WHERE `config_name` = 'newest_user_colour' LIMIT 1 ");
+			do_sqlquery("UPDATE `{$phpbb_db_prefix}config` SET `config_value` = '$phpbb3_user_id' WHERE CONVERT( `{$phpbb_db_prefix}config`.`config_name` USING utf8 ) = 'newest_user_id' LIMIT 1");
+			do_sqlquery("UPDATE `{$phpbb_db_prefix}config` SET `config_value` = '$utente' WHERE CONVERT( `{$phpbb_db_prefix}config`.`config_name` USING utf8 ) = 'newest_username' LIMIT 1 ");
+			do_sqlquery("UPDATE `{$phpbb_db_prefix}config` SET `config_value` = config_value+1 WHERE `config_name` = 'num_users' LIMIT 1 ");
+		}
+
+// end hack phpbb3 integration
+]]></data>
+    </operation>
+  </file>
+  <!-- login.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/login.php"</name>
+    <operation>
+      <search><![CDATA[elseif (md5($row["random"].$row["password"].$row["random"]) != md5($row["random"].md5($pwd).$row["random"]))
+        {
+          $logintpl->set("FALSE_USER",false,true);
+          $logintpl->set("FALSE_PASSWORD",true,true);
+          $logintpl->set("login_password_incorrent",$language["ERR_PASSWORD_INCORRECT"]);
+          login();
+        }]]></search>
+	  <action>"replace"</action>
+      <data><![CDATA[
+// start hack phpbb3 integration
+elseif (strlen($row["password"]) != 34 && md5($row["random"].$row["password"].$row["random"]) != md5($row["random"].md5($pwd).$row["random"]))
+        {
+          $logintpl->set("FALSE_USER",false,true);
+          $logintpl->set("FALSE_PASSWORD",true,true);
+          $logintpl->set("login_password_incorrent",$language["ERR_PASSWORD_INCORRECT"]);
+          login();
+        }
+elseif (strlen($row["password"]) == 34)
+{
+if (phpbb_check_hash($pwd, $row["password"]))
+		{
+        logincookie($row["id"],md5($row["random"].$row["password"].$row["random"]));
+        if (isset($_GET["returnto"]))
+           $url=urldecode($_GET["returnto"]);
+        else
+            $url="index.php";
+        redirect($url);
+        die();
+		}
+}
+// end hack phpbb3 integration
+]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[?>]]></search>
+	  <action>"add"</action>
+	  <where>"before"</where>
+      <data><![CDATA[
+// start hack phpbb3 integration
+
+/**
+* start
+* @package phpBB3
+* @version $Id: functions.php 9519 2009-05-23 16:11:40Z acydburn $
+* @copyright (c) 2005 phpBB Group
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+*
+*/
+
+/**
+* Encode hash
+*/
+function _hash_encode64($input, $count, &$itoa64)
+{
+	$output = '';
+	$i = 0;
+
+	do
+	{
+		$value = ord($input[$i++]);
+		$output .= $itoa64[$value & 0x3f];
+
+		if ($i < $count)
+		{
+			$value |= ord($input[$i]) << 8;
+		}
+
+		$output .= $itoa64[($value >> 6) & 0x3f];
+
+		if ($i++ >= $count)
+		{
+			break;
+		}
+
+		if ($i < $count)
+		{
+			$value |= ord($input[$i]) << 16;
+		}
+
+		$output .= $itoa64[($value >> 12) & 0x3f];
+
+		if ($i++ >= $count)
+		{
+			break;
+		}
+
+		$output .= $itoa64[($value >> 18) & 0x3f];
+	}
+	while ($i < $count);
+
+	return $output;
+}
+
+/**
+* The crypt function/replacement
+*/
+function _hash_crypt_private($password, $setting, &$itoa64)
+{
+	$output = '*';
+
+	// Check for correct hash
+	if (substr($setting, 0, 3) != '$H$')
+	{
+		return $output;
+	}
+
+	$count_log2 = strpos($itoa64, $setting[3]);
+
+	if ($count_log2 < 7 || $count_log2 > 30)
+	{
+		return $output;
+	}
+
+	$count = 1 << $count_log2;
+	$salt = substr($setting, 4, 8);
+
+	if (strlen($salt) != 8)
+	{
+		return $output;
+	}
+
+	/**
+	* We're kind of forced to use MD5 here since it's the only
+	* cryptographic primitive available in all versions of PHP
+	* currently in use.  To implement our own low-level crypto
+	* in PHP would result in much worse performance and
+	* consequently in lower iteration counts and hashes that are
+	* quicker to crack (by non-PHP code).
+	*/
+	if (PHP_VERSION >= 5)
+	{
+		$hash = md5($salt . $password, true);
+		do
+		{
+			$hash = md5($hash . $password, true);
+		}
+		while (--$count);
+	}
+	else
+	{
+		$hash = pack('H*', md5($salt . $password));
+		do
+		{
+			$hash = pack('H*', md5($hash . $password));
+		}
+		while (--$count);
+	}
+
+	$output = substr($setting, 0, 12);
+	$output .= _hash_encode64($hash, 16, $itoa64);
+
+	return $output;
+}
+
+/**
+* Check for correct password
+*
+* @param string $password The password in plain text
+* @param string $hash The stored password hash
+*
+* @return bool Returns true if the password is correct, false if not.
+*/
+function phpbb_check_hash($password, $hash)
+{
+	$itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+	if (strlen($hash) == 34)
+	{
+		return (_hash_crypt_private($password, $hash, $itoa64) === $hash) ? true : false;
+	}
+
+	return (md5($password) === $hash) ? true : false;
+}
+
+/**
+* end
+* @package phpBB3
+* @version $Id: functions.php 9519 2009-05-23 16:11:40Z acydburn $
+* @copyright (c) 2005 phpBB Group
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+*
+*/
+
+// end hack phpbb3 integration
+]]></data>
+    </operation>
+  </file>
+  <!-- recover.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/recover.php"</name>
+    <operation>
+      <search><![CDATA[if (!mysql_affected_rows())
+        stderr($language["ERROR"],$language["ERR_UPDATE_USER"]);]]></search>
+	  <action>"replace"</action>
+      <data><![CDATA[
+// start hack phpbb3 integration
+	$phpbb3_user = $arr["username"];
+
+	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
+	
+if ($btit_settings["phpbb3_prefix"]!="")
+    {
+	// update password on phpbb users
+		do_sqlquery("UPDATE `{$phpbb_db_prefix}users` SET user_password='".md5($newpassword)."' WHERE username = '$phpbb3_user'") or die(mysql_error());
+	}
+
+// end hack phpbb3 integration
+]]></data>
+    </operation>
+  </file>
+  <!-- /admin/admin.config.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/admin/admin.config.php"</name>
+    <operation>
+      <search><![CDATA[$admintpl->set("config_saved",false,true);]]></search>
+	  <action>"add"</action>
+	  <where>"after"</where>
+      <data><![CDATA[
+// start hack phpbb3 integration
+$admintpl->set("export_ok",false,true);
+$admintpl->set("import_ok",false,true);
+$admintpl->set("import_export_disabled",false,true);
+$admintpl->set("phpbb_disable_reg",false,true);
+$admintpl->set("hide_profile_ok",false,true);
+$admintpl->set("restore_profile_ok",false,true);
+// end hack phpbb3 integration
+]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[$btit_settings["clocktype"]=$_POST["clocktype"];]]></search>
+	  <action>"add"</action>
+	  <where>"before"</where>
+      <data><![CDATA[
+	  // start hack phpbb3 integration
+	  $btit_settings["phpbb3"]=$_POST["phpbb3"];
+	  $btit_settings["phpbb3_prefix"]=$_POST["phpbb3_prefix"];
+	  $btit_settings["phpbb3_root_path"]=$_POST["phpbb3_root_path"];
+	  // end hack phpbb3 integration]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[$btit_settings["clockdigital"]=(!$btit_settings["clocktype"]?"checked=\"checked\"":"");]]></search>
+	  <action>"add"</action>
+	  <where>"after"</where>
+      <data><![CDATA[
+	  // start hack phpbb3 integration
+	  $btit_settings["phpbb3yes"]=($btit_settings["phpbb3"]?"checked=\"checked\"":"");
+	  $btit_settings["phpbb3no"]=(!$btit_settings["phpbb3"]?"checked=\"checked\"":"");
+	  // end hack phpbb3 integration]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[$admintpl->set("frm_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=config&amp;action=write");
+        break;
+}]]></search>
+	  <action>"add"</action>
+	  <where>"after"</where>
+      <data><![CDATA[
+	  // start hack phpbb3 integration
+	  $phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	  $phpbb_integration = $phpbb3_res["phpbb3"];
+	  if ($phpbb_integration=="true")
+	  {
+		//export
+		if(isset($_POST['export_in_phpbb3'])) 
+		{
+			$export_confirm = xbtit_users_export();
+			$admintpl->set("export_ok",true,true);
+		}
+		
+		// import
+		if(isset($_POST['import_from_phpbb3'])) 
+		{
+			$import_confirm = phpbb3_users_import();
+			$admintpl->set("import_ok",true,true);
+		}
+	  }
+	  else
+	  {
+		// import/export disabled
+		if(isset($_POST['export_in_phpbb3']) || isset($_POST['import_from_phpbb3'])) 
+		{
+			$admintpl->set("import_export_disabled",true,true);
+		}
+	  }
+		//disable registration/email_reuse/username_change on phpbb3
+		if(isset($_POST['phpbb3_disable'])) 
+		{
+			$disable_reg_confirm = phpbb3_disable_reg();
+			$admintpl->set("phpbb_disable_reg",true,true);
+		}
+		
+		// disable 'Edit account settings' on phpbb3
+		if(isset($_POST['phpbb3_disable_profile'])) 
+		{
+			$disable_edit_account = phpbb3_disable_edit_account();
+			$change_lang_ucp = phpbb3_lang_ucp();
+			$admintpl->set("hide_profile_ok",true,true);
+		}
+		
+		// Restore '/language/en/ucp.php' on phpbb3
+		if(isset($_POST['phpbb3_restore_profile'])) 
+		{
+			$restore_lang_ucp = restore_phpbb3_lang_ucp();
+			$restore_edit_account = restore_phpbb3_edit_account();
+			$admintpl->set("restore_profile_ok",true,true);
+		}
+	  	  
+// end hack phpbb3 integration
+]]></data>
+    </operation>
+  </file>
+  <!-- /admin/admin.main.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/admin/admin.main.php"</name>
+    <operation>
+      <search><![CDATA[$last_version=explode("/",strtolower($btit_last));  // array('2.0.0','beta','2')
+
+$your_version="";]]></search>
+	  <action>"add"</action>
+	  <where>"after"</where>
+      <data><![CDATA[
+// start hack phpbb3 integration
+$hack_phpbb3_integration_url_last="http://xbtitnotify.sourceforge.net/last_version/phpbb3_integration_last_version.txt";
+
+// check last version on xbtitnotify.sourceforge.net
+$hack_phpbb3_integration_last=get_cached_version($hack_phpbb3_integration_url_last);
+if (!$hack_phpbb3_integration_last)
+{
+  $hack_phpbb3_integration_last=get_remote_file($hack_phpbb3_integration_url_last);
+  if ($hack_phpbb3_integration_last)
+     write_cached_version($hack_phpbb3_integration_url_last,$hack_phpbb3_integration_last);
+  else
+      $hack_phpbb3_integration_last = $language["PHPBB3_INTEGRATION_NO_INFO"];
+}
+$title_phpbb3_integration = "phpbb3_integration_basic";
+$res_phpbb3_integration_version = get_result("SELECT title, version FROM {$TABLE_PREFIX}hacks WHERE title LIKE '" . $title_phpbb3_integration . "'",true);
+$row0_phpbb3_integration = $res_phpbb3_integration_version[0];
+$row_phpbb3_integration = substr($row0_phpbb3_integration["version"],0,5);
+$last_phpbb3_integration_version=explode("/",strtolower($hack_phpbb3_integration_last));
+
+$your_phpbb3_integration_version="";
+// end hack phpbb3 integration
+]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[$your_version.="You have the latest xBtit version installed.";
+}]]></search>
+	  <action>"add"</action>
+	  <where>"after"</where>
+      <data><![CDATA[
+// start hack phpbb3 integration
+if (($row_phpbb3_integration != implode(" ",$last_phpbb3_integration_version)))
+  {
+  $your_phpbb3_integration_version.="<table width=\"100%\"><tr><td align=\"left\">".$language["PHPBB3_INTEGRATION_INSTALLED"]."</td><td align=\"left\">".$row_phpbb3_integration."</td></tr>\n";
+  $your_phpbb3_integration_version.="<tr><td align=\"left\">".$language["PHPBB3_INTEGRATION_CURRENT"]."</td><td align=\"left\">".implode(" ",$last_phpbb3_integration_version)."</td></tr>\n";
+  $your_phpbb3_integration_version.="<tr><td align=\"left\"><b>".$language["PHPBB3_INTEGRATION_GET"]."<a href=\"http://xbtitnotify.sourceforge.net/download.php\" target=\"_blank\">".$language["PHPBB3_INTEGRATION_RELEASE"]."</b></a></td></tr>\n</table>";
+}
+else
+  {
+  $your_phpbb3_integration_version.="".$language["PHPBB3_INTEGRATION_VERSION"]."";
+}
+// end hack phpbb3 integration
+]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[if (!empty($your_version))
+   $admin["xbtit_version"]=$your_version."<br />\n";]]></search>
+	  <action>"add"</action>
+	  <where>"after"</where>
+      <data><![CDATA[
+// start hack phpbb3 integration
+if (!empty($your_phpbb3_integration_version))
+   $admin["phpbb3_integration_version"]=$your_phpbb3_integration_version."<br />\n";
+// end hack phpbb3 integration
+]]></data>
+    </operation>
+  </file>
+  <!-- /blocks/mainmenu_block.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/blocks/mainmenu_block.php"</name>
+	<operation>
+      <search><![CDATA[global $CURUSER;]]></search>
+	  <action>"replace"</action>
+      <data><![CDATA[global $CURUSER,$TABLE_PREFIX;
+// info phpbb3
+	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+//	$phpbb_integration = $phpbb3_res["phpbb3"];
+	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[if ($GLOBALS["FORUMLINK"]=="" || $GLOBALS["FORUMLINK"]=="internal" || $GLOBALS["FORUMLINK"]=="smf")
+      print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=forum\">".$language["MNU_FORUM"]."</a></td>\n");]]></search>
+	  <action>"replace"</action>
+      <data><![CDATA[// start hack phpbb3 integration	
+	if ($GLOBALS["FORUMLINK"]=="" || $GLOBALS["FORUMLINK"]=="internal" || $GLOBALS["FORUMLINK"]=="smf" || $phpbb_db_prefix != "")
+      print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=forum\">".$language["MNU_FORUM"]."</a></td>\n");
+// end hack phpbb3 integration
+]]></data>
+    </operation>
+  </file>
+  <!-- /blocks/menu_block.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/blocks/menu_block.php"</name>
+	<operation>
+      <search><![CDATA[global $CURUSER;]]></search>
+	  <action>"replace"</action>
+      <data><![CDATA[
+// start hack phpbb3 integration
+   global $CURUSER,$TABLE_PREFIX;
+// info phpbb3
+	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
+// end hack phpbb3 integration
+]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[if ($GLOBALS["FORUMLINK"]=="" || $GLOBALS["FORUMLINK"]=="internal" || $GLOBALS["FORUMLINK"]=="smf")
+           print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=forum\">".$language["MNU_FORUM"]."</a></td></tr>\n");]]></search>
+	  <action>"replace"</action>
+      <data><![CDATA[
+// start hack phpbb3 integration	
+if ($GLOBALS["FORUMLINK"]=="" || $GLOBALS["FORUMLINK"]=="internal" || $GLOBALS["FORUMLINK"]=="smf" || $phpbb_db_prefix != "")
+           print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=forum\">".$language["MNU_FORUM"]."</a></td></tr>\n");
+// end hack phpbb3 integration
+]]></data>
+    </operation>
+  </file>
+  <!-- /forum/forum.index.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/forum/forum.index.php"</name>
+	<operation>
+      <search><![CDATA[$tpl->set("main_content",set_block($block_title,"center",$smf_content));
+
+
+}]]></search>
+	  <action>"add"</action>
+	  <where>"after"</where>
+      <data><![CDATA[
+// start hack phpbb3 integration	
+elseif ($btit_settings["phpbb3_prefix"]!="")
+  {
+     $FORUMLINK= $btit_settings["forum"];
+     $phpbb_content="";
+     $phpbb_content.="
+     <script type=\"text/javascript\" language=\"JavaScript\">
+
+     function autoIframe(frameId){
+     var newheight
+              try{
+                newheight = document.getElementById(frameId).contentWindow.document.body.scrollHeight;
+                document.getElementById(frameId).height = newheight + 45;
+              }
+                catch(err){
+                window.status = err.message;
+              }
+     }
+     </script>
+     <noscript>".
+     err_msg($language["ERROR"], "Resizable window will not work without Javascript.<br />Please enable Javascript or view the forum in a new window <a target='_new' href='$FORUMLINK'>Here</a>")
+     ."</noscript>";
+
+	 $phpbb_content.="
+          <div align=\"center\">
+          <iframe id=\"forum_ifrm\" onload=\"autoIframe('forum_ifrm')\" name=\"Forum\" border=\"0\" frameborder=\"0\" src=\"$FORUMLINK/index.php\" width=\"98%\">Your browser don't support iframe, then click <a href=\"$FORUMLINK/index.php\">here</a> to get forum page</iframe>
+          </div>";
+
+     $tpl->set("main_content",set_block($block_title,"center",$phpbb_content));
+
+
+}
+// end hack phpbb3 integration
+]]></data>
+    </operation>
+  </file>
+  <!-- /include/functions.php-->
+  <file>
+    <name>"$DEFAULT_ROOT/include/functions.php"</name>
+    <operation>
+      <search><![CDATA[if ( !function_exists('htmlspecialchars_decode') ) {
+  function htmlspecialchars_decode($text) {
+    return strtr($text, array_flip(get_html_translation_table(HTML_SPECIALCHARS)));
+  }
+}]]></search>
+	  <action>"add"</action>
+	  <where>"after"</where>
+      <data><![CDATA[
+// start hack phpbb3 integration
+
+/////////////
+// EXPORT
+/////////////
+
+function xbtit_users_export()
+{
+	global $TABLE_PREFIX,$admintpl,$language;
+	// info phpbb3
+	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb_integration = $phpbb3_res["phpbb3"];
+	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
+
+	// estrapolo utenti gi� presenti in phpbb3
+	// get users already registered in phpBB
+	$query_info_users = "SELECT user_id, username FROM `{$phpbb_db_prefix}users`";
+	$phpbb3_info_users = mysql_query($query_info_users);
+
+	//	creo array con utenti gi� presenti in phpbb3
+	// make an array with users already registered in phpBB
+	while( $phpbb3_users_table = mysql_fetch_row($phpbb3_info_users) )
+	{
+	$phpbb3_username[] =  $phpbb3_users_table[1];
+	}
+	mysql_free_result( $phpbb3_info_users );
+	
+	// estrapolo email gi� presenti in phpbb3
+	// get email already registered in phpBB
+	$query_info_email = "SELECT user_id, user_email FROM `{$phpbb_db_prefix}users`";
+	$phpbb3_info_email = mysql_query($query_info_email);
+
+	// creo array con email gi� presenti in phpbb3
+	// make an array with emails already registered in phpBB
+	while( $phpbb3_email_table = mysql_fetch_row($phpbb3_info_email) )
+	{
+	$phpbb3_user_email[] =  $phpbb3_email_table[1];
+	}
+	mysql_free_result( $phpbb3_info_email );
+	
+	// default setting from phpbb3
+	$ricavo_default_phpbb = mysql_query("SELECT `config_name`, `config_value` FROM `{$phpbb_db_prefix}config`") or die(mysql_error());
+
+	while ($row_config = mysql_fetch_array($ricavo_default_phpbb, MYSQL_ASSOC))
+	{
+		if ($row_config["config_name"] == "default_timezone")
+		{
+			$default_timezone = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "default_dateformat")
+		{
+			$default_dateformat = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "default_style")
+		{
+			$default_style = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "default_lang")
+		{
+			$default_lang = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "avatar_max_height")
+		{
+			$avatar_max_height = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "avatar_max_width")
+		{
+			$avatar_max_width = $row_config["config_value"];
+		}
+	}
+	
+	mysql_free_result($ricavo_default_phpbb);
+	
+/*	// default group colours by ID
+	$get_group_colour = mysql_query("SELECT `group_id`, `group_colour` FROM `{$phpbb_db_prefix}groups`") or die(mysql_error());
+	
+	while ($row_group_colour = mysql_fetch_assoc($get_group_colour))
+	{
+		if ($row_group_colour["group_id"] == "2")
+		{
+			$REGISTERED_colour = $row_group_colour["group_colour"];
+		}
+		if ($row_group_colour["group_id"] == "3")
+		{
+			$REGISTERED_COPPA_colour = $row_group_colour["group_colour"];
+		}
+		if ($row_group_colour["group_id"] == "4")
+		{
+			$GLOBAL_MODERATORS_colour = $row_group_colour["group_colour"];
+		}
+		if ($row_group_colour["group_id"] == "5")
+		{
+			$ADMINISTRATORS_colour = $row_group_colour["group_colour"];
+		}
+	}
+	
+	mysql_free_result($get_group_colour);
+*/
+	// default group colours and group_id by NAME
+	$get_group_colour = mysql_query("SELECT `group_name`, `group_id`, `group_colour` FROM `{$phpbb_db_prefix}groups`") or die(mysql_error());
+	
+	while ($row_group_colour = mysql_fetch_assoc($get_group_colour))
+	{
+		if ($row_group_colour["group_name"] == "REGISTERED")
+		{
+			$REGISTERED_id = $row_group_colour["group_id"];
+			$REGISTERED_colour = $row_group_colour["group_colour"];
+		}
+		if ($row_group_colour["group_name"] == "REGISTERED_COPPA")
+		{
+			$REGISTERED_COPPA_id = $row_group_colour["group_id"];
+			$REGISTERED_COPPA_colour = $row_group_colour["group_colour"];
+		}
+		if ($row_group_colour["group_name"] == "GLOBAL_MODERATORS")
+		{
+			$GLOBAL_MODERATORS_id = $row_group_colour["group_id"];
+			$GLOBAL_MODERATORS_colour = $row_group_colour["group_colour"];
+		}
+		if ($row_group_colour["group_name"] == "ADMINISTRATORS")
+		{
+			$ADMINISTRATORS_id = $row_group_colour["group_id"];
+			$ADMINISTRATORS_colour = $row_group_colour["group_colour"];
+		}
+	}
+	
+	mysql_free_result($get_group_colour);
+	
+	 //lastest member
+// the query doesn't get the 'validating' users (on xbtit the validating has id_level set on '2',on phpbb3 the validating has the user_type set on '1' and group_in on '2')
+//     $lastest_member = @mysql_fetch_assoc(do_sqlquery("SELECT id FROM {$TABLE_PREFIX}users WHERE id_level<>1 AND id_level<>2 ORDER BY id DESC LIMIT 1"));
+		// this query get also the 'validating' users
+	 $lastest_member = @mysql_fetch_assoc(do_sqlquery("SELECT id FROM {$TABLE_PREFIX}users WHERE id_level<>1 ORDER BY id DESC LIMIT 1"));
+	 $id_lastest_member = $lastest_member["id"];
+
+	 // start export members
+	$username_exist = 0 ;
+	$email_exist = 0 ;
+	$username_added = 0 ;
+for ($id=1; $id <= $id_lastest_member; ++$id) 
+{
+	// xbtit database info
+	$ricavo_info_users = mysql_fetch_assoc(mysql_query("SELECT * FROM `{$TABLE_PREFIX}users` WHERE id = '$id'"));
+	$utente = $ricavo_info_users["username"];
+	$email= $ricavo_info_users["email"];
+		
+	if ($utente == 'Guest' || $utente == '' || $utente == 'guest')
+	{
+	// nothing to do
+	}
+	elseif (in_array("$utente", $phpbb3_username))
+	{	
+	// count users not added because the username exist
+	$username_exist++;
+	}
+	elseif (in_array("$email", $phpbb3_user_email))
+	{	
+	// count users not added because the email exist
+	$email_exist++;
+	}
+	else
+	{
+				$pwd = $ricavo_info_users["password"];
+				$id_level= $ricavo_info_users["id_level"];
+				$id_language= $ricavo_info_users["language"];
+				$user_regdate= $ricavo_info_users["joined"];
+				$user_lastmark= $ricavo_info_users["lastconnect"];
+				$user_avatar= $ricavo_info_users["avatar"];
+				$pid_phpbb=$ricavo_info_users["cip"];
+				$phpbb_user_email_hash= crc32(strtolower($email)) . strlen($email);
+				$xbtit_timezone = $ricavo_info_users["time_offset"];
+				$user_avatar_type = 2; // avatar type set on 2 (probably this is the value for remote avatar)
+				// set avatar size as max values
+				$user_avatar_width = $avatar_max_width;
+				$user_avatar_height = $avatar_max_height;
+	
+				// levels
+				switch ($id_level) {
+				case 8:
+				$phpbblevel= $ADMINISTRATORS_id; // ADMINISTRATORS
+				$user_type = 3; // FOUNDER
+				$group_colour = $ADMINISTRATORS_colour;
+				break;
+			    case 7:
+				$phpbblevel= $GLOBAL_MODERATORS_id; // GLOBAL_MODERATORS 
+				$user_type = 0; // NORMAL USERS
+				$group_colour = $GLOBAL_MODERATORS_colour;
+				break;
+				default:
+				$phpbblevel = $REGISTERED_id; // REGISTERED
+				$user_type = 0; // NORMAL USERS
+				$group_colour = $REGISTERED_colour;
+				}
+
+	// languages from xbtit 2.0.547
+	switch ($id_language) {
+	  case 1:
+      $user_lang = 'en';
+      break;
+      case 2:
+      $user_lang = 'ro';
+      break;
+      case 3:
+      $user_lang = 'pl';
+      break;
+	  case 5:
+      $user_lang = 'nl';
+      break;
+	  case 6:
+      $user_lang = 'it';
+      break;
+	  case 7:
+      $user_lang = 'ru';
+      break;
+	  case 8:
+      $user_lang = 'de';
+      break;
+	  case 9:
+      $user_lang = 'hu';
+      break;
+	  case 10:
+      $user_lang = 'fr';
+      break;
+	  case 11:
+      $user_lang = 'fi';
+      break;
+	  case 12:
+      $user_lang = 'vi';
+      break;
+	  case 13:
+      $user_lang = 'gr';
+      break;
+	  case 14:
+      $user_lang = 'bg';
+      break;
+	  case 15:
+      $user_lang = 'es';
+      break;
+	  case 16:
+      $user_lang = 'br';
+      break;
+	  case 17:
+      $user_lang = 'pt';
+      break;
+      default:
+      $user_lang = "$default_lang"; // default
+			}
+			
+	// timezone from xbtit 2.0.547 to phpbb3
+			switch ($xbtit_timezone) {
+			case -12:
+			$user_timezone = '-12.00';
+			break;
+			case -11:
+			$user_timezone = '-11.00';
+			break;
+			case -10:
+			$user_timezone = '-10.00';
+			break;
+			case -9:
+			$user_timezone = '-9.00';
+			break;
+			case -8:
+			$user_timezone = '-8.00';
+			break;
+			case -7:
+			$user_timezone = '-7.00';
+			break;
+			case -6:
+			$user_timezone = '-6.00';
+			break;
+			case -5:
+			$user_timezone = '-5.00';
+			break;
+			case -4:
+			$user_timezone = '-4.00';
+			break;
+			case -3:
+			$user_timezone = '-3.00';
+			break;
+			case '-3.5':
+			$user_timezone = '-3.50';
+			break;
+			case -2:
+			$user_timezone = '-2.00';
+			break;
+			case -1:
+			$user_timezone = '-1.00';
+			break;
+			case 0:
+			$user_timezone = '0.00';
+			break;
+			case 1:
+			$user_timezone = '1.00';
+			break;
+			case 2:
+			$user_timezone = '2.00';
+			break;
+			case 3:
+			$user_timezone = '3.00';
+			break;
+			case '3.5':
+			$user_timezone = '3.50';
+			break;
+			case 4:
+			$user_timezone = '4.00';
+			break;
+			case '4.5':
+			$user_timezone = '4.50';
+			break;
+			case 5:
+			$user_timezone = '5.00';
+			break;
+			case '5.5':
+			$user_timezone = '5.50';
+			break;
+			case 6:
+			$user_timezone = '6.00';
+			break;
+			case 7:
+			$user_timezone = '7.00';
+			break;
+			case 8:
+			$user_timezone = '8.00';
+			break;
+			case 9:
+			$user_timezone = '9.00';
+			break;
+			case '9.5':
+			$user_timezone = '9.50';
+			break;
+			case 10:
+			$user_timezone = '10.00';
+			break;
+			case 11:
+			$user_timezone = '11.00';
+			break;
+			case 12:
+			$user_timezone = '12.00';
+			break;
+			default:
+			$user_timezone = "$default_timezone"; // default timezone
+	}
+			
+	// add user on phpBB3 users
+    do_sqlquery("INSERT INTO `{$phpbb_db_prefix}users` (`user_id`, `user_type`, `group_id`, `user_permissions`, `user_perm_from`, `user_ip`, `user_regdate`, `username`, `username_clean`, `user_password`, `user_passchg`, `user_pass_convert`, `user_email`, `user_email_hash`, `user_birthday`, `user_lastvisit`, `user_lastmark`, `user_lastpost_time`, `user_lastpage`, `user_last_confirm_key`, `user_last_search`, `user_warnings`, `user_last_warning`, `user_login_attempts`, `user_inactive_reason`, `user_inactive_time`, `user_posts`, `user_lang`, `user_timezone`, `user_dst`, `user_dateformat`, `user_style`, `user_rank`, `user_colour`, `user_new_privmsg`, `user_unread_privmsg`, `user_last_privmsg`, `user_message_rules`, `user_full_folder`, `user_emailtime`, `user_topic_show_days`, `user_topic_sortby_type`, `user_topic_sortby_dir`, `user_post_show_days`, `user_post_sortby_type`, `user_post_sortby_dir`, `user_notify`, `user_notify_pm`, `user_notify_type`, `user_allow_pm`, `user_allow_viewonline`, `user_allow_viewemail`, `user_allow_massemail`, `user_options`, `user_avatar`, `user_avatar_type`, `user_avatar_width`, `user_avatar_height`, `user_sig`, `user_sig_bbcode_uid`, `user_sig_bbcode_bitfield`, `user_from`, `user_icq`, `user_aim`, `user_yim`, `user_msnm`, `user_jabber`, `user_website`, `user_occ`, `user_interests`, `user_actkey`, `user_newpasswd`, `user_form_salt`)  VALUES (NULL, '$user_type', '$phpbblevel', '', '0', '$pid_phpbb', UNIX_TIMESTAMP('$user_regdate'), '$utente', '".strtolower($utente)."', '$pwd', UNIX_TIMESTAMP('$user_regdate'), '0', '$email', '$phpbb_user_email_hash', '', '0', UNIX_TIMESTAMP('$user_lastmark'), '0', '', '', '0', '0', '0', '0', '0', '0', '0', '$user_lang', '$user_timezone', '0', '$default_dateformat', '$default_style', '0', '$group_colour', '0', '0', '0', '0', '-3', '0', '0', 't', 'd', '0', 't', 'a', '0', '1', '0', '1', '1', '1', '1', '895', '$user_avatar', '$user_avatar_type', '$user_avatar_width', '$user_avatar_height', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')");
+	
+	// add user on phpBB3 user_group
+	$ricavo_user_id = mysql_fetch_assoc(mysql_query("SELECT user_id, group_id FROM `{$phpbb_db_prefix}users` WHERE username = '$utente'"));
+	$phpbb3_user_id = $ricavo_user_id["user_id"];
+	$phpbb3_user_group_id = $ricavo_user_id["group_id"];
+	
+	if ($phpbb3_user_group_id == $ADMINISTRATORS_id)
+	{
+		do_sqlquery("INSERT INTO `{$phpbb_db_prefix}user_group` (`group_id`, `user_id`, `group_leader`, `user_pending`) VALUES ('$phpbb3_user_group_id', '$phpbb3_user_id', '0', '0')");
+		do_sqlquery("INSERT INTO `{$phpbb_db_prefix}user_group` (`group_id`, `user_id`, `group_leader`, `user_pending`) VALUES ('$GLOBAL_MODERATORS_id', '$phpbb3_user_id', '0', '0')");
+		do_sqlquery("INSERT INTO `{$phpbb_db_prefix}user_group` (`group_id`, `user_id`, `group_leader`, `user_pending`) VALUES ('$REGISTERED_id', '$phpbb3_user_id', '0', '0')");
+	}
+	elseif ($phpbb3_user_group_id == $GLOBAL_MODERATORS_id)
+	{
+	do_sqlquery("INSERT INTO `{$phpbb_db_prefix}user_group` (`group_id`, `user_id`, `group_leader`, `user_pending`) VALUES ('$phpbb3_user_group_id', '$phpbb3_user_id', '0', '0')");
+	do_sqlquery("INSERT INTO `{$phpbb_db_prefix}user_group` (`group_id`, `user_id`, `group_leader`, `user_pending`) VALUES ('$REGISTERED_id', '$phpbb3_user_id', '0', '0')");
+	}
+	else
+	{
+	do_sqlquery("INSERT INTO `{$phpbb_db_prefix}user_group` (`group_id`, `user_id`, `group_leader`, `user_pending`) VALUES ('$phpbb3_user_group_id', '$phpbb3_user_id', '0', '0')");
+	}
+	
+	
+	// update newest_user_id,newest_username, num_users
+/*	$ricavo_num_user = mysql_fetch_assoc(mysql_query("SELECT config_value FROM `{$phpbb_db_prefix}config` WHERE config_name = 'num_users'"));
+	$phpbb3_num_user = $ricavo_num_user["config_value"];*/
+	do_sqlquery("UPDATE `{$phpbb_db_prefix}config` SET `config_value` = '$group_colour' WHERE `config_name` = 'newest_user_colour' LIMIT 1 ");
+	do_sqlquery("UPDATE `{$phpbb_db_prefix}config` SET `config_value` = '$phpbb3_user_id' WHERE CONVERT( `{$phpbb_db_prefix}config`.`config_name` USING utf8 ) = 'newest_user_id' LIMIT 1");
+	do_sqlquery("UPDATE `{$phpbb_db_prefix}config` SET `config_value` = '$utente' WHERE CONVERT( `{$phpbb_db_prefix}config`.`config_name` USING utf8 ) = 'newest_username' LIMIT 1 ");
+	do_sqlquery("UPDATE `{$phpbb_db_prefix}config` SET `config_value` = config_value+1 WHERE `config_name` = 'num_users' LIMIT 1 ");
+	$username_added++;
+	
+	}
+}
+	$admintpl->set("username_exist",$username_exist);
+	$admintpl->set("email_exist",$email_exist);
+	$admintpl->set("username_added",$username_added);
+// end export members
+}
+
+/////////////
+// IMPORT
+/////////////
+
+function phpbb3_users_import()
+{
+	global $TABLE_PREFIX,$admintpl,$language;
+	// info phpbb3 and xbtit
+	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb_integration = $phpbb3_res["phpbb3"];
+	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
+	$xbtit_default_style = $phpbb3_res["default_style"];
+	$xbtit_default_language = $phpbb3_res["default_language"];
+	
+	// get phpbb3 group_id by NAME
+	$get_group_colour = mysql_query("SELECT `group_name`, `group_id` FROM `{$phpbb_db_prefix}groups`") or die(mysql_error());
+	
+	while ($row_group_colour = mysql_fetch_assoc($get_group_colour))
+	{
+		if ($row_group_colour["group_name"] == "GLOBAL_MODERATORS")
+		{
+			$GLOBAL_MODERATORS_id = $row_group_colour["group_id"];
+		}
+		if ($row_group_colour["group_name"] == "ADMINISTRATORS")
+		{
+			$ADMINISTRATORS_id = $row_group_colour["group_id"];
+		}
+	}
+	
+	// last member on phpBB
+/*	$ricavo_newest_user_id = mysql_fetch_assoc(mysql_query("SELECT config_value FROM `{$phpbb_db_prefix}config` WHERE config_name = 'newest_user_id' "));
+	$phpbb3_newest_user_id = $ricavo_newest_user_id["config_value"];*/
+	// default setting from phpbb3
+	$ricavo_default_phpbb = mysql_query("SELECT `config_name`, `config_value` FROM `{$phpbb_db_prefix}config`") or die(mysql_error());
+
+	while ($row_config = mysql_fetch_array($ricavo_default_phpbb, MYSQL_ASSOC))
+	{
+		if ($row_config["config_name"] == "avatar_gallery_path")
+		{
+			$phpbb_avatar_gallery_path = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "newest_user_id")
+		{
+			$phpbb3_newest_user_id = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "script_path")
+		{
+			$phpbb_script_path = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "server_name")
+		{
+			$phpbb_server_name = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "server_protocol")
+		{
+			$phpbb_server_protocol = $row_config["config_value"];
+		}
+	}
+		
+	// start import members
+	$username_exist = 0 ;
+	$email_exist = 0 ;
+	$username_added = 0 ;
+for ($id=1; $id <= $phpbb3_newest_user_id; ++$id) 
+{
+
+// phpBB3 database info
+
+	// estrapolo utenti gi� presenti in xbtit
+	// get users already registered in xbtit
+	$query_info_users = "SELECT username FROM `{$TABLE_PREFIX}users`";
+	$xbtit_info_users = mysql_query($query_info_users);
+
+	//	creo array con utenti gi� presenti in xbtit
+	// make an array with users already registered in xbtit
+	while( $xbtit_users_table = mysql_fetch_row($xbtit_info_users) )
+	{
+	$xbtit_username[] =  $xbtit_users_table[0];
+	}
+	mysql_free_result( $xbtit_info_users );
+	
+	// estrapolo email gi� presenti in xbtit
+	// get email already registered in xbtit
+	$query_info_email = "SELECT email FROM `{$TABLE_PREFIX}users`";
+	$xbtit_info_email = mysql_query($query_info_email);
+
+	//	creo array con email gi� presenti in xbtit
+	// make an array with email already registered in xbtit
+	while( $xbtit_email_table = mysql_fetch_row($xbtit_info_email) )
+	{
+	$xbtit_user_email[] =  $xbtit_email_table[0];
+	}
+	mysql_free_result( $xbtit_info_email );
+
+	// xbtit database info
+	$ricavo_info_users = mysql_fetch_assoc(mysql_query("SELECT * FROM `{$phpbb_db_prefix}users` WHERE user_id = '$id'"));
+	$utente = $ricavo_info_users["username"];
+	$email= $ricavo_info_users["user_email"];
+	$id_level= $ricavo_info_users["group_id"];
+	
+	// doesn't import guests and bots
+	if ($utente == 'Anonymous' || $utente == '' || $email == '' || $id_level == '6' || $id_level == '1')
+	{
+	// nothing to do
+	}
+	// doesn't import duplicated
+	elseif (in_array("$utente", $xbtit_username))
+	{	
+	$username_exist++;
+	}
+	elseif (in_array("$email", $xbtit_user_email))
+	{	
+	$email_exist++;
+	}
+	else
+	{
+				$pwd = $ricavo_info_users["user_password"];
+				$id_level= $ricavo_info_users["group_id"];
+				$id_language= $ricavo_info_users["user_lang"];
+				$user_regdate= $ricavo_info_users["user_regdate"];
+				$user_lastvisit= $ricavo_info_users["user_lastvisit"];
+				$pid_phpbb=$ricavo_info_users["user_ip"];
+				$phpbb_timezone=$ricavo_info_users["user_timezone"];
+				// get avatar
+				$user_avatar_type= $ricavo_info_users["user_avatar_type"];
+				$user_avatar = $ricavo_info_users["user_avatar"];
+				switch ($user_avatar_type) {
+				case 1: // avatar uploaded
+				$avatar = $phpbb_server_protocol.$phpbb_server_name.$phpbb_script_path.'/download/file.php?avatar='.$user_avatar;
+				break;
+				case 2: // avatar from remote url
+				$avatar = $user_avatar;
+				break;
+				case 3: // avatar from gallery
+				$avatar = $phpbb_server_protocol.$phpbb_server_name.$phpbb_script_path.'/'.$phpbb_avatar_gallery_path.'/'.$user_avatar;
+				break;
+				default:
+				$avatar = ''; // without avatar
+				}
+								
+				// levels
+				switch ($id_level) {
+				case "$ADMINISTRATORS_id":
+				$xbtitlevel= 8; // Owner
+				break;
+			    case "$GLOBAL_MODERATORS_id":
+				$xbtitlevel= 7; // Administrator
+				break;
+				default:
+				$xbtitlevel = 3; // Members
+				}
+
+	// languages from phpbb 3.0.5 to xbtit 2.0.547
+	switch ($id_language) {
+	  case 'en':
+      $user_lang = 1;
+      break;
+      case 're':
+      $user_lang = 2;
+      break;
+      case 'pl':
+      $user_lang = 3;
+      break;
+	  case 'nl':
+      $user_lang = 5;
+      break;
+	  case 'it':
+      $user_lang = 6;
+      break;
+	  case 'ru':
+      $user_lang = 7;
+      break;
+	  case 'de':
+      $user_lang = 8;
+      break;
+	  case 'hu':
+      $user_lang = 9;
+      break;
+	  case 'fr':
+      $user_lang = 10;
+      break;
+	  case 'fi':
+      $user_lang = 11;
+      break;
+	  case 'vi':
+      $user_lang = 12;
+      break;
+	  case 'gr':
+      $user_lang = 13;
+      break;
+	  case 'bg':
+      $user_lang = 14;
+      break;
+	  case 'es':
+      $user_lang = 15;
+      break;
+	  case 'br':
+      $user_lang = 16;
+      break;
+	  case 'pt':
+      $user_lang = 17;
+      break;
+      default:
+      $user_lang = "$xbtit_default_language"; // default
+		}
+
+	// timezone from phpBB3 to xbtit 2.0.547
+			switch ($phpbb_timezone) {
+			case '-12.00':
+			$user_timezone = -12;
+			break;
+			case '-11.00':
+			$user_timezone = -11;
+			break;
+			case '-10.00':
+			$user_timezone = -10;
+			break;
+			case '-9.00':
+			$user_timezone = -9;
+			break;
+			case '-8.00':
+			$user_timezone = -8;
+			break;
+			case '-7.00':
+			$user_timezone = -7;
+			break;
+			case '-6.00':
+			$user_timezone = -6;
+			break;
+			case '-5.00':
+			$user_timezone = -5;
+			break;
+			case '-4.00':
+			$user_timezone = -4;
+			break;
+			case '-3.50':
+			$user_timezone = '-3.5';
+			break;
+			case '-3.00':
+			$user_timezone = -3;
+			break;
+			case '-2.00':
+			$user_timezone = -2;
+			break;
+			case '-1.00':
+			$user_timezone = -1;
+			break;
+			case '0.00':
+			$user_timezone = 0;
+			break;
+			case '1.00':
+			$user_timezone = 1;
+			break;
+			case '2.00':
+			$user_timezone = 2;
+			break;
+			case '3.00':
+			$user_timezone = 3;
+			break;
+			case '3.50':
+			$user_timezone = '3.5';
+			break;
+			case '4.00':
+			$user_timezone = 4;
+			break;
+			case '4.50':
+			$user_timezone = '4.5';
+			break;
+			case '5.00':
+			$user_timezone = 5;
+			break;
+			case '5.50':
+			$user_timezone = '5.5';
+			break;
+			case '6.00':
+			$user_timezone = 6;
+			break;
+			case '7.00':
+			$user_timezone = 7;
+			break;
+			case '8.00':
+			$user_timezone = 8;
+			break;
+			case '9.00':
+			$user_timezone = 9;
+			break;
+			case '9.50':
+			$user_timezone = '9.5';
+			break;
+			case '10.00':
+			$user_timezone = 10;
+			break;
+			case '11.00':
+			$user_timezone = 11;
+			break;
+			case '12.00':
+			$user_timezone = 12;
+			break;
+			default:
+			$user_timezone = 0; // default timezone
+	}
+	
+	// Create Random number (from account.php)
+	$floor = 100000;
+	$ceiling = 999999;
+	srand((double)microtime()*1000000);
+	$random = rand($floor, $ceiling);
+
+	// xbtit default
+	$config_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$xbtit_default_style = $config_res["default_style"];
+	$xbtit_default_language = $config_res["default_language"];
+			
+	// add user on xbtit users
+	do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, style, language, flag, joined, lastconnect, avatar, pid, time_offset) VALUES ('$utente', '$pwd', '$random', '$xbtitlevel', '$email', $xbtit_default_style, '$user_lang', '', FROM_UNIXTIME($user_regdate), FROM_UNIXTIME('$user_lastvisit'), '$avatar', '', '$user_timezone')",true);
+	
+	$username_added++;
+	}
+}
+	$admintpl->set("username_exist",$username_exist);
+	$admintpl->set("email_exist",$email_exist);
+	$admintpl->set("username_added",$username_added);
+// end import members
+}
+
+/////////////////////////////////////////////////////////////////
+// disable registration/email_reuse/username_change on phpbb3
+/////////////////////////////////////////////////////////////////
+
+function phpbb3_disable_reg()
+{
+	global $TABLE_PREFIX,$admintpl,$language;
+	// info phpbb3
+	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
+	$phpbb_root_path = $phpbb3_res["phpbb3_root_path"];
+
+	// update allow_emailreuse,allow_namechange,require_activation
+	do_sqlquery("REPLACE `{$phpbb_db_prefix}config` (`config_name`, `config_value`) VALUES ('allow_emailreuse', '0'), ('allow_namechange', '0'), ('require_activation', '3')");
+	
+	// try to delete cache
+	$data_global = "/".$phpbb_root_path."/cache/data_global.php";
+	if (is_file($data_global))
+	{
+	// if file exist, delete it
+	unlink($data_global);
+	//$admintpl->set("phpbb_cache",""); // forse inutile
+	$admintpl->set("phpbb_cache",$language["PHPBB_CACHE_OK"]);
+	}else{
+	//$admintpl->set("phpbb_cache",""); // forse inutile
+	$admintpl->set("phpbb_cache",$language["PHPBB_CACHE_NO"]);
+	}
+}
+
+/////////////////////////////////////////////////////////////////
+// disable 'Edit account settings' on phpbb3
+/////////////////////////////////////////////////////////////////
+
+function phpbb3_disable_edit_account()
+{
+	global $TABLE_PREFIX,$admintpl,$language;
+	// info phpbb3
+	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb_root_path = $phpbb3_res["phpbb3_root_path"];
+
+	//////////////
+	// prosilver
+	//////////////
+	
+	// try to edit ucp_profile_reg_details.html
+	$prosilver_profile_reg = "/".$phpbb_root_path."/styles/prosilver/template/ucp_profile_reg_details.html";
+	if (is_file($prosilver_profile_reg))
+	{
+	// if file exist, edit it
+	$fopen = fopen("$prosilver_profile_reg", "r");
+	$contents = file_get_contents("$prosilver_profile_reg", true);
+
+	// start backup file
+	$prosilver_profile_reg_backup = "/".$phpbb_root_path."/styles/prosilver/template/ucp_profile_reg_details.html.old";
+		if (is_file($prosilver_profile_reg_backup))
+		{
+		// do nothing
+		}else{
+		$fopen_backup = fopen($prosilver_profile_reg_backup, "w+");
+		fwrite($fopen_backup, $contents);
+		fclose($fopen_backup);
+		}
+	// end backup file
+	fclose($fopen);
+	
+	$fopen = fopen("$prosilver_profile_reg", "w+");
+
+	$replace_prosilver = "<!-- start hack phpbb3 integration -->\n\n<!-- INCLUDE ucp_header.html -->\n\n<form id='ucp' method='post' action='{S_UCP_ACTION}'{S_FORM_ENCTYPE}>\n\n<h2>{L_TITLE}</h2>\n\n<div class='panel'>\n<div class='panel'>\n<div class='inner'><span class='corners-top'><span></span></span>\n<fieldset>\n<dl>\n<dt><span>{L_EDIT_ACCOUNT_SETTINGS_DISABLED}</span></dt>\n</dl>\n</fieldset>\n<span class='corners-bottom'><span></span></span></div>\n</div>\n</form>\n\n<!-- INCLUDE ucp_footer.html -->\n\n<!-- end hack phpbb3 integration -->";
+	fwrite($fopen, $replace_prosilver);
+	fclose($fopen);
+	$admintpl->set("hide_profile_prosilver",$language['HIDE_PROFILE_PROSILVER']);
+	}else{
+	$admintpl->set("hide_profile_prosilver",$language['NO_HIDE_PROFILE_PROSILVER']);
+	}
+	
+	// try to delete cache
+	$prosilver_profile_cache = "/".$phpbb_root_path."/cache/tpl_prosilver_ucp_profile_reg_details.html.php";
+	if (is_file($prosilver_profile_cache))
+	{
+	// if file exist, delete it
+	unlink($prosilver_profile_cache);
+	$admintpl->set("phpbb_cache_prosilver",$language['PHPBB_CACHE_OK']);
+	}else{
+	$admintpl->set("phpbb_cache_prosilver",$language['PHPBB_CACHE_NO']);
+	}
+	
+	//////////////
+	// subsilver2
+	//////////////
+	
+	// try to edit ucp_profile_reg_details.html
+	$subsilver2_profile_reg = "/".$phpbb_root_path."/styles/subsilver2/template/ucp_profile_reg_details.html";
+	if (is_file($subsilver2_profile_reg))
+	{
+	// if file exist, edit it
+	$fopen = fopen("$subsilver2_profile_reg", "r");
+	$contents = file_get_contents("$subsilver2_profile_reg", true);
+
+	// start backup file
+	$subsilver2_profile_reg_backup = "/".$phpbb_root_path."/styles/subsilver2/template/ucp_profile_reg_details.html.old";
+		if (is_file($subsilver2_profile_reg_backup))
+		{
+		// do nothing
+		}else{
+		$fopen_backup = fopen($subsilver2_profile_reg_backup, "w+");
+		fwrite($fopen_backup, $contents);
+		fclose($fopen_backup);
+		}
+	// end backup file
+	fclose($fopen);
+	
+	$fopen = fopen("$subsilver2_profile_reg", "w+");
+
+	$replace_subsilver2 = "<!-- start hack phpbb3 integration -->\n\n<!-- INCLUDE ucp_header.html -->\n<table class='tablebg' width='100%' cellspacing='1'>\n<tr>\n<th colspan='2' valign='middle'>{L_TITLE}</th>\n</tr>\n<tr>\n<td class='row1' width='95%'><span class='gensmall'>{L_EDIT_ACCOUNT_SETTINGS_DISABLED}</span></td>\n</tr>\n</table>\n\n<!-- INCLUDE ucp_footer.html -->\n\n<!-- end hack phpbb3 integration -->";
+	fwrite($fopen, $replace_subsilver2);
+	fclose($fopen);
+	$admintpl->set("hide_profile_subsilver2",$language['HIDE_PROFILE_SUBSILVER2']);
+	}else{
+	$admintpl->set("hide_profile_subsilver2",$language['NO_HIDE_PROFILE_SUBSILVER2']);
+	}
+	
+	// try to delete cache
+	$subsilver2_profile_cache = "/".$phpbb_root_path."/cache/tpl_subsilver2_ucp_profile_reg_details.html.php";
+	if (is_file($subsilver2_profile_cache))
+	{
+	// if file exist, delete it
+	unlink($subsilver2_profile_cache);
+	$admintpl->set("phpbb_cache_subsilver2",$language['PHPBB_CACHE_OK']);
+	}else{
+	$admintpl->set("phpbb_cache_subsilver2",$language['PHPBB_CACHE_NO']);
+	}
+}
+
+/////////////////////////////////////////////////////////////////
+// edit /language/en/ucp.php on phpbb3
+/////////////////////////////////////////////////////////////////
+
+function phpbb3_lang_ucp()
+{
+	global $TABLE_PREFIX,$admintpl,$language;
+	// info phpbb3
+	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb_root_path = $phpbb3_res["phpbb3_root_path"];
+
+	// try to edit /language/en/ucp.php
+	$phpbb3_lang_ucp = "/".$phpbb_root_path."/language/en/ucp.php";
+	if (is_file($phpbb3_lang_ucp))
+	{
+	// if file exist, edit it
+	$fopen = fopen($phpbb3_lang_ucp, "r+");
+	$contents = file_get_contents("$phpbb3_lang_ucp", true);
+
+	// start backup file
+	$phpbb3_lang_ucp_backup = "/".$phpbb_root_path."/language/en/ucp.php.old";
+		if (is_file($phpbb3_lang_ucp_backup))
+		{
+		// do nothing
+		}else{
+		$fopen_backup = fopen($phpbb3_lang_ucp_backup, "w+");
+		fwrite($fopen_backup, $contents);
+		fclose($fopen_backup);
+		}
+	// end backup file
+	
+	$original_string  = "'CURRENT_PASSWORD_EXPLAIN'	=> 'You must confirm your current password if you wish to change it, alter your e-mail address or username.',";
+	$edited_string = "'CURRENT_PASSWORD_EXPLAIN'	=> 'You must confirm your current password if you wish to change it, alter your e-mail address or username.',\n// start hack phpbb3 integration\n	'EDIT_ACCOUNT_SETTINGS_DISABLED'	=> 'You can change your password and email address only in your profile on the bittorrent tracker.',\n// end hack phpbb3 integration\n";
+	$new_string = str_replace($original_string, $edited_string ,$contents);
+	fwrite($fopen, $new_string);
+	fclose($fopen);
+	$admintpl->set("edit_language_profile",$language['EDIT_LANGUAGE_PROFILE']);
+	}else{
+	$admintpl->set("edit_language_profile",$language['NO_EDIT_LANGUAGE_PROFILE']);
+	}
+}
+
+/////////////////////////////////////////////////////////////////
+// restore /language/en/ucp.php on phpbb3
+/////////////////////////////////////////////////////////////////
+
+function restore_phpbb3_lang_ucp()
+{
+	global $TABLE_PREFIX,$admintpl,$language;
+	// info phpbb3
+	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb_root_path = $phpbb3_res["phpbb3_root_path"];
+
+	// try to restore /language/en/ucp.php from backup
+	$phpbb3_lang_ucp_backup = "/".$phpbb_root_path."/language/en/ucp.php.old";
+	if (is_file($phpbb3_lang_ucp_backup))
+	{
+	// if file exist, edit it
+	$fopen_backup = fopen($phpbb3_lang_ucp_backup, "r");
+	$contents = file_get_contents($phpbb3_lang_ucp_backup, true);
+
+	// start restore
+	$phpbb3_lang_ucp = "/".$phpbb_root_path."/language/en/ucp.php";
+	$fopen = fopen($phpbb3_lang_ucp, "w+");
+	fwrite($fopen, $contents);
+	fclose($fopen);
+	// end restore
+	
+	fclose($fopen_backup);
+	
+	// delete backup file
+	unlink($phpbb3_lang_ucp_backup);
+	$admintpl->set("restore_language_profile",$language['RESTORE_LANGUAGE_PROFILE']);
+	}else{
+	$admintpl->set("restore_language_profile",$language['NO_RESTORE_LANGUAGE_PROFILE']);
+	}
+}
+
+/////////////////////////////////////////////////////////////////
+// restore /styles/prosilver/template/ucp_profile_reg_details.html on phpbb3
+/////////////////////////////////////////////////////////////////
+
+function restore_phpbb3_edit_account()
+{
+	global $TABLE_PREFIX,$admintpl,$language;
+	// info phpbb3
+	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb_root_path = $phpbb3_res["phpbb3_root_path"];
+	
+	//////////////
+	// prosilver
+	//////////////
+
+	// try to restore ucp_profile_reg_details.html from backup
+	$prosilver_profile_reg_backup = "/".$phpbb_root_path."/styles/prosilver/template/ucp_profile_reg_details.html.old";
+	if (is_file($prosilver_profile_reg_backup))
+	{
+	// if file exist, edit it
+	$fopen_backup = fopen($prosilver_profile_reg_backup, "r");
+	$contents = file_get_contents($prosilver_profile_reg_backup, true);
+	
+	// start restore
+	$prosilver_profile_reg = "/".$phpbb_root_path."/styles/prosilver/template/ucp_profile_reg_details.html";
+	$fopen = fopen($prosilver_profile_reg, "w+");
+	fwrite($fopen, $contents);
+	fclose($fopen);
+	// end restore
+	
+	fclose($fopen_backup);
+	
+	// delete backup file
+	unlink($prosilver_profile_reg_backup);
+	$admintpl->set("restore_profile_prosilver",$language['RESTORE_PROFILE_PROSILVER']);
+	}else{
+	$admintpl->set("restore_profile_prosilver",$language['NO_RESTORE_PROFILE_PROSILVER']);
+	}
+	
+	// try to delete cache
+	$prosilver_profile_cache = "/".$phpbb_root_path."/cache/tpl_prosilver_ucp_profile_reg_details.html.php";
+	if (is_file($prosilver_profile_cache))
+	{
+	// if file exist, delete it
+	unlink($prosilver_profile_cache);
+	$admintpl->set("phpbb_cache_prosilver",$language['PHPBB_CACHE_OK']);
+	}else{
+	$admintpl->set("phpbb_cache_prosilver",$language['PHPBB_CACHE_NO']);
+	}
+	
+	//////////////
+	// subsilver2
+	//////////////
+	
+	// try to restore ucp_profile_reg_details.html from backup
+	$subsilver2_profile_reg_backup = "/".$phpbb_root_path."/styles/subsilver2/template/ucp_profile_reg_details.html.old";
+	if (is_file($subsilver2_profile_reg_backup))
+	{
+	// if file exist, edit it
+	$fopen_backup = fopen($subsilver2_profile_reg_backup, "r");
+	$contents = file_get_contents($subsilver2_profile_reg_backup, true);
+	
+	// start restore
+	$subsilver2_profile_reg = "/".$phpbb_root_path."/styles/subsilver2/template/ucp_profile_reg_details.html";
+	$fopen = fopen($subsilver2_profile_reg, "w+");
+	fwrite($fopen, $contents);
+	fclose($fopen);
+	// end restore
+	
+	fclose($fopen_backup);
+	
+	// delete backup file
+	unlink($subsilver2_profile_reg_backup);
+	$admintpl->set("restore_profile_subsilver2",$language['RESTORE_PROFILE_SUBSILVER2']);
+	}else{
+	$admintpl->set("restore_profile_subsilver2",$language['NO_RESTORE_PROFILE_SUBSILVER2']);
+	}
+	
+	// try to delete cache
+	$subsilver2_profile_cache = "/".$phpbb_root_path."/cache/tpl_subsilver2_ucp_profile_reg_details.html.php";
+	if (is_file($subsilver2_profile_cache))
+	{
+	// if file exist, delete it
+	unlink($subsilver2_profile_cache);
+	$admintpl->set("phpbb_cache_subsilver2",$language['PHPBB_CACHE_OK']);
+	}else{
+	$admintpl->set("phpbb_cache_subsilver2",$language['PHPBB_CACHE_NO']);
+	}
+}
+
+// end hack phpbb3 integration
+]]></data>
+    </operation>
+  </file>
+  <!-- /style/xbtit_default/admin.config.tpl -->
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/admin.config.tpl"</name>
+    <operation>
+      <search><![CDATA[<if:config_saved>
+    <tr>
+      <td class="lista" align="center" colspan="4" style="color:red"><tag:language.CONFIG_SAVED /></td>
+    </tr>
+    </if:config_saved>]]></search>
+	  <action>"add"</action>
+	  <where>"after"</where>
+      <data><![CDATA[
+	<if:export_ok>
+    <tr>
+      <td class="lista" align="center" colspan="4" style="color:red"><tag:language.EXPORT_OK /><ul>
+	  <li><tag:username_added /><tag:language.USERNAME_ADDED /></li>
+	  <li><tag:username_exist /><tag:language.USERNAME_EXIST /></li>
+	  <li><tag:email_exist /><tag:language.EMAIL_EXIST /></li></ul>
+	  </td>
+    </tr>
+    </if:export_ok>
+	<if:import_ok>
+    <tr>
+      <td class="lista" align="center" colspan="4" style="color:red"><tag:language.IMPORT_OK />
+	  <ul>
+	  <li><tag:username_added /><tag:language.USERNAME_IMPORTED /></li>
+	  <li><tag:username_exist /><tag:language.NOT_IMPORTED_USERNAME /></li>
+	  <li><tag:email_exist /><tag:language.NOT_IMPORTED_EMAIL /></li></ul>
+	  </td>
+    </tr>
+    </if:import_ok>
+	<if:import_export_disabled>
+    <tr>
+      <td class="lista" align="center" colspan="4" style="color:red"><tag:language.IMP_EXP_DISABLED /></td>
+    </tr>
+    </if:import_export_disabled>
+	<if:phpbb_disable_reg>
+    <tr>
+      <td class="lista" align="center" colspan="4" style="color:red"><tag:language.PHPBB_DISABLE_REG /><br>
+	  <tag:phpbb_cache />
+	  </td>
+    </tr>
+    </if:phpbb_disable_reg>
+	<if:hide_profile_ok>
+    <tr>
+      <td class="lista" align="center" colspan="4" style="color:red">
+	  <ul>
+	  <li><tag:hide_profile_prosilver /></li>
+	  <li><tag:phpbb_cache_prosilver /></li>
+	  <li><tag:hide_profile_subsilver2 /></li>
+	  <li><tag:phpbb_cache_subsilver2 /></li>
+	  <li><tag:edit_language_profile /></li>
+	  </ul>
+	  </td>
+    </tr>
+    </if:hide_profile_ok>
+	<if:restore_profile_ok>
+    <tr>
+      <td class="lista" align="center" colspan="4" style="color:red">
+	  <ul>
+	  <li><tag:restore_profile_prosilver /></li>
+	  <li><tag:phpbb_cache_prosilver /></li>
+	  <li><tag:restore_profile_subsilver2 /></li>
+	  <li><tag:phpbb_cache_subsilver2 /></li>
+	  <li><tag:restore_language_profile /></li>
+	  </ul>
+	  </td>
+    </tr>
+    </if:restore_profile_ok>
+	]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[<td class="header"><tag:language.SETTING_FORUM /></td>
+      <td class="lista" colspan="3"><input type="text" name="f_link" value="<tag:config.forum />" size="40" /></td>
+    </tr>]]></search>
+	  <action>"add"</action>
+	  <where>"after"</where>
+      <data><![CDATA[
+	 <tr>
+      <td class="header" align="center" colspan="4"><tag:language.BLOCKS_PHPBB3 /></td>
+    </tr>
+	<tr>
+      <td class="header"><tag:language.SETTING_PHPBB3 /></td>
+      <td class="lista">&nbsp;<tag:language.YES />&nbsp;<input type="radio" name="phpbb3" value="true"<tag:config.phpbb3yes />&nbsp;<tag:language.NO />&nbsp;<input type="radio" name="phpbb3" value="false"<tag:config.phpbb3no /></td>
+	  <td class="header"><tag:language.SETTING_PHPBB3_PREFIX /></td>
+      <td class="lista" colspan="3"><input type="text" name="phpbb3_prefix" value="<tag:config.phpbb3_prefix />" size="20" /></td>
+    </tr>
+	<tr>
+      <td class="header"><tag:language.EXPORT_IN_PHPBB3 /></td>
+      <td class="lista"><input type="submit" name="export_in_phpbb3" value="<tag:language.PHPBB3_EXPORT />" /></td>
+      <td class="header"><tag:language.IMPORT_FROM_PHPBB3 /></td>
+      <td class="lista"><input type="submit" name="import_from_phpbb3" value="<tag:language.PHPBB3_IMPORT />" /></td>
+    </tr>
+	<tr>
+      <td class="header"><tag:language.DISABLE_PHPBB3_REGISTRATION /></td>
+      <td class="lista"><input type="submit" name="phpbb3_disable" value="<tag:language.DISABLE_PHPBB3_REG />" /></td>
+	  <td class="header"><tag:language.SETTING_PHPBB3_ROOT_PATH /></td>
+      <td class="lista" colspan="3"><input type="text" name="phpbb3_root_path" value="<tag:config.phpbb3_root_path />" size="20" /></td>
+    </tr>
+		<tr>
+      <td class="header"><tag:language.DISABLE_PHPBB3_PROFILE /></td>
+      <td class="lista"><input type="submit" name="phpbb3_disable_profile" value="<tag:language.DISABLE_PHPBB3_REG />" /></td>
+	  <td class="header"><tag:language.RESTORE_PHPBB3_PROFILE /></td>
+      <td class="lista"><input type="submit" name="phpbb3_restore_profile" value="<tag:language.RESTORE_PHPBB3_PRO />" /></td>
+    </tr>]]></data>
+    </operation>
+  </file>
+  <!-- /style/xbtit_default/admin.main.tpl -->
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/admin.main.tpl"</name>
+    <operation>
+      <search><![CDATA[<tr><td class="lista"><tag:admin.xbtit_version /></td></tr>]]></search>
+	  <action>"add"</action>
+	  <where>"after"</where>
+      <data><![CDATA[<tr><td class="block" align="center"><b><tag:language.PHPBB3_INTEGRATION_INFO /></b></td></tr>
+	  <tr><td class="lista"><tag:admin.phpbb3_integration_version /></td></tr>]]></data>
+    </operation>
+  </file>
+  <!-- /user/usercp.profile.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/user/usercp.profile.php"</name>
+    <operation>
+      <search><![CDATA[do_sqlquery("UPDATE {$TABLE_PREFIX}users SET $updateset WHERE id='".$uid."'") or die(mysql_error());]]></search>
+	  <action>"add"</action>
+	  <where>"after"</where>
+      <data><![CDATA[
+// start hack phpbb3 integration
+
+	// info phpbb3
+	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
+	$phpbb3_username = $CURUSER["username"];
+	
+	// default setting from phpbb3
+	$get_default_phpbb = mysql_query("SELECT `config_name`, `config_value` FROM `{$phpbb_db_prefix}config`") or die(mysql_error());
+
+	while ($row_config = mysql_fetch_assoc($get_default_phpbb))
+	{
+		if ($row_config["config_name"] == "default_timezone")
+		{
+			$default_timezone = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "default_dateformat")
+		{
+			$default_dateformat = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "default_style")
+		{
+			$default_style = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "default_lang")
+		{
+			$default_lang = $row_config["config_value"];
+		}
+	}
+	
+	mysql_free_result($get_default_phpbb);
+	
+	// languages from xbtit 2.0.547 to phpbb
+	switch ($idlangue) {
+	  case 1:
+      $user_lang = 'en';
+      break;
+      case 2:
+      $user_lang = 'ro';
+      break;
+      case 3:
+      $user_lang = 'pl';
+      break;
+	  case 5:
+      $user_lang = 'nl';
+      break;
+	  case 6:
+      $user_lang = 'it';
+      break;
+	  case 7:
+      $user_lang = 'ru';
+      break;
+	  case 8:
+      $user_lang = 'de';
+      break;
+	  case 9:
+      $user_lang = 'hu';
+      break;
+	  case 10:
+      $user_lang = 'fr';
+      break;
+	  case 11:
+      $user_lang = 'fi';
+      break;
+	  case 12:
+      $user_lang = 'vi';
+      break;
+	  case 13:
+      $user_lang = 'gr';
+      break;
+	  case 14:
+      $user_lang = 'bg';
+      break;
+	  case 15:
+      $user_lang = 'es';
+      break;
+	  case 16:
+      $user_lang = 'br';
+      break;
+	  case 17:
+      $user_lang = 'pt';
+      break;
+      default:
+      $user_lang = "$default_lang"; // default
+	}
+	// timezone from xbtit 2.0.547 to phpb
+			switch ($timezone) {
+			case -12:
+			$user_timezone = '-12.00';
+			break;
+			case -11:
+			$user_timezone = '-11.00';
+			break;
+			case -10:
+			$user_timezone = '-10.00';
+			break;
+			case -9:
+			$user_timezone = '-9.00';
+			break;
+			case -8:
+			$user_timezone = '-8.00';
+			break;
+			case -7:
+			$user_timezone = '-7.00';
+			break;
+			case -6:
+			$user_timezone = '-6.00';
+			break;
+			case -5:
+			$user_timezone = '-5.00';
+			break;
+			case -4:
+			$user_timezone = '-4.00';
+			break;
+			case -3:
+			$user_timezone = '-3.00';
+			break;
+			case '-3.5':
+			$user_timezone = '-3.50';
+			break;
+			case -2:
+			$user_timezone = '-2.00';
+			break;
+			case -1:
+			$user_timezone = '-1.00';
+			break;
+			case 0:
+			$user_timezone = '0.00';
+			break;
+			case 1:
+			$user_timezone = '1.00';
+			break;
+			case 2:
+			$user_timezone = '2.00';
+			break;
+			case 3:
+			$user_timezone = '3.00';
+			break;
+			case '3.5':
+			$user_timezone = '3.50';
+			break;
+			case 4:
+			$user_timezone = '4.00';
+			break;
+			case '4.5':
+			$user_timezone = '4.50';
+			break;
+			case 5:
+			$user_timezone = '5.00';
+			break;
+			case '5.5':
+			$user_timezone = '5.50';
+			break;
+			case 6:
+			$user_timezone = '6.00';
+			break;
+			case 7:
+			$user_timezone = '7.00';
+			break;
+			case 8:
+			$user_timezone = '8.00';
+			break;
+			case 9:
+			$user_timezone = '9.00';
+			break;
+			case '9.5':
+			$user_timezone = '9.50';
+			break;
+			case 10:
+			$user_timezone = '10.00';
+			break;
+			case 11:
+			$user_timezone = '11.00';
+			break;
+			case 12:
+			$user_timezone = '12.00';
+			break;
+			default:
+			$user_timezone = "$default_timezone"; // default timezone
+			}
+	
+	// change email in phpbb3 _users
+	do_sqlquery("UPDATE {$phpbb_db_prefix}users SET user_email='$email' WHERE username='".$CURUSER["username"]."'") or die(mysql_error());
+	do_sqlquery("UPDATE {$phpbb_db_prefix}users SET user_lang='$user_lang' WHERE username='".$CURUSER["username"]."'") or die(mysql_error());
+	do_sqlquery("UPDATE {$phpbb_db_prefix}users SET user_timezone='$user_timezone' WHERE username='".$CURUSER["username"]."'") or die(mysql_error());
+	//
+	// change email, user_lang, user_timezone in phpbb3 _users
+//	do_sqlquery("REPLACE `{$phpbb_db_prefix}users` (`user_email`,`user_lang`,`user_timezone`) VALUES ('$email', '$user_lang', '$user_timezone') WHERE username=$phpbb3_username") or die(mysql_error());
+// end hack phpbb3 integration
+]]></data>
+    </operation>
+  </file>
+  <!-- /user/usercp.pass.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/user/usercp.pass.php"</name>
+    <operation>
+      <search><![CDATA[do_sqlquery("UPDATE {$TABLE_PREFIX}users SET password='".md5($_POST["new_pwd"])."' WHERE id=$uid AND password='".md5($_POST["old_pwd"])."' AND username=".sqlesc($CURUSER["username"])."") or die(mysql_error());]]></search>
+	  <action>"add"</action>
+	  <where>"after"</where>
+      <data><![CDATA[
+// start hack phpbb3 integration
+
+	// info phpbb3
+	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
+	
+	// change pass in phpbb3 _users
+	if($phpbb_db_prefix != "")
+	{
+	do_sqlquery("UPDATE {$phpbb_db_prefix}users SET user_password='".md5($_POST["new_pwd"])."' WHERE username=".sqlesc($CURUSER["username"])."") or die(mysql_error());
+	}
+	
+// end hack phpbb3 integration
+]]></data>
+    </operation>
+  </file>
+  <!-- /language/english/lang_account.php -->
+  <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_account.php"</name>
+    <operation>
+      <search><![CDATA[$language['ACCOUNT_CREATED']='Account Created';]]></search>
+	  <action>"replace"</action>
+      <data><![CDATA[$language['ACCOUNT_CREATED']='Account Created on Tracker and Forum';]]></data>
+    </operation>
+  </file>
+  <!-- /language/english/lang_admin.php -->
+  <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_admin.php"</name>
+    <operation>
+      <search><![CDATA[$language['USER_NO_CHANGE']='No change was made.';]]></search>
+	  <action>"add"</action>
+	  <where>"after"</where>
+      <data><![CDATA[
+// start hack phpbb3 integration
+	  $language['BLOCKS_PHPBB3']='<font color="#FF0000"><b>phpBB3</b></font> integration basic settings. <a href="http://sourceforge.net/apps/mediawiki/xbtitnotify/index.php?title=PhpBB3_integration" target="_blank">Read the How to on line</a>';
+	  $language['EXPORT_IN_PHPBB3']='Export xbtit\'s members in phpBB3';
+	  $language['IMPORT_FROM_PHPBB3']='Import members from phpBB3';
+	  $language['PHPBB3_EXPORT']='Export';
+	  $language['PHPBB3_IMPORT']='Import';
+	  $language['SETTING_PHPBB3']='Export/Import members function enabled:';
+	  $language['SETTING_PHPBB3_PREFIX']='Your phpBB3 database prefix:';
+	  $language['SETTING_PHPBB3_ROOT_PATH']='Your phpBB3 root path (<b>without first and last /</b>).<br />For example: <br />home/web/htdocs/phpBB3';
+	  $language['DISABLE_PHPBB3_REGISTRATION']='Disable phpBB3 registration/emailreuse/namechange.<br /><font color="#FF0000">Require \'Your phpBB3 root path\' correctly set and saved.</font>';
+	  $language['DISABLE_PHPBB3_REG']='Disable';
+	  $language['DISABLE_PHPBB3_PROFILE']='Hide the \'Edit account settings\' into phpBB3 profile,for prevent the changing of password and email by user only on phpbb3.<br /><font color="#FF0000">Require \'Your phpBB3 root path\' correctly set and saved.</font>';
+	  $language['RESTORE_PHPBB3_PRO']='Restore';
+	  $language['RESTORE_PHPBB3_PROFILE']='Try to restore \'Edit account settings\' from backup.<br /><font color="#FF0000">Require \'Your phpBB3 root path\' correctly set and saved.</font>';
+	$language['EXPORT_OK']='The Export has been done correctly!';
+	$language['USERNAME_ADDED']=' users have been exported correctly!';
+	$language['USERNAME_EXIST']=' users have not been exported because these users already existed!';
+	$language['EMAIL_EXIST']=' users have not been exported because these emails already existed!';
+	$language['IMPORT_OK']='The Import has been done correctly!';
+	$language['USERNAME_IMPORTED']=' users have been imported correctly!';
+	$language['NOT_IMPORTED_USERNAME']=' users have not been imported because these users already existed!';
+	$language['NOT_IMPORTED_EMAIL']=' users have not been imported because these emails already existed!';
+	$language['PHPBB_DISABLE_REG']='The registration/email_reuse/username_change on phpbb3 has been disabled correctly!';
+	$language['PHPBB_CACHE_OK']='The phpBB3\'s cache has been deleted correctly!';
+	$language['PHPBB_CACHE_NO']='The phpBB3\'s cache has not been deleted correctly. If the cache wasn\'t already deleted, check your phpBB3 root path!';
+	$language['HIDE_PROFILE_PROSILVER']='\'Edit account settings\' in user\'s profile on prosilver has been edited!';
+	$language['NO_HIDE_PROFILE_PROSILVER']='Impossible to hide \'Edit account settings\' in user\'s profile on prosilver. Check your phpBB3 root path and check if prosilver style exists!';
+	$language['HIDE_PROFILE_SUBSILVER2']='\'Edit account settings\' in user\'s profile on subsilver2 has been edited!';
+	$language['NO_HIDE_PROFILE_SUBSILVER2']='Impossible to hide \'Edit account settings\' in user\'s profile on subsilver2. Check your phpBB3 root path and check if subsilver2 style exists!';
+	$language['EDIT_LANGUAGE_PROFILE']='\'Edit account settings\' language has been edited!';
+	$language['NO_EDIT_LANGUAGE_PROFILE']='Impossible to edit \'Edit account settings\' language. Check your phpBB3 root path!';
+	$language['RESTORE_LANGUAGE_PROFILE']='\'Edit account settings\' language has been restored!';
+	$language['NO_RESTORE_LANGUAGE_PROFILE']='Impossible to restore \'Edit account settings\' language. Check your phpBB3 root path,or pheraps there isn\'t any backup file!';
+	$language['RESTORE_PROFILE_PROSILVER']='\'Edit account settings\' in user\'s profile on prosilver has been restored!';
+	$language['NO_RESTORE_PROFILE_PROSILVER']='Impossible to restore \'Edit account settings\' in user\'s profile on prosilver. Check your phpBB3 root path and check if prosilver style exists!';
+	$language['RESTORE_PROFILE_SUBSILVER2']='\'Edit account settings\' in user\'s profile on subsilver2 has been restored!';
+	$language['NO_RESTORE_PROFILE_SUBSILVER2']='Impossible to restore \'Edit account settings\' in user\'s profile on subsilver2. Check your phpBB3 root path and check if subsilver2 style exists!';
+	$language['IMP_EXP_DISABLED']='Import/Export function disabled! You have to enable it for use.';
+// end hack phpbb3 integration
+	]]></data>
+    </operation>
+  </file>
+  <!-- /language/english/lang_main.php -->
+  <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_main.php"</name>
+    <operation>
+      <search><![CDATA[$language['WAIT_ADMIN_VALID']='You should wait for the administrator validation...';]]></search>
+	  <action>"replace"</action>
+      <data><![CDATA[$language['WAIT_ADMIN_VALID']='You should wait for the administrator validation...<br>You created also an account on the forum.';
+	  ]]></data>
+    </operation>
+    <operation>
+            <search><![CDATA[$language['MODULE_LOAD_ERROR']='The module required seems to be wrong!';]]></search>
+	  <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[
+	  $language['PHPBB3_INTEGRATION_CURRENT']='Last Version:';
+	  $language['PHPBB3_INTEGRATION_GET']='Get Last Version ';
+	  $language['PHPBB3_INTEGRATION_INFO']='phpBB3 integration Version Information:';
+	  $language['PHPBB3_INTEGRATION_INSTALLED']='Version Currently Installed:';
+	  $language['PHPBB3_INTEGRATION_NO_INFO']='No information received';
+	  $language['PHPBB3_INTEGRATION_RELEASE']='Here!';
+	  $language['PHPBB3_INTEGRATION_VERSION']='You have the latest version installed.';]]></data>
+	</operation>
+  </file>
+</hack>
