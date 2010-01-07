@@ -1,0 +1,900 @@
+<!--
+BBCode Enhancements (and fixes)
+For xbtit torrent tracker front end, Ver 2.0.
+
+SUPERSEDES:
+Fix_URL_Tag_and_Add_NoSmilies_Tag_hack_v0.1.0_for_xbtit_v2.0
+(has bug in bare url code, that breaks the [img] tags.
+
+THINGS FIXED WITH THIS HACK:
+ 1. Fixed the case sensitivity problem with the [url] tag.
+ 2. Fixed bare URLs (not in a [url] tag) not being turned into links.
+ 3. Added "ftps", "irc", and "ed2k" protocol support to the [url] tag.
+ 4. Fixed [code] tag, so that nothing enclosed in a code tag is parsed.
+ 5. Fixed [code] tag, so contents are rendered in "tt" mode.
+ 6. Fixed [img] inside of a [quote] problem.
+ 7. Fixed [noparse] so it works with all the smilies.
+
+NEW FEATURES
+ 1. All tags that use, or can use an equal sign, can now have their contents
+    enclosed in single or double quotes.
+ 2. All tags can have an optional single digit after the name. This can help
+    to make tag start and ends more clear, if used around other tags with the
+    same name. This is also the only way to have nested unordered or ordered
+    lists. If used, it can make searching for closing tags much easier.
+    Example: [b8][/b8] is the same as [b][/b]. 
+ 3. The 'color' tag can now be spelled 'colour', for those who prefer the
+    British spelling over the American spelling.
+
+COMPLETE LIST OF BBCODES (old and new)
+(yes, this is in the bbcode source code file too)
+* bbcode handling
+* [noparse]{text}[/noparse] = {text} is not parsed for bbcodes.
+*
+* Blocks/sections/areas
+* [code]{code text}[/code] = contents are "tt" (teletype) text and are not parsed
+* [quote]{text}[/quote] = Enclose {text} in a 'quote' block.
+* [quote={author}]{text}[/quote] = Enclose {text} in a 'quote' block, with {author} as the writer.
+*
+* URL functions
+* [img]{imageuri}[/img] = embed image into page
+* [img={imageuri}] = embed image into page
+* [url={uri}]{text}[/url] = make {text} a link to {uri}
+* [url]{uri}[/url] = make {uri} a linl
+* http://site -> link = translate bare URL (not in a url tag) into a link
+* [email]{emailaddress}[/email]
+*
+* Text formatting and layout
+* [none]{text}[/none] = normal text (cancels existing text processing, normally used within another block)
+* [b]{text}[/b] = bold text
+* [strong]{text}[/strong] = strong text - usually bold, but can be set with style sheets
+* [i]{text}[/i] = italics text
+* [em]{text}[/em] = Emphasised text - usually italics, but can be set with style sheets
+* [u]{text}[/u] = underline text
+* [underline]{text}[/underline] = underline text
+* [overline]{text}[/overline] = overline text
+* [s]{text}[/s] = strike through text
+* [strike]{text}[/strike] = strike through text
+* [line-through]{text}[/line-through] = line through text (same as [strike] and [s])
+* [sub]{text}[/sub] = Subscript text
+* [sup]{text}[/sup] = Superscript text
+* [tt]{text}[/tt] = teletype text
+* [blink]{text}[/blink] = blinking text
+*
+* Text Size
+* [big]{text}[/big] = enclose {text} in html <big> tags. This is different from below.
+* [size={#}]{text}[/size] = set text size, where # is a digit from 1 to 8, for 50% to 400% size.
+* [size={xx-small|x-small|small|normal|large|x-large|xx-large|smaller|larger}]{text}[/size] = Change {text} to given size. "larger" and "smaller" are relative.
+* [xx-small]{text}[/xx-small] = xx-small text
+* [x-small]{text}[/x-small] = x-small text
+* [small]{text}[/small] = small text
+* [normal]{text}[/normal] = normal text
+* [large]{text}[/large] = large text
+* [x-large]{text}[/x-large] = x-large text
+* [xx-large]{text}[/xx-large] = xx-large text
+* [smaller]{text}[/smaller] = smaller text
+* [larger]{text}[/larger] = larger text
+*
+* Text alignment
+* [left]{text}[/left] = left justified text
+* [right]{text}[/right] = right justified text
+* [center]{text}[/center] = center justified text
+* [justify]{text}[/justify] = right and left justified text
+* [pre]{text}[/pre] = pre-formatted text
+*
+* Colored text handling - 'color' can also be spelled 'colour', and the dash is optional (fgcolor==fg-color)
+* [color={######}]{text}[/color] = set text color, where {######} is a 6 digit hex color code
+* [color={color}]{text}[/color] = set text color, where {color} is any word between 3 and 25 characters long
+*   black, silver, gray, white, maroon, red, purple, fuchsia, green, lime, olive, yellow, navy, blue, teal, aqua.
+* [{color}]{text}[/{color}] = set color where {color} is one of the 16 colors defined by w3c
+* [fg-{color}]{text}[/fg{color}] = set text color, where {color} is one of the 16 supported w3c colors.
+* [bg-color={######}]{text}[/color] = set background color, where {######} is a 6 digit hex color code
+* [bg-{color}]{text}[/bg{color}] = set background color, where {color} is one of the 16 supported w3c colors.
+*
+* Ordered and unordered list
+* [list][*]{1}[*]{2}[*]{3}...[/list] = unordered list, using filled in circle bullets
+* [list=circle][*]{1}[*]{2}[*]{3}...[/list] = unordered list, using hollow circle bullets
+* [list=disc][*]{1}[*]{2}[*]{3}...[/list] = unordered list, using filled in circle bullets
+* [list=square][*]{1}[*]{2}[*]{3}...[/list] = unordered list, using filled in square bullets
+* [list=1][*]{1}[*]{2}[*]{3}...[/list] = ordered list, using normal numbers
+* [list=a][*]{1}[*]{2}[*]{3}...[/list] = Ordered list, using lower case letters
+* [list=A][*]{1}[*]{2}[*]{3}...[/list] = Ordered list, using upper case letters
+* [list=i][*]{1}[*]{2}[*]{3}...[/list] = Ordered list, using lower case roman numbers
+* [list=I][*]{1}[*]{2}[*]{3}...[/list] = Ordered list, using upper case roman numbers
+
+USAGE:
+   Use as normal bbcodes. Nothing special. Should be 100% backwards
+compatible with previous bbcode used.
+
+INSTALL:
+   Come on, you know how to install an xBtit 2.x hack. I'm sure you do. Ok,
+I'll tell you how to install it, just in case this happens to be your first
+hack, and you don't want to go searching for instructions. This file should
+have come in a directory. Simply copy/upload that directory (with this file
+in that directory) to the "hacks" directory in your xBtit 2.x install. Go
+to admin panel==>Hacks Settings page. Then under "Add new hack" you use the
+drop down select list to pick this hack, and then hit the "Confirm" button.
+
+UNINSTALL:
+   Nothing special, uninstall like normal.
+
+Additional Notes:
+   I am not sure if other protocols should be included in the URL tag. I
+doubt many people will use the ftps protocol, but maybe someone will. I
+thought about adding the gopher protocol, but figured it would be rare
+enough that nobody would miss it.
+   If you don't want links to be opened in a new window, then search through
+this xml file for ' target="_blank"', and delete it (5 places). I figured
+most people would want it this way, AND I figured it was easier, and less
+prone to mistakes to ask people to remove it, instead of asking them to add
+it. I could have made that into another hack file, but for something so small
+I didn't feel it was worth the time/effort to make the hack file to do it.
+
+DONATIONS:
+Donations are gladly accepted. If you have any custom hacks that I can program
+for you (that you are willing to pay for), then please let me know. You can
+catch me as WormFood on FreeNode IRC network. If you don't get a response from
+me right away on IRC, then just idle until I get back.
+
+******************************************************************************
+* CHANGE LOG:                                                                *
+* 0.1.0 - 18 Sep 2009 - Initial release                                      *
+******************************************************************************
+-->
+<hack>
+  <title>BBCode Enhancements</title>
+  <author>WormFood</author>
+  <version>0.1.0</version>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[* Site: http://nothingoutoftheordinary.com/scripts/bbcode/
+* Example: http://examples.nothingoutoftherordinary.com/bbcode/
+* 
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[* Old Site: http://nothingoutoftheordinary.com/scripts/bbcode/
+* Example: http://examples.nothingoutoftheordinary.com/bbcode/
+* New Site: http://ja.meswilson.com/bbcode/
+* extensive modifications by WormFood, Aug-Sep 2009
+*
+* the $count feature used in preg_replace, was introduced with php 5.1.0
+* if using lower versions of php, then those lines would have to be modified.
+*
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[* bbcode($post)
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[* bbcode($post);
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[* Simple as that.
+]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[*
+* Syntax Notes:
+* all tags, that use an equal sign (=), can have their contents enclosed in single
+* or double quotes.
+* Example: [url="http://somesite.com/"] works the same as [url=http://somesite.com/]
+*
+* All tags can use an optonal single digit after their name. This is so you
+* can have control over nested tags, and maybe help you keep track of which
+* tag ends where to make editing easier. This feature is required, if you
+* want to have unordered lists and ordered lists mixed together, but I
+* can't think of any other cases where this feature is required.
+* Example: [center4]centered text[/center4].
+*
+* The foreground color tags can use an optional fg or fg- before the color name.
+* Example: [fg-red], [fgred], [red] and [color='red'] are all equal in function.
+* The background color tag, must use bg or bg- before the color name when used as tag
+* Example: [bg-blue], [bgblue], and [bg-color=blue] are all equal in function.
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[* [url=uri]text[/url]
+* [url]uri[/url]
+* http://site -> link
+* [img]imageuri[/img]
+* [email]emailaddress[/email]
+* [b]text[/b]
+* [i]text[/i]
+* [u]text[/u]
+* [quote]text[/quote]
+* [quote=author]text[/quote]
+* [color=color]text[/color]
+* [color=######]text[/color]
+* [size=#]text[/size]
+* [list][*]1[*]2[*]3[/list]
+* [list=1|a]*]1[*]2[*]3[/list]
+* 
+* 
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[*
+* bbcode handling
+* [noparse]{text}[/noparse] = {text} is not parsed for bbcodes.
+*
+* Blocks/sections/areas
+* [code]{code text}[/code] = contents are "tt" (teletype) text and are not parsed
+* [quote]{text}[/quote] = Enclose {text} in a 'quote' block.
+* [quote={author}]{text}[/quote] = Enclose {text} in a 'quote' block, with {author} as the writer.
+*
+* URL functions
+* [img]{imageuri}[/img] = embed image into page
+* [img={imageuri}] = embed image into page
+* [url={uri}]{text}[/url] = make {text} a link to {uri}
+* [url]{uri}[/url] = make {uri} a linl
+* http://site -> link = translate bare URL (not in a url tag) into a link
+* [email]{emailaddress}[/email]
+*
+* Text formatting and layout
+* [none]{text}[/none] = normal text (cancels existing text processing, normally used within another block)
+* [b]{text}[/b] = bold text
+* [strong]{text}[/strong] = strong text - usually bold, but can be set with style sheets
+* [i]{text}[/i] = italics text
+* [em]{text}[/em] = Emphasised text - usually italics, but can be set with style sheets
+* [u]{text}[/u] = underline text
+* [underline]{text}[/underline] = underline text
+* [overline]{text}[/overline] = overline text
+* [s]{text}[/s] = strike through text
+* [strike]{text}[/strike] = strike through text
+* [line-through]{text}[/line-through] = line through text (same as [strike] and [s])
+* [sub]{text}[/sub] = Subscript text
+* [sup]{text}[/sup] = Superscript text
+* [tt]{text}[/tt] = teletype text
+* [blink]{text}[/blink] = blinking text
+*
+* Text Size
+* [big]{text}[/big] = enclose {text} in html <big> tags. This is different from below.
+* [size={#}]{text}[/size] = set text size, where # is a digit from 1 to 8, for 50% to 400% size.
+* [size={xx-small|x-small|small|normal|large|x-large|xx-large|smaller|larger}]{text}[/size] = Change {text} to given size. "larger" and "smaller" are relative.
+* [xx-small]{text}[/xx-small] = xx-small text
+* [x-small]{text}[/x-small] = x-small text
+* [small]{text}[/small] = small text
+* [normal]{text}[/normal] = normal text
+* [large]{text}[/large] = large text
+* [x-large]{text}[/x-large] = x-large text
+* [xx-large]{text}[/xx-large] = xx-large text
+* [smaller]{text}[/smaller] = smaller text
+* [larger]{text}[/larger] = larger text
+*
+* Text alignment
+* [left]{text}[/left] = left justified text
+* [right]{text}[/right] = right justified text
+* [center]{text}[/center] = center justified text
+* [justify]{text}[/justify] = right and left justified text
+* [pre]{text}[/pre] = pre-formatted text
+*
+* Colored text handling - 'color' can also be spelled 'colour', and the dash is optional (fgcolor==fg-color)
+* [color={######}]{text}[/color] = set text color, where {######} is a 6 digit hex color code
+* [color={color}]{text}[/color] = set text color, where {color} is any word between 3 and 25 characters long
+*   black, silver, gray, white, maroon, red, purple, fuchsia, green, lime, olive, yellow, navy, blue, teal, aqua.
+* [{color}]{text}[/{color}] = set color where {color} is one of the 16 colors defined by w3c
+* [fg-{color}]{text}[/fg{color}] = set text color, where {color} is one of the 16 supported w3c colors.
+* [bg-color={######}]{text}[/color] = set background color, where {######} is a 6 digit hex color code
+* [bg-{color}]{text}[/bg{color}] = set background color, where {color} is one of the 16 supported w3c colors.
+*
+* Ordered and unordered list
+* [list][*]{1}[*]{2}[*]{3}...[/list] = unordered list, using filled in circle bullets
+* [list=circle][*]{1}[*]{2}[*]{3}...[/list] = unordered list, using hollow circle bullets
+* [list=disc][*]{1}[*]{2}[*]{3}...[/list] = unordered list, using filled in circle bullets
+* [list=square][*]{1}[*]{2}[*]{3}...[/list] = unordered list, using filled in square bullets
+* [list=1][*]{1}[*]{2}[*]{3}...[/list] = ordered list, using normal numbers
+* [list=a][*]{1}[*]{2}[*]{3}...[/list] = Ordered list, using lower case letters
+* [list=A][*]{1}[*]{2}[*]{3}...[/list] = Ordered list, using upper case letters
+* [list=i][*]{1}[*]{2}[*]{3}...[/list] = Ordered list, using lower case roman numbers
+* [list=I][*]{1}[*]{2}[*]{3}...[/list] = Ordered list, using upper case roman numbers
+*
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[  return '<span style="font-size: '.(50*$matches[1]).'%">'.$matches[2].'</span>';
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  return '<span style="font-size: '.(50*$matches[3]).'%">'.$matches[4].'</span>';
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[function noparsed($matches) {
+  return str_replace(array('[',']','://'), array('&#91;','&#93;','&#58;&#47;&#47;'),$matches[1]);
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[function noparsed($matches) { // any character that is parsed, must be here
+  static $replace=array(
+    '://' => '&#58;&#47;&#47;',
+    '('   => '&#40;',
+    ')'   => '&#41;',
+    '-'   => '&#45;',
+    '/'   => '&#47;',
+    ':'   => '&#58;',
+    '['   => '&#91;',
+    ']'   => '&#93;',
+    '_'   => '&#95;',); 
+  return str_replace( array_keys($replace), array_values($replace) ,$matches[2]);
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[  if ($matches[2]=='') {
+    $end='</ul>';
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  if ($matches[3]=='') {
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[  } elseif(is_numeric($matches[2])) {
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[    $end='</ul>';
+  } elseif(strtolower($matches[3])=="a" || strtolower($matches[3])=="i") {
+    $content.="<ol type=\"{$matches[3]}\">";
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[    $content.='<ol type="1">';
+  } else {
+    $end='</ol>';
+    $content.='<ol type="a">';
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  } else {
+    $content.="<ul type=\"{$matches[3]}\">";
+    $end='</ul>';
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[  return $content.str_replace('[*]',"\n".'<li>',$matches[3]).$end;
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  return $content.$matches[4].$end;
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[  return "\n<div id=\"img{$img_count}\" style=\"font-size:'1'; display:inline;\">\n<img name=\"img{$img_count}\" onload='resize(this);' src='$matches[1]' border='0' alt='' /></div>";
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  return "<div id=\"img{$img_count}\" style=\"font-size:'1'; display:inline;\"><img name=\"img{$img_count}\" onload='resize(this);' src='$matches[3]&#58;&#47;&#47;$matches[4]' border='0' alt='' /></div>";
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[function bbcode($content) {
+]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[  global $language;
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[  $content=str_replace(array('<','>','\'','"',"\r\n","\r","\n"),array('&lt;','&gt;','&#39;','&quot;','<br />','<br />','<br />'),$content);
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  $content=str_ireplace(array("\r\n","\r","\n"), '<br />',$content);
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[  // No parse. Just replace [, ], and :// to their HTML equivalents
+  $content=preg_replace_callback('/\[noparse\](.+?)\[\/noparse\]/i','noparsed',$content);
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  do{ // No parse. Just replace anything that is parsed, into their HTML equivalents
+    $content=preg_replace_callback('/\[(noparse(?:\d|))\](.+?)\[\/\1\]/i','noparsed',$content, -1, &$count);
+  }while($count);
+
+  do{ // code tags must be parsed first, because their contents are not parsed.
+    $content=preg_replace('/\[(code(?:\d|))\](.+?)\[\/\1\]/i','<br /><b>Code</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="code"><tr><td>[tt][noparse9]$2[/noparse9][/tt]</td></tr></table><br />',$content, -1, &$count);
+  }while($count);
+
+  do{ // code blocks insert the noparse tag. Can't parse the code block first, or you can't use noparse on it.
+    $content=preg_replace_callback('/\[(noparse(?:\d|))\](.+?)\[\/\1\]/i','noparsed',$content, -1, &$count);
+  }while($count);
+
+  // Quotes!
+  do{
+    $content = preg_replace('/\[(quote(?:\d|))\](.+?)\[\/\1\]/i','<br /><b>'.$language['QUOTE'].':</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="quote"><tr><td >$2</td></tr></table><br />',$content, -1, &$count);
+  }while($count);
+  do{
+    $content = preg_replace('/\[(quote(?:\d|))=(&quot;|&#(?:0|)39;|"|\'|)(.+?)\2\](.+?)\[\/\1\]/i','<br /><b>$3 '.$language['WROTE'].':</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="quote"><tr><td>$4</td></tr></table><br />',$content, -1, &$count);
+  }while($count);
+  // .userquoteinfo { font-size:85%; font-weight: bold; font-style: italic; }
+
+  // Images. They have to have http://. src attributes are XSSable in IE 6.0, Netscape, and Opera. http://ha.ckers.org/xss.html. Even though it's hard to do without () or \, best not to mess around with it.
+  $content=preg_replace_callback('/\[(img(?:\d|))\](&quot;|&#(?:0|)39;|"|\'|)(http|https|ftp|ftps):\/\/([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\2\[\/\1\]/i','parseimage',$content);
+  $content=preg_replace_callback('/\[(img(?:\d|))=(&quot;|&#(?:0|)39;|"|\'|)(http|https|ftp|ftps):\/\/([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\2\]/i','parseimage',$content);
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[  $content=preg_replace('(\[(URL|url)\=((http|ftp|https):\/\/[a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\](.+?)\[\/(URL|url)\])', '<a href="$2">$4</a>', $content);
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  $content=preg_replace('/\[(url(?:\d|))\=(&quot;|&#(?:0|)39;|"|\'|)(http|https|ftp|ftps|ed2k|irc):\/\/([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\2\](.+?)\[\/\1\]/i', '<a href="$3&#58;&#47;&#47;$4" target="_blank">$5</a>', $content);
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[  $content=preg_replace('(\[(URL|url)\=([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\](.+?)\[\/(URL|url)\])', '<a href="http://$2">$3</a>', $content);
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  $content=preg_replace('/\[(url(?:\d|))\=(&quot;|&#(?:0|)39;|"|\'|)([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\2\](.+?)\[\/\1\]/i', '<a href="http&#58;&#47;&#47;$3" target="_blank">$4</a>', $content);
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[  $content=preg_replace('(\[url\]((http|ftp|https):\/\/([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*))\[\/url\])','<a href="$2&#58;&#47;&#47;$3">$2&#58;&#47;&#47;$3</a>',$content);
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  $content=preg_replace('/\[(url(?:\d|))\](http|https|ftp|ftps|ed2k|irc):\/\/([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\[\/\1\]/i','<a href="$2&#58;&#47;&#47;$3" target="_blank">$2&#58;&#47;&#47;$3</a>',$content);
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[  $content=preg_replace('(\[url\]([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\[\/url\])','<a href="http&#58;&#47;&#47;$1">http&#58;&#47;&#47;$1</a>',$content);
+
+  // Images. They have to have http://. src attributes are XSSable in IE 6.0, Netscape, and Opera. http://ha.ckers.org/xss.html. Even though it's hard to do without () or \, best not to mess around with it.
+
+  $content=preg_replace_callback('/\[img\]((http|ftp|https):\/\/([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*))\[\/img\]/i','parseimage',$content);
+  $content=preg_replace_callback('/\[img=((http|ftp|https):\/\/([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*))\]/i','parseimage',$content);
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  $content=preg_replace('/\[(url(?:\d|))\]([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\[\/\1\]/i','<a href="http&#58;&#47;&#47;$2" target="_blank">http&#58;&#47;&#47;$2</a>',$content);
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[  $content=preg_replace('/(?<![href|src]=)(["|\']http|ftp|https):\/\/([^(|\s|=|\]|\[|\<|\>)]*["|\'])/i','<a href="$1://$2">$1://$2</a>',$content);
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  $content=preg_replace('/(?<![href|src]=[&quot;|&#(?:0|)39;|"|\'])(http|https|ftp|ftps|ed2k|irc):\/\/([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)/i','<a href="$1://$2" target="_blank">$1://$2</a>',$content);
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[  // Email. Do people even use this?
+  $content=preg_replace('(\[email\]([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]+)@([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]+)\[\/email\])','<a href="mailto:$1@$2">$1@$2</a>',$content);
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  // Email. Do people even use this? Yes, so they can get revenge on someone by posting their email address.
+  $content=preg_replace('/\[(email(?:\d|))\]([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]+)@([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]+)\[\/\1\]/i','<a href="mailto:$2@$3">$2@$3</a>',$content);
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[  // bold, italics, underline
+  while (preg_match('/\[b\](.+?)\[\/b\]/i',$content))
+    $content=preg_replace('/\[b\](.+?)\[\/b\]/i','<b>$1</b>',$content);
+  while (preg_match('/\[i\](.+?)\[\/i\]/i',$content))
+    $content=preg_replace('/\[i\](.+?)\[\/i\]/i','<i>$1</i>',$content);
+  while (preg_match('/\[u\](.+?)\[\/u\]/i',$content))
+    $content=preg_replace('/\[u\](.+?)\[\/u\]/i','<font style="text-decoration: underline;">$1</font>',$content);
+
+  // font color. Word type, like [color=red]RED[/color]
+  while (preg_match('/\[color=([a-z]+)\](.+?)\[\/color\]/i',$content))
+    $content=preg_replace('/\[color=([a-z]+)\](.+?)\[\/color\]/i','<font color="$1">$2</font>',$content);
+  // Number type, like [color=696969]GREY[/color]
+  while (preg_match('/\[color=([0-9]{3,6})\](.+?)\[\/color\]/i',$content))
+    $content=preg_replace('/\[color=([0-9]{3,6})\](.+?)\[\/color\]/i','<span style="color: #$1;">$2</span>',$content);
+
+  // code
+  while (preg_match('/\[code\](.+?)\[\/code\]/i',$content))
+    $content=preg_replace('/\[code\](.+?)\[\/code\]/i','<br /><b>Code</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="code"><tr><td>\\1</td></tr></table><br />',$content);
+
+  // Quotes!
+  global $language;
+  while (preg_match('/\[quote\](.+?)\[\/quote\]/i',$content))
+    $content = preg_replace('/\[quote\](.+?)\[\/quote\]/i','<br /><b>'.$language['QUOTE'].':</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="quote"><tr><td >\\1</td></tr></table><br />',$content);
+  while (preg_match('/\[quote=(.+?)\](.+?)\[\/quote\]/i',$content))
+    $content = preg_replace('/\[quote=(.+?)\](.+?)\[\/quote\]/i','<br /><b>\\1 '.$language['WROTE'].':</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="quote"><tr><td>\\2</td></tr></table><br />',$content);
+  // .userquoteinfo { font-size:85%; font-weight: bold; font-style: italic; }
+
+  // Size. 1,2,3,4 = 75, 125, 175, 225.  Algo: 25 + 50 * size
+  while (preg_match('/\[size=([1-7])\](.+?)\[\/size\]/i',$content))
+    $content = preg_replace_callback('/\[size=([1-7])\](.+?)\[\/size\]/i','dosize',$content);
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  do{ // bold, big, italics, strike through, tt, underline, em, strong, subscript, superscript, blink, overline, pre
+    $content=preg_replace('/\[((b|big|i|s|strike|tt|u|em|strong|sub|sup|pre)(?:\d|))\](.+?)\[\/\1\]/i','<$2>$3</$2>',$content, -1, &$count);
+  }while($count);
+  do{
+    $content=preg_replace('/\[((blink|overline|underline|line-through|none)(?:\d|))\](.+?)\[\/\1\]/i','<font style="text-decoration: $2;">$3</font>',$content, -1, &$count);
+  }while($count);
+
+  do{ // [left], [center], [right] and [justify] tags
+    $content=preg_replace('/\[((left|right|center|justify)(?:\d|))\](.+?)\[\/\1\]/i', '<div align="$2">$3</div>',$content, -1, &$count);
+  }while($count);
+
+  do{ // the color is the tag itself, like [fgyellow]yellow text[/fgyellow], or [fg-blue]blue text[/fg-blue]
+  // If the color is the tag itself, like [green], then it must ALWAYS be a whitelist of accepted colors.
+    $content=preg_replace('/\[((?:fg|fg-|)(black|silver|gray|white|maroon|red|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua)(?:\d|))\](.+?)\[\/\1\]/i','<font color="$2">$3</font>',$content, -1, &$count);
+  }while($count);
+  do{ // font color. Word type, like [color=red]RED[/color] not limited in name, for backwards compatability.
+    $content=preg_replace('/\[((?:fg|fg-|)colo(?:u|)r(?:\d|))=(&quot;|&#(?:0|)39;|"|\'|)([a-z]{3,25})\2\](.+?)\[\/\1\]/i','<font color="$3">$4</font>',$content, -1, &$count);
+  }while($count);
+  do{ // Color specified in RGB triplet, like [color=696969]GREY[/color]
+    $content=preg_replace('/\[((?:fg|fg-|)colo(?:u|)r(?:\d|))=(&quot;|&#(?:0|)39;|"|\'|)([\dA-F]{3,6})\2\](.+?)\[\/\1\]/i','<span style="color: #$3;">$4</span>',$content, -1, &$count);
+  }while($count);
+
+  // background colors
+  do{ // but since the bgcolor tag is new, I will limit the colors, for maximum web compatability. Of course you can set any color you like with the RGB background tag. Maybe remove color whitelist, dependong on user feedback.
+    $content=preg_replace('/\[((?:bg|bg-)colo(?:u|)r(?:\d|))=(&quot;|&#(?:0|)39;|"|\'|)(black|silver|gray|white|maroon|red|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua)\2\](.+?)\[\/\1\]/i','<span style="background: $3;">$4</span>',$content, -1, &$count);
+  }while($count);
+  do{ // This background tag uses the following syntax, for a red background: [bgred] or [bg-red] 
+    $content=preg_replace('/\[((?:bg|bg-)(black|silver|gray|white|maroon|red|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua)(?:\d|))\](.+?)\[\/\1\]/i','<span style="background: $2;">$3</span>',$content, -1, &$count);
+  }while($count);
+  do{ // background color specified in RGB triplet, like [bg-color=ff0000]red background[/bg-color]
+    $content=preg_replace('/\[((?:bg|bg-)colo(?:u|)r(?:\d|))=(&quot;|&#(?:0|)39;|"|\'|)([0-9A-F]{3,6})\2\](.+?)\[\/\1\]/i','<span style="background: #$3;">$4</span>',$content, -1, &$count);
+  }while($count);
+
+
+  do{ // Size. 1,2,3,4...8 = 50%, 100%, 150%, 200%...400%  Algo: 50 * size
+    $content = preg_replace_callback('/\[(size(?:\d|))=(&quot;|&#(?:0|)39;|"|\'|)([1-8])\2\](.+?)\[\/\1\]/i','dosize',$content, -1, &$count);
+  }while($count);
+  do{ // [size=xx-small] style tag
+    $content = preg_replace('/\[(size(?:\d|))=(&quot;|&#(?:0|)39;|"|\'|)((xx-small|x-small|small|medium|large|x-large|xx-large|larger|smaller)(?:\d|))\2\](.+?)\[\/\1\]/i','<font style="font-size: $4;">$5</font>',$content, -1, &$count);
+  }while($count);
+  do{ // [xx-large] style tag
+    $content = preg_replace('/\[((xx-small|x-small|small|medium|large|x-large|xx-large|larger|smaller)(?:\d|))\](.+?)\[\/\1\]/i','<font style="font-size: $2;">$3</font>',$content, -1, &$count);
+  }while($count);
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/class.bbcode.php"</name>
+    <operation>
+      <search><![CDATA[  while (preg_match('/\[list(=(a|1))?\](.+?)\[\/list\]/i',$content))
+    $content=preg_replace_callback('/\[list(=(a|1))?\](.+?)\[\/list\]/i','formatlist',$content);
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  do{ // [list] or [list=a] or [list=circle] etc
+    $content=preg_replace_callback('/\[(list(?:\d|))(?:=(&quot;|&#(?:0|)39;|"|\'|)(a|i|1|disc|square|circle)\2|)\](.+?)\[\/\1\]/i','formatlist',$content, -1, &$count);
+  }while($count);
+
+  // just some little things I thought might be nice to have.
+  static $replace=array(
+    "  "   => " &nbsp;",
+    "[*]"  => "<li>",
+    "[hr]" => "<hr>",
+    "(c)"  => "&copy;",
+    "[c]"  => "&copy;",
+    "(p)"  => "&#8471;",
+    "[p]"  => "&#8471;",
+    "(r)"  => "&reg;",
+    "[r]"  => "&reg;",
+    "(tm)" => "&trade;",
+    "[tm]" => "&trade;",
+    "1/2"  => "&frac12;",
+    "1/3"  => "&#8531;",
+    "2/3"  => "&#8532;",
+    "1/4"  => "&frac14",
+    "3/4"  => "&frac34;",
+    "1/5"  => "&#8533;",
+    "2/5"  => "&#8534;",
+    "3/5"  => "&#8535;",
+    "4/5"  => "&#8536;",
+    "1/6"  => "&#8537;",
+    "5/6"  => "&#8538;",
+    "1/8"  => "&#8539;",
+    "3/8"  => "&#8540;",
+    "5/8"  => "&#8541;",
+    "7/8"  => "&#8542;"
+  );
+  $content=str_ireplace(array_keys($replace), array_values($replace) ,$content);
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/functions.php"</name>
+    <operation>
+      <search><![CDATA[  if ($num == 1)
+    return '#FFFF00';
+  return '#FFFF00';
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  return '#FFFF00';
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/functions.php"</name>
+    <operation>
+      <search><![CDATA[function format_comment($text, $strip_html = true) {
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[function format_comment($text, $strip_html = true, $smilies = true ) {
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/include/functions.php"</name>
+    <operation>
+      <search><![CDATA[  // [*]
+  $text = preg_replace('/\[\*\]/', '<li>', $text);
+
+  // Maintain spacing
+  $text = str_replace('  ', ' &nbsp;', $text);
+
+  $smilies=array_merge($smilies, $privatesmilies);
+  reset($smilies);
+  while (list($code, $url) = each($smilies))
+    $text = str_replace($code, '<img border="0" src="'.$BASEURL.'/images/smilies/'.$url.'" alt="'.$url.'" />', $text);
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  if($smilies) {
+    $smilies=array_merge($smilies, $privatesmilies);
+    reset($smilies);
+    while (list($code, $url) = each($smilies))
+      $text = str_replace($code, '<img border="0" src="'.$BASEURL.'/images/smilies/'.$url.'" alt="'.$url.'" />', $text);
+  }
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/txtbbcode.tpl"</name>
+    <operation>
+      <search><![CDATA[  <table cellpadding="0" cellspacing="0" align="left">
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  <table style="width:99%" cellpadding="0" cellspacing="0" align="left">
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/txtbbcode.tpl"</name>
+    <operation>
+      <search><![CDATA[        <tr>
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[          <tr>
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/txtbbcode.tpl"</name>
+    <operation>
+      <search><![CDATA[          <td align="left" style="height:25px;"><input class="btn" style="text-decoration: underline;" type="button" name="underline" value="U " onclick="javascript: BBTag('[u]','[/u]',document.forms.<tag:form_name />.<tag:object_name />)" /></td>
+          <td align="left" style="height:25px;"><input type="button" class="btn" name="li" value="List " onclick="javascript: BBTag('[*]','',document.forms.<tag:form_name />.<tag:object_name />)" /></td>
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[          <td align="left" style="height:25px;"><input class="btn" style="text-decoration: underline;" type="button" name="underline" value="U " onclick="javascript: BBTag('[u]','[/u]',document.forms.<tag:form_name />.<tag:object_name />)" /></td> 
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/txtbbcode.tpl"</name>
+    <operation>
+      <search><![CDATA[        </tr>
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[          <td align="left" style="height:25px;"><input type="button" class="btn" name="noparse" value="NoParse" onclick="javascript: BBTag('[noparse]','[/noparse]',document.forms.<tag:form_name />.<tag:object_name />)" /></td>
+	  <td align="left" style="height:25px;"><input type="button" class="btn" name="li" value="*" onclick="javascript: BBTag('[*]','',document.forms.<tag:form_name />.<tag:object_name />)" /></td>
+	  <td align="left" style="height:25px;"><input type="button" class="btn" name="hr" value="hr" onclick="javascript: BBTag('[hr]','',document.forms.<tag:form_name />.<tag:object_name />)" /></td>
+          </tr>
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/txtbbcode.tpl"</name>
+    <operation>
+      <search><![CDATA[                <td align="left"><select onchange="BBTag('[size=' + this.options[this.selectedIndex].value.toLowerCase() + ']','[/size]', document.forms.<tag:form_name />.<tag:object_name />); this.selectedIndex = 0;" size="1" style="background-color:#DEDEDE;" name="fontchange">
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[                <td align="left"><select onchange="BBTag('[size=\'' + this.options[this.selectedIndex].value.toLowerCase() + '\']','[/size]', document.forms.<tag:form_name />.<tag:object_name />); this.selectedIndex = 0;" size="1" style="background-color:#DEDEDE;" name="fontchange">
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/txtbbcode.tpl"</name>
+    <operation>
+      <search><![CDATA[              <option value="1">xx-small</option>
+              <option value="2">x-small</option>
+              <option value="3">small</option>
+              <option value="4">medium</option>
+              <option value="5">large</option>
+              <option value="6">x-large</option>
+              <option value="7">xx-large</option>
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[              <option value="smaller">smaller</option>
+              <option value="xx-small">xx-small</option>
+              <option value="x-small">x-small</option>
+              <option value="small">small</option>
+              <option value="medium">medium</option>
+              <option value="large">large</option>
+              <option value="x-large">x-large</option>
+              <option value="xx-large">xx-large</option>
+              <option value="larger">larger</option>
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/txtbbcode.tpl"</name>
+    <operation>
+      <search><![CDATA[                 <td align="left" style="text-align:left;"><select onchange="BBTag('[color=' + this.options[this.selectedIndex].value.toLowerCase() + ']','[/color]', document.forms.<tag:form_name />.<tag:object_name />); this.selectedIndex = 0;" size="1" style="background-color:#DEDEDE;" name="fontchange">
+              <option value="" selected="selected">Change Color</option>
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[                 <td align="left" style="text-align:left;"><select onchange="BBTag('[color=\'' + this.options[this.selectedIndex].value.toLowerCase() + '\']','[/color]', document.forms.<tag:form_name />.<tag:object_name />); this.selectedIndex = 0;" size="1" style="background-color:#DEDEDE;" name="fontchange">
+              <option value="" selected="selected">Text Color</option>
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/txtbbcode.tpl"</name>
+    <operation>
+      <search><![CDATA[              <option value="Red" style="color:red">Red</option>
+              <option value="Yellow" style="color:Yellow">Yellow</option>
+              <option value="Pink" style="color:Pink">Pink</option>
+              <option value="Green" style="color:Green">Green</option>
+              <option value="Orange" style="color:Orange">Orange</option>
+              <option value="Purple" style="color:Purple">Purple</option>
+              <option value="Blue" style="color:Blue">Blue</option>
+              <option value="Beige" style="color:Beige">Beige</option>
+              <option value="Brown" style="color:Brown">Brown</option>
+              <option value="Teal" style="color:Teal">Teal</option>
+              <option value="Navy" style="color:Navy">Navy</option>
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[              <option value="Blue" style="color:Blue">Blue</option>
+              <option value="Fuchsia" style="color:Fuchsia">Fuchsia</option>
+              <option value="Gray" style="color:Gray">Gray</option>
+              <option value="Green" style="color:Green">Green</option>
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/txtbbcode.tpl"</name>
+    <operation>
+      <search><![CDATA[              <option value="LimeGreen" style="color:LimeGreen">Lime Green</option>
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[              <option value="Navy" style="color:Navy">Navy</option>
+              <option value="Olive" style="color:Olive">Olive</option>
+              <option value="Purple" style="color:Purple">Purple</option>
+              <option value="Red" style="color:red">Red</option>
+              <option value="Aqua" style="color:Aqua; background:black">Aqua</option>
+              <option value="Lime" style="color:Lime; background:black">Lime</option>
+              <option value="Silver" style="color:Silver; background:black">Silver</option>
+              <option value="Teal" style="color:Teal; background:black">Teal</option>
+              <option value="White" style="color:White; background:black">White</option>
+              <option value="Yellow" style="color:Yellow; background:black">Yellow</option>
+              </select></td>
+                 <td align="left" style="text-align:left;"><select onchange="BBTag('[bg-color=\'' + this.options[this.selectedIndex].value.toLowerCase() + '\']','[/bg-color]', document.forms.<tag:form_name />.<tag:object_name />); this.selectedIndex = 0;" size="1" style="background-color:#DEDEDE;" name="fontchange">
+              <option value="" selected="selected">Background Color</option>
+              <option value="Black" style="color:white; background:Black">Black</option>
+              <option value="Blue" style="color:white; background:Blue">Blue</option>
+              <option value="Fuchsia" style="color:white; background:Fuchsia">Fuchsia</option>
+              <option value="Gray" style="color:white; background:Gray">Gray</option>
+              <option value="Green" style="color:white; background:Green">Green</option>
+              <option value="Maroon" style="color:white; background:Maroon">Maroon</option>
+              <option value="Navy" style="color:white; background:Navy">Navy</option>
+              <option value="Olive" style="color:white; background:Olive">Olive</option>
+              <option value="Purple" style="color:white; background:Purple">Purple</option>
+              <option value="Red" style="color:white; background:Red">Red</option>
+              <option value="Aqua" style="color:black; background:Aqua">Aqua</option>
+              <option value="Lime" style="color:black; background:Lime">Lime</option>
+              <option value="Silver" style="color:black; background:Silver">Silver</option>
+              <option value="Teal" style="color:black; background:Teal">Teal</option>
+              <option value="White" style="color:black; background:White">White</option>
+              <option value="Yellow" style="color:black; background:Yellow">Yellow</option>
+              </select></td>
+        </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <table cellpadding="0" cellspacing="1" align="left">
+                <tr>
+                <td align="left"><select onchange="BBTag('[' + this.options[this.selectedIndex].value.toLowerCase() + ']','[/' + this.options[this.selectedIndex].value.toLowerCase() + ']', document.forms.<tag:form_name />.<tag:object_name />); this.selectedIndex = 0;" size="1" style="background-color:#DEDEDE;" name="fontchange">
+              <option value="" selected="selected">Text Formatting</option>
+              <option value="none">no formatting</option>
+              <option value="b" style="font-weight: bold;">bold text</option>
+              <option value="i" style="font-style: italic;">italic text</option>
+              <option value="underline" style="text-decoration: underline;">underline</option>
+              <option value="strike" style="text-decoration: line-through;">strike-through</option>
+              <option value="overline" style="text-decoration: overline;">overline</option>
+              <option value="tt">teletype text</option>
+              <option value="sub">subscript</option>
+              <option value="sup">superscript</option>
+              <option value="blink">blinking text</option>
+              </select></td>
+                <td align="left"><select onchange="BBTag('[' + this.options[this.selectedIndex].value.toLowerCase() + ']','[/' + this.options[this.selectedIndex].value.toLowerCase() + ']', document.forms.<tag:form_name />.<tag:object_name />); this.selectedIndex = 0;" size="1" style="background-color:#DEDEDE;" name="fontchange">
+              <option value="" selected="selected">Text Alignment</option>
+              <option value="left">left</option>
+              <option value="right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;right</option>
+              <option value="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;center</option>
+              <option value="justified">j u s t i f i e d</option>
+              <option value="pre">preformatted</option>
+              </select></td>
+                <td align="left"><select onchange="BBTag('[' + this.options[this.selectedIndex].value + ']\n[*]\n[*]\n[/list]', '', document.forms.<tag:form_name />.<tag:object_name />); this.selectedIndex = 0;" size="1" style="background-color:#DEDEDE;" name="fontchange">
+              <option value="" selected="selected">Lists</option>
+              <option value="list">unordered list</option>
+              <option value="list=circle">circle list</option>
+              <option value="list=square">Square List</option>
+              <option value="list=1">Numbered List</option>
+              <option value="list=A">UPPERCASE LETTERS</option>
+              <option value="list=a">lowercase letters</option>
+              <option value="list=I">UPPERCASE ROMAN</option>
+              <option value="list=i">lowercase Roman</option>
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/txtbbcode.tpl"</name>
+    <operation>
+      <search><![CDATA[      </tr>
+      </table>
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[              </tr>
+	      </table>
+]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/txtbbcode.tpl"</name>
+    <operation>
+      <search><![CDATA[      <textarea name="<tag:object_name />" rows="10" style="width:95%" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onchange="storeCaret(this);"><tag:content /></textarea>
+]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[      <textarea name="<tag:object_name />" rows="15" style="width:100%" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onchange="storeCaret(this);"><tag:content /></textarea>
+]]></data>
+    </operation>
+  </file>
+</hack>
