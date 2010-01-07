@@ -6,7 +6,38 @@
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
 // http://xlist.ro/
-// Modified By CyBerNe7
+// Modified By cybernet2u
+
+/////////////////////////////////////////////////////////////////////////////////////
+// xbtit - Bittorrent tracker/frontend
+//
+// Copyright (C) 2004 - 2007  Btiteam
+//
+//    This file is part of xbtit.
+//
+// Redistribution and use in source and binary forms, with or without modification,
+// are permitted provided that the following conditions are met:
+//
+//   1. Redistributions of source code must retain the above copyright notice,
+//      this list of conditions and the following disclaimer.
+//   2. Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
+//   3. The name of the author may not be used to endorse or promote products
+//      derived from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+// IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+// TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+////////////////////////////////////////////////////////////////////////////////////
 
 if (!defined("IN_BTIT"))
       die("non direct access!");
@@ -17,6 +48,7 @@ $usercptpl->set("MSG_READ", false, true);
 $usercptpl->set("MSG_EDIT", false, true);
 $usercptpl->set("MSG_MENU", false, true);
 $usercptpl->set("PREVIEW", false, true);
+$usercptpl->set("OUTBOX", (($_GET["what"] == "outbox")?true:false), true);
 
 global $FORUMLINK, $db_prefix;
 
@@ -212,7 +244,7 @@ EOD;
             $usercptpl->set("pm", $pmouttpl);
              }
           }
-        elseif ($what=="inbox" && $action == "list")
+        elseif ($what == "inbox" && $action == "list")
           {
            $usercptpl->set("MSG_LIST", true, true);
            $pminboxtpl = array();
@@ -260,7 +292,7 @@ EOD;
            if (!isset($_GET['to'])) $_GET['to'] = '';
 
            if (urldecode($_GET['to']) == $CURUSER["username"])
-              stderr($language["ERROR"],$language["ERR_PM_GUEST"]);
+              stderr($language["ERROR"], $language["ERR_PM_GUEST"]);
 
            $res = do_sqlquery("select m.*, IF(m.sender=0,'System',u.username) as sendername FROM {$TABLE_PREFIX}messages m LEFT JOIN {$TABLE_PREFIX}users u on u.id=m.sender WHERE receiver=$uid AND m.id=$id");
 
