@@ -476,7 +476,7 @@ function phpbb_check_hash($password, $hash)
 	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
 	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
 	
-if ($btit_settings["phpbb3_prefix"]!="")
+if ($btit_settings["phpbb3_prefix"] != "")
     {
 	// update password on phpbb users
 		do_sqlquery("UPDATE `{$phpbb_db_prefix}users` SET user_password='".md5($newpassword)."' WHERE username = '$phpbb3_user'") or die(mysql_error());
@@ -505,24 +505,24 @@ $admintpl->set("restore_profile_ok",false,true);
 ]]></data>
     </operation>
     <operation>
-      <search><![CDATA[$btit_settings["clocktype"]=$_POST["clocktype"];]]></search>
+      <search><![CDATA[$btit_settings["clocktype"] = $_POST["clocktype"];]]></search>
 	  <action>"add"</action>
 	  <where>"before"</where>
       <data><![CDATA[
 	  // start hack phpbb3 integration
-	  $btit_settings["phpbb3"]=$_POST["phpbb3"];
-	  $btit_settings["phpbb3_prefix"]=$_POST["phpbb3_prefix"];
-	  $btit_settings["phpbb3_root_path"]=$_POST["phpbb3_root_path"];
+	  $btit_settings["phpbb3"] = $_POST["phpbb3"];
+	  $btit_settings["phpbb3_prefix"] = $_POST["phpbb3_prefix"];
+	  $btit_settings["phpbb3_root_path"] = $_POST["phpbb3_root_path"];
 	  // end hack phpbb3 integration]]></data>
     </operation>
     <operation>
-      <search><![CDATA[$btit_settings["clockdigital"]=(!$btit_settings["clocktype"]?"checked=\"checked\"":"");]]></search>
+      <search><![CDATA[$btit_settings["clockdigital"] = (!$btit_settings["clocktype"]?"checked=\"checked\"":"");]]></search>
 	  <action>"add"</action>
 	  <where>"after"</where>
       <data><![CDATA[
 	  // start hack phpbb3 integration
-	  $btit_settings["phpbb3yes"]=($btit_settings["phpbb3"]?"checked=\"checked\"":"");
-	  $btit_settings["phpbb3no"]=(!$btit_settings["phpbb3"]?"checked=\"checked\"":"");
+	  $btit_settings["phpbb3yes"] = ($btit_settings["phpbb3"]?"checked=\"checked\"":"");
+	  $btit_settings["phpbb3no"] = (!$btit_settings["phpbb3"]?"checked=\"checked\"":"");
 	  // end hack phpbb3 integration]]></data>
     </operation>
     <operation>
@@ -533,9 +533,9 @@ $admintpl->set("restore_profile_ok",false,true);
 	  <where>"after"</where>
       <data><![CDATA[
 	  // start hack phpbb3 integration
-	  $phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	  $phpbb3_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
 	  $phpbb_integration = $phpbb3_res["phpbb3"];
-	  if ($phpbb_integration=="true")
+	  if ($phpbb_integration == "true")
 	  {
 		//export
 		if(isset($_POST['export_in_phpbb3'])) 
@@ -597,13 +597,13 @@ $your_version="";]]></search>
 	  <where>"after"</where>
       <data><![CDATA[
 // start hack phpbb3 integration
-$hack_phpbb3_integration_url_last="http://xbtitnotify.sourceforge.net/last_version/phpbb3_integration_last_version.txt";
+$hack_phpbb3_integration_url_last = "http://xbtitnotify.sourceforge.net/last_version/phpbb3_integration_last_version.txt";
 
 // check last version on xbtitnotify.sourceforge.net
-$hack_phpbb3_integration_last=get_cached_version($hack_phpbb3_integration_url_last);
+$hack_phpbb3_integration_last = get_cached_version($hack_phpbb3_integration_url_last);
 if (!$hack_phpbb3_integration_last)
 {
-  $hack_phpbb3_integration_last=get_remote_file($hack_phpbb3_integration_url_last);
+  $hack_phpbb3_integration_last = get_remote_file($hack_phpbb3_integration_url_last);
   if ($hack_phpbb3_integration_last)
      write_cached_version($hack_phpbb3_integration_url_last,$hack_phpbb3_integration_last);
   else
@@ -613,7 +613,7 @@ $title_phpbb3_integration = "phpbb3_integration_basic";
 $res_phpbb3_integration_version = get_result("SELECT title, version FROM {$TABLE_PREFIX}hacks WHERE title LIKE '" . $title_phpbb3_integration . "'",true);
 $row0_phpbb3_integration = $res_phpbb3_integration_version[0];
 $row_phpbb3_integration = substr($row0_phpbb3_integration["version"],0,5);
-$last_phpbb3_integration_version=explode("/",strtolower($hack_phpbb3_integration_last));
+$last_phpbb3_integration_version = explode("/",strtolower($hack_phpbb3_integration_last));
 
 $your_phpbb3_integration_version="";
 // end hack phpbb3 integration
@@ -628,26 +628,26 @@ $your_phpbb3_integration_version="";
 // start hack phpbb3 integration
 if (($row_phpbb3_integration != implode(" ",$last_phpbb3_integration_version)))
   {
-  $your_phpbb3_integration_version.="<table width=\"100%\"><tr><td align=\"left\">".$language["PHPBB3_INTEGRATION_INSTALLED"]."</td><td align=\"left\">".$row_phpbb3_integration."</td></tr>\n";
-  $your_phpbb3_integration_version.="<tr><td align=\"left\">".$language["PHPBB3_INTEGRATION_CURRENT"]."</td><td align=\"left\">".implode(" ",$last_phpbb3_integration_version)."</td></tr>\n";
-  $your_phpbb3_integration_version.="<tr><td align=\"left\"><b>".$language["PHPBB3_INTEGRATION_GET"]."<a href=\"http://xbtitnotify.sourceforge.net/download.php\" target=\"_blank\">".$language["PHPBB3_INTEGRATION_RELEASE"]."</b></a></td></tr>\n</table>";
+  $your_phpbb3_integration_version .= "<table width=\"100%\"><tr><td align=\"left\">".$language["PHPBB3_INTEGRATION_INSTALLED"]."</td><td align=\"left\">".$row_phpbb3_integration."</td></tr>\n";
+  $your_phpbb3_integration_version .= "<tr><td align=\"left\">".$language["PHPBB3_INTEGRATION_CURRENT"]."</td><td align=\"left\">".implode(" ",$last_phpbb3_integration_version)."</td></tr>\n";
+  $your_phpbb3_integration_version .= "<tr><td align=\"left\"><b>".$language["PHPBB3_INTEGRATION_GET"]."<a href=\"http://xbtitnotify.sourceforge.net/download.php\" target=\"_blank\">".$language["PHPBB3_INTEGRATION_RELEASE"]."</b></a></td></tr>\n</table>";
 }
 else
   {
-  $your_phpbb3_integration_version.="".$language["PHPBB3_INTEGRATION_VERSION"]."";
+  $your_phpbb3_integration_version .= "".$language["PHPBB3_INTEGRATION_VERSION"]."";
 }
 // end hack phpbb3 integration
 ]]></data>
     </operation>
     <operation>
       <search><![CDATA[if (!empty($your_version))
-   $admin["xbtit_version"]=$your_version."<br />\n";]]></search>
+   $admin["xbtit_version"] = $your_version."<br />\n";]]></search>
 	  <action>"add"</action>
 	  <where>"after"</where>
       <data><![CDATA[
 // start hack phpbb3 integration
 if (!empty($your_phpbb3_integration_version))
-   $admin["phpbb3_integration_version"]=$your_phpbb3_integration_version."<br />\n";
+   $admin["phpbb3_integration_version"] = $your_phpbb3_integration_version."<br />\n";
 // end hack phpbb3 integration
 ]]></data>
     </operation>
@@ -660,16 +660,16 @@ if (!empty($your_phpbb3_integration_version))
 	  <action>"replace"</action>
       <data><![CDATA[global $CURUSER,$TABLE_PREFIX;
 // info phpbb3
-	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb3_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
 //	$phpbb_integration = $phpbb3_res["phpbb3"];
 	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];]]></data>
     </operation>
     <operation>
-      <search><![CDATA[if ($GLOBALS["FORUMLINK"]=="" || $GLOBALS["FORUMLINK"]=="internal" || $GLOBALS["FORUMLINK"]=="smf")
+      <search><![CDATA[if ($GLOBALS["FORUMLINK"] == "" || $GLOBALS["FORUMLINK"] == "internal" || $GLOBALS["FORUMLINK"] == "smf")
       print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=forum\">".$language["MNU_FORUM"]."</a></td>\n");]]></search>
 	  <action>"replace"</action>
       <data><![CDATA[// start hack phpbb3 integration	
-	if ($GLOBALS["FORUMLINK"]=="" || $GLOBALS["FORUMLINK"]=="internal" || $GLOBALS["FORUMLINK"]=="smf" || $phpbb_db_prefix != "")
+	if ($GLOBALS["FORUMLINK"] == "" || $GLOBALS["FORUMLINK"] == "internal" || $GLOBALS["FORUMLINK"] == "smf" || $phpbb_db_prefix != "")
       print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=forum\">".$language["MNU_FORUM"]."</a></td>\n");
 // end hack phpbb3 integration
 ]]></data>
@@ -683,20 +683,20 @@ if (!empty($your_phpbb3_integration_version))
 	  <action>"replace"</action>
       <data><![CDATA[
 // start hack phpbb3 integration
-   global $CURUSER,$TABLE_PREFIX;
+   global $CURUSER, $TABLE_PREFIX;
 // info phpbb3
-	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb3_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
 	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
 // end hack phpbb3 integration
 ]]></data>
     </operation>
     <operation>
-      <search><![CDATA[if ($GLOBALS["FORUMLINK"]=="" || $GLOBALS["FORUMLINK"]=="internal" || $GLOBALS["FORUMLINK"]=="smf")
+      <search><![CDATA[if ($GLOBALS["FORUMLINK"] == "" || $GLOBALS["FORUMLINK"] == "internal" || $GLOBALS["FORUMLINK"] == "smf")
            print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=forum\">".$language["MNU_FORUM"]."</a></td></tr>\n");]]></search>
 	  <action>"replace"</action>
       <data><![CDATA[
 // start hack phpbb3 integration	
-if ($GLOBALS["FORUMLINK"]=="" || $GLOBALS["FORUMLINK"]=="internal" || $GLOBALS["FORUMLINK"]=="smf" || $phpbb_db_prefix != "")
+if ($GLOBALS["FORUMLINK"] == "" || $GLOBALS["FORUMLINK"] == "internal" || $GLOBALS["FORUMLINK"] == "smf" || $phpbb_db_prefix != "")
            print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=forum\">".$language["MNU_FORUM"]."</a></td></tr>\n");
 // end hack phpbb3 integration
 ]]></data>
@@ -706,7 +706,7 @@ if ($GLOBALS["FORUMLINK"]=="" || $GLOBALS["FORUMLINK"]=="internal" || $GLOBALS["
   <file>
     <name>"$DEFAULT_ROOT/forum/forum.index.php"</name>
 	<operation>
-      <search><![CDATA[$tpl->set("main_content",set_block($block_title,"center",$smf_content));
+      <search><![CDATA[$tpl->set("main_content", set_block($block_title,"center",$smf_content));
 
 
 }]]></search>
@@ -714,11 +714,11 @@ if ($GLOBALS["FORUMLINK"]=="" || $GLOBALS["FORUMLINK"]=="internal" || $GLOBALS["
 	  <where>"after"</where>
       <data><![CDATA[
 // start hack phpbb3 integration	
-elseif ($btit_settings["phpbb3_prefix"]!="")
+elseif ($btit_settings["phpbb3_prefix"] != "")
   {
      $FORUMLINK= $btit_settings["forum"];
-     $phpbb_content="";
-     $phpbb_content.="
+     $phpbb_content = "";
+     $phpbb_content .= "
      <script type=\"text/javascript\" language=\"JavaScript\">
 
      function autoIframe(frameId){
@@ -769,9 +769,9 @@ elseif ($btit_settings["phpbb3_prefix"]!="")
 
 function xbtit_users_export()
 {
-	global $TABLE_PREFIX,$admintpl,$language;
+	global $TABLE_PREFIX, $admintpl, $language;
 	// info phpbb3
-	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb3_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
 	$phpbb_integration = $phpbb3_res["phpbb3"];
 	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
 
@@ -923,13 +923,13 @@ for ($id=1; $id <= $id_lastest_member; ++$id)
 	else
 	{
 				$pwd = $ricavo_info_users["password"];
-				$id_level= $ricavo_info_users["id_level"];
-				$id_language= $ricavo_info_users["language"];
-				$user_regdate= $ricavo_info_users["joined"];
-				$user_lastmark= $ricavo_info_users["lastconnect"];
-				$user_avatar= $ricavo_info_users["avatar"];
-				$pid_phpbb=$ricavo_info_users["cip"];
-				$phpbb_user_email_hash= crc32(strtolower($email)) . strlen($email);
+				$id_level = $ricavo_info_users["id_level"];
+				$id_language = $ricavo_info_users["language"];
+				$user_regdate = $ricavo_info_users["joined"];
+				$user_lastmark = $ricavo_info_users["lastconnect"];
+				$user_avatar = $ricavo_info_users["avatar"];
+				$pid_phpbb = $ricavo_info_users["cip"];
+				$phpbb_user_email_hash = crc32(strtolower($email)) . strlen($email);
 				$xbtit_timezone = $ricavo_info_users["time_offset"];
 				$user_avatar_type = 2; // avatar type set on 2 (probably this is the value for remote avatar)
 				// set avatar size as max values
@@ -1152,9 +1152,9 @@ for ($id=1; $id <= $id_lastest_member; ++$id)
 
 function phpbb3_users_import()
 {
-	global $TABLE_PREFIX,$admintpl,$language;
+	global $TABLE_PREFIX, $admintpl, $language;
 	// info phpbb3 and xbtit
-	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb3_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
 	$phpbb_integration = $phpbb3_res["phpbb3"];
 	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
 	$xbtit_default_style = $phpbb3_res["default_style"];
@@ -1263,14 +1263,14 @@ for ($id=1; $id <= $phpbb3_newest_user_id; ++$id)
 	else
 	{
 				$pwd = $ricavo_info_users["user_password"];
-				$id_level= $ricavo_info_users["group_id"];
-				$id_language= $ricavo_info_users["user_lang"];
-				$user_regdate= $ricavo_info_users["user_regdate"];
-				$user_lastvisit= $ricavo_info_users["user_lastvisit"];
-				$pid_phpbb=$ricavo_info_users["user_ip"];
-				$phpbb_timezone=$ricavo_info_users["user_timezone"];
+				$id_level = $ricavo_info_users["group_id"];
+				$id_language = $ricavo_info_users["user_lang"];
+				$user_regdate = $ricavo_info_users["user_regdate"];
+				$user_lastvisit = $ricavo_info_users["user_lastvisit"];
+				$pid_phpbb = $ricavo_info_users["user_ip"];
+				$phpbb_timezone = $ricavo_info_users["user_timezone"];
 				// get avatar
-				$user_avatar_type= $ricavo_info_users["user_avatar_type"];
+				$user_avatar_type = $ricavo_info_users["user_avatar_type"];
 				$user_avatar = $ricavo_info_users["user_avatar"];
 				switch ($user_avatar_type) {
 				case 1: // avatar uploaded
