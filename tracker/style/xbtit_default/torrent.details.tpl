@@ -77,7 +77,7 @@ function show_wait()
         </tr>
         <tr>
           <td align="right" class="header"><tag:language.TORRENT /></td>
-          <td class="lista" align="center"><a href="download.php?id=<tag:torrent.info_hash />&amp;f=<tag:torrent.filename />.torrent"onClick="javascript:pageTracker._trackPageview('/download/<tag:torrent.info_hash />');"><tag:torrent.filename /></a></td>
+          <td class="lista" align="center"><a href="download.php?id=<tag:torrent.info_hash />&amp;f=<tag:torrent.filename />.torrent"onClick="javascript:pageTracker._trackPageview('/download/<tag:torrent.info_hash />');"><img src="../images/xList_ro_DownLoad.gif" alt="<tag:torrent.filename />"></a></td>
         </tr>
         <tr>
           <td align="right" class="header">Share this torrent</td>
@@ -103,7 +103,7 @@ function PostToFacebook()
 {
 var ShareURL = window.location.href;
 
-window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(ShareURL)+'&t=BitToxic.com torrent');
+window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(ShareURL)+'&t=xList.ro torrent');
 return false;
 }
 </script>
@@ -128,7 +128,7 @@ function PostToDigg()
 {
 var ShareURL = window.location.href;
 
-window.open('http://digg.com/submit?url='+encodeURIComponent(ShareURL)+'&title=BitToxic.com torrent');
+window.open('http://digg.com/submit?url='+encodeURIComponent(ShareURL)+'&title=xList.ro torrent');
 
 }
 </script>
