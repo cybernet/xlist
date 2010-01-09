@@ -67,7 +67,7 @@ function getLevel($cur_level)
 {
     global $TABLE_PREFIX;
     $query = "SELECT id, id_level FROM {$TABLE_PREFIX}users_level";
-    $rez = do_sqlquery($query,true);
+    $rez = do_sqlquery($query, true);
     
     while($row = mysql_fetch_assoc($rez))
     {
@@ -87,13 +87,13 @@ function updateSticky($hash,$sticky)
     $query = "UPDATE {$TABLE_PREFIX}files 
                    SET sticky='$sticky'
                    WHERE info_hash ='$hash'";
-    do_sqlquery($query,true);
+    do_sqlquery($query, true);
    
 }
 /*End mod by losmi - sticky mod
 End Operation #3*/
 /*Mod by losmi - faq mod */
-function genrelistfaq($append='',$table='faq')
+function genrelistfaq($append = '',$table = 'faq')
      {
 
      global $TABLE_PREFIX;
@@ -139,7 +139,7 @@ function getLevelVisible($cur_level)
 {
     global $TABLE_PREFIX;
     $query = "SELECT id, id_level FROM {$TABLE_PREFIX}users_level";
-    $rez = do_sqlquery($query,true);
+    $rez = do_sqlquery($query, true);
     
     while($row = mysql_fetch_assoc($rez))
     {
@@ -249,7 +249,7 @@ function print_designer() {
      include($STYLEPATH.'/style_copyright.php');
      $design_copyright = ''.$design_copyright.'';
   } else
-     $design_copyright = '[&nbsp;&nbsp;<u>CyBerFuN xBTiT By cybernet</u>: <a href="http://tracker.cyberfun.ro/" target="_blank">CyBerFuN Tracker</a>&nbsp;]';
+     $design_copyright = '[&nbsp;&nbsp;<u>CyBerFuN xBTiT By cybernet</u>: <a href="http://xList.ro/" target="_blank">xList Tracker</a>&nbsp;]';
   return $design_copyright;
 }
 
@@ -351,7 +351,7 @@ function warn($arr, $big = false)
      $style = "style=\"margin-left: 2pt\"";
   }
 
-  $pics = $arr["warn"]=="yes" ? "<img src=\"images/$warnpic\" alt=\"WARNED USER !\" border=\"0\" $style />" : "";
+  $pics = $arr["warn"] == "yes" ? "<img src=\"images/$warnpic\" alt=\"WARNED USER !\" border=\"0\" $style />" : "";
 
   return $pics;
 }
@@ -531,20 +531,20 @@ function pager($rpp, $count, $href, $opts = array()) {
   if ($pages > 1) {
     $pager .= "\n".'<form name="change_page'.$pagename.'" method="post" action="index.php">'."\n".'<select class="drop_pager" name="pages" onchange="location=document.change_page'.$pagename.'.pages.options[document.change_page'.$pagename.'.pages.selectedIndex].value" size="1">';
     for ($i = 1; $i <= $pages;$i++) 
-        $pager .= "\n<option ".($i==$page?'selected="selected"':'')."value=\"$href$pagename=$i\">$i</option>";
+        $pager .= "\n<option ".($i == $page ? 'selected="selected"':'')."value=\"$href$pagename=$i\">$i</option>";
     $pager.="\n</select>";
   }
 
   $mp = $pages;// - 1;
-  $begin = ($page > 3?($page < $pages-2?$page-2:$pages-2):1);
-  $end = ($pages > $begin + 2?($begin+2<$pages?$begin+2:$pages):$pages);
+  $begin = ($page > 3 ? ($page < $pages - 2 ? $page - 2:$pages - 2):1);
+  $end = ($pages > $begin + 2 ? ($begin + 2 < $pages ? $begin + 2:$pages):$pages);
   if ($page > 1) {
     $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename=1\">&nbsp;&laquo;</a></span>";
     $pager .= "\n<span class=\"pager\"><a href=\"{$href}$pagename=".($page-1)."\">&lt;&nbsp;</a></span>";
   }
 
   if ($count) {
-    for ($i = $begin;$i<=$end;$i++) {
+    for ($i = $begin;$i <= $end;$i++) {
       if ($i != $page)
         $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename=$i\">$i</a></span>";
       else
@@ -552,7 +552,7 @@ function pager($rpp, $count, $href, $opts = array()) {
     }
 
     if ($page < $mp && $mp >= 1) {
-      $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename=".($page+1)."\">&nbsp;&gt;</a></span>";
+      $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename=".($page + 1)."\">&nbsp;&gt;</a></span>";
       $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename=$pages\">&nbsp;&raquo;</a></span>";
     }
 
@@ -563,7 +563,7 @@ function pager($rpp, $count, $href, $opts = array()) {
     $pagerbottom = str_replace("change_page","change_page1", $pagertop)."\n";
   }
 
-  $start = ($page-1) * $rpp;
+  $start = ($page - 1) * $rpp;
   if ($pages < 2) {
     // only 1 page??? don't need pager ;)
     $pagertop = '';
@@ -584,7 +584,7 @@ function genrelist() {
 function categories($val = '') {
   global $TABLE_PREFIX, $CACHE_DURATION;
 
-  $return="\n".'<select name="category"><option value="0">----</option>';
+  $return = "\n".'<select name="category"><option value="0">----</option>';
 
   $c_q = get_result("SELECT c.id, c.name, sc.id as sid, sc.name as sname FROM {$TABLE_PREFIX}categories c LEFT JOIN {$TABLE_PREFIX}categories sc on c.id=sc.sub where c.sub='0' ORDER BY c.sort_index, sc.sort_index, c.id, sc.id", true, $CACHE_DURATION);
   $b_sub = 0;
@@ -695,7 +695,7 @@ function stdfoot($normalpage = true, $update = true, $adminpage = false, $torren
     echo $tpl->fetch(load_template('main.tpl'));
   elseif ($adminpage)
     echo $tpl->fetch(load_template('main.left_column.tpl'));
-  elseif ($torrentspage || $forumpage || $no_columns==1)
+  elseif ($torrentspage || $forumpage || $no_columns == 1)
     echo $tpl->fetch(load_template('main.no_columns.tpl'));
   else
     echo $tpl->fetch(load_template('main.no_header_1_column.tpl')); 
@@ -708,12 +708,10 @@ function stdfoot($normalpage = true, $update = true, $adminpage = false, $torren
 function linkcolor($num) {
   if (!$num)
     return '#FF0000';
-  if ($num == 1)
     return '#FFFF00';
-  return '#FFFF00';
 }
 
-function format_comment($text, $strip_html = true) {
+function format_comment($text, $strip_html = true, $smilies = true ) {
   global $smilies, $privatesmilies, $BASEURL;
 
   if ($strip_html)
@@ -731,16 +729,12 @@ function format_comment($text, $strip_html = true) {
 
   $text = bbcode($text);
 
-  // [*]
-  $text = preg_replace('/\[\*\]/', '<li>', $text);
-
-  // Maintain spacing
-  $text = str_replace('  ', ' &nbsp;', $text);
-
-  $smilies = array_merge($smilies, $privatesmilies);
-  reset($smilies);
-  while (list($code, $url) = each($smilies))
-    $text = str_replace($code, '<img border="0" src="'.$BASEURL.'/images/smilies/'.$url.'" alt="'.$url.'" />', $text);
+  if($smilies) {
+    $smilies = array_merge($smilies, $privatesmilies);
+    reset($smilies);
+    while (list($code, $url) = each($smilies))
+      $text = str_replace($code, '<img border="0" src="'.$BASEURL.'/images/smilies/'.$url.'" alt="'.$url.'" />', $text);
+  }
 
   return $text;
 }
@@ -759,21 +753,21 @@ function image_or_link($image, $pers_style = '',$link = '') {
 function success_msg($heading = 'Success!', $string, $close = false) {
   global $language, $STYLEPATH, $tpl, $page, $STYLEURL;
 
-  $suc_tpl=new bTemplate();
+  $suc_tpl = new bTemplate();
   $suc_tpl->set('success_title', $heading);
   $suc_tpl->set('success_message', $string);
   $suc_tpl->set('success_image', $STYLEURL.'/images/success.gif');
   $tpl->set('main_content', set_block($heading,'center', $suc_tpl->fetch(load_template('success.tpl'))));
 }
 
-function err_msg($heading = 'Error!', $string, $close=false) {
-  global $language, $STYLEPATH, $tpl, $page,$STYLEURL;
+function err_msg($heading = 'Error!', $string, $close = false) {
+  global $language, $STYLEPATH, $tpl, $page, $STYLEURL;
 
   // just in case not found the language
   if (!$language['BACK'])
     $language['BACK'] = 'Back';
 
-  $err_tpl=new bTemplate();
+  $err_tpl = new bTemplate();
   $err_tpl->set('error_title', $heading);
   $err_tpl->set('error_message', $string);
   $err_tpl->set('error_image', $STYLEURL.'/images/error.gif');
@@ -786,13 +780,13 @@ function err_msg($heading = 'Error!', $string, $close=false) {
   $tpl->set('main_content', set_block($heading, 'center', $err_tpl->fetch(load_template('error.tpl'))));
 }
 
-function information_msg($heading = 'Error!', $string, $close=false) {
+function information_msg($heading = 'Error!', $string, $close = false) {
   global $language, $STYLEPATH, $tpl, $page, $STYLEURL;
   // just in case not found the language
   if (!$language['BACK'])
     $language['BACK'] = 'Back';
 
-  $err_tpl=new bTemplate();
+  $err_tpl = new bTemplate();
   $err_tpl->set('information_title', $heading);
   $err_tpl->set('information_message', $string);
   $err_tpl->set('information_image', $STYLEURL.'/images/error.gif');
@@ -839,7 +833,7 @@ function set_block($block_title, $alignement, $block_content, $width100 = true) 
 function get_block($block_title, $alignement, $block, $use_cache = true, $width100 = true) {
   global $STYLEPATH, $TABLE_PREFIX, $language, $CACHE_DURATION, $CURUSER;
 
-  $blocktpl=new bTemplate();
+  $blocktpl = new bTemplate();
   $blocktpl->set('block_width',($width100?'width="100%"':''));
   $blocktpl->set('block_title',$block_title);
   $blocktpl->set('block_align',$alignement);
@@ -941,7 +935,7 @@ function is_valid_id($id) {
 
 function get_date_time($timestamp = 0) {
   if ($timestamp)
-    return date('d/m/Y H:i:s', $timestamp-$offset);
+    return date('d/m/Y H:i:s', $timestamp - $offset);
 
   global $CURRENTPATH;
   include $CURRENTPATH.'/offset.php';
@@ -1060,7 +1054,7 @@ function DateFormat($seconds) {
 
 function smf_passgen($username, $pwd) {
   $passhash = sha1(strtolower($username) . $pwd);
-  $salt=substr(md5(rand()), 0, 4);
+  $salt = substr(md5(rand()), 0, 4);
 
   return array($passhash, $salt);
 }

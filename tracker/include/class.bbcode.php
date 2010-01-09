@@ -11,8 +11,14 @@
 * BB Code parser by James Wilson
 * Copyright (c) 2007, James Wilson, drakewilson@gmail.com
 * Released under GPL, http://www.gnu.org/copyleft/gpl.html
-* Site: http://nothingoutoftheordinary.com/scripts/bbcode/
-* Example: http://examples.nothingoutoftherordinary.com/bbcode/
+* Old Site: http://nothingoutoftheordinary.com/scripts/bbcode/
+* Example: http://examples.nothingoutoftheordinary.com/bbcode/
+* New Site: http://ja.meswilson.com/bbcode/
+* extensive modifications by WormFood, Aug-Sep 2009
+*
+* the $count feature used in preg_replace, was introduced with php 5.1.0
+* if using lower versions of php, then those lines would have to be modified.
+*
 * 
 * Usage:
 * In the files you want to use this, place this code:
@@ -20,29 +26,104 @@
 * Assuming this file is in the same directory
 * 
 * To parse content, call the function bbcode, like
-* bbcode($post)
+* bbcode($post);
 * Or in an echo statement
 * echo bbcode($post);
 * 
 * Simple as that.
+*
+* Syntax Notes:
+* all tags, that use an equal sign (=), can have their contents enclosed in single
+* or double quotes.
+* Example: [url="http://somesite.com/"] works the same as [url=http://somesite.com/]
+*
+* All tags can use an optonal single digit after their name. This is so you
+* can have control over nested tags, and maybe help you keep track of which
+* tag ends where to make editing easier. This feature is required, if you
+* want to have unordered lists and ordered lists mixed together, but I
+* can't think of any other cases where this feature is required.
+* Example: [center4]centered text[/center4].
+*
+* The foreground color tags can use an optional fg or fg- before the color name.
+* Example: [fg-red], [fgred], [red] and [color='red'] are all equal in function.
+* The background color tag, must use bg or bg- before the color name when used as tag
+* Example: [bg-blue], [bgblue], and [bg-color=blue] are all equal in function.
 * 
 * Valid codes:
-* [url=uri]text[/url]
-* [url]uri[/url]
-* http://site -> link
-* [img]imageuri[/img]
-* [email]emailaddress[/email]
-* [b]text[/b]
-* [i]text[/i]
-* [u]text[/u]
-* [quote]text[/quote]
-* [quote=author]text[/quote]
-* [color=color]text[/color]
-* [color=######]text[/color]
-* [size=#]text[/size]
-* [list][*]1[*]2[*]3[/list]
-* [list=1|a]*]1[*]2[*]3[/list]
-* 
+*
+* bbcode handling
+* [noparse]{text}[/noparse] = {text} is not parsed for bbcodes.
+*
+* Blocks/sections/areas
+* [code]{code text}[/code] = contents are "tt" (teletype) text and are not parsed
+* [quote]{text}[/quote] = Enclose {text} in a 'quote' block.
+* [quote={author}]{text}[/quote] = Enclose {text} in a 'quote' block, with {author} as the writer.
+*
+* URL functions
+* [img]{imageuri}[/img] = embed image into page
+* [img={imageuri}] = embed image into page
+* [url={uri}]{text}[/url] = make {text} a link to {uri}
+* [url]{uri}[/url] = make {uri} a linl
+* http://site -> link = translate bare URL (not in a url tag) into a link
+* [email]{emailaddress}[/email]
+*
+* Text formatting and layout
+* [none]{text}[/none] = normal text (cancels existing text processing, normally used within another block)
+* [b]{text}[/b] = bold text
+* [strong]{text}[/strong] = strong text - usually bold, but can be set with style sheets
+* [i]{text}[/i] = italics text
+* [em]{text}[/em] = Emphasised text - usually italics, but can be set with style sheets
+* [u]{text}[/u] = underline text
+* [underline]{text}[/underline] = underline text
+* [overline]{text}[/overline] = overline text
+* [s]{text}[/s] = strike through text
+* [strike]{text}[/strike] = strike through text
+* [line-through]{text}[/line-through] = line through text (same as [strike] and [s])
+* [sub]{text}[/sub] = Subscript text
+* [sup]{text}[/sup] = Superscript text
+* [tt]{text}[/tt] = teletype text
+* [blink]{text}[/blink] = blinking text
+*
+* Text Size
+* [big]{text}[/big] = enclose {text} in html <big> tags. This is different from below.
+* [size={#}]{text}[/size] = set text size, where # is a digit from 1 to 8, for 50% to 400% size.
+* [size={xx-small|x-small|small|normal|large|x-large|xx-large|smaller|larger}]{text}[/size] = Change {text} to given size. "larger" and "smaller" are relative.
+* [xx-small]{text}[/xx-small] = xx-small text
+* [x-small]{text}[/x-small] = x-small text
+* [small]{text}[/small] = small text
+* [normal]{text}[/normal] = normal text
+* [large]{text}[/large] = large text
+* [x-large]{text}[/x-large] = x-large text
+* [xx-large]{text}[/xx-large] = xx-large text
+* [smaller]{text}[/smaller] = smaller text
+* [larger]{text}[/larger] = larger text
+*
+* Text alignment
+* [left]{text}[/left] = left justified text
+* [right]{text}[/right] = right justified text
+* [center]{text}[/center] = center justified text
+* [justify]{text}[/justify] = right and left justified text
+* [pre]{text}[/pre] = pre-formatted text
+*
+* Colored text handling - 'color' can also be spelled 'colour', and the dash is optional (fgcolor==fg-color)
+* [color={######}]{text}[/color] = set text color, where {######} is a 6 digit hex color code
+* [color={color}]{text}[/color] = set text color, where {color} is any word between 3 and 25 characters long
+*   black, silver, gray, white, maroon, red, purple, fuchsia, green, lime, olive, yellow, navy, blue, teal, aqua.
+* [{color}]{text}[/{color}] = set color where {color} is one of the 16 colors defined by w3c
+* [fg-{color}]{text}[/fg{color}] = set text color, where {color} is one of the 16 supported w3c colors.
+* [bg-color={######}]{text}[/color] = set background color, where {######} is a 6 digit hex color code
+* [bg-{color}]{text}[/bg{color}] = set background color, where {color} is one of the 16 supported w3c colors.
+*
+* Ordered and unordered list
+* [list][*]{1}[*]{2}[*]{3}...[/list] = unordered list, using filled in circle bullets
+* [list=circle][*]{1}[*]{2}[*]{3}...[/list] = unordered list, using hollow circle bullets
+* [list=disc][*]{1}[*]{2}[*]{3}...[/list] = unordered list, using filled in circle bullets
+* [list=square][*]{1}[*]{2}[*]{3}...[/list] = unordered list, using filled in square bullets
+* [list=1][*]{1}[*]{2}[*]{3}...[/list] = ordered list, using normal numbers
+* [list=a][*]{1}[*]{2}[*]{3}...[/list] = Ordered list, using lower case letters
+* [list=A][*]{1}[*]{2}[*]{3}...[/list] = Ordered list, using upper case letters
+* [list=i][*]{1}[*]{2}[*]{3}...[/list] = Ordered list, using lower case roman numbers
+* [list=I][*]{1}[*]{2}[*]{3}...[/list] = Ordered list, using upper case roman numbers
 * 
 * Also included, function dehtml which allows nonparsed content to be outputted out to page safely
 * Just call:
@@ -54,36 +135,48 @@
 $img_count = 0;
 // 3 functions for the bbcode. Have to be declared outside the function to be able to call bbcode more than once.
 function dosize($matches) {
-  return '<span style="font-size: '.(50*$matches[1]).'%">'.$matches[2].'</span>';
+  return '<span style="font-size: '.(50*$matches[3]).'%">'.$matches[4].'</span>';
 }
 
-function noparsed($matches) {
-  return str_replace(array('[',']','://'), array('&#91;','&#93;','&#58;&#47;&#47;'),$matches[1]);
-}
+function noparsed($matches) { // any character that is parsed, must be here
+  static $replace = array(
+    '://' => '&#58;&#47;&#47;',
+    '('   => '&#40;',
+    ')'   => '&#41;',
+    '-'   => '&#45;',
+    '/'   => '&#47;',
+    ':'   => '&#58;',
+    '['   => '&#91;',
+    ']'   => '&#93;',
+    '_'   => '&#95;',); 
+  return str_replace( array_keys($replace), array_values($replace), $matches[2]);
 
 function formatlist($matches) {
-  if ($matches[2] == '') {
-    $end = '</ul>';
+  if ($matches[3] == '') {
     $content .= '<ul>';
-  } elseif(is_numeric($matches[2])) {
+    $end = '</ul>';
+  } elseif(strtolower($matches[3]) == "a" || strtolower($matches[3]) == "i") {
+    $content .= "<ol type=\"{$matches[3]}\">";
     $end = '</ol>';
-    $content .= '<ol type="1">';
-  } else {
-    $end = '</ol>';
-    $content .= '<ol type="a">';
+    } else {
+    $content .= "<ul type=\"{$matches[3]}\">";
+    $end = '</ul>';
   }
 
-  return $content.str_replace('[*]',"\n".'<li>',$matches[3]).$end;
+  return $content.$matches[4].$end;
 }
 
 function parseimage($matches) {
   global $img_count;
 
   $img_count++;
-  return "\n<div id=\"img{$img_count}\" style=\"font-size:'1'; display:inline;\">\n<img name=\"img{$img_count}\" onload='resize(this);' src='$matches[1]' border='0' alt='' /></div>";
+  return "<div id=\"img{$img_count}\" style=\"font-size:'1'; display:inline;\"><img name=\"img{$img_count}\" onload='resize(this);' src='$matches[3]&#58;&#47;&#47;$matches[4]' border='0' alt='' /></div>";
 }
 
 function bbcode($content) {
+
+global $language;
+
   // Fix & to be &amp; unless it's already &amp; or a special character like  &#9600;  or some regualr ones like <,>,",(c), . More can be found here: http://www.utexas.edu/learn/html/spchar.html  But they can use the decimal verisons if the want those
   $content = preg_replace('/&(?!(amp|[#0-9]+|lt|gt|quot|copy|nbsp);)/ix','&amp;', $content);
 
@@ -91,70 +184,132 @@ function bbcode($content) {
   $content = str_replace(array('&#160;','&#173;','&#8205;','&#8204;','&#8237;','&#8238;'),'', $content);
 
   // Change new lines to <br />. nl2br function probably would work also. It's probably the same as this though. And gets rid of htmlchars. htmlentities screws up the &amp; stuff.
-  $content = str_replace(array('<','>','\'','"',"\r\n","\r","\n"),array('&lt;','&gt;','&#39;','&quot;','<br />','<br />','<br />'), $content);
+  $content = str_ireplace(array("\r\n","\r","\n"), '<br />', $content);
 
-  // No parse. Just replace [, ], and :// to their HTML equivalents
-  $content = preg_replace_callback('/\[noparse\](.+?)\[\/noparse\]/i','noparsed', $content);
+do{ // No parse. Just replace anything that is parsed, into their HTML equivalents
+    $content = preg_replace_callback('/\[(noparse(?:\d|))\](.+?)\[\/\1\]/i','noparsed', $content, -1, & $count);
+  }while($count);
+
+  do{ // code tags must be parsed first, because their contents are not parsed.
+    $content = preg_replace('/\[(code(?:\d|))\](.+?)\[\/\1\]/i','<br /><b>Code</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="code"><tr><td>[tt][noparse9]$2[/noparse9][/tt]</td></tr></table><br />', $content, -1, & $count);
+  }while($count);
+
+  do{ // code blocks insert the noparse tag. Can't parse the code block first, or you can't use noparse on it.
+    $content = preg_replace_callback('/\[(noparse(?:\d|))\](.+?)\[\/\1\]/i','noparsed', $content, -1, & $count);
+  }while($count);
+
+  // Quotes!
+  do{
+    $content = preg_replace('/\[(quote(?:\d|))\](.+?)\[\/\1\]/i','<br /><b>'.$language['QUOTE'].':</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="quote"><tr><td >$2</td></tr></table><br />',$content, -1, &$count);
+  }while($count);
+  do{
+    $content = preg_replace('/\[(quote(?:\d|))=(&quot;|&#(?:0|)39;|"|\'|)(.+?)\2\](.+?)\[\/\1\]/i','<br /><b>$3 '.$language['WROTE'].':</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="quote"><tr><td>$4</td></tr></table><br />', $content, -1, & $count);
+  }while($count);
+  // .userquoteinfo { font-size:85%; font-weight: bold; font-style: italic; }
+
+  // Images. They have to have http://. src attributes are XSSable in IE 6.0, Netscape, and Opera. http://ha.ckers.org/xss.html. Even though it's hard to do without () or \, best not to mess around with it.
+  $content = preg_replace_callback('/\[(img(?:\d|))\](&quot;|&#(?:0|)39;|"|\'|)(http|https|ftp|ftps):\/\/([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\2\[\/\1\]/i','parseimage', $content);
+  $content = preg_replace_callback('/\[(img(?:\d|))=(&quot;|&#(?:0|)39;|"|\'|)(http|https|ftp|ftps):\/\/([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\2\]/i','parseimage', $content);
 
   // [url=uri]text[/url]
-  $content = preg_replace('(\[(URL|url)\=((http|ftp|https):\/\/[a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\](.+?)\[\/(URL|url)\])', '<a href="$2">$4</a>', $content);
+  $content = preg_replace('/\[(url(?:\d|))\=(&quot;|&#(?:0|)39;|"|\'|)(http|https|ftp|ftps|ed2k|irc):\/\/([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\2\](.+?)\[\/\1\]/i', '<a href="$3&#58;&#47;&#47;$4" target="_blank">$5</a>', $content);
   // For people too lazy to put http:// on the uri. /Shouldn't/ be XSSable
-  $content = preg_replace('(\[(URL|url)\=([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\](.+?)\[\/(URL|url)\])', '<a href="http://$2">$3</a>', $content);
+  $content = preg_replace('/\[(url(?:\d|))\=(&quot;|&#(?:0|)39;|"|\'|)([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\2\](.+?)\[\/\1\]/i', '<a href="http&#58;&#47;&#47;$3" target="_blank">$4</a>', $content);
 
   // [url]uri[/url]
-  $content = preg_replace('(\[url\]((http|ftp|https):\/\/([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*))\[\/url\])','<a href="$2&#58;&#47;&#47;$3">$2&#58;&#47;&#47;$3</a>',$content);
+  $content = preg_replace('/\[(url(?:\d|))\](http|https|ftp|ftps|ed2k|irc):\/\/([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\[\/\1\]/i','<a href="$2&#58;&#47;&#47;$3" target="_blank">$2&#58;&#47;&#47;$3</a>', $content);
   // lazy http:// people...
-  $content = preg_replace('(\[url\]([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\[\/url\])','<a href="http&#58;&#47;&#47;$1">http&#58;&#47;&#47;$1</a>',$content);
+  $content = preg_replace('/\[(url(?:\d|))\]([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)\[\/\1\]/i','<a href="http&#58;&#47;&#47;$2" target="_blank">http&#58;&#47;&#47;$2</a>', $content);
 // YouTube Vids
     $content = preg_replace("/\[video=[^\s'\"<>]*youtube.*.*v=([^\s'\"<>]+)\]/ims", "<object width=\"320\" height=\"265\"><param name=\"movie\" value=\"http://www.youtube.com/v/\\1\"></param><embed src=\"http://www.youtube.com/v/\\1\" type=\"application/x-shockwave-flash\" width=\"320\" height=\"265\"></embed></object>", $content);
     // Google Vids
     $content = preg_replace("/\[video=[^\s'\"<>]*video.google.*.*docid=(-?[0-9]+).*\]/ims", "<embed style=\"width:320px; height:265px;\" id=\"VideoPlayback\" align=\"middle\" type=\"application/x-shockwave-flash\" src=\"http://video.google.com/googleplayer.swf?docId=\\1\" allowScriptAccess=\"sameDomain\" quality=\"best\" bgcolor=\"#ffffff\" scale=\"noScale\" wmode=\"window\" salign=\"TL\" FlashVars=\"playerMode=embedded\"> </embed>", $content);
 
-  // Images. They have to have http://. src attributes are XSSable in IE 6.0, Netscape, and Opera. http://ha.ckers.org/xss.html. Even though it's hard to do without () or \, best not to mess around with it.
-
-  $content = preg_replace_callback('/\[img\]((http|ftp|https):\/\/([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*))\[\/img\]/i','parseimage', $content);
-  $content = preg_replace_callback('/\[img=((http|ftp|https):\/\/([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*))\]/i','parseimage', $content);
-
   // http://www.google.com -> <a href="http://www.google.com">http://www.google.com</a>
-  $content = preg_replace('/(?<![href|src]=)(["|\']http|ftp|https):\/\/([^(|\s|=|\]|\[|\<|\>)]*["|\'])/i','<a href="$1://$2">$1://$2</a>', $content);
+  $content = preg_replace('/(?<![href|src]=[&quot;|&#(?:0|)39;|"|\'])(http|https|ftp|ftps|ed2k|irc):\/\/([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]*)/i','<a href="$1://$2" target="_blank">$1://$2</a>', $content);
 
-  // Email. Do people even use this?
-  $content = preg_replace('(\[email\]([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]+)@([a-zA-Z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]+)\[\/email\])','<a href="mailto:$1@$2">$1@$2</a>',$content);
+  // Email. Do people even use this? Yes, so they can get revenge on someone by posting their email address.
+  $content = preg_replace('/\[(email(?:\d|))\]([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]+)@([a-z0-9\/\-\+\?\&\.\=\_\~\#\'\%\;]+)\[\/\1\]/i','<a href="mailto:$2@$3">$2@$3</a>', $content);
 
-  // bold, italics, underline
-  while (preg_match('/\[b\](.+?)\[\/b\]/i', $content))
-    $content = preg_replace('/\[b\](.+?)\[\/b\]/i','<b>$1</b>', $content);
-  while (preg_match('/\[i\](.+?)\[\/i\]/i', $content))
-    $content = preg_replace('/\[i\](.+?)\[\/i\]/i','<i>$1</i>', $content);
-  while (preg_match('/\[u\](.+?)\[\/u\]/i', $content))
-    $content = preg_replace('/\[u\](.+?)\[\/u\]/i','<font style="text-decoration: underline;">$1</font>', $content);
+  do{ // bold, big, italics, strike through, tt, underline, em, strong, subscript, superscript, blink, overline, pre
+    $content = preg_replace('/\[((b|big|i|s|strike|tt|u|em|strong|sub|sup|pre)(?:\d|))\](.+?)\[\/\1\]/i','<$2>$3</$2>', $content, -1, & $count);
+  }while($count);
+  do{
+    $content = preg_replace('/\[((blink|overline|underline|line-through|none)(?:\d|))\](.+?)\[\/\1\]/i','<font style="text-decoration: $2;">$3</font>', $content, -1, & $count);
+  }while($count);
 
-  // font color. Word type, like [color=red]RED[/color]
-  while (preg_match('/\[color=([a-z]+)\](.+?)\[\/color\]/i', $content))
-    $content = preg_replace('/\[color=([a-z]+)\](.+?)\[\/color\]/i','<font color="$1">$2</font>', $content);
-  // Number type, like [color=696969]GREY[/color]
-  while (preg_match('/\[color=([0-9]{3,6})\](.+?)\[\/color\]/i', $content))
-    $content = preg_replace('/\[color=([0-9]{3,6})\](.+?)\[\/color\]/i','<span style="color: #$1;">$2</span>', $content);
+  do{ // [left], [center], [right] and [justify] tags
+    $content = preg_replace('/\[((left|right|center|justify)(?:\d|))\](.+?)\[\/\1\]/i', '<div align="$2">$3</div>', $content, -1, & $count);
+  }while($count);
 
-  // code
-  while (preg_match('/\[code\](.+?)\[\/code\]/i', $content))
-    $content = preg_replace('/\[code\](.+?)\[\/code\]/i','<br /><b>Code</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="code"><tr><td>\\1</td></tr></table><br />', $content);
+  do{ // the color is the tag itself, like [fgyellow]yellow text[/fgyellow], or [fg-blue]blue text[/fg-blue]
+  // If the color is the tag itself, like [green], then it must ALWAYS be a whitelist of accepted colors.
+    $content = preg_replace('/\[((?:fg|fg-|)(black|silver|gray|white|maroon|red|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua)(?:\d|))\](.+?)\[\/\1\]/i','<font color="$2">$3</font>', $content, -1, & $count);
+  }while($count);
+  do{ // font color. Word type, like [color=red]RED[/color] not limited in name, for backwards compatability.
+    $content = preg_replace('/\[((?:fg|fg-|)colo(?:u|)r(?:\d|))=(&quot;|&#(?:0|)39;|"|\'|)([a-z]{3,25})\2\](.+?)\[\/\1\]/i','<font color="$3">$4</font>', $content, -1, & $count);
+  }while($count);
+  do{ // Color specified in RGB triplet, like [color=696969]GREY[/color]
+    $content = preg_replace('/\[((?:fg|fg-|)colo(?:u|)r(?:\d|))=(&quot;|&#(?:0|)39;|"|\'|)([\dA-F]{3,6})\2\](.+?)\[\/\1\]/i','<span style="color: #$3;">$4</span>', $content, -1, & $count);
+  }while($count);
 
-  // Quotes!
-  global $language;
-  while (preg_match('/\[quote\](.+?)\[\/quote\]/i', $content))
-    $content = preg_replace('/\[quote\](.+?)\[\/quote\]/i','<br /><b>'.$language['QUOTE'].':</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="quote"><tr><td >\\1</td></tr></table><br />', $content);
-  while (preg_match('/\[quote=(.+?)\](.+?)\[\/quote\]/i', $content))
-    $content = preg_replace('/\[quote=(.+?)\](.+?)\[\/quote\]/i','<br /><b>\\1 '.$language['WROTE'].':</b><br /><table width="100%" border="1" cellspacing="0" cellpadding="10" class="quote"><tr><td>\\2</td></tr></table><br />', $content);
-  // .userquoteinfo { font-size:85%; font-weight: bold; font-style: italic; }
+  // background colors
+  do{ // but since the bgcolor tag is new, I will limit the colors, for maximum web compatability. Of course you can set any color you like with the RGB background tag. Maybe remove color whitelist, dependong on user feedback.
+    $content = preg_replace('/\[((?:bg|bg-)colo(?:u|)r(?:\d|))=(&quot;|&#(?:0|)39;|"|\'|)(black|silver|gray|white|maroon|red|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua)\2\](.+?)\[\/\1\]/i','<span style="background: $3;">$4</span>', $content, -1, & $count);
+  }while($count);
+  do{ // This background tag uses the following syntax, for a red background: [bgred] or [bg-red] 
+    $content = preg_replace('/\[((?:bg|bg-)(black|silver|gray|white|maroon|red|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua)(?:\d|))\](.+?)\[\/\1\]/i','<span style="background: $2;">$3</span>', $content, -1, & $count);
+  }while($count);
+  do{ // background color specified in RGB triplet, like [bg-color=ff0000]red background[/bg-color]
+    $content = preg_replace('/\[((?:bg|bg-)colo(?:u|)r(?:\d|))=(&quot;|&#(?:0|)39;|"|\'|)([0-9A-F]{3,6})\2\](.+?)\[\/\1\]/i','<span style="background: #$3;">$4</span>', $content, -1, & $count);
+  }while($count);
 
-  // Size. 1,2,3,4 = 75, 125, 175, 225.  Algo: 25 + 50 * size
-  while (preg_match('/\[size=([1-7])\](.+?)\[\/size\]/i',$content))
-    $content = preg_replace_callback('/\[size=([1-7])\](.+?)\[\/size\]/i','dosize', $content);
+
+  do{ // Size. 1,2,3,4...8 = 50%, 100%, 150%, 200%...400%  Algo: 50 * size
+    $content = preg_replace_callback('/\[(size(?:\d|))=(&quot;|&#(?:0|)39;|"|\'|)([1-8])\2\](.+?)\[\/\1\]/i','dosize', $content, -1, & $count);
+  }while($count);
+  do{ // [size=xx-small] style tag
+    $content = preg_replace('/\[(size(?:\d|))=(&quot;|&#(?:0|)39;|"|\'|)((xx-small|x-small|small|medium|large|x-large|xx-large|larger|smaller)(?:\d|))\2\](.+?)\[\/\1\]/i','<font style="font-size: $4;">$5</font>', $content, -1, & $count);
+  }while($count);
+  do{ // [xx-large] style tag
+    $content = preg_replace('/\[((xx-small|x-small|small|medium|large|x-large|xx-large|larger|smaller)(?:\d|))\](.+?)\[\/\1\]/i','<font style="font-size: $2;">$3</font>', $content, -1, & $count);
+  }while($count);
 
   //Lists
-  while (preg_match('/\[list(=(a|1))?\](.+?)\[\/list\]/i',$content))
-    $content = preg_replace_callback('/\[list(=(a|1))?\](.+?)\[\/list\]/i','formatlist', $content);
+    do{ // [list] or [list=a] or [list=circle] etc
+    $content = preg_replace_callback('/\[(list(?:\d|))(?:=(&quot;|&#(?:0|)39;|"|\'|)(a|i|1|disc|square|circle)\2|)\](.+?)\[\/\1\]/i','formatlist', $content, -1, & $count);
+  }while($count);
+
+  // just some little things I thought might be nice to have.
+  static $replace = array(
+    "  "   => " &nbsp;",
+    "[*]"  => "<li>",
+    "[hr]" => "<hr>",
+    "(c)"  => "&copy;",
+    "[c]"  => "&copy;",
+    "(p)"  => "&#8471;",
+    "[p]"  => "&#8471;",
+    "(r)"  => "&reg;",
+    "[r]"  => "&reg;",
+    "(tm)" => "&trade;",
+    "[tm]" => "&trade;",
+    "1/2"  => "&frac12;",
+    "1/3"  => "&#8531;",
+    "2/3"  => "&#8532;",
+    "1/4"  => "&frac14",
+    "3/4"  => "&frac34;",
+    "1/5"  => "&#8533;",
+    "2/5"  => "&#8534;",
+    "3/5"  => "&#8535;",
+    "4/5"  => "&#8536;",
+    "1/6"  => "&#8537;",
+    "5/6"  => "&#8538;",
+    "1/8"  => "&#8539;",
+    "3/8"  => "&#8540;",
+    "5/8"  => "&#8541;",
+    "7/8"  => "&#8542;"
+  );
+  $content = str_ireplace(array_keys($replace), array_values($replace), $content);
 
   return $content;
 }
