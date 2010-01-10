@@ -75,7 +75,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
    $fname = htmlspecialchars(AddSlashes(unesc($_POST["name"])));
    $torhash = AddSlashes($_POST["info_hash"]);
    write_log("Modified torrent $fname ($torhash)", "modify");
-   do_sqlquery("UPDATE {$TABLE_PREFIX}files SET filename='$fname', comment='" . AddSlashes($_POST["comment"]) . "', category=" . intval($_POST["category"]) . "  , visible = $visible WHERE info_hash='" . $torhash . "'", true);
+   do_sqlquery("UPDATE {$TABLE_PREFIX}files SET tag='".AddSlashes($_POST["tag"])."', filename='$fname', comment='" . AddSlashes($_POST["comment"]) . "', category=" . intval($_POST["category"]) . "  , visible = $visible WHERE info_hash='" . $torhash . "'", true);
 $userfile = $_FILES["userfile"];
         $screen1 = $_FILES["screen1"];
         $screen2 = $_FILES["screen2"];
@@ -354,7 +354,7 @@ if (isset($_GET["info_hash"])) {
        $ttables = "{$TABLE_PREFIX}files f";
        }
 
-  $query = "SELECT f.image, f.screen1, f.screen2, f.screen3, f.info_hash, f.filename, f.visible, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.category as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.uploader FROM $ttables WHERE f.info_hash ='" . AddSlashes($_GET["info_hash"]) . "'";
+  $query = "SELECT tag, f.image, f.screen1, f.screen2, f.screen3, f.info_hash, f.filename, f.visible, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.category as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.uploader FROM $ttables WHERE f.info_hash ='" . AddSlashes($_GET["info_hash"]) . "'";
   $res = do_sqlquery($query, true);
   $results = mysql_fetch_assoc($res);
 
@@ -422,6 +422,7 @@ if (isset($_GET["info_hash"])) {
             /*End sticky by losmi*/
     $torrent["link"] = "index.php?page=edit&info_hash=".$results["info_hash"]."&returnto=".urlencode($link);
     $torrent["filename"] = $results["filename"];
+    $torrent["tag"] = $results["tag"];
     $torrent["info_hash"] = $results["info_hash"];
     $torrent["description"] = textbbcode("edit", "comment", unesc($results["comment"]));
     $torrent["size"] = makesize($results["size"]);

@@ -55,6 +55,46 @@
         <tr>
           <td align="center" width="45" class="lista" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].category /></td>
           <td align="left" class="lista" style="white-space:wrap;padding-left:10px;<tag:torrents[].color />"><tag:torrents[].filename /><tag:torrents[].level /></td>
+<script>
+var g_nExpando=0;
+function putItemInState(n,bState)
+{
+   var oItem,oGif;
+      oItem=document.getElementById("descr"+n);
+   oGif=document.getElementById("expandoGif"+n);
+   
+   if (bState=='toggle')
+     bState=(oItem.style.display=='block');
+
+   if(bState)
+   {
+       bState=(oItem.style.display='none');
+       bState=(oGif.src='images/plus.gif');
+   }
+   else
+   {
+       bState=(oItem.style.display='block');
+       bState=(oGif.src='images/minus.gif');
+   }
+}
+
+function expand(nItem)
+{
+    putItemInState(nItem,'toggle');
+}
+
+function expandAll()
+{
+    if (!g_nExpando)
+    {
+        document.all.chkFlag.checked=false;
+        return;
+    }
+    var bState=!document.all.chkFlag.checked;
+    for(var i=0; i<g_nExpando; i++)
+        putItemInState(i,bState);
+}
+</script>
           <if:WT1>
           <td align="center" width="20" class="lista" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].waiting /></td>
           <else:WT1>

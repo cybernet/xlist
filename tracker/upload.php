@@ -66,7 +66,7 @@ if (isset($_FILES["torrent"]))
    {
       $fd = fopen($_FILES["torrent"]["tmp_name"], "rb") or stderr($language["ERROR"], $language["FILE_UPLOAD_ERROR_1"]);
       is_uploaded_file($_FILES["torrent"]["tmp_name"]) or stderr($language["ERROR"], $language["FILE_UPLOAD_ERROR_2"]);
-      $length=filesize($_FILES["torrent"]["tmp_name"]);
+      $length = filesize($_FILES["torrent"]["tmp_name"]);
       if ($length)
         $alltorrent = fread($fd, $length);
       else {
@@ -104,6 +104,10 @@ if (isset($_POST["filename"]))
    $filename = mysql_real_escape_string(htmlspecialchars($_POST["filename"]));
 else
     $filename = mysql_real_escape_string(htmlspecialchars($_FILES["torrent"]["name"]));
+if (isset($_POST["tag"]))
+   $tag = mysql_real_escape_string(htmlspecialchars($_POST["tag"]));
+else
+    $tag = "";
 
 if (isset($hash) && $hash) $url = $TORRENTSDIR . "/" . $hash . ".btf";
 else $url = 0;
@@ -439,14 +443,14 @@ if (!isset($array["announce"]))
 				}
 			}
 		}
-//      if ($announce!=$BASEURL."/announce.php")
+//      if ($announce != $BASEURL."/announce.php")
         
       if (in_array($announce, $TRACKER_ANNOUNCEURLS)){
          $internal = true;
          // inserting into xbtt table
          if ($XBTT_USE)
               do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$hash ON DUPLICATE KEY UPDATE flags=0",true);
-         $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, url, info, category, data, size, comment, comment_notify, uploader,anonymous, bin_hash, image, screen1, screen2, screen3) VALUES (\"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$comment_notify,$curuid,$anonyme,0x$hash, '$file_name', '$file_name_s1', '$file_name_s2', '$file_name_s3')";
+         $query = "INSERT INTO {$TABLE_PREFIX}files (tag, info_hash, filename, url, info, category, data, size, comment, comment_notify, uploader,anonymous, bin_hash, image, screen1, screen2, screen3) VALUES (\"$tag\", \"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$comment_notify,$curuid,$anonyme,0x$hash, '$file_name', '$file_name_s1', '$file_name_s2', '$file_name_s3')";
       }else
           {
           // maybe we find our announce in announce list??
@@ -466,10 +470,10 @@ if (!isset($array["announce"]))
                 {
                 // ok, we found our announce, so it's internal and we will set our announce as main
                    $array["announce"] = $TRACKER_ANNOUNCEURLS[0];
-                   $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, url, info, category, data, size, comment, comment_notify, uploader,anonymous, bin_hash, image, screen1, screen2, screen3) VALUES (\"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$comment_notify,$curuid,$anonyme,0x$hash, '$file_name', '$file_name_s1', '$file_name_s2', '$file_name_s3')";
+                   $query = "INSERT INTO {$TABLE_PREFIX}files (tag, info_hash, filename, url, info, category, data, size, comment, comment_notify, uploader,anonymous, bin_hash, image, screen1, screen2, screen3) VALUES (\"$tag\", \"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$comment_notify,$curuid,$anonyme,0x$hash, '$file_name', '$file_name_s1', '$file_name_s2', '$file_name_s3')";
                 }
               else
-                  $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, url, info, category, data, size, comment, comment_notify, external,announce_url, uploader,anonymous, bin_hash, image, screen1, screen2, screen3) VALUES (\"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$comment_notify,\"yes\",\"$announce\",$curuid,$anonyme,0x$hash, '$file_name', '$file_name_s1', '$file_name_s2', '$file_name_s3')";
+                  $query = "INSERT INTO {$TABLE_PREFIX}files (tag, info_hash, filename, url, info, category, data, size, comment, comment_notify, external,announce_url, uploader,anonymous, bin_hash, image, screen1, screen2, screen3) VALUES (\"$tag\", \"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$comment_notify,\"yes\",\"$announce\",$curuid,$anonyme,0x$hash, '$file_name', '$file_name_s1', '$file_name_s2', '$file_name_s3')";
         }
       //echo $query;
       $status = do_sqlquery($query); //makeTorrent($hash, true);

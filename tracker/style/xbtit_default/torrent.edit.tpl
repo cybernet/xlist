@@ -5,6 +5,10 @@
         <td align="right" class="header"><tag:language.FILE /></td>
         <td class="lista"><input type="text" name="name" value="<tag:torrent.filename />" size="60" /></td>
       </tr>
+      <tr>
+        <td align="right" class="header">Tag</td>
+        <td class="lista"><input type="text" name="tag" value="<tag:torrent.tag />" size="60" /></td>
+      </tr>
       <if:imageon>
       <tr>
       <td class="header" ><tag:language.IMAGE /> (<tag:language.FACOLTATIVE />):<input type="hidden" name="userfileold" value="<tag:torrent.image />" /></td>

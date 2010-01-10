@@ -69,7 +69,10 @@ function CheckForm()
       <td class="header" ><tag:language.FILE_NAME /></td>
       <td class="lista" align="left"><input type="text" name="filename" size="50" maxlength="200" /></td>
     </tr>
-
+    <tr>
+      <td class="header" >Tag</td>
+      <td class="lista" align="left"><input type="text" name="tag" size="50" maxlength="200" /></td>
+    </tr>
       <if:LEVEL_VISIBLE_OK>
     <tr>
       <td class="header" ><tag:language.LEVEL_VISIBILE />:</td>

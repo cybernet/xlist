@@ -103,7 +103,7 @@ if(!$CURUSER || $CURUSER["view_torrents"] != "yes")
 }
 
 
-$res = get_result("SELECT f.screen1, f.screen2, f.screen3, f.image, u.warn, f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'", true);
+$res = get_result("SELECT tag, f.screen1, f.screen2, f.screen3, f.image, u.warn, f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'", true);
 
 //die("SELECT f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'");
 
@@ -345,12 +345,13 @@ else {
 }
 
 $torrenttpl->set("NOT_XBTT", !$XBBT_USE, TRUE);
+$torrenttpl->set("YES_TAG", $row["tag"], TRUE);
 
 $row["speed"] = $speed;
 if (($XBTT_USE && !$PRIVATE_ANNOUNCE) || $row["external"] == "yes") 
    {
 $row["downloaded"] = $row["finished"]." " . $language["X_TIMES"];
-$row["peers"] = ($row["leechers"]+$row["seeds"])." ".$language["PEERS"];
+$row["peers"] = ($row["leechers"] + $row["seeds"])." ".$language["PEERS"];
 $row["seeds"] = $language["SEEDERS"].": ".$row["seeds"];
 $row["leechers"] = $language["LEECHERS"].": " . $row["leechers"];
    }

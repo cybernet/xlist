@@ -74,6 +74,10 @@ function show_wait()
           </if:MOD>
           </td>
           <td class="lista" align="center"><tag:torrent.filename /></td>
+<if:YES_TAG><tr>
+<td align="right" class="header">Tag</td>
+<td class="lista" align="center"><tag:torrent.tag /></td>
+</tr></if:YES_TAG>
         </tr>
         <tr>
           <td align="right" class="header"><tag:language.TORRENT /></td>

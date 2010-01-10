@@ -1,16 +1,16 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.0-alpha1
+-- version 3.2.5-rc2
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 06, 2010 at 12:24 AM
+-- Generation Time: Jan 10, 2010 at 12:36 PM
 -- Server version: 5.1.37
 -- PHP Version: 5.2.10-2ubuntu6.3
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- Database: `xl_1play`
+-- Database: `xxxxxx`
 --
 
 -- --------------------------------------------------------
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `id_2` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `tags`
@@ -35,7 +35,6 @@ CREATE TABLE IF NOT EXISTS `tags` (
 
 INSERT INTO `tags` (`id`, `tag`, `count`, `ip`) VALUES
 (1, 'xList.ro', '22', '127.0.0.1');
-
 
 -- --------------------------------------------------------
 
@@ -615,6 +614,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
   `screen3` varchar(255) NOT NULL,
   `visible` int(11) NOT NULL DEFAULT '1',
   `sticky` enum('0','1') NOT NULL DEFAULT '0',
+  `tag` text,
   PRIMARY KEY (`info_hash`),
   KEY `filename` (`filename`),
   KEY `category` (`category`),
