@@ -150,7 +150,7 @@ function noparsed($matches) { // any character that is parsed, must be here
     ']'   => '&#93;',
     '_'   => '&#95;',); 
   return str_replace( array_keys($replace), array_values($replace), $matches[2]);
-
+}
 function formatlist($matches) {
   if ($matches[3] == '') {
     $content .= '<ul>';
