@@ -490,17 +490,17 @@ if ($btit_settings["phpbb3_prefix"] != "")
   <file>
     <name>"$DEFAULT_ROOT/admin/admin.config.php"</name>
     <operation>
-      <search><![CDATA[$admintpl->set("config_saved",false,true);]]></search>
+      <search><![CDATA[$admintpl->set("config_saved", false, true);]]></search>
 	  <action>"add"</action>
 	  <where>"after"</where>
       <data><![CDATA[
 // start hack phpbb3 integration
-$admintpl->set("export_ok",false,true);
-$admintpl->set("import_ok",false,true);
-$admintpl->set("import_export_disabled",false,true);
-$admintpl->set("phpbb_disable_reg",false,true);
-$admintpl->set("hide_profile_ok",false,true);
-$admintpl->set("restore_profile_ok",false,true);
+$admintpl->set("export_ok", false, true);
+$admintpl->set("import_ok", false, true);
+$admintpl->set("import_export_disabled", false, true);
+$admintpl->set("phpbb_disable_reg", false, true);
+$admintpl->set("hide_profile_ok", false, true);
+$admintpl->set("restore_profile_ok", false, true);
 // end hack phpbb3 integration
 ]]></data>
     </operation>
@@ -541,14 +541,14 @@ $admintpl->set("restore_profile_ok",false,true);
 		if(isset($_POST['export_in_phpbb3'])) 
 		{
 			$export_confirm = xbtit_users_export();
-			$admintpl->set("export_ok",true,true);
+			$admintpl->set("export_ok", true, true);
 		}
 		
 		// import
 		if(isset($_POST['import_from_phpbb3'])) 
 		{
 			$import_confirm = phpbb3_users_import();
-			$admintpl->set("import_ok",true,true);
+			$admintpl->set("import_ok", true, true);
 		}
 	  }
 	  else
@@ -556,14 +556,14 @@ $admintpl->set("restore_profile_ok",false,true);
 		// import/export disabled
 		if(isset($_POST['export_in_phpbb3']) || isset($_POST['import_from_phpbb3'])) 
 		{
-			$admintpl->set("import_export_disabled",true,true);
+			$admintpl->set("import_export_disabled", true, true);
 		}
 	  }
 		//disable registration/email_reuse/username_change on phpbb3
 		if(isset($_POST['phpbb3_disable'])) 
 		{
 			$disable_reg_confirm = phpbb3_disable_reg();
-			$admintpl->set("phpbb_disable_reg",true,true);
+			$admintpl->set("phpbb_disable_reg", true, true);
 		}
 		
 		// disable 'Edit account settings' on phpbb3
@@ -571,7 +571,7 @@ $admintpl->set("restore_profile_ok",false,true);
 		{
 			$disable_edit_account = phpbb3_disable_edit_account();
 			$change_lang_ucp = phpbb3_lang_ucp();
-			$admintpl->set("hide_profile_ok",true,true);
+			$admintpl->set("hide_profile_ok", true, true);
 		}
 		
 		// Restore '/language/en/ucp.php' on phpbb3
@@ -579,7 +579,7 @@ $admintpl->set("restore_profile_ok",false,true);
 		{
 			$restore_lang_ucp = restore_phpbb3_lang_ucp();
 			$restore_edit_account = restore_phpbb3_edit_account();
-			$admintpl->set("restore_profile_ok",true,true);
+			$admintpl->set("restore_profile_ok", true, true);
 		}
 	  	  
 // end hack phpbb3 integration
@@ -590,7 +590,7 @@ $admintpl->set("restore_profile_ok",false,true);
   <file>
     <name>"$DEFAULT_ROOT/admin/admin.main.php"</name>
     <operation>
-      <search><![CDATA[$last_version = explode("/",strtolower($btit_last));  // array('2.0.0','beta','2')
+      <search><![CDATA[$last_version = explode("/", strtolower($btit_last));  // array('2.0.0','beta','2')
 
 $your_version="";]]></search>
 	  <action>"add"</action>
@@ -610,7 +610,7 @@ if (!$hack_phpbb3_integration_last)
       $hack_phpbb3_integration_last = $language["PHPBB3_INTEGRATION_NO_INFO"];
 }
 $title_phpbb3_integration = "phpbb3_integration_basic";
-$res_phpbb3_integration_version = get_result("SELECT title, version FROM {$TABLE_PREFIX}hacks WHERE title LIKE '" . $title_phpbb3_integration . "'",true);
+$res_phpbb3_integration_version = get_result("SELECT title, version FROM {$TABLE_PREFIX}hacks WHERE title LIKE '" . $title_phpbb3_integration . "'", true);
 $row0_phpbb3_integration = $res_phpbb3_integration_version[0];
 $row_phpbb3_integration = substr($row0_phpbb3_integration["version"], 0, 5);
 $last_phpbb3_integration_version = explode("/", strtolower($hack_phpbb3_integration_last));
@@ -620,7 +620,7 @@ $your_phpbb3_integration_version = "";
 ]]></data>
     </operation>
     <operation>
-      <search><![CDATA[$your_version .= "You have the latest xBtit version installed.";
+      <search><![CDATA[$your_version .= "You have the latest xBTiT version installed.";
 }]]></search>
 	  <action>"add"</action>
 	  <where>"after"</where>
@@ -658,7 +658,7 @@ if (!empty($your_phpbb3_integration_version))
 	<operation>
       <search><![CDATA[global $CURUSER;]]></search>
 	  <action>"replace"</action>
-      <data><![CDATA[global $CURUSER,$TABLE_PREFIX;
+      <data><![CDATA[global $CURUSER, $TABLE_PREFIX;
 // info phpbb3
 	$phpbb3_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
 //	$phpbb_integration = $phpbb3_res["phpbb3"];
@@ -736,7 +736,7 @@ elseif ($btit_settings["phpbb3_prefix"] != "")
      err_msg($language["ERROR"], "Resizable window will not work without Javascript.<br />Please enable Javascript or view the forum in a new window <a target='_new' href='$FORUMLINK'>Here</a>")
      ."</noscript>";
 
-	 $phpbb_content.="
+	 $phpbb_content .= "
           <div align=\"center\">
           <iframe id=\"forum_ifrm\" onload=\"autoIframe('forum_ifrm')\" name=\"Forum\" border=\"0\" frameborder=\"0\" src=\"$FORUMLINK/index.php\" width=\"98%\">Your browser don't support iframe, then click <a href=\"$FORUMLINK/index.php\">here</a> to get forum page</iframe>
           </div>";
@@ -1140,9 +1140,9 @@ for ($id=1; $id <= $id_lastest_member; ++$id)
 	
 	}
 }
-	$admintpl->set("username_exist",$username_exist);
-	$admintpl->set("email_exist",$email_exist);
-	$admintpl->set("username_added",$username_added);
+	$admintpl->set("username_exist", $username_exist);
+	$admintpl->set("email_exist", $email_exist);
+	$admintpl->set("username_added", $username_added);
 // end export members
 }
 
@@ -1455,7 +1455,7 @@ for ($id=1; $id <= $phpbb3_newest_user_id; ++$id)
 	$random = rand($floor, $ceiling);
 
 	// xbtit default
-	$config_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$config_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
 	$xbtit_default_style = $config_res["default_style"];
 	$xbtit_default_language = $config_res["default_language"];
 			
@@ -1465,9 +1465,9 @@ for ($id=1; $id <= $phpbb3_newest_user_id; ++$id)
 	$username_added++;
 	}
 }
-	$admintpl->set("username_exist",$username_exist);
-	$admintpl->set("email_exist",$email_exist);
-	$admintpl->set("username_added",$username_added);
+	$admintpl->set("username_exist", $username_exist);
+	$admintpl->set("email_exist", $email_exist);
+	$admintpl->set("username_added", $username_added);
 // end import members
 }
 
@@ -1479,11 +1479,11 @@ function phpbb3_disable_reg()
 {
 	global $TABLE_PREFIX, $admintpl, $language;
 	// info phpbb3
-	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb3_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
 	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
 	$phpbb_root_path = $phpbb3_res["phpbb3_root_path"];
 
-	// update allow_emailreuse,allow_namechange,require_activation
+	// update allow_emailreuse, allow_namechange, require_activation
 	do_sqlquery("REPLACE `{$phpbb_db_prefix}config` (`config_name`, `config_value`) VALUES ('allow_emailreuse', '0'), ('allow_namechange', '0'), ('require_activation', '3')");
 	
 	// try to delete cache
@@ -1541,9 +1541,9 @@ function phpbb3_disable_edit_account()
 	$replace_prosilver = "<!-- start hack phpbb3 integration -->\n\n<!-- INCLUDE ucp_header.html -->\n\n<form id='ucp' method='post' action='{S_UCP_ACTION}'{S_FORM_ENCTYPE}>\n\n<h2>{L_TITLE}</h2>\n\n<div class='panel'>\n<div class='panel'>\n<div class='inner'><span class='corners-top'><span></span></span>\n<fieldset>\n<dl>\n<dt><span>{L_EDIT_ACCOUNT_SETTINGS_DISABLED}</span></dt>\n</dl>\n</fieldset>\n<span class='corners-bottom'><span></span></span></div>\n</div>\n</form>\n\n<!-- INCLUDE ucp_footer.html -->\n\n<!-- end hack phpbb3 integration -->";
 	fwrite($fopen, $replace_prosilver);
 	fclose($fopen);
-	$admintpl->set("hide_profile_prosilver",$language['HIDE_PROFILE_PROSILVER']);
+	$admintpl->set("hide_profile_prosilver", $language['HIDE_PROFILE_PROSILVER']);
 	}else{
-	$admintpl->set("hide_profile_prosilver",$language['NO_HIDE_PROFILE_PROSILVER']);
+	$admintpl->set("hide_profile_prosilver", $language['NO_HIDE_PROFILE_PROSILVER']);
 	}
 	
 	// try to delete cache
@@ -1552,9 +1552,9 @@ function phpbb3_disable_edit_account()
 	{
 	// if file exist, delete it
 	unlink($prosilver_profile_cache);
-	$admintpl->set("phpbb_cache_prosilver",$language['PHPBB_CACHE_OK']);
+	$admintpl->set("phpbb_cache_prosilver", $language['PHPBB_CACHE_OK']);
 	}else{
-	$admintpl->set("phpbb_cache_prosilver",$language['PHPBB_CACHE_NO']);
+	$admintpl->set("phpbb_cache_prosilver", $language['PHPBB_CACHE_NO']);
 	}
 	
 	//////////////
@@ -1587,9 +1587,9 @@ function phpbb3_disable_edit_account()
 	$replace_subsilver2 = "<!-- start hack phpbb3 integration -->\n\n<!-- INCLUDE ucp_header.html -->\n<table class='tablebg' width='100%' cellspacing='1'>\n<tr>\n<th colspan='2' valign='middle'>{L_TITLE}</th>\n</tr>\n<tr>\n<td class='row1' width='95%'><span class='gensmall'>{L_EDIT_ACCOUNT_SETTINGS_DISABLED}</span></td>\n</tr>\n</table>\n\n<!-- INCLUDE ucp_footer.html -->\n\n<!-- end hack phpbb3 integration -->";
 	fwrite($fopen, $replace_subsilver2);
 	fclose($fopen);
-	$admintpl->set("hide_profile_subsilver2",$language['HIDE_PROFILE_SUBSILVER2']);
+	$admintpl->set("hide_profile_subsilver2", $language['HIDE_PROFILE_SUBSILVER2']);
 	}else{
-	$admintpl->set("hide_profile_subsilver2",$language['NO_HIDE_PROFILE_SUBSILVER2']);
+	$admintpl->set("hide_profile_subsilver2", $language['NO_HIDE_PROFILE_SUBSILVER2']);
 	}
 	
 	// try to delete cache
@@ -1598,9 +1598,9 @@ function phpbb3_disable_edit_account()
 	{
 	// if file exist, delete it
 	unlink($subsilver2_profile_cache);
-	$admintpl->set("phpbb_cache_subsilver2",$language['PHPBB_CACHE_OK']);
+	$admintpl->set("phpbb_cache_subsilver2", $language['PHPBB_CACHE_OK']);
 	}else{
-	$admintpl->set("phpbb_cache_subsilver2",$language['PHPBB_CACHE_NO']);
+	$admintpl->set("phpbb_cache_subsilver2", $language['PHPBB_CACHE_NO']);
 	}
 }
 
@@ -1640,9 +1640,9 @@ function phpbb3_lang_ucp()
 	$new_string = str_replace($original_string, $edited_string ,$contents);
 	fwrite($fopen, $new_string);
 	fclose($fopen);
-	$admintpl->set("edit_language_profile",$language['EDIT_LANGUAGE_PROFILE']);
+	$admintpl->set("edit_language_profile", $language['EDIT_LANGUAGE_PROFILE']);
 	}else{
-	$admintpl->set("edit_language_profile",$language['NO_EDIT_LANGUAGE_PROFILE']);
+	$admintpl->set("edit_language_profile", $language['NO_EDIT_LANGUAGE_PROFILE']);
 	}
 }
 
@@ -1676,9 +1676,9 @@ function restore_phpbb3_lang_ucp()
 	
 	// delete backup file
 	unlink($phpbb3_lang_ucp_backup);
-	$admintpl->set("restore_language_profile",$language['RESTORE_LANGUAGE_PROFILE']);
+	$admintpl->set("restore_language_profile", $language['RESTORE_LANGUAGE_PROFILE']);
 	}else{
-	$admintpl->set("restore_language_profile",$language['NO_RESTORE_LANGUAGE_PROFILE']);
+	$admintpl->set("restore_language_profile", $language['NO_RESTORE_LANGUAGE_PROFILE']);
 	}
 }
 
@@ -1716,9 +1716,9 @@ function restore_phpbb3_edit_account()
 	
 	// delete backup file
 	unlink($prosilver_profile_reg_backup);
-	$admintpl->set("restore_profile_prosilver",$language['RESTORE_PROFILE_PROSILVER']);
+	$admintpl->set("restore_profile_prosilver", $language['RESTORE_PROFILE_PROSILVER']);
 	}else{
-	$admintpl->set("restore_profile_prosilver",$language['NO_RESTORE_PROFILE_PROSILVER']);
+	$admintpl->set("restore_profile_prosilver", $language['NO_RESTORE_PROFILE_PROSILVER']);
 	}
 	
 	// try to delete cache
@@ -1727,9 +1727,9 @@ function restore_phpbb3_edit_account()
 	{
 	// if file exist, delete it
 	unlink($prosilver_profile_cache);
-	$admintpl->set("phpbb_cache_prosilver",$language['PHPBB_CACHE_OK']);
+	$admintpl->set("phpbb_cache_prosilver", $language['PHPBB_CACHE_OK']);
 	}else{
-	$admintpl->set("phpbb_cache_prosilver",$language['PHPBB_CACHE_NO']);
+	$admintpl->set("phpbb_cache_prosilver", $language['PHPBB_CACHE_NO']);
 	}
 	
 	//////////////
@@ -1755,9 +1755,9 @@ function restore_phpbb3_edit_account()
 	
 	// delete backup file
 	unlink($subsilver2_profile_reg_backup);
-	$admintpl->set("restore_profile_subsilver2",$language['RESTORE_PROFILE_SUBSILVER2']);
+	$admintpl->set("restore_profile_subsilver2", $language['RESTORE_PROFILE_SUBSILVER2']);
 	}else{
-	$admintpl->set("restore_profile_subsilver2",$language['NO_RESTORE_PROFILE_SUBSILVER2']);
+	$admintpl->set("restore_profile_subsilver2", $language['NO_RESTORE_PROFILE_SUBSILVER2']);
 	}
 	
 	// try to delete cache
@@ -1766,9 +1766,9 @@ function restore_phpbb3_edit_account()
 	{
 	// if file exist, delete it
 	unlink($subsilver2_profile_cache);
-	$admintpl->set("phpbb_cache_subsilver2",$language['PHPBB_CACHE_OK']);
+	$admintpl->set("phpbb_cache_subsilver2", $language['PHPBB_CACHE_OK']);
 	}else{
-	$admintpl->set("phpbb_cache_subsilver2",$language['PHPBB_CACHE_NO']);
+	$admintpl->set("phpbb_cache_subsilver2", $language['PHPBB_CACHE_NO']);
 	}
 }
 
