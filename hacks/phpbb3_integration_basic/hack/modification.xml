@@ -77,7 +77,7 @@
 	// make an array with emails already registered in phpBB
 	while( $phpbb3_email_table = mysql_fetch_row($phpbb3_info_email) )
 	{
-	$phpbb3_user_email[] =  $phpbb3_email_table[1];
+	$phpbb3_user_email[] = $phpbb3_email_table[1];
 	}
 	mysql_free_result( $phpbb3_info_email );
 
@@ -93,7 +93,7 @@
 		}
 		else
 		{
-			$pid_phpbb=$_SERVER['REMOTE_ADDR'];
+			$pid_phpbb = $_SERVER['REMOTE_ADDR'];
 			$phpbb_user_email_hash	= crc32(strtolower($email)) . strlen($email);
 
 			// new user on xbtit
