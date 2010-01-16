@@ -84,12 +84,12 @@
 		if (in_array("$utente", $phpbb3_username))
 		{	
 			// new user on xbtit
-			do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '".md5($pwd)."', $random, $idlevel, '$email', $idstyle, $idlangue, $idflag, NOW(), NOW(),'$pid', '".$timezone."')",true);
+			do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '".md5($pwd)."', $random, $idlevel, '$email', $idstyle, $idlangue, $idflag, NOW(), NOW(), '$pid', '".$timezone."')", true);
 		}
 		elseif (in_array("$email", $phpbb3_user_email))
 		{	
 			// new user on xbtit
-			do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '".md5($pwd)."', $random, $idlevel, '$email', $idstyle, $idlangue, $idflag, NOW(), NOW(),'$pid', '".$timezone."')",true);
+			do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '".md5($pwd)."', $random, $idlevel, '$email', $idstyle, $idlangue, $idflag, NOW(), NOW(), '$pid', '".$timezone."')", true);
 		}
 		else
 		{
@@ -97,7 +97,7 @@
 			$phpbb_user_email_hash	= crc32(strtolower($email)) . strlen($email);
 
 			// new user on xbtit
-			do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '".md5($pwd)."', $random, $idlevel, '$email', $idstyle, $idlangue, $idflag, NOW(), NOW(),'$pid', '".$timezone."')",true);
+			do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '".md5($pwd)."', $random, $idlevel, '$email', $idstyle, $idlangue, $idflag, NOW(), NOW(), '$pid', '".$timezone."')", true);
 	
 			// new user on phpBB3
 			$ricavo_info_users = mysql_fetch_assoc(mysql_query("SELECT language, time_offset FROM `{$TABLE_PREFIX}users` WHERE username = '$utente'"));
@@ -278,9 +278,9 @@
     <operation>
       <search><![CDATA[elseif (md5($row["random"].$row["password"].$row["random"]) != md5($row["random"].md5($pwd).$row["random"]))
         {
-          $logintpl->set("FALSE_USER",false,true);
-          $logintpl->set("FALSE_PASSWORD",true,true);
-          $logintpl->set("login_password_incorrent",$language["ERR_PASSWORD_INCORRECT"]);
+          $logintpl->set("FALSE_USER", false, true);
+          $logintpl->set("FALSE_PASSWORD", true, true);
+          $logintpl->set("login_password_incorrent", $language["ERR_PASSWORD_INCORRECT"]);
           login();
         }]]></search>
 	  <action>"replace"</action>
@@ -288,9 +288,9 @@
 // start hack phpbb3 integration
 elseif (strlen($row["password"]) != 34 && md5($row["random"].$row["password"].$row["random"]) != md5($row["random"].md5($pwd).$row["random"]))
         {
-          $logintpl->set("FALSE_USER",false,true);
-          $logintpl->set("FALSE_PASSWORD",true,true);
-          $logintpl->set("login_password_incorrent",$language["ERR_PASSWORD_INCORRECT"]);
+          $logintpl->set("FALSE_USER", false, true);
+          $logintpl->set("FALSE_PASSWORD", true, true);
+          $logintpl->set("login_password_incorrent" ,$language["ERR_PASSWORD_INCORRECT"]);
           login();
         }
 elseif (strlen($row["password"]) == 34)
