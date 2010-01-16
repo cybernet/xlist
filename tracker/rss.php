@@ -1,10 +1,11 @@
 <?php
+
 // CyBerFuN.ro & xList.ro
 
 // CyBerFuN .::. rss
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
+// http://xList.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -105,7 +106,7 @@ $validcharset = array(
 if ($CURUSER["view_torrents"] == "yes")
 {
   $getItems = "SELECT f.info_hash as id, f.comment as description, f.filename, $tseeds AS seeders, $tleechs as leechers, UNIX_TIMESTAMP( f.data ) as added, c.name as cname, f.size FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where ORDER BY data DESC LIMIT 20";
-  $doGet = do_sqlquery($getItems,true) or die(mysql_error());;
+  $doGet = do_sqlquery($getItems, true) or die(mysql_error());;
 
   while($item = mysql_fetch_array($doGet))
    {

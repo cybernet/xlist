@@ -5,7 +5,7 @@
 // CyBerFuN .::. Extra Stats
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
+// http://xList.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -49,7 +49,7 @@ function usertable($res, $frame_caption) {
 
  $num = 0;
  $user = array();
- foreach ($res as $id=>$a) {
+ foreach ($res as $id => $a) {
    $num++;
 
    if ($a["downloaded"]>0) {
@@ -150,30 +150,30 @@ $extratpl = new bTemplate();
 // the display the box only if number of rows is > 0
 if ($CURUSER["view_users"] == "yes")
 {
-  $r = get_result("SELECT u.username, $udownloaded as downloaded, $uuploaded as uploaded FROM $utables WHERE $uuploaded>0 ORDER BY $uuploaded DESC LIMIT 10",true,$CACHE_DURATION);
-  if (count($r)>0) { $out.=usertable($r, $language["TOP_10_UPLOAD"]); $out.= "<br /><br />"; }
-  $r = get_result("SELECT u.username, $udownloaded as downloaded, $uuploaded as uploaded FROM $utables WHERE $uuploaded>0 AND $udownloaded>0 ORDER BY $udownloaded DESC LIMIT 10",true,$CACHE_DURATION);
-  if (count($r)>0) { $out.=usertable($r, $language["TOP_10_DOWNLOAD"]); $out.= "<br /><br />";}
-  $r = get_result("SELECT u.username, $udownloaded as downloaded, $uuploaded as uploaded FROM $utables WHERE $udownloaded > 104857600 ORDER BY $uuploaded - $udownloaded DESC LIMIT 10",true,$CACHE_DURATION);
-  if (count($r)>0) { $out.=usertable($r, $language["TOP_10_SHARE"]." ".$language["MINIMUM_100_DOWN"].""); $out.= "<br /><br />";}
-  $r = get_result("SELECT u.username, $udownloaded as downloaded, $uuploaded as uploaded FROM $utables WHERE $udownloaded > 104857600 ORDER BY $udownloaded - $uuploaded DESC, $udownloaded DESC LIMIT 10",true,$CACHE_DURATION);
-  if (count($r)>0) { $out.=usertable($r, $language["TOP_10_WORST"]." ".$language["MINIMUM_100_DOWN"].""); $out.= "<br /><br />"; }
+  $r = get_result("SELECT u.username, $udownloaded as downloaded, $uuploaded as uploaded FROM $utables WHERE $uuploaded>0 ORDER BY $uuploaded DESC LIMIT 10", true, $CACHE_DURATION);
+  if (count($r) > 0) { $out .= usertable($r, $language["TOP_10_UPLOAD"]); $out .= "<br /><br />"; }
+  $r = get_result("SELECT u.username, $udownloaded as downloaded, $uuploaded as uploaded FROM $utables WHERE $uuploaded>0 AND $udownloaded>0 ORDER BY $udownloaded DESC LIMIT 10", true, $CACHE_DURATION);
+  if (count($r) > 0) { $out .= usertable($r, $language["TOP_10_DOWNLOAD"]); $out .= "<br /><br />";}
+  $r = get_result("SELECT u.username, $udownloaded as downloaded, $uuploaded as uploaded FROM $utables WHERE $udownloaded > 104857600 ORDER BY $uuploaded - $udownloaded DESC LIMIT 10", true, $CACHE_DURATION);
+  if (count($r) > 0) { $out .= usertable($r, $language["TOP_10_SHARE"]." ".$language["MINIMUM_100_DOWN"].""); $out .= "<br /><br />";}
+  $r = get_result("SELECT u.username, $udownloaded as downloaded, $uuploaded as uploaded FROM $utables WHERE $udownloaded > 104857600 ORDER BY $udownloaded - $uuploaded DESC, $udownloaded DESC LIMIT 10", true, $CACHE_DURATION);
+  if (count($r) > 0) { $out .= usertable($r, $language["TOP_10_WORST"]." ".$language["MINIMUM_100_DOWN"].""); $out .= "<br /><br />"; }
  }
 if ($CURUSER["view_torrents"] == "yes")
 {
- $r = get_result("SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished, dlbytes as dwned , filename as name, url as url, info, speed as speed, uploader FROM $ttables ORDER BY $tseeds + $tleechs DESC LIMIT 10",true,$CACHE_DURATION);
-  if (count($r)>0) { $out.=_torrenttable($r, $language["TOP_10_ACTIVE"]); $out.= "<br /><br />";}
- $r = get_result("SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished, dlbytes as dwned , filename as name, url as url, info, speed as speed, uploader FROM $ttables WHERE $tseeds >= 5 ORDER BY $tseeds / $tleechs DESC, seeds DESC LIMIT 10",true,$CACHE_DURATION);
-  if (count($r)>0) { $out.=_torrenttable($r, $language["TOP_10_BEST_SEED"]." (".$language["MINIMUM_5_SEED"].")"); $out.= "<br /><br />";}
- $r = get_result("SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished, dlbytes as dwned , filename as name, url as url, info, speed as speed, uploader FROM $ttables WHERE $tleechs >= 5 AND $tcompletes > 0 ORDER BY $tseeds / $tleechs ASC, $tleechs DESC LIMIT 10",true,$CACHE_DURATION);
-  if (count($r)>0) { $out.=_torrenttable($r, $language["TOP_10_WORST_SEED"]." (".$language["MINIMUM_5_LEECH"].")"); $out.= "<br /><br />";}
+ $r = get_result("SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished, dlbytes as dwned , filename as name, url as url, info, speed as speed, uploader FROM $ttables ORDER BY $tseeds + $tleechs DESC LIMIT 10", true, $CACHE_DURATION);
+  if (count($r) > 0) { $out .= _torrenttable($r, $language["TOP_10_ACTIVE"]); $out .= "<br /><br />";}
+ $r = get_result("SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished, dlbytes as dwned , filename as name, url as url, info, speed as speed, uploader FROM $ttables WHERE $tseeds >= 5 ORDER BY $tseeds / $tleechs DESC, seeds DESC LIMIT 10", true, $CACHE_DURATION);
+  if (count($r) > 0) { $out .= _torrenttable($r, $language["TOP_10_BEST_SEED"]." (".$language["MINIMUM_5_SEED"].")"); $out .= "<br /><br />";}
+ $r = get_result("SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished, dlbytes as dwned , filename as name, url as url, info, speed as speed, uploader FROM $ttables WHERE $tleechs >= 5 AND $tcompletes > 0 ORDER BY $tseeds / $tleechs ASC, $tleechs DESC LIMIT 10", true, $CACHE_DURATION);
+  if (count($r) > 0) { $out .= _torrenttable($r, $language["TOP_10_WORST_SEED"]." (".$language["MINIMUM_5_LEECH"].")"); $out .= "<br /><br />";}
 
 if (!$XBTT_USE)
   {
-   $r = get_result("SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished, dlbytes as dwned , filename as name, url as url, info, speed as speed, uploader FROM $ttables WHERE external='no' ORDER BY speed DESC, $tseeds DESC LIMIT 10",true,$CACHE_DURATION);
-    if (count($r) > 0) { $out.=_torrenttable($r, $language["TOP_10_BSPEED"],true); $out.= "<br /><br />";}
-   $r = get_result("SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished, dlbytes as dwned , filename as name, url as url, info, speed as speed, uploader FROM $ttables WHERE external='no' ORDER BY speed ASC, $tseeds DESC LIMIT 10",true,$CACHE_DURATION);
-    if (count($r) > 0) { $out.=_torrenttable($r, $language["TOP_10_WSPEED"],true); $out.= "<br /><br />";}
+   $r = get_result("SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished, dlbytes as dwned , filename as name, url as url, info, speed as speed, uploader FROM $ttables WHERE external='no' ORDER BY speed DESC, $tseeds DESC LIMIT 10", true, $CACHE_DURATION);
+    if (count($r) > 0) { $out .= _torrenttable($r, $language["TOP_10_BSPEED"], true); $out .= "<br /><br />";}
+   $r = get_result("SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished, dlbytes as dwned , filename as name, url as url, info, speed as speed, uploader FROM $ttables WHERE external='no' ORDER BY speed ASC, $tseeds DESC LIMIT 10", true, $CACHE_DURATION);
+    if (count($r) > 0) { $out .= _torrenttable($r, $language["TOP_10_WSPEED"], true); $out .= "<br /><br />";}
   }
 }
 

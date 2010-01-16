@@ -1,11 +1,43 @@
 <?php
+
 // CyBerFuN.ro & xList.ro
 
-// CyBerFuN .::. torrents
+// xList .::. Torrents
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
+// http://xList.ro/
 // Modified By cybernet2u
+
+/////////////////////////////////////////////////////////////////////////////////////
+// xbtit - Bittorrent tracker/frontend
+//
+// Copyright (C) 2004 - 2007  Btiteam
+//
+//    This file is part of xbtit.
+//
+// Redistribution and use in source and binary forms, with or without modification,
+// are permitted provided that the following conditions are met:
+//
+//   1. Redistributions of source code must retain the above copyright notice,
+//      this list of conditions and the following disclaimer.
+//   2. Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
+//   3. The name of the author may not be used to endorse or promote products
+//      derived from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+// IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+// TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+////////////////////////////////////////////////////////////////////////////////////
 
 if (!defined("IN_BTIT"))
       die("non direct access!");
@@ -101,7 +133,7 @@ if ($category[0] > 0) {
 // Search
 if (isset($_GET["search"])) {
    $testocercato = trim($_GET["search"]);
-   $testocercato = explode(" ",$testocercato);
+   $testocercato = explode(" ", $testocercato);
    if ($_GET["search"] != "")
       $search = "search=" . implode("+",$testocercato);
     for ($k=0; $k < count($testocercato); $k++) {
@@ -138,7 +170,7 @@ if ($count > 0) {
 
     $torrentperpage = intval($CURUSER["torrentsperpage"]);
     if ($torrentperpage == 0)
-        $torrentperpage = ($ntorrents==0?15:$ntorrents);
+        $torrentperpage = ($ntorrents == 0 ? 15:$ntorrents);
 
     // getting order
     if (isset($_GET["order"]))
@@ -184,27 +216,27 @@ $torrenttpl->set("language", $language);
 $torrenttpl->set("torrent_script", "index.php");
 $torrenttpl->set("torrent_search", $trova);
 $torrenttpl->set("torrent_categories_combo", $combo_categories);
-$torrenttpl->set("torrent_selected_all", ($active==0?"selected=\"selected\"":""));
-$torrenttpl->set("torrent_selected_active", ($active==1?"selected=\"selected\"":""));
-$torrenttpl->set("torrent_selected_dead", ($active==2?"selected=\"selected\"":""));
+$torrenttpl->set("torrent_selected_all", ($active == 0?"selected=\"selected\"":""));
+$torrenttpl->set("torrent_selected_active", ($active == 1?"selected=\"selected\"":""));
+$torrenttpl->set("torrent_selected_dead", ($active == 2?"selected=\"selected\"":""));
 
 $torrenttpl->set("torrent_pagertop", $pagertop);
-$torrenttpl->set("torrent_header_category", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=cname&amp;by=".($order=="cname" && $by=="ASC"?"DESC":"ASC")."\">".$language["CATEGORY"]."</a>".($order=="cname"?$mark:""));
-$torrenttpl->set("torrent_header_filename", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=filename&amp;by=".($order=="filename" && $by=="ASC"?"DESC":"ASC")."\">".$language["FILE"]."</a>".($order=="filename"?$mark:""));
+$torrenttpl->set("torrent_header_category", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=cname&amp;by=".($order == "cname" && $by == "ASC"?"DESC":"ASC")."\">".$language["CATEGORY"]."</a>".($order == "cname"?$mark:""));
+$torrenttpl->set("torrent_header_filename", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=filename&amp;by=".($order == "filename" && $by == "ASC"?"DESC":"ASC")."\">".$language["FILE"]."</a>".($order == "filename"?$mark:""));
 $torrenttpl->set("torrent_header_comments", $language["COMMENT"]);
 $torrenttpl->set("torrent_header_rating", $language["RATING"]);
 $torrenttpl->set("WT",intval($CURUSER["WT"]) > 0, TRUE);
 $torrenttpl->set("torrent_header_waiting", $language["WT"]);
 $torrenttpl->set("torrent_header_download", $language["DOWN"]);
-$torrenttpl->set("torrent_header_added", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=data&amp;by=".($order=="data" && $by=="ASC"?"DESC":"ASC")."\">".$language["ADDED"]."</a>".($order=="data"?$mark:""));
-$torrenttpl->set("torrent_header_size", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=size&amp;by=".($order=="size" && $by=="DESC"?"ASC":"DESC")."\">".$language["SIZE"]."</a>".($order=="size"?$mark:""));
+$torrenttpl->set("torrent_header_added", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=data&amp;by=".($order == "data" && $by == "ASC"?"DESC":"ASC")."\">".$language["ADDED"]."</a>".($order == "data"?$mark:""));
+$torrenttpl->set("torrent_header_size", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=size&amp;by=".($order == "size" && $by == "DESC"?"ASC":"DESC")."\">".$language["SIZE"]."</a>".($order == "size"?$mark:""));
 $torrenttpl->set("uploader", $SHOW_UPLOADER, TRUE);
 $torrenttpl->set("torrent_header_uploader", $language["UPLOADER"]);
-$torrenttpl->set("torrent_header_seeds", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=seeds&amp;by=".($order=="seeds" && $by=="DESC"?"ASC":"DESC")."\">".$language["SHORT_S"]."</a>".($order=="seeds"?$mark:""));
-$torrenttpl->set("torrent_header_leechers", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=leechers&amp;by=".($order=="leechers" && $by=="DESC"?"ASC":"DESC")."\">".$language["SHORT_L"]."</a>".($order=="leechers"?$mark:""));
-$torrenttpl->set("torrent_header_complete", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=finished&amp;by=".($order=="finished" && $by=="ASC"?"DESC":"ASC")."\">".$language["SHORT_C"]."</a>".($order=="finished"?$mark:""));
-$torrenttpl->set("torrent_header_downloaded", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=dwned&amp;by=".($order=="dwned" && $by=="ASC"?"DESC":"ASC")."\">".$language["DOWNLOADED"]."</a>".($order=="dwned"?$mark:""));
-$torrenttpl->set("torrent_header_speed", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=speed&amp;by=".($order=="speed" && $by=="ASC"?"DESC":"ASC")."\">".$language["SPEED"]."</a>".($order=="speed"?$mark:""));
+$torrenttpl->set("torrent_header_seeds", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=seeds&amp;by=".($order == "seeds" && $by == "DESC"?"ASC":"DESC")."\">".$language["SHORT_S"]."</a>".($order == "seeds"?$mark:""));
+$torrenttpl->set("torrent_header_leechers", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=leechers&amp;by=".($order == "leechers" && $by == "DESC"?"ASC":"DESC")."\">".$language["SHORT_L"]."</a>".($order == "leechers"?$mark:""));
+$torrenttpl->set("torrent_header_complete", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=finished&amp;by=".($order == "finished" && $by == "ASC"?"DESC":"ASC")."\">".$language["SHORT_C"]."</a>".($order == "finished"?$mark:""));
+$torrenttpl->set("torrent_header_downloaded", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=dwned&amp;by=".($order == "dwned" && $by == "ASC"?"DESC":"ASC")."\">".$language["DOWNLOADED"]."</a>".($order == "dwned"?$mark:""));
+$torrenttpl->set("torrent_header_speed", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=speed&amp;by=".($order == "speed" && $by == "ASC"?"DESC":"ASC")."\">".$language["SPEED"]."</a>".($order == "speed"?$mark:""));
 $torrenttpl->set("torrent_header_average", $language["AVERAGE"]);
 $torrenttpl->set("XBTT", $XBTT_USE, TRUE);
 $torrenttpl->set("torrent_pagerbottom", $pagerbottom);
@@ -214,7 +246,7 @@ $torrents = array();
 $i = 0;
 
 if ($count > 0) {
-  foreach ($results as $id=>$data) {
+  foreach ($results as $id => $data) {
 
     /*Mod by losmi - visible mod*/
     $ok_level = $data['visible'];
@@ -335,7 +367,7 @@ if ($hover == "")
    $torrents[$i]["download"] = "<a href=\"download.php?id=".$data["hash"]."&amp;f=" . urlencode($data["filename"]) . ".torrent\">".image_or_link("images/download.gif","","torrent")."</a>\n";
 
    include("include/offset.php");
-   $torrents[$i]["added"] = date("d/m/Y",$data["added"]-$offset); // data
+   $torrents[$i]["added"] = date("d/m/Y", $data["added"] - $offset); // data
    $torrents[$i]["size"] = makesize($data["size"]);
 
    //Uploaders nick details
@@ -417,7 +449,7 @@ if ($hover == "")
        if ($tmp > 0) {
           $tsize = (0+$torrent["size"]) * $tmp;
           $tbyte = 0+$subrow["to_go"];
-          $prgs = (($tsize-$tbyte)/$tsize) * 100; //100 * (1-($tbyte/$tsize));
+          $prgs = (($tsize - $tbyte) / $tsize) * 100; //100 * (1-($tbyte/$tsize));
           $prgsf = floor($prgs);
           }
        else

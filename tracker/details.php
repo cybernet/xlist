@@ -5,7 +5,7 @@
 // CyBerFuN .::. Details
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
+// http://xList.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -38,7 +38,6 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 ////////////////////////////////////////////////////////////////////////////////////
-
 
 if (!defined("IN_BTIT"))
       die("non direct access!");
@@ -135,10 +134,10 @@ $plus++;
 $torrenttpl->set("snatchers", $snatchers);
 // Snatchers hack end
 $torrenttpl->set("language", $language);
-$torrenttpl->set("IMAGEIS",!empty($row["image"]), TRUE);
-$torrenttpl->set("SCREENIS1",!empty($row["screen1"]), TRUE);
-$torrenttpl->set("SCREENIS2",!empty($row["screen2"]), TRUE);
-$torrenttpl->set("SCREENIS3",!empty($row["screen3"]), TRUE);
+$torrenttpl->set("IMAGEIS", !empty($row["image"]), TRUE);
+$torrenttpl->set("SCREENIS1", !empty($row["screen1"]), TRUE);
+$torrenttpl->set("SCREENIS2", !empty($row["screen2"]), TRUE);
+$torrenttpl->set("SCREENIS3", !empty($row["screen3"]), TRUE);
 $torrenttpl->set("uploaddir", $uploaddir);
 if (!empty($row["image"]))
 {
@@ -413,7 +412,7 @@ else {
         $title = unesc($subrow["custom_title"]);
        $comments[$count]["user"] = "<a href=\"index.php?page=userdetails&amp;id=".$subrow["uid"]."\">" . unesc($subrow["user"]).warn($row)."</a>";
        $comments[$count]["user"] .= "</a><br/> ".$title;
-       $comments[$count]["date"] = date("d/m/Y H.i.s",$subrow["data"]-$offset);
+       $comments[$count]["date"] = date("d/m/Y H.i.s", $subrow["data"] - $offset);
 
        $comments[$count]["elapsed"] = "(".get_elapsed_time($subrow["data"]) . " ago)";
        $comments[$count]["avatar"] = "<img onload=\"resize_avatar(this);\" src=\"".($subrow["avatar"] && $subrow["avatar"] != "" ? htmlspecialchars($subrow["avatar"]): "$STYLEURL/images/default_avatar.gif" )."\" alt=\"\" />";

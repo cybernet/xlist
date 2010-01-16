@@ -5,7 +5,7 @@
 // CyBerFuN .::. Edit
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
+// http://xList.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -432,7 +432,7 @@ if (isset($_GET["info_hash"])) {
     $torrent["date"] = date("d/m/Y", $results["data"] - $offset);
     $torrent["complete"] = $results["finished"]." ".$language["X_TIMES"];
     $torrent["peers"] = $language["SEEDERS"] .": " .$results["seeds"].",".$language["LEECHERS"] .": ". $results["leechers"]."=". ($results["leechers"] + $results["seeds"]). " ". $language["PEERS"];
-    $torrent["cat_combo"]= categories($results["cat_name"]); //$s;
+    $torrent["cat_combo"] = categories($results["cat_name"]); //$s;
 // email_notification
 		$res1 = mysql_fetch_assoc(mysql_query("SELECT comment_notify FROM {$TABLE_PREFIX}files WHERE info_hash = '" . AddSlashes($_GET["info_hash"]) . "'")) or sqlerr();
 		$arr1 = $res1["comment_notify"];

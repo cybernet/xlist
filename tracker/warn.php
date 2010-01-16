@@ -5,7 +5,7 @@
 // CyBerFuN .::. Warn
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
+// http://xList.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -69,7 +69,7 @@ quickQuery('UPDATE '.$TABLE_PREFIX.'users SET warn="yes",warns=warns+1,warnreaso
 # message him
 quickQuery('INSERT INTO '.$TABLE_PREFIX.'messages (sender, receiver, added, msg, subject) VALUES(0,'.$id.',UNIX_TIMESTAMP(),'.$msg.','.$subj.')')or sqlerr(__FILE__, __LINE__);  
 # log it
-write_log('Warned User: '.$warneduser.'. Reason: '.$warnreason,'WARN');
+write_log('Warned User: '.$warneduser.'. Reason: '.$warnreason, 'WARN');
 # send back to original page
 header('Location: '.$returnto);
 die();

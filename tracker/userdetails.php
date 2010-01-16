@@ -5,9 +5,39 @@
 // xList .::. Users Details
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
-// Modified By CyBerNe7
+// http://xList.ro/
+// Modified By cybernet2u
 
+/////////////////////////////////////////////////////////////////////////////////////
+// xbtit - Bittorrent tracker/frontend
+//
+// Copyright (C) 2004 - 2007  Btiteam
+//
+//    This file is part of xbtit.
+//
+// Redistribution and use in source and binary forms, with or without modification,
+// are permitted provided that the following conditions are met:
+//
+//   1. Redistributions of source code must retain the above copyright notice,
+//      this list of conditions and the following disclaimer.
+//   2. Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
+//   3. The name of the author may not be used to endorse or promote products
+//      derived from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+// IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+// TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+////////////////////////////////////////////////////////////////////////////////////
 
 if (!defined("IN_BTIT"))
       die("non direct access!");
@@ -181,10 +211,10 @@ $userdetailtpl-> set("warnadded", (!$row["warnadded"] ? "" : unesc($row["warnadd
 $userdetailtpl-> set("warnaddedby", (!$row["warnaddedby"] ? "" : unesc($row["warnaddedby"])));
 $userdetailtpl-> set("warns", (!$row["warns"] ? "" : unesc($row["warns"])));   
 $userdetailtpl-> set("rewarn_access", (($row["warn"] == "yes")?TRUE:FALSE), TRUE);
-$userdetailtpl-> set("adminwarn_access", (($CURUSER["edit_torrents"]=="yes" || $CURUSER["edit_users"]=="yes")?TRUE:FALSE), TRUE);
-$userdetailtpl-> set("nowarn_access", (($CURUSER["edit_torrents"]=="yes" || $CURUSER["edit_users"]=="yes")?TRUE:FALSE), TRUE);
+$userdetailtpl-> set("adminwarn_access", (($CURUSER["edit_torrents"] == "yes" || $CURUSER["edit_users"] == "yes")?TRUE:FALSE), TRUE);
+$userdetailtpl-> set("nowarn_access", (($CURUSER["edit_torrents"] == "yes" || $CURUSER["edit_users"] == "yes")?TRUE:FALSE), TRUE);
 $userdetailtpl-> set("warns_access", (($row["warn"] == "no")?TRUE:FALSE), TRUE);
-$userdetailtpl-> set("warn", ($row["warn"]="yes"?"checked=\"checked\"":""));
+$userdetailtpl-> set("warn", ($row["warn"] = "yes"?"checked=\"checked\"":""));
 $userdetailtpl-> set("warnreason", $row["warnreason"]);
 $userdetailtpl-> set("id", $id);
 
@@ -209,7 +239,7 @@ if ($resuploaded && mysql_num_rows($resuploaded) > 0)
    while ($rest = mysql_fetch_assoc($resuploaded))
          {
            $rest["filename"] = unesc($rest["filename"]);
-           $filename = cut_string($rest["filename"],intval($btit_settings["cut_name"]));
+           $filename = cut_string($rest["filename"], intval($btit_settings["cut_name"]));
            if ($GLOBALS["usepopup"])
            {
                $uptortpl[$i]["filename"] = "<a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=".$rest{"info_hash"}."')\" title=\"".$language["VIEW_DETAILS"].": ".$rest["filename"]."\">".$filename."</a>";
@@ -228,7 +258,7 @@ if ($resuploaded && mysql_num_rows($resuploaded) > 0)
            else
            {
                $uptortpl[$i]["filename"] = "<a href=\"index.php?page=torrent-details&amp;id=".$rest{"info_hash"}."\" title=\"".$language["VIEW_DETAILS"].": ".$rest["filename"]."\">".$filename."</a>";
-               $uptortpl[$i]["added"] = date("d/m/Y",$rest["added"]-$offset);
+               $uptortpl[$i]["added"] = date("d/m/Y", $rest["added"] - $offset);
                $uptortpl[$i]["size"] = makesize($rest["size"]);
                $uptortpl[$i]["seedcolor"] = linkcolor($rest["seeds"]);
                $uptortpl[$i]["seeds"] = "<a href=\"index.php?page=peers&amp;id=".$rest{"info_hash"}."\">$rest[seeds]</a>";
@@ -373,7 +403,7 @@ if ($sanq[0] > 0)
                 $torhistory[$i]["filename"] = "<a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=".$torlist->info_hash."')\" title=\"".$language["VIEW_DETAILS"].": ".$torlist->filename."\">".$filename."</a>";
                 $torhistory[$i]["size"] = makesize($torlist->size);
                 $torhistory[$i]["agent"] = htmlspecialchars($torlist->agent);
-                $torhistory[$i]["status"] = ($torlist->active == 'yes'?$language["ACTIVATED"]:'Stopped');
+                $torhistory[$i]["status"] = ($torlist->active == 'yes' ? $language["ACTIVATED"]:'Stopped');
                 $torhistory[$i]["downloaded"] = makesize($torlist->downloaded);
                 $torhistory[$i]["uploaded"] = makesize($torlist->uploaded);
                 if ($torlist->downloaded > 0)

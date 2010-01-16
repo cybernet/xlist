@@ -1,4 +1,13 @@
 <?php
+
+// CyBerFuN.ro & xList.ro
+
+// xList .::. Upgrade
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xList.ro/
+// Modified By cybernet2u
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -30,19 +39,19 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-$dbfile="upgrade/v141_to_v2.sql";
+$dbfile = "upgrade/v141_to_v2.sql";
 
 // declaration of variables
 $INSTALLPATH = dirname(__FILE__);
 $action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : 'welcome');
-$allowed_actions = array('welcome','reqcheck','settings','sql_import','save_mysql','finished');
+$allowed_actions = array('welcome', 'reqcheck', 'settings', 'sql_import', 'save_mysql', 'finished');
 if (!in_array($action, $allowed_actions))
     $action = 'welcome';
 define("BTIT_INSTALL", TRUE);
 
 if (isset($_SERVER['PHP_SELF']))
-   $_SERVER['PHP_SELF']=htmlspecialchars($_SERVER['PHP_SELF']);
-$cur_script=$_SERVER['PHP_SELF'];
+   $_SERVER['PHP_SELF'] = htmlspecialchars($_SERVER['PHP_SELF']);
+$cur_script = $_SERVER['PHP_SELF'];
 
 // getting globals
 $GLOBALS["btit-tracker"]         = "xbtit";
@@ -182,7 +191,7 @@ function step ($text = '', $stepname = '', $stepnumber = '') {
 // check if the installation is not locked
 if (file_exists(dirname(__FILE__)."/install.lock"))
 {
-    step ("Installation Error!","ERROR!","*");
+    step ("Installation Error!", "ERROR!", "*");
     echo ("<p>For security reasons, this installer is locked!<br>Please (via FTP) remove or change the 'install.lock' file before continue.</p>");
     die; 
 }
@@ -236,47 +245,47 @@ elseif ($action == 'reqcheck') {
 if (file_exists(dirname(__FILE__)."/cache"))
   {
   if (is_writable(dirname(__FILE__)."/cache"))
-        $cache=$install_lang["write_succes"];
+        $cache = $install_lang["write_succes"];
   else
-        $cache=$install_lang["write_fail"]."&nbsp;&nbsp;&nbsp;".$install_lang["can_continue"];
+        $cache = $install_lang["write_fail"]."&nbsp;&nbsp;&nbsp;".$install_lang["can_continue"];
   }
 else
-  $cache=$install_lang["write_file_not_found"];
+  $cache = $install_lang["write_file_not_found"];
 // check torrents folder
 if (file_exists(dirname(__FILE__)."/torrents"))
   {
   if (is_writable(dirname(__FILE__)."/torrents"))
-        $torrents=$install_lang["write_succes"];
+        $torrents = $install_lang["write_succes"];
   else
-        $torrents=$install_lang["write_fail"]."&nbsp;&nbsp;&nbsp;".$install_lang["can_continue"];
+        $torrents = $install_lang["write_fail"]."&nbsp;&nbsp;&nbsp;".$install_lang["can_continue"];
   }
 else
-  $torrents=$install_lang["write_file_not_found"];
+  $torrents = $install_lang["write_file_not_found"];
 // check badwords.txt
 if (file_exists(dirname(__FILE__)."/badwords.txt"))
   {
   if (is_writable(dirname(__FILE__)."/badwords.txt"))
-        $badwords=$install_lang["write_succes"];
+        $badwords = $install_lang["write_succes"];
   else
-        $badwords=$install_lang["write_fail"]."&nbsp;&nbsp;&nbsp;".$install_lang["can_continue"];
+        $badwords = $install_lang["write_fail"]."&nbsp;&nbsp;&nbsp;".$install_lang["can_continue"];
   }
 else
-  $badwords=$install_lang["write_file_not_found"];
+  $badwords = $install_lang["write_file_not_found"];
 // check include/settings.php
 if (file_exists(dirname(__FILE__)."/include/settings.php"))
   {
   if (is_writable(dirname(__FILE__)."/include/settings.php"))
-        $settings=$install_lang["write_succes"];
+        $settings = $install_lang["write_succes"];
   else
-        $settings=$install_lang["write_fail"]."&nbsp;".$install_lang["not_continue_settings"];
+        $settings = $install_lang["write_fail"]."&nbsp;".$install_lang["not_continue_settings"];
   }
 else
-  $settings=$install_lang["write_file_not_found"]."&nbsp;".$install_lang["not_continue_settings2"];
+  $settings = $install_lang["write_file_not_found"]."&nbsp;".$install_lang["not_continue_settings2"];
 
-if ((bool)ini_get('allow_url_fopen')===true)
-   $allow_url_fopen=$install_lang["allow_url_fopen_ON"];
+if ((bool)ini_get('allow_url_fopen') === true)
+   $allow_url_fopen = $install_lang["allow_url_fopen_ON"];
 else
-   $allow_url_fopen=$install_lang["allow_url_fopen_OFF"]."&nbsp;&nbsp;&nbsp;".$install_lang["can_continue"];
+   $allow_url_fopen = $install_lang["allow_url_fopen_OFF"]."&nbsp;&nbsp;&nbsp;".$install_lang["can_continue"];
   
     echo ("<h2>".$install_lang["requirements_check"]."</h2>");
     echo ("<table width=\"100%\" cellpadding=\"4\" cellspacing=\"4\" border=\"0\" style=\"margin-bottom: 2ex;\">");
@@ -297,7 +306,7 @@ else
 
 // setting up the tracker
 elseif ($action == 'settings') {
-    step ($install_lang["settings"],$install_lang["step"]."&nbsp;".$install_lang["settings"],"2");
+    step ($install_lang["settings"], $install_lang["step"]."&nbsp;".$install_lang["settings"],"2");
     
     // getting host info.
     $db_server = @ini_get('mysql.default_host') or $db_server = 'localhost';
@@ -390,11 +399,11 @@ elseif ($action == 'sql_import') {
     }
 
     // check if some basic table are present in current selected db
-    $request_tables=array("{$TABLE_PREFIX}blocks", "{$TABLE_PREFIX}namemap", "{$TABLE_PREFIX}summary", "{$TABLE_PREFIX}forums","{$TABLE_PREFIX}language", "{$TABLE_PREFIX}style", "{$TABLE_PREFIX}users", "{$TABLE_PREFIX}users_level");
-    for ($i=0;$i<count($request_tables);$i++)
+    $request_tables = array("{$TABLE_PREFIX}blocks", "{$TABLE_PREFIX}namemap", "{$TABLE_PREFIX}summary", "{$TABLE_PREFIX}forums","{$TABLE_PREFIX}language", "{$TABLE_PREFIX}style", "{$TABLE_PREFIX}users", "{$TABLE_PREFIX}users_level");
+    for ($i=0;$i < count($request_tables);$i++)
       {
-        $rt=mysql_num_rows(mysql_query("SHOW TABLES LIKE '".$request_tables[$i]."'"));
-        if ($rt==0) // table not found!
+        $rt = mysql_num_rows(mysql_query("SHOW TABLES LIKE '".$request_tables[$i]."'"));
+        if ($rt == 0) // table not found!
                 {
                     echo '
                             <div class="error_message">
@@ -457,11 +466,11 @@ elseif ($action == 'sql_import') {
 
         $current_statement = '';
     }
-    if (count($exists)>0 || count($failures)>0)
+    if (count($exists) > 0 || count($failures) > 0)
      {
-     $error="";
-     foreach($failures as $err_line=>$err_msg)
-        $error.="Error on line $err_line: \"$err_msg\"<br />\n";
+     $error = "";
+     foreach($failures as $err_line => $err_msg)
+        $error .= "Error on line $err_line: \"$err_msg\"<br />\n";
         echo '
                 <div class="error_message">
                     <div style="color: red;">', $error, '</div>
@@ -472,13 +481,13 @@ elseif ($action == 'sql_import') {
         die;
 
      }
-     echo (str_replace("database.sql",$dbfile,$install_lang["database_saved"]));
+     echo (str_replace("database.sql", $dbfile,$install_lang["database_saved"]));
      echo ("<div align=\"right\"><input type=\"button\" class=\"button\" name=\"continue\" value=\"".$install_lang["next"]."\" onclick=\"javascript:document.location.href='$cur_script?lang_file=".$_SESSION["install_lang"]."&amp;action=finished'\" /></div>");
 }
 
 // finished
 elseif ($action == 'finished') {
-    step ($install_lang["finished"],$install_lang["step"]."&nbsp;".$install_lang["finished_step"],"*");
+    step ($install_lang["finished"], $install_lang["step"]."&nbsp;".$install_lang["finished_step"],"*");
     echo ("<h2>".$install_lang["succes_upgrade1"]."</h2>");
     if(!@rename("install.unlock", "install.lock"))
         echo ($install_lang["succes_upgrade2b"]);

@@ -5,7 +5,7 @@
 // CyBerFuN .::. rpc
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
+// http://xList.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -76,7 +76,7 @@ $checkIP = unserialize($numbers['used_ips']);
 $count = $numbers['total_votes']; //how many votes total
 $current_rating = $numbers['total_value']; //total number of rating added together and stored
 $sum = $vote_sent + $current_rating; // add together the current vote value and the total vote value
-$tense = ($count==1) ? "vote" : "votes"; //plural form votes/vote
+$tense = ($count == 1) ? "vote" : "votes"; //plural form votes/vote
 
 // checking to see if the first vote has been tallied
 // or increment the current number of votes
@@ -100,13 +100,13 @@ $newtotals = mysql_query("SELECT total_votes, total_value, used_ips FROM $rating
 $numbers = mysql_fetch_assoc($newtotals);
 $count = $numbers['total_votes'];//how many votes total
 $current_rating = $numbers['total_value'];//total number of rating added together and stored
-$tense = ($count==1) ? "vote" : "votes"; //plural form votes/vote
+$tense = ($count == 1) ? "vote" : "votes"; //plural form votes/vote
 
 // $new_back is what gets 'drawn' on your page after a successful 'AJAX/Javascript' vote
 
 $new_back = array();
 
-$new_back[] .= '<ul class="unit-rating" style="width:'.$units*$rating_unitwidth.'px;">';
+$new_back[] .= '<ul class="unit-rating" style="width:'.$units * $rating_unitwidth.'px;">';
 $new_back[] .= '<li class="current-rating" style="width:'.@number_format($current_rating / $count, 2) * $rating_unitwidth.'px;">Trenutna ocjena.</li>';
 $new_back[] .= '<li class="r1-unit">1</li>';
 $new_back[] .= '<li class="r2-unit">2</li>';

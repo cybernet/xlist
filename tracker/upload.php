@@ -2,10 +2,10 @@
 
 // CyBerFuN.ro & xList.ro
 
-// CyBerFuN .::. Upload
+// xList .::. Upload
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
+// http://xList.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -449,7 +449,7 @@ if (!isset($array["announce"]))
          $internal = true;
          // inserting into xbtt table
          if ($XBTT_USE)
-              do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$hash ON DUPLICATE KEY UPDATE flags=0",true);
+              do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$hash ON DUPLICATE KEY UPDATE flags=0", true);
          $query = "INSERT INTO {$TABLE_PREFIX}files (tag, info_hash, filename, url, info, category, data, size, comment, comment_notify, uploader,anonymous, bin_hash, image, screen1, screen2, screen3) VALUES (\"$tag\", \"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$comment_notify,$curuid,$anonyme,0x$hash, '$file_name', '$file_name_s1', '$file_name_s2', '$file_name_s3')";
       }else
           {
@@ -596,7 +596,7 @@ else
     $uploadtpl->set("LEVEL_VISIBLE_OK", false, TRUE);
    }
    unset($rez);
-   $users_level = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users_level ORDER BY id",true);
+   $users_level = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users_level ORDER BY id", true);
    $visible = "<select name='visible'>";
   while ($row = mysql_fetch_assoc($users_level))
     {
