@@ -51,7 +51,7 @@ function format_shout($text)
        $badwords = explode("\n", $bw);
        for ($i = 0;$i < count($badwords); ++$i)
            $badwords[$i] = trim($badwords[$i]);
-       $s = str_replace($badwords,"*censured*",$s);
+       $s = str_replace($badwords, "*censured*", $s);
        }
     @fclose($f);
 

@@ -111,7 +111,7 @@ EOD;
 	{ini_set("sendmail_from","");
    if (mysql_errno() == 0)
      {
-      send_mail($email,$npmn,$body);
+      send_mail($email, $npmn, $body);
       }
    else
        die(mysql_error());

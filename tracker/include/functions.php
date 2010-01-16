@@ -81,7 +81,7 @@ function getLevel($cur_level)
 /*End mod by losmi - sticky mod*/
 /*Mod by losmi - sticky mod
 Operation #3*/
-function updateSticky($hash,$sticky)
+function updateSticky($hash, $sticky)
 {
     global $TABLE_PREFIX;
     $query = "UPDATE {$TABLE_PREFIX}files 

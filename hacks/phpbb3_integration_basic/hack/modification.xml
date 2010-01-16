@@ -1477,7 +1477,7 @@ for ($id=1; $id <= $phpbb3_newest_user_id; ++$id)
 
 function phpbb3_disable_reg()
 {
-	global $TABLE_PREFIX,$admintpl,$language;
+	global $TABLE_PREFIX, $admintpl, $language;
 	// info phpbb3
 	$phpbb3_res=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
 	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
@@ -1506,7 +1506,7 @@ function phpbb3_disable_reg()
 
 function phpbb3_disable_edit_account()
 {
-	global $TABLE_PREFIX,$admintpl,$language;
+	global $TABLE_PREFIX, $admintpl, $language;
 	// info phpbb3
 	$phpbb3_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
 	$phpbb_root_path = $phpbb3_res["phpbb3_root_path"];
@@ -1610,7 +1610,7 @@ function phpbb3_disable_edit_account()
 
 function phpbb3_lang_ucp()
 {
-	global $TABLE_PREFIX,$admintpl,$language;
+	global $TABLE_PREFIX, $admintpl, $language;
 	// info phpbb3
 	$phpbb3_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
 	$phpbb_root_path = $phpbb3_res["phpbb3_root_path"];
@@ -1652,7 +1652,7 @@ function phpbb3_lang_ucp()
 
 function restore_phpbb3_lang_ucp()
 {
-	global $TABLE_PREFIX,$admintpl,$language;
+	global $TABLE_PREFIX, $admintpl, $language;
 	// info phpbb3
 	$phpbb3_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
 	$phpbb_root_path = $phpbb3_res["phpbb3_root_path"];
@@ -1688,7 +1688,7 @@ function restore_phpbb3_lang_ucp()
 
 function restore_phpbb3_edit_account()
 {
-	global $TABLE_PREFIX,$admintpl,$language;
+	global $TABLE_PREFIX, $admintpl, $language;
 	// info phpbb3
 	$phpbb3_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
 	$phpbb_root_path = $phpbb3_res["phpbb3_root_path"];

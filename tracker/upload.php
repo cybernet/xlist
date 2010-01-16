@@ -54,7 +54,7 @@ function_exists("sha1") or die("<font color=\"red\">".$language["NOT_SHA"]."</fo
 
 if (!$CURUSER || $CURUSER["can_upload"] == "no")
    {
-    err_msg($language["SORRY"],$language["ERROR"].$language["NOT_AUTHORIZED_UPLOAD"]);
+    err_msg($language["SORRY"], $language["ERROR"].$language["NOT_AUTHORIZED_UPLOAD"]);
     stdfoot();
     exit();
    }
@@ -70,7 +70,7 @@ if (isset($_FILES["torrent"]))
       if ($length)
         $alltorrent = fread($fd, $length);
       else {
-        err_msg($language["ERROR"],$language["FILE_UPLOAD_ERROR_3"]);
+        err_msg($language["ERROR"], $language["FILE_UPLOAD_ERROR_3"]);
         stdfoot();
         exit();
 
@@ -183,10 +183,10 @@ if (!isset($array["announce"]))
 	  if (isset($_POST["comment_notify"])) $comment_notify = sqlesc($_POST["comment_notify"]);
 
       // category check
-      $rc = do_sqlquery("SELECT id FROM {$TABLE_PREFIX}categories WHERE id=$categoria",true);
+      $rc = do_sqlquery("SELECT id FROM {$TABLE_PREFIX}categories WHERE id=$categoria", true);
       if (mysql_num_rows($rc) == 0)
          {
-             err_msg($language["ERROR"],$language["WRITE_CATEGORY"]);
+             err_msg($language["ERROR"], $language["WRITE_CATEGORY"]);
              stdfoot();
              exit();
       }
@@ -196,7 +196,7 @@ if (!isset($array["announce"]))
 
       if ($categoria == 0)
          {
-             err_msg($language["ERROR"],$language["WRITE_CATEGORY"]);
+             err_msg($language["ERROR"], $language["WRITE_CATEGORY"]);
              stdfoot();
              exit();
          }
@@ -207,9 +207,9 @@ if (!isset($array["announce"]))
          endOutput();
       }
 //      if ($announce!=$BASEURL."/announce.php" && $EXTERNAL_TORRENTS==false)
-      if (!in_array($announce,$TRACKER_ANNOUNCEURLS) && $EXTERNAL_TORRENTS==false)
+      if (!in_array($announce, $TRACKER_ANNOUNCEURLS) && $EXTERNAL_TORRENTS == false)
          {
-           err_msg($language["ERROR"],$language["ERR_EXTERNAL_NOT_ALLOWED"]);
+           err_msg($language["ERROR"], $language["ERR_EXTERNAL_NOT_ALLOWED"]);
            unlink($_FILES["torrent"]["tmp_name"]);
            stdfoot();
            exit();
@@ -457,9 +457,9 @@ if (!isset($array["announce"]))
              $internal = false;
              if (isset($array["announce-list"]) && is_array($array["announce-list"]))
                 {
-                for ($i=0;$i<count($array["announce-list"]);$i++)
+                for ($i=0;$i < count($array["announce-list"]);$i++)
                     {
-                    if (in_array($array["announce-list"][$i][0],$TRACKER_ANNOUNCEURLS))
+                    if (in_array($array["announce-list"][$i][0], $TRACKER_ANNOUNCEURLS))
                       {
                        $internal = true;
                        continue;
@@ -505,9 +505,9 @@ Mod by losmi -visible torrent
          if (!$mf)
            {
            // failed to move file
-             do_sqlquery("DELETE FROM {$TABLE_PREFIX}files WHERE info_hash=\"$hash\"",true);
+             do_sqlquery("DELETE FROM {$TABLE_PREFIX}files WHERE info_hash=\"$hash\"", true);
              if ($XBTT_USE)
-                  do_sqlquery("UPDATE xbt_files SET flags=1 WHERE info_hash=0x$hash",true);
+                  do_sqlquery("UPDATE xbt_files SET flags=1 WHERE info_hash=0x$hash", true);
              stderr($language["ERROR"], $language["ERR_MOVING_TORR"]);
          }
          // try to chmod new moved file, on some server chmod without this could result 600, seems to be php bug
@@ -566,11 +566,11 @@ Mod by losmi -sticky torrent
     
 if ($CURUSER["uid"] > 1 && $current_level >= $rez_level && $CURUSER['can_upload'] == 'yes')
    {
-    $uploadtpl->set("LEVEL_OK",true,FALSE);
+    $uploadtpl->set("LEVEL_OK", true, FALSE);
    }
 else
    {
-    $uploadtpl->set("LEVEL_OK",false,TRUE);
+    $uploadtpl->set("LEVEL_OK", false, TRUE);
    }
    unset($rez);
 /*
@@ -589,11 +589,11 @@ Mod by losmi -visible torrent
 
 if ($CURUSER["uid"] > 1 && $current_level >= $rez_level && $CURUSER['can_upload'] == 'yes')
    {
-    $uploadtpl->set("LEVEL_VISIBLE_OK",true,FALSE);
+    $uploadtpl->set("LEVEL_VISIBLE_OK", true, FALSE);
    }
 else
    {
-    $uploadtpl->set("LEVEL_VISIBLE_OK",false,TRUE);
+    $uploadtpl->set("LEVEL_VISIBLE_OK", false, TRUE);
    }
    unset($rez);
    $users_level = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users_level ORDER BY id",true);
