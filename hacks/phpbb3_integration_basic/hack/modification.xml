@@ -14,7 +14,7 @@
   <file>
     <name>"$DEFAULT_ROOT/account.php"</name>
     <operation>
-      <search><![CDATA[do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '" . md5($pwd) . "', $random, $idlevel, '$email', $idstyle, $idlangue, $idflag, NOW(), NOW(),'$pid', '".$timezone."')",true);]]></search>
+      <search><![CDATA[do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '" . md5($pwd) . "', $random, $idlevel, '$email', $idstyle, $idlangue, $idflag, NOW(), NOW(), '$pid', '".$timezone."')", true);]]></search>
 	  <action>"replace"</action>
       <data><![CDATA[
 // start hack phpbb3 integration
@@ -290,7 +290,7 @@ elseif (strlen($row["password"]) != 34 && md5($row["random"].$row["password"].$r
         {
           $logintpl->set("FALSE_USER", false, true);
           $logintpl->set("FALSE_PASSWORD", true, true);
-          $logintpl->set("login_password_incorrent" ,$language["ERR_PASSWORD_INCORRECT"]);
+          $logintpl->set("login_password_incorrent", $language["ERR_PASSWORD_INCORRECT"]);
           login();
         }
 elseif (strlen($row["password"]) == 34)
@@ -626,7 +626,7 @@ $your_phpbb3_integration_version = "";
 	  <where>"after"</where>
       <data><![CDATA[
 // start hack phpbb3 integration
-if (($row_phpbb3_integration != implode(" ",$last_phpbb3_integration_version)))
+if (($row_phpbb3_integration != implode(" ", $last_phpbb3_integration_version)))
   {
   $your_phpbb3_integration_version .= "<table width=\"100%\"><tr><td align=\"left\">".$language["PHPBB3_INTEGRATION_INSTALLED"]."</td><td align=\"left\">".$row_phpbb3_integration."</td></tr>\n";
   $your_phpbb3_integration_version .= "<tr><td align=\"left\">".$language["PHPBB3_INTEGRATION_CURRENT"]."</td><td align=\"left\">".implode(" ",$last_phpbb3_integration_version)."</td></tr>\n";
@@ -1177,7 +1177,7 @@ function phpbb3_users_import()
 	
 	// last member on phpBB
 /*	$ricavo_newest_user_id = mysql_fetch_assoc(mysql_query("SELECT config_value FROM `{$phpbb_db_prefix}config` WHERE config_name = 'newest_user_id' "));
-	$phpbb3_newest_user_id = $ricavo_newest_user_id["config_value"];*/
+	$phpbb3_newest_user_id = $ricavo_newest_user_id["config_value"]; */
 	// default setting from phpbb3
 	$ricavo_default_phpbb = mysql_query("SELECT `config_name`, `config_value` FROM `{$phpbb_db_prefix}config`") or die(mysql_error());
 
