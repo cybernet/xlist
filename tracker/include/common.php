@@ -1,4 +1,13 @@
 <?php
+
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. common
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xList.ro/
+// Modified By cybernet2u
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -34,7 +43,7 @@ require_once(dirname(__FILE__).'/config.php');
 
 if (!function_exists('bcsub')) {
     function bcsub($first_num, $second_num) {
-        return ((int)$first_num)-((int)$second_num);
+        return ((int)$first_num) - ((int)$second_num);
     }
 }
 
@@ -56,10 +65,10 @@ function send_pm($sender, $recepient, $subject, $msg) {
         # if sender id is invalid or 0, use System
         $sender = ($sender == 0)?0:get_result('SELECT smf_fid, username FROM '.$TABLE_PREFIX.'users WHERE id='.$sender.' LIMIT 1;', true, $CACHE_DURATION);
         if (!isset($sender[0])) {
-            $sender=array();
-            $sender['smf_fid']=0;
-            $sender['username']='System';
-        } else $sender=$sender[0];
+            $sender = array();
+            $sender['smf_fid'] = 0;
+            $sender['username'] = 'System';
+        } else $sender = $sender[0];
         # insert message
         quickQuery('INSERT INTO '.$db_prefix.'personal_messages (ID_MEMBER_FROM, fromName, msgtime, subject, body) VALUES ('.$sender['smf_fid'].', '.sqlesc($sender['username']).', UNIX_TIMESTAMP(), '.$subject.', '.$msg.');');
         # get id of message
@@ -87,7 +96,7 @@ function write_file($file, $content) {
     return false;
 }
 
-function send_mail($rec_email, $subject, $message, $IsHtml=false, $cc=array(), $bcc=array()) {
+function send_mail($rec_email, $subject, $message, $IsHtml = false, $cc = array(), $bcc = array()) {
     global $THIS_BASEPATH, $btit_settings;
 
     if (!method_exists('PHPMailer','IsMail'))
@@ -109,7 +118,7 @@ function send_mail($rec_email, $subject, $message, $IsHtml=false, $cc=array(), $
         $mail->Password = $btit_settings['smtp_password']; # SMTP password
         if (!empty($cc))
             foreach($cc as $carbon_copy)
-                $mail->AddCC($carbon_copy[0],$carbon_copy[0]);
+                $mail->AddCC($carbon_copy[0], $carbon_copy[0]);
 
         if (!empty($bcc))
             foreach($bcc as $blind_carbon_copy)
@@ -158,7 +167,7 @@ function get_remote_file($http_url, $mode = 'r') {
         if (substr($stream, 9, 3) == '404') {
             $stream = '';
             # last chance we try slowest fopen
-            $fp = @fopen($http_url,$mode);
+            $fp = @fopen($http_url, $mode);
             if (!$fp)
                 return false;
 
@@ -370,7 +379,7 @@ function StdDecodePeerId($id_data, $id_name) {
                 break;
         }
     }
-    $version_str = substr($version_str, 0, strlen($version_str)-1);
+    $version_str = substr($version_str, 0, strlen($version_str) - 1);
     return $id_name.' '.$version_str;
 }
 
@@ -381,15 +390,15 @@ function MainlineDecodePeerId($id_data, $id_name) {
         if ($c != '-' && ctype_alnum($c))
             $version_str .= $c.'.';
     }
-    $version_str = substr($version_str, 0, strlen($version_str)-1);
+    $version_str = substr($version_str, 0, strlen($version_str) - 1);
     return $id_name.' '.$version_str;
 }
 
 function DecodeVersionString ($ver_data, $id_name) {
     $version_str = '';
     $version_str .= intval(ord($ver_data[0]) + 0).'.';
-    $version_str .= intval(ord($ver_data[1])/10 + 0);
-    $version_str .= intval(ord($ver_data[1])%10 + 0);
+    $version_str .= intval(ord($ver_data[1]) / 10 + 0);
+    $version_str .= intval(ord($ver_data[1]) % 10 + 0);
     return $id_name.' '.$version_str;
 }
 

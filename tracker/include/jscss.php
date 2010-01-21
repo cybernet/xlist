@@ -1,10 +1,11 @@
 <?php
+
 // CyBerFuN.ro & xList.ro
 
 // CyBerFuN .::. jscss
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
+// http://xList.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////

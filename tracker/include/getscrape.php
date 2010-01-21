@@ -1,10 +1,11 @@
 <?php
+
 // CyBerFuN.ro & xList.ro
 
 // CyBerFuN .::. scrape
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
+// http://xList.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -79,7 +80,7 @@ function scrape($url, $infohash = '') {
   global $TABLE_PREFIX;
   if (isset($url)) {
     $url_c = parse_url($url);
-    $extannunce = ($url_c['scheme']=='udp'?'http':$url_c['scheme']).'://'.$url_c['host'];
+    $extannunce = ($url_c['scheme'] == 'udp'?'http':$url_c['scheme']).'://'.$url_c['host'];
     $extannunce .= (isset($url_c['port'])?':'.$url_c['port']:'');
     $extannunce .= substr_replace($url_c['path'],'scrape', strbipos($url_c['path'], 'announce') + 1, 8);
     $extannunce .= (isset($url_c['query'])?'?'.$url_c['query']:'');
@@ -91,19 +92,19 @@ function scrape($url, $infohash = '') {
       foreach($ihash as $myihash)
         $info_hash .= '&info_hash='.escapeURL($myihash);
       $info_hash = substr($info_hash, 1);
-      $stream = get_remote_file($extannunce.(substr_count($extannunce,'?')>0?'?':'&').$info_hash);
+      $stream = get_remote_file($extannunce.(substr_count($extannunce,'?') > 0 ? '?':'&').$info_hash);
     } else
       $stream = get_remote_file($extannunce);
     $stream = trim(stristr($stream, 'd5:files'));
     if (strpos($stream, 'd5:files') === false) {
-      $ret = do_sqlquery('UPDATE '.$TABLE_PREFIX.'files SET lastupdate=NOW() WHERE announce_url="'.$url.'"'.($infohash==''?'':' AND info_hash IN ("'.$infohash.'")'));
-      write_log('FAILED update external torrent '.($infohash==''?'':'(infohash: '.$infohash.')').' from '.$url.' tracker (not connectable)','');
+      $ret = do_sqlquery('UPDATE '.$TABLE_PREFIX.'files SET lastupdate=NOW() WHERE announce_url="'.$url.'"'.($infohash == ''?'':' AND info_hash IN ("'.$infohash.'")'));
+      write_log('FAILED update external torrent '.($infohash == ''?'':'(infohash: '.$infohash.')').' from '.$url.' tracker (not connectable)','');
       return;
     }
 
     $array = BDecode($stream);
     if (!isset($array) || $array == false || !isset($array['files'])) {
-      $ret = do_sqlquery('UPDATE '.$TABLE_PREFIX.'files SET lastupdate=NOW() WHERE announce_url="'.$url.'"'.($infohash==''?'':' AND info_hash IN ("'.$infohash.'")'));
+      $ret = do_sqlquery('UPDATE '.$TABLE_PREFIX.'files SET lastupdate=NOW() WHERE announce_url="'.$url.'"'.($infohash == ''?'':' AND info_hash IN ("'.$infohash.'")'));
       write_log('FAILED update external torrent '.($infohash == ''?'':'(infohash: '.$infohash.')').' from '.$url.' tracker (not bencode data)','');
       return;
     }

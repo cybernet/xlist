@@ -39,7 +39,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-$template_file = "./cyberfun_bar/template.png";
+$template_file = "./xList_bar/template.png";
 
 $rating_x = 37;
 $rating_y = 6;
@@ -50,8 +50,8 @@ $upload_y = 6;
 $download_x = 198;
 $download_y = 6;
 
-$digits_template = "./cyberfun_bar/digits.png";
-$digits_config = "./cyberfun_bar/digits.ini";
+$digits_template = "./xList_bar/digits.png";
+$digits_config = "./xList_bar/digits.ini";
 
 //===========================================================================
 // Funtions
@@ -166,12 +166,12 @@ if ($userid != "") {
 
 $dot_pos = strpos((string) $rating_counter, ".");
 if ($dot_pos > 0) {
-    $rating_counter = (string) round(substr((string) $rating_counter, 0, $dot_pos+1+2), 2);
+    $rating_counter = (string) round(substr((string) $rating_counter, 0, $dot_pos + 1 + 2), 2);
 } else {
 	$rating_counter = (string) $rating_counter;
 }
 $counter_x = $rating_x;
-for ($i=0; $i < strlen($rating_counter); $i++) {
+for ($i = 0; $i < strlen($rating_counter); $i++) {
 	$d_x = $digits_ini[ifthen($rating_counter[$i] == ".", "dot", $rating_counter[$i])."_x"];
 	$d_w = $digits_ini[ifthen($rating_counter[$i] == ".", "dot", $rating_counter[$i])."_w"];
 	imagecopy($img, $digits_img, $counter_x, $rating_y, $d_x, 0, $d_w, imagesy($digits_img));
@@ -183,7 +183,7 @@ $postfix = getPostfix($upload_counter);
 $upload_counter = roundCounter($upload_counter, $postfix);
 $dot_pos = strpos((string) $upload_counter, ".");
 if ($dot_pos > 0) {
-    $upload_counter = (string) round(substr((string) $upload_counter, 0, $dot_pos+1+2), 2);
+    $upload_counter = (string) round(substr((string) $upload_counter, 0, $dot_pos + 1 + 2), 2);
 } else {
 	$upload_counter = (string) $upload_counter;
 }
@@ -209,7 +209,7 @@ if ($dot_pos > 0) {
 	$download_counter = (string) $download_counter;
 }
 $counter_x = $download_x;
-for ($i=0; $i < strlen($download_counter); $i++) {
+for ($i = 0; $i < strlen($download_counter); $i++) {
 	$d_x = $digits_ini[ifthen($download_counter[$i] == ".", "dot", $download_counter[$i])."_x"];
 	$d_w = $digits_ini[ifthen($download_counter[$i] == ".", "dot", $download_counter[$i])."_w"];
 	imagecopy($img, $digits_img, $counter_x, $download_y, $d_x, 0, $d_w, imagesy($digits_img));

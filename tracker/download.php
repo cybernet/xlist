@@ -122,9 +122,9 @@ if ($row["external"] == "yes") {
     if ($XBTT_USE) {
       $xbthash = do_sqlquery("SELECT info_hash FROM xbt_files WHERE info_hash=UNHEX('$infohash')");
         if (mysql_num_rows($xbthash) == 0)
-           do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$infohash ON DUPLICATE KEY UPDATE flags=0",true);
+           do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$infohash ON DUPLICATE KEY UPDATE flags=0", true);
     }
-    do_sqlquery("UPDATE {$TABLE_PREFIX}files SET external='no' WHERE info_hash='".$infohash."'",true);
+    do_sqlquery("UPDATE {$TABLE_PREFIX}files SET external='no' WHERE info_hash='".$infohash."'", true);
 
 
     header("Content-Type: application/x-bittorrent");

@@ -5,7 +5,7 @@
 // CyBerFuN .::. Sanity
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
+// http://xList.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -70,7 +70,7 @@ if ($XBTT_USE) {
          {
              list($hash, $seeders, $leechers, $bytes, $filename) = $row;
 
-         $timeout=time() - (intval($GLOBALS["report_interval"] * 2));
+         $timeout = time() - (intval($GLOBALS["report_interval"] * 2));
 
          // for testing purpose -- begin
          $resupd = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}peers where lastupdate < ".$timeout ." AND infohash='$hash'");
@@ -78,8 +78,8 @@ if ($XBTT_USE) {
             {
             while ($resupdate = mysql_fetch_array($resupd))
               {
-                  $uploaded = max(0,$resupdate["uploaded"]);
-                  $downloaded = max(0,$resupdate["downloaded"]);
+                  $uploaded = max(0, $resupdate["uploaded"]);
+                  $downloaded = max(0, $resupdate["downloaded"]);
                   $pid = $resupdate["pid"];
                   $ip = $resupdate["ip"];
                   // update user->peer stats only if not livestat
@@ -109,7 +109,7 @@ if ($XBTT_USE) {
              $results2 = do_sqlquery("SELECT status, COUNT(status) from {$TABLE_PREFIX}peers WHERE infohash='$hash' GROUP BY status");
              $counts = array();
              while ($row = mysql_fetch_row($results2))
-                 $counts[$row[0]] = 0+$row[1];
+                 $counts[$row[0]] = 0 + $row[1];
 
              quickQuery("UPDATE {$TABLE_PREFIX}files SET leechers=".(isset($counts["leecher"])?$counts["leecher"]:0).",seeds=".(isset($counts["seeder"])?$counts["seeder"]:0)." WHERE info_hash=\"$hash\"");
              if ($bytes < 0)
@@ -153,7 +153,7 @@ if ($nown >= $expire2 )
 {
 $subj = sqlesc("Your Warning time is expired !!");
 $msg = sqlesc("You are not longer Warned , please be carefull to not make the same mistake again !!");
-mysql_query("INSERT INTO {$TABLE_PREFIX}messages (sender, receiver, added, msg, subject) VALUES(0,'$conf[id]',UNIX_TIMESTAMP(),$msg,$subj)") or sqlerr(__FILE__, __LINE__);  
+mysql_query("INSERT INTO {$TABLE_PREFIX}messages (sender, receiver, added, msg, subject) VALUES(0, '$conf[id]', UNIX_TIMESTAMP(), $msg, $subj)") or sqlerr(__FILE__, __LINE__);  
 mysql_query("UPDATE {$TABLE_PREFIX}users SET warn='no' WHERE id='$conf[id]'") or sqlerr();
 }
 //warn

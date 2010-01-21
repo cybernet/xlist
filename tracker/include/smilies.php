@@ -1,4 +1,13 @@
 <?php
+
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. smilies
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xList.ro/
+// Modified By cybernet2u
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
