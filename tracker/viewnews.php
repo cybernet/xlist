@@ -66,7 +66,7 @@ $res = do_sqlquery("SELECT n.id, n.title, n.news,UNIX_TIMESTAMP(n.date) as news_
 require(load_language("lang_viewnews.php"));
 
 $viewnewstpl = new bTemplate();
-$viewnewstpl -> set("language",$language);
+$viewnewstpl -> set("language", $language);
 $viewnewstpl -> set("can_edit_news", $CURUSER["edit_news"] == "yes", TRUE);
 $viewnewstpl -> set("can_edit_news_1", $CURUSER["edit_news"] == "yes", TRUE);
 $viewnewstpl -> set("can_delete_news", $CURUSER["delete_news"] == "yes", TRUE);

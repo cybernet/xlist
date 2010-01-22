@@ -167,11 +167,11 @@ while($row = mysql_fetch_array($res))
           
 $userstpl->set("users_search_select", $select);
 $userstpl->set("users_pagertop", $pagertop);
-$userstpl->set("users_sort_username", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=username&amp;by=".($order=="username" && $by=="ASC"?"DESC":"ASC")."\">".$language["USER_NAME"]."</a>".($order=="username"?$mark:""));
-$userstpl->set("users_sort_userlevel", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=level&amp;by=".($order=="level" && $by=="ASC"?"DESC":"ASC")."\">".$language["USER_LEVEL"]."</a>".($order=="level"?$mark:""));
-$userstpl->set("users_sort_joined", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=joined&amp;by=".($order=="joined" && $by=="ASC"?"DESC":"ASC")."\">".$language["USER_JOINED"]."</a>".($order=="joined"?$mark:""));
-$userstpl->set("users_sort_lastaccess", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=lastconnect&amp;by=".($order=="lastconnect" && $by=="ASC"?"DESC":"ASC")."\">".$language["USER_LASTACCESS"]."</a>".($order=="lastconnect"?$mark:""));
-$userstpl->set("users_sort_country", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=flag&amp;by=".($order=="flag" && $by=="ASC"?"DESC":"ASC")."\">".$language["USER_COUNTRY"]."</a>".($order=="flag"?$mark:""));
+$userstpl->set("users_sort_username", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=username&amp;by=".($order=="username" && $by=="ASC"?"DESC":"ASC")."\">".$language["USER_NAME"]."</a>".($order == "username"?$mark:""));
+$userstpl->set("users_sort_userlevel", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=level&amp;by=".($order=="level" && $by=="ASC"?"DESC":"ASC")."\">".$language["USER_LEVEL"]."</a>".($order == "level"?$mark:""));
+$userstpl->set("users_sort_joined", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=joined&amp;by=".($order=="joined" && $by=="ASC"?"DESC":"ASC")."\">".$language["USER_JOINED"]."</a>".($order == "joined"?$mark:""));
+$userstpl->set("users_sort_lastaccess", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=lastconnect&amp;by=".($order=="lastconnect" && $by=="ASC"?"DESC":"ASC")."\">".$language["USER_LASTACCESS"]."</a>".($order == "lastconnect"?$mark:""));
+$userstpl->set("users_sort_country", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=flag&amp;by=".($order=="flag" && $by=="ASC"?"DESC":"ASC")."\">".$language["USER_COUNTRY"]."</a>".($order == "flag"?$mark:""));
 $userstpl->set("users_sort_ratio", "<a href=\"$scriptname&amp;$addparam".(strlen($addparam)>0?"&amp;":"")."order=ratio&amp;by=".($order=="ratio" && $by=="ASC"?"DESC":"ASC")."\">".$language["RATIO"]."</a>".($order=="ratio"?$mark:""));
 
 if ($CURUSER["uid"] > 1)
@@ -195,8 +195,8 @@ while ($row_user = mysql_fetch_array($rusers))
   {     // start while
   $users[$i]["username"] = "<a href=\"index.php?page=userdetails&amp;id=".$row_user["id"]."\">".unesc($row_user["prefixcolor"]).unesc($row_user["username"]).warn($row_user).unesc($row_user["suffixcolor"])."</a>";
   $users[$i]["userlevel"] = $row_user["level"];
-  $users[$i]["joined"] = $row_user["joined"]==0 ? $language["NOT_AVAILABLE"] : date("d/m/Y H:i:s",$row_user["joined"]-$offset);
-  $users[$i]["lastconnect"] = $row_user["lastconnect"]==0 ? $language["NOT_AVAILABLE"] : date("d/m/Y H:i:s",$row_user["lastconnect"]-$offset);
+  $users[$i]["joined"] = $row_user["joined"] == 0 ? $language["NOT_AVAILABLE"] : date("d/m/Y H:i:s", $row_user["joined"] - $offset);
+  $users[$i]["lastconnect"] = $row_user["lastconnect"] == 0 ? $language["NOT_AVAILABLE"] : date("d/m/Y H:i:s", $row_user["lastconnect"] - $offset);
   $users[$i]["flag"] = $row_user["flag"] == 0 ? "<img src='images/flag/unknown.gif' alt='".$language["UNKNOWN"]."' title='".$language["UNKNOWN"]."' />" : "<img src='images/flag/" . $row_user['flagpic'] . "' alt='" . $row_user['name'] . "' title='" . $row_user['name'] . "' />";
                        
 //user ratio

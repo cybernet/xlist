@@ -395,8 +395,8 @@ if ($sanq[0] > 0)
 //    print("<div align=\"center\">$pagertop</div>");
     while ($torlist = mysql_fetch_object($anq))
         {
-            $torlist->filename=unesc($torlist->filename);
-            $filename = cut_string($torlist->filename,intval($btit_settings["cut_name"]));
+            $torlist->filename = unesc($torlist->filename);
+            $filename = cut_string($torlist->filename, intval($btit_settings["cut_name"]));
 
             if ($GLOBALS["usepopup"])
             {

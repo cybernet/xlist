@@ -46,7 +46,7 @@ require_once $THIS_BASEPATH.'/include/functions.php';
 # connect to db
 dbconn();
 # check if allowed and die if not
-if($CURUSER['edit_torrents'] == 'no' && $CURUSER['edit_users'] == 'no')die('Unauthorised access!');
+if($CURUSER['edit_torrents'] == 'no' && $CURUSER['edit_users'] == 'no') die('Unauthorised access!');
 
 # inits
 $id = (int)$_GET['id'];
