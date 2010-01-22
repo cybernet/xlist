@@ -80,7 +80,7 @@ if (isset($_POST["info_hash"])) {
    if ($_POST["confirm"] == $language["FRM_CONFIRM"]) {
    $comment = addslashes($_POST["comment"]);
       $user = AddSlashes($CURUSER["username"]);
-      if ($user == "") $user="Anonymous";
+      if ($user == "") $user = "Anonymous";
 global $BASEURL, $SITENAME, $language;
 
 $res1 = mysql_fetch_assoc(mysql_query("SELECT comment_notify, uploader, anonymous FROM {$TABLE_PREFIX}files WHERE info_hash = '$id'")) or sqlerr();

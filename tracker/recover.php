@@ -4,7 +4,7 @@
 // CyBerFuN .::. recover
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
+// http://xList.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -77,7 +77,7 @@ if ($USE_IMAGECODE)
        else
          {
            include("$THIS_BASEPATH/include/security_code.php");
-           $scode_index=intval($_POST["security_index"]);
+           $scode_index = intval($_POST["security_index"]);
            if ($security_code[$scode_index]["answer"] != $_POST["scode_answer"])
               {
               err_msg($language["ERROR"], $language["ERR_IMAGE_CODE"]);
@@ -185,7 +185,7 @@ elseif ($act == "recover_ok")
   $res = do_sqlquery("SELECT username, email, random".(($GLOBALS["FORUMLINK"] == "smf") ? ", smf_fid" : "")." FROM {$TABLE_PREFIX}users WHERE id = $id");
   $arr = mysql_fetch_array($res) or httperr();
 
-  if ($random!=$arr["random"])
+  if ($random != $arr["random"])
        stderr($language["ERROR"], $language["ERR_UPDATE_USER"]);
 
   $email = $arr["email"];

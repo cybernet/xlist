@@ -1,4 +1,5 @@
 <?php
+
 // CyBerFuN.ro & xList.ro
 
 // CyBerFuN .::. peers
@@ -6,6 +7,38 @@
 // http://www.cyberfun.ro/
 // http://xlist.ro/
 // Modified By cybernet2u
+
+/////////////////////////////////////////////////////////////////////////////////////
+// xbtit - Bittorrent tracker/frontend
+//
+// Copyright (C) 2004 - 2007  Btiteam
+//
+//    This file is part of xbtit.
+//
+// Redistribution and use in source and binary forms, with or without modification,
+// are permitted provided that the following conditions are met:
+//
+//   1. Redistributions of source code must retain the above copyright notice,
+//      this list of conditions and the following disclaimer.
+//   2. Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
+//   3. The name of the author may not be used to endorse or promote products
+//      derived from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+// IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+// TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+////////////////////////////////////////////////////////////////////////////////////
+
 if (!defined("IN_BTIT"))
       die("non direct access!");
 
@@ -58,9 +91,9 @@ else
 
 require(load_language("lang_peers.php"));
 
-$peerstpl=new bTemplate();
-$peerstpl->set("language",$language);
-$peerstpl->set("peers_script","index.php");
+$peerstpl = new bTemplate();
+$peerstpl->set("language", $language);
+$peerstpl->set("peers_script", "index.php");
 
 while ($row = mysql_fetch_array($res))
 {
@@ -110,7 +143,7 @@ else
 if (!$XBTT_USE)
 {
     if ($GLOBALS["NAT"])
-        $peers[$i]["PORT"] = "<b><font color='".(($row["natuser"]=="Y")?"red":"green")."'>".$row["port"]."</font></b>";
+        $peers[$i]["PORT"] = "<b><font color='".(($row["natuser"] == "Y")?"red":"green")."'>".$row["port"]."</font></b>";
     else
         $peers[$i]["PORT"] = $row["port"];
 }
@@ -121,7 +154,7 @@ if (!$XBTT_USE)
 $peers[$i]["PROGRESS"] = $stat."%<br />" . $progress;
 
 $peers[$i]["STATUS"] = $row["status"];
-$peers[$i]["CLIENT"] = htmlspecialchars(getagent(unesc($row["client"]),unesc($row["peer_id"])));
+$peers[$i]["CLIENT"] = htmlspecialchars(getagent(unesc($row["client"]), unesc($row["peer_id"])));
   $dled = makesize($row["downloaded"]);
   $upld = makesize($row["uploaded"]);
 $peers[$i]["DOWNLOADED"] = $dled;
@@ -130,7 +163,7 @@ $peers[$i]["DOWNLOADED"] = $dled;
     ################################################################################################
     # Speed stats in peers with filename
 
-            if ($row['status']=='seeder') $transferrateDL = "<i>seeder</i>";             
+            if ($row['status'] == 'seeder') $transferrateDL = "<i>seeder</i>";             
               else if ($row['download_difference'] > '0' && $row['announce_interval'] > '0')
                 $transferrateDL = round(round($row['download_difference'] / $row['announce_interval']) / 1000, 2)." KB/sec";
                 else $transferrateDL = "0 KB/sec";
@@ -138,7 +171,7 @@ $peers[$i]["DOWNLOADED"] = $dled;
 if ($transferrateDL >= 6.50) $color = "green";
 else if ($transferrateDL >= 3.00) $color = "orange";
 else if ($transferrateDL >= 0.01) $color = "red";
-else if($row['status']=='seeder') $color = "#00D900";
+else if($row['status'] == 'seeder') $color = "#00D900";
 else $color = "";
               $peers[$i]["DLSPEED"] = "<font color=$color>$transferrateDL</font>";
 
@@ -147,7 +180,7 @@ $peers[$i]["UPLOADED"] = $upld;
 
 
             if ($row['upload_difference'] > '0' && $row['announce_interval'] > '0')
-              $transferrateUP = round(round($row['upload_difference']/$row['announce_interval'])/1000, 2)." KB/sec";
+              $transferrateUP = round(round($row['upload_difference'] / $row['announce_interval']) / 1000, 2)." KB/sec";
               else $transferrateUP = "0 KB/sec";
               
 if ($transferrateUP >= 6.50) $color = "green";
@@ -173,18 +206,18 @@ else $color = "";
 $i++;
 }
 
-if (mysql_num_rows($res)==0)
-  $peerstpl->set("NOPEERS",TRUE,TRUE);
+if (mysql_num_rows($res) == 0)
+  $peerstpl->set("NOPEERS", TRUE, TRUE);
 else
-    $peerstpl->set("NOPEERS",FALSE,TRUE);
+    $peerstpl->set("NOPEERS", FALSE, TRUE);
 
 
 if ($GLOBALS["usepopup"])
     $peerstpl->set("BACK2","<br /><br /><center><a href=\"javascript:window.close()\"><tag:language.CLOSE /></a></center>");
 else
    $peerstpl->set("BACK2", "<br /><br /><center><a href=\"javascript: history.go(-1);\"><tag:language.BACK /></a></center>");
-$peerstpl->set("XBTT",$XBTT_USE,TRUE);
-$peerstpl->set("XBTT2",$XBTT_USE,TRUE);
-$peerstpl->set("peers",$peers);
+$peerstpl->set("XBTT", $XBTT_USE, TRUE);
+$peerstpl->set("XBTT2", $XBTT_USE, TRUE);
+$peerstpl->set("peers", $peers);
 }
 ?>

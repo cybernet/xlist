@@ -5,7 +5,7 @@
 // CyBerFuN .::. News
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
+// http://xList.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +44,7 @@ if (!defined("IN_BTIT"))
 
 require_once(load_language("lang_account.php"));
 
-if (!isset($_POST["language"])) $_POST["language"] = max(1,$btit_settings["default_language"]);
+if (!isset($_POST["language"])) $_POST["language"] = max(1, $btit_settings["default_language"]);
 $idlang = intval($_POST["language"]);
 
 
@@ -67,7 +67,7 @@ if (isset($_POST["uid"])) $id = intval($_POST["uid"]);
  else $id = "";
 if (isset($_POST["returnto"])) $link = urldecode($_POST["returnto"]);
  else $link = "";
-if (isset($_POST["act"])) $act=$_POST["act"];
+if (isset($_POST["act"])) $act = $_POST["act"];
  else $act = "";
   }
 
@@ -105,7 +105,7 @@ $numusers = $nusers[0];
 
 if ($act == "signup" && $MAX_USERS != 0 && $numusers >= $MAX_USERS && !$INVITATIONSON)
    {
-   stderr($language["ERROR"],$language["REACHED_MAX_USERS"]);
+   stderr($language["ERROR"], $language["REACHED_MAX_USERS"]);
 }
 
 if ($act == "confirm") {
@@ -171,15 +171,15 @@ if ($_POST["conferma"]) {
                exit();
               }
           }
-       elseif ($ret==-1)
+       elseif ($ret ==- 1)
          stderr($language["ERROR"], $language["ERR_MISSING_DATA"]);
-       elseif ($ret==-3)
+       elseif ($ret ==- 3)
          stderr($language["ERROR"], $language["ERR_NO_EMAIL"]);
-       elseif ($ret==-7)
+       elseif ($ret ==- 7)
          stderr($language["ERROR"], "<font color=\"black\">".$language["ERR_NO_SPACE"]."<strong><font color=\"red\">".preg_replace('/\ /', '_', mysql_real_escape_string($_POST["user"]))."</strong></font></font><br />");
-       elseif ($ret==-8)
+       elseif ($ret ==- 8)
          stderr($language["ERROR"], $language["ERR_SPECIAL_CHAR"]);
-       elseif ($ret==-9)
+       elseif ($ret ==- 9)
          stderr($language["ERROR"], $language["ERR_PASS_LENGTH"]);
        else
         stderr($language["ERROR"], $language["ERR_USER_ALREADY_EXISTS"]);
@@ -215,18 +215,18 @@ function tabella($action, $dati = array()) {
    $language["ERR_NO_EMAIL_AGAIN"] = AddSlashes($language["ERR_NO_EMAIL_AGAIN"]);
    $language["DIF_EMAIL"] = AddSlashes($language["DIF_EMAIL"]);
 
-   $tpl_account->set("language",$language);
-   $tpl_account->set("account_action",$action);
-   $tpl_account->set("account_form_actionlink",htmlspecialchars("index.php?page=signup&act=$action&returnto=$link"));
-   $tpl_account->set("account_uid",$dati["id"]);
-   $tpl_account->set("account_returnto",urlencode($link));
-   $tpl_account->set("account_IDlanguage",$idlang);
-   $tpl_account->set("account_IDstyle",$idstyle);
-   $tpl_account->set("account_IDcountry",$idflag);
-   $tpl_account->set("account_username",$dati["username"]);
+   $tpl_account->set("language", $language);
+   $tpl_account->set("account_action", $action);
+   $tpl_account->set("account_form_actionlink", htmlspecialchars("index.php?page=signup&act=$action&returnto=$link"));
+   $tpl_account->set("account_uid", $dati["id"]);
+   $tpl_account->set("account_returnto", urlencode($link));
+   $tpl_account->set("account_IDlanguage", $idlang);
+   $tpl_account->set("account_IDstyle", $idstyle);
+   $tpl_account->set("account_IDcountry", $idflag);
+   $tpl_account->set("account_username", $dati["username"]);
    $tpl_account->set("dati",$dati);
-   $tpl_account->set("DEL",$action == "delete",true);
-   $tpl_account->set("DISPLAY_FULL", $action == "signup" || $action == "invite",true);
+   $tpl_account->set("DEL", $action == "delete", true);
+   $tpl_account->set("DISPLAY_FULL", $action == "signup" || $action == "invite", true);
 
     //begin invitation system by dodge
     if ($INVITATIONSON)

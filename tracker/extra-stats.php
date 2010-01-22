@@ -52,7 +52,7 @@ function usertable($res, $frame_caption) {
  foreach ($res as $id => $a) {
    $num++;
 
-   if ($a["downloaded"]>0) {
+   if ($a["downloaded"] > 0) {
      $ratio = $a["uploaded"] / $a["downloaded"];
      $ratio = number_format($ratio, 2);
    }
