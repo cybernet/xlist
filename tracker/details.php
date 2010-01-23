@@ -143,16 +143,16 @@ if (!empty($row["image"]))
 {
 $image1 = "".$row["image"]."";
 $uploaddir = $GLOBALS["uploaddir"];
-$image_new = "$uploaddir/$image1"; //url of picture
-//$image_new = str_replace(' ','%20',$image_new); //take url and replace spaces
-$max_width = "490"; //maximum width allowed for pictures
-$resize_width = "490"; //same as max width
-$size = getimagesize("$image_new"); //get the actual size of the picture
+$image_new = "$uploaddir/$image1"; // url of picture
+// $image_new = str_replace(' ','%20',$image_new); // take url and replace spaces
+$max_width = "490"; // maximum width allowed for pictures
+$resize_width = "490"; // same as max width
+$size = getimagesize("$image_new"); // get the actual size of the picture
 $width = $size[0]; // get width of picture
 $height = $size[1]; // get height of picture
 if ($width > $max_width){
 $new_width = $resize_width; // Resize Image If over max width
-}else {
+} else {
 $new_width = $width; // Keep original size from array because smaller than max
 }
 $torrenttpl->set("width", $new_width);
@@ -172,26 +172,21 @@ else
 // edit and delete picture/link
 if ($CURUSER["uid"] > 1 && ($CURUSER["uid"] == $row["uploader"] || $CURUSER["edit_torrents"] == "yes")) {
       if ($GLOBALS["usepopup"])
-        $torrent_mod .= "<a href=\"javascript: windowunder('index.php?page=edit&amp;info_hash=".$row["info_hash"]."&amp;returnto=".urlencode("index.php?page=torrent-details&id=$row[info_hash]")."')\">".image_or_link("$STYLEPATH/images/edit.png","",$language["EDIT"])."</a>&nbsp;&nbsp;";
+        $torrent_mod .= "<a href=\"javascript: windowunder('index.php?page=edit&amp;info_hash=".$row["info_hash"]."&amp;returnto=".urlencode("index.php?page=torrent-details&id=$row[info_hash]")."')\">".image_or_link("$STYLEPATH/images/edit.png","", $language["EDIT"])."</a>&nbsp;&nbsp;";
       else
-        $torrent_mod .= "<a href=\"index.php?page=edit&amp;info_hash=".$row["info_hash"]."&amp;returnto=".urlencode("index.php?page=torrent-details&id=$row[info_hash]")."\">".image_or_link("$STYLEPATH/images/edit.png","",$language["EDIT"])."</a>&nbsp;&nbsp;";
+        $torrent_mod .= "<a href=\"index.php?page=edit&amp;info_hash=".$row["info_hash"]."&amp;returnto=".urlencode("index.php?page=torrent-details&id=$row[info_hash]")."\">".image_or_link("$STYLEPATH/images/edit.png","", $language["EDIT"])."</a>&nbsp;&nbsp;";
 
 }
 
 if ($CURUSER["uid"] > 1 && ($CURUSER["uid"] == $row["uploader"] || $CURUSER["delete_torrents"] == "yes")) {
       if ($GLOBALS["usepopup"])
-        $torrent_mod .= "<a href=\"javascript: windowunder('index.php?page=delete&amp;info_hash=".$row["info_hash"]."&amp;returnto=".urlencode("index.php?page=torrents")."')\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>&nbsp;&nbsp;";
+        $torrent_mod .= "<a href=\"javascript: windowunder('index.php?page=delete&amp;info_hash=".$row["info_hash"]."&amp;returnto=".urlencode("index.php?page=torrents")."')\">".image_or_link("$STYLEPATH/images/delete.png","", $language["DELETE"])."</a>&nbsp;&nbsp;";
       else
-        $torrent_mod .= "<a href=\"index.php?page=delete&amp;info_hash=".$row["info_hash"]."&amp;returnto=".urlencode("index.php?page=torrents")."\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>";
+        $torrent_mod .= "<a href=\"index.php?page=delete&amp;info_hash=".$row["info_hash"]."&amp;returnto=".urlencode("index.php?page=torrents")."\">".image_or_link("$STYLEPATH/images/delete.png","", $language["DELETE"])."</a>";
 }
 
 
 $torrenttpl->set("mod_task", $torrent_mod);
-// disable Link to facebook start
-/*
-$torrenttpl->set("show_fblink","<script>function fbs_click() {u=location.href;t=document.title;window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;}</script><a href=\"http://www.facebook.com/share.php?u=<url>\" onclick=\"return fbs_click()\" target=\"_blank\"><b>".image_or_link("images/facebook.png","","share_on_facebook")."	&nbsp;	&nbsp;".$language["SHARE_ON_FB"]."</b></a>");
-*/
-// end
 if (!empty($row["comment"]))
    $row["description"] = format_comment($row["comment"]);
 

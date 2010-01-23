@@ -481,7 +481,7 @@ function updatedata() {
     return;
 
   $res = do_sqlquery("SELECT announce_url FROM {$TABLE_PREFIX}files WHERE external='yes' ORDER BY lastupdate ASC LIMIT 1");
-  if (!$res || mysql_num_rows($res)==0)
+  if (!$res || mysql_num_rows($res) == 0)
     return;
 
   // get the url to scrape, take 5 torrent at a time (try to getting multiscrape)
