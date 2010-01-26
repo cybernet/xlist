@@ -5,7 +5,7 @@
 // CyBerFuN .::. Admin - BanIP
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
+// http://xList.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -56,7 +56,7 @@ switch ($action)
             err_msg(ERROR,INVALID_ID);
         //delete the ip from db
         $id = max(0, $_GET['ip']);
-        do_sqlquery("DELETE FROM {$TABLE_PREFIX}bannedip WHERE id=".$id,true);
+        do_sqlquery("DELETE FROM {$TABLE_PREFIX}bannedip WHERE id=".$id, true);
         success_msg($language["SUCCESS"], $language["BAN_DELETED"]);
         stdfoot(true, false);
         break;
@@ -77,7 +77,7 @@ switch ($action)
             else{
                  $comment = sqlesc($comment);
                  $added = sqlesc(time());
-                 do_sqlquery("INSERT INTO {$TABLE_PREFIX}bannedip (added, addedby, first, last, comment) VALUES($added, $CURUSER[uid], $firstip, $lastip, $comment)",true);
+                 do_sqlquery("INSERT INTO {$TABLE_PREFIX}bannedip (added, addedby, first, last, comment) VALUES($added, $CURUSER[uid], $firstip, $lastip, $comment)", true);
             }
           }
     // don't break, so now we read directly ;)
@@ -86,7 +86,7 @@ switch ($action)
     case 'read':
     default:
         $banned = array();
-        $getbanned = do_sqlquery("SELECT b.*, u.username FROM {$TABLE_PREFIX}bannedip b LEFT JOIN {$TABLE_PREFIX}users u ON u.id=b.addedby ORDER BY b.added DESC",true);
+        $getbanned = do_sqlquery("SELECT b.*, u.username FROM {$TABLE_PREFIX}bannedip b LEFT JOIN {$TABLE_PREFIX}users u ON u.id=b.addedby ORDER BY b.added DESC", true);
         $rowsbanned = @mysql_num_rows($getbanned);
         $admintpl->set("frm_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=banip&amp;action=write");
         $i = 0;
@@ -101,7 +101,7 @@ switch ($action)
               $banned[$i]["date"] = get_date_time($arr['added']);
               $banned[$i]["comments"] = htmlspecialchars(unesc($arr["comment"]));
               $banned[$i]["by"] = "<a href=\"index.php?page=userdetails&amp;id=".$arr["addedby"]."\">".unesc($arr["username"])."</a>";
-              $banned[$i]["remove"] = "<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=banip&amp;action=delete&amp;ip=$arr[id]\" onclick=\"return confirm('". str_replace("'","\'",$language["DELETE_CONFIRM"])."')\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>";
+              $banned[$i]["remove"] = "<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=banip&amp;action=delete&amp;ip=$arr[id]\" onclick=\"return confirm('". str_replace("'","\'", $language["DELETE_CONFIRM"])."')\">".image_or_link("$STYLEPATH/images/delete.png","", $language["DELETE"])."</a>";
            $i++;
            }
 

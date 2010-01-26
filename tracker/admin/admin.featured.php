@@ -1,4 +1,13 @@
 <?php
+
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. Admin - Categories
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xList.ro/
+// Modified By cybernet2u
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -42,7 +51,7 @@ if (!defined("IN_ACP"))
 global $THIS_BASEPATH, $language, $THE_BASEPATH;
 
 $admintpl=new bTemplate();
-$admintpl->set("frm_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=featured&amp;action=save&amp;mode=new");
+$admintpl->set("frm_action", "index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=featured&amp;action=save&amp;mode=new");
 
 /* Admin tool for the Featured Torrent*/
 
@@ -69,12 +78,12 @@ switch ($action)
 $query = mysql_query("SELECT info_hash, filename from {$TABLE_PREFIX}files where external='no' ORDER BY data DESC limit 15");
 			
 
-$torrents=array();
+$torrents = array();
 $i=0;
-while ($results=mysql_fetch_array($query)) {
+while ($results = mysql_fetch_array($query)) {
 
-$torrents[$i]["hash"]= "<tr><td><input type=radio value=".$results['info_hash']." name=id>";
-$torrents[$i]["name"]= " - ".$results['filename']."</td></tr>";
+$torrents[$i]["hash"] = "<tr><td><input type=radio value=".$results['info_hash']." name=id>";
+$torrents[$i]["name"] = " - ".$results['filename']."</td></tr>";
 
 $i++;
 }
@@ -82,22 +91,22 @@ $i++;
           mysql_free_result($query);
 
 
-$admintpl->set("TORRENT",$torrents);
+$admintpl->set("TORRENT", $torrents);
 
 // This is the part that will print the currently featured torrent
 if ($XBTT_USE)
    {
-    $tseeds="f.seeds+ifnull(x.seeders,0) as seeds";
-    $tleechs="f.leechers+ifnull(x.leechers,0) as leechers";
-    $tcompletes="f.finished+ifnull(x.completed,0) as finished";
-    $ttables="{$TABLE_PREFIX}files f LEFT JOIN xbt_files x ON x.info_hash=f.bin_hash";
+    $tseeds = "f.seeds+ifnull(x.seeders,0) as seeds";
+    $tleechs = "f.leechers+ifnull(x.leechers,0) as leechers";
+    $tcompletes = "f.finished+ifnull(x.completed,0) as finished";
+    $ttables = "{$TABLE_PREFIX}files f LEFT JOIN xbt_files x ON x.info_hash=f.bin_hash";
    }
 else
     {
-    $tseeds="f.seeds as seeds";
-    $tleechs="f.leechers as leechers";
-    $tcompletes="f.finished as finished";
-    $ttables="{$TABLE_PREFIX}files f";
+    $tseeds = "f.seeds as seeds";
+    $tleechs = "f.leechers as leechers";
+    $tcompletes = "f.finished as finished";
+    $ttables = "{$TABLE_PREFIX}files f";
     }
 
 $sql = mysql_query("SELECT * FROM {$TABLE_PREFIX}featured ORDER BY fid DESC limit 1");
@@ -110,17 +119,17 @@ $torrent = mysql_query("SELECT f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.
     
 
 
-$featured=array();
+$featured = array();
 $a=0;
 
 while ($tor = mysql_fetch_assoc($torrent)) {
 $description = format_comment($tor["comment"]);
-$featured[$a]["name"]="<a href=/index.php?page=torrent-details&id=".$tor['info_hash'].">".$tor[filename]."</a>";
-$featured[$a]["cat"]="<a href=\"index.php?page=torrents&amp;category=$tor[cat_id]\">" . image_or_link( ($tor["cat_image"] == "" ? "" : "$STYLEPATH/images/categories/large/" . $tor["cat_image"]), "", $tor["cat_name"]) . "</a>";
-$featured[$a]["sl"]="<br /><b>Seeders: </b>".$tor[seeds]."<br />
+$featured[$a]["name"] = "<a href=/index.php?page=torrent-details&id=".$tor['info_hash'].">".$tor[filename]."</a>";
+$featured[$a]["cat"] = "<a href=\"index.php?page=torrents&amp;category=$tor[cat_id]\">" . image_or_link( ($tor["cat_image"] == "" ? "" : "$STYLEPATH/images/categories/large/" . $tor["cat_image"]), "", $tor["cat_name"]) . "</a>";
+$featured[$a]["sl"] = "<br /><b>Seeders: </b>".$tor[seeds]."<br />
     <b>Leechers: </b>".$tor[leechers]."";
 //description
-	$featured[$a]["desc"]="<table border=0 style=\"border:0px\" width=\"99%\"><tr><td>   
+	$featured[$a]["desc"] = "<table border=0 style=\"border:0px\" width=\"99%\"><tr><td>   
 ".$description."
   </td></tr></table>";
 
@@ -128,13 +137,13 @@ $featured[$a]["sl"]="<br /><b>Seeders: </b>".$tor[seeds]."<br />
 						  $seedttl = $tor['seeds'];
 						  $peerttl = ($tor['seeds'] + $tor['leechers']);
 						  $leecttl = $tor['leechers'];
-	$featured[$a]["pie"]="<img src=\"/images/piechart2.php?data=".$seedttl."*".$leecttl."&label=Seeders*Leechers\" />";
+	$featured[$a]["pie"] = "<img src=\"/images/piechart2.php?data=".$seedttl."*".$leecttl."&label=Seeders*Leechers\" />";
 
 $a++;
 }
 
-$admintpl->set("language",$language);
-$admintpl->set("CURRENT",$featured);
+$admintpl->set("language", $language);
+$admintpl->set("CURRENT", $featured);
 break;
 
 
