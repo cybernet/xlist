@@ -1,0 +1,438 @@
+<hack>
+
+  <title>NFO Uploader - Viewer</title>
+  <author>miskotes</author>
+  <version>0.9 r486</version>
+
+
+  <file>
+    <name>"$DEFAULT_ROOT/style/xbtit_default/upload.tpl"</name>
+    
+    
+   <operation>
+      <search><![CDATA[    <tr>
+      <td class="header"><tag:language.TORRENT_FILE /></td>
+      <td class="lista" align="left"><input type="file" id="torrent" name="torrent" /></td>
+    </tr>]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data>
+
+    <![CDATA[
+
+    <!-- ##############################################################
+         # Nfo hack -->
+         
+    <tr>
+      <td class="header">NFO</td>
+      <td class="lista" align="left"><sup>Optionaly choose to browse for nfo file</sup><br /><input type="file" name="nfo" /></td>
+    </tr>
+   
+    <!-- # End
+         ########################################################## -->
+    
+
+    ]]>
+
+        </data>
+   </operation>
+
+  </file>
+
+  <file>
+    <name>"$DEFAULT_ROOT/style/xbtit_default/torrent.details.tpl"</name>
+    
+    
+   <operation>
+      <search><![CDATA[          <td class="lista" align="center"><tag:torrent.description /></td>]]></search>
+      <action>"replace"</action>
+      <data>
+
+    <![CDATA[
+
+    <!-- ##############################################################
+         # Nfo hack -->
+
+          <td class="lista" align="center"><tag:torrent.nfo /><tag:torrent.description /></td>
+          
+    <!-- # End
+         ########################################################## -->
+    
+
+    ]]>
+
+        </data>
+   </operation>
+
+  </file>
+
+
+  <file>
+    <name>"$DEFAULT_ROOT/style/xbtit_default/torrent.edit.tpl"</name>
+    
+   <operation>
+      <search><![CDATA[  <form action="<tag:torrent.link />" method="post" name="edit">]]></search>
+      <action>"replace"</action>
+      <data>
+
+    <![CDATA[
+
+   <!-- ##############################################################
+        # Nfo hack -->
+       
+    <form method="POST" enctype="multipart/form-data" name="edit" action="<tag:torrent.link />">
+        
+   <!-- # End
+        ########################################################## -->
+    
+
+    ]]>
+
+        </data>
+   </operation>
+    
+   <operation>
+      <search><![CDATA[        <td class="lista"><input type="text" name="name" value="<tag:torrent.filename />" size="60" /></td>]]></search>
+      <action>"replace"</action>
+      <data>
+
+    <![CDATA[
+
+   <!-- ##############################################################
+        # Nfo hack -->
+       
+        <td class="lista"><input type="text" name="name" value="<tag:torrent.filename />" size="60" /><br /><tag:torrent.nfo /></td>
+        
+   <!-- # End
+        ########################################################## -->
+    
+
+    ]]>
+
+        </data>
+   </operation>
+   
+   
+      <operation>
+      <search><![CDATA[  </form>
+</div>]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data>
+
+    <![CDATA[
+
+   <!-- ##############################################################
+        # Nfo hack -->
+
+    <script type="text/javascript">
+      function ShowHide(id,id1) {
+          obj = document.getElementsByTagName("div");
+          if (obj[id].style.display == 'block'){
+          obj[id].style.display = 'none';
+          obj[id1].style.display = 'block';
+          }
+          else {
+          obj[id].style.display = 'block';
+          obj[id1].style.display = 'none';
+          }
+      }
+      function windowunder(link) {
+        window.opener.document.location=link;
+        window.close();
+      }
+    </script>
+
+   <!-- # End
+        ########################################################## -->
+    
+
+    ]]>
+
+        </data>
+   </operation>
+
+
+  </file>
+  
+  
+
+
+
+  <file>
+    <name>"$DEFAULT_ROOT/delete.php"</name>
+    
+    
+   <operation>
+      <search><![CDATA[      unlink($TORRENTSDIR."/$hash.btf");]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data>
+
+    <![CDATA[
+
+      ######################################
+      # Nfo hack -->
+      
+      unlink("nfo/rep/" . $hash . ".nfo");
+      
+      # End
+      ################################## -->
+    
+
+    ]]>
+
+        </data>
+   </operation>
+
+  </file>
+  
+   
+
+  <file>
+    <name>"$DEFAULT_ROOT/edit.php"</name>
+    
+    
+   <operation>
+      <search><![CDATA[   if ($_POST["name"]=='')
+        {
+        stderr("Error!","You must specify torrent name.");
+   }]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data>
+
+    <![CDATA[
+
+      ##############################################################
+      # Nfo hack -->
+
+      $nfo=$_FILES["nfo"]["tmp_name"];
+
+      $nfocheck = basename($_FILES['nfo']['name']);
+      $nfohashed = AddSlashes($_POST["info_hash"]);
+     
+      if ($nfocheck) {
+        $ext = strrchr($nfocheck,'.');
+        $limitedext = array(".nfo");
+        
+        if (!in_array(strtolower($ext),$limitedext)) $error["nfo"] = stderr("Error!","Not an nfo file!");
+        if($_FILES['nfo']['size'] < "128") $error["nfo"] = stderr("Error!","Not a valid nfo or too small!");
+
+          if(empty($error)) {         
+            $result = @move_uploaded_file($nfo, "nfo/rep/" . $nfohashed . ".nfo");
+               if(empty($result)) $error["result"] = stderr("Error!","Error moving nfo file!");
+          }
+      } 
+      else {
+         $delnfo = isset($_POST["nfo"])?"checked":"unchecked";  
+          if ($delnfo != "checked"?"checked=\"checked\"":"")
+            unlink("nfo/rep/" . $nfohashed . ".nfo");
+      }
+      
+      if(is_array($error)) { while(list($key, $val) = each($error)) echo $val; }
+
+      # End
+      ########################################################## -->
+    
+
+    ]]>
+
+        </data>
+   </operation>
+
+
+   <operation>
+      <search><![CDATA[    $torrent["filename"]=$results["filename"];]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data>
+
+    <![CDATA[
+
+##############################################################
+# Nfo hack -->
+    
+$filenfo = "nfo/rep/" . $results["info_hash"] . ".nfo";
+
+if (file_exists($filenfo)) {
+
+  $torrent["nfo"] = "
+   <div>
+    <sup>&nbsp;<b>Uncheck</b> to remove or upload a new nfo<br />
+    <a href='#nfo' onclick=\"javascript:ShowHide('uploadmenfo','');\"><input type='checkbox' name='nfo' checked></a>" . $results["filename"] . ".nfo</div>
+
+               <div style='display:none' id='uploadmenfo'>
+
+               <input type='file' name='nfo'>
+</div>";
+ 
+}
+else {
+  $torrent["nfo"] = "
+     <tr>
+      <td class='header' align='right'>NFO</td>
+      <td class='lista' align='left'><sup>Optionaly choose to browse for nfo file</sup><br /><input type='file' name='nfo' /></td>
+    </tr>
+    ";
+
+}
+
+# End
+########################################################## -->
+    
+
+    ]]>
+
+        </data>
+   </operation>
+
+
+  </file>
+   
+ 
+ 
+   <file>
+    <name>"$DEFAULT_ROOT/details.php"</name>
+    
+    
+   <operation>
+      <search><![CDATA[$torrenttpl->set("mod_task",$torrent_mod);]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data>
+
+    <![CDATA[
+
+##############################################################
+# Nfo hack -->
+
+$filenfo = "nfo/rep/" . $row["info_hash"] . ".nfo";
+
+if (file_exists($filenfo)) {
+$row["nfo"] .= "<div align=right><a href=\"#nfo\" onclick=\"javascript:ShowHide('slidenfo','');\">Show | Hide NFO</a></div>
+               <div align='center' style='display:none' id='slidenfo'>
+               
+               <img src='nfo/nfogen.php?nfo=rep/" . $row["info_hash"] . ".nfo&colour=1'></div>
+               
+               </div>";
+}
+
+# End
+########################################################## -->
+    
+
+    ]]>
+
+        </data>
+   </operation>
+
+  </file>
+
+ 
+ 
+    <file>
+    <name>"$DEFAULT_ROOT/upload.php"</name>
+    
+    
+   <operation>
+      <search><![CDATA[   if ($_FILES["torrent"]["error"] != 4)
+   {]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data>
+
+    <![CDATA[
+
+      ##############################################################
+      # Nfo hack -->
+  
+      $nfo=$_FILES["nfo"]["tmp_name"];
+
+      $nfocheck = basename($_FILES['nfo']['name']);
+
+
+      $ext = strrchr($nfocheck,'.');
+      $limitedext = array(".nfo");
+
+      if ($nfocheck) {
+        if (!in_array(strtolower($ext),$limitedext)) $error["nfo"] = stderr("Error!","Not an nfo file!");
+        if($_FILES['nfo']['size'] < "128") $error["nfo"] = stderr("Error!","Not a valid nfo or too small!");
+      }
+  
+      # End
+      ########################################################## -->
+    
+
+    ]]>
+
+        </data>
+   </operation>
+
+
+   <operation>
+      <search><![CDATA[         $mf=@move_uploaded_file($_FILES["torrent"]["tmp_name"] , $TORRENTSDIR . "/" . $hash . ".btf");]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data>
+
+    <![CDATA[
+
+        ##############################################################
+        # Nfo hack -->
+        
+        if ($nfocheck) {
+          if(empty($error)) {         
+            $result = @move_uploaded_file($nfo, "nfo/rep/" . $hash . ".nfo");
+               if(empty($result)) $error["result"] = stderr("Error!","Error moving nfo file!");
+          }
+        }
+        
+        if(is_array($error)) { while(list($key, $val) = each($error)) echo $val; }
+
+        # End
+        ########################################################## -->
+    
+
+    ]]>
+
+        </data>
+   </operation>
+
+
+  </file>
+
+  <file>
+
+    <name>"$CURRENT_FOLDER/toCopy/nfogen.png"</name>
+    <operation><action>"copy"</action><where>"$DEFAULT_ROOT/nfo"</where><data>"nfogen.png"</data></operation>
+
+  </file>
+
+  <file>
+
+    <name>"$CURRENT_FOLDER/toCopy/nfogen.php"</name>
+    <operation><action>"copy"</action><where>"$DEFAULT_ROOT/nfo"</where><data>"nfogen.php"</data></operation>
+
+  </file>
+
+
+  <file>
+
+    <name>"$CURRENT_FOLDER/toCopy/index.php"</name>
+    <operation><action>"copy"</action><where>"$DEFAULT_ROOT/nfo"</where><data>"index.php"</data></operation>
+
+  </file>
+
+
+  <file>
+
+    <name>"$CURRENT_FOLDER/toCopy/rep/index.php"</name>
+    <operation><action>"copy"</action><where>"$DEFAULT_ROOT/nfo/rep"</where><data>"index.php"</data></operation>
+
+  </file>
+
+
+
+</hack>
+
