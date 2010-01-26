@@ -180,6 +180,9 @@ if ($count > 0) {
 
     $qry_order = str_replace(array("leechers","seeds","finished"),array($tleechs,$tseeds, $tcompletes),$order);
 /*Mod by losmi - visible mod*/
+/*Mod by losmi - sticky mod
+Operation #4*/
+
     if (isset($_GET["by"]))
         $by = htmlspecialchars(mysql_real_escape_string($_GET["by"]));
     else
@@ -190,16 +193,17 @@ if ($count > 0) {
 
     // Do the query with the uploader nickname
     if ($SHOW_UPLOADER)
-        $query = "SELECT tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.anonymous, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader as upname, u.username as uploader, prefixcolor, suffixcolor FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id $where ORDER BY $qry_order $by $limit";
+        $query = "SELECT f.sticky as sticky, tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.anonymous, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader as upname, u.username as uploader, prefixcolor, suffixcolor FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id $where GROUP BY f.sticky, $qry_order $by ORDER BY f.sticky $by";
 
     // Do the query without the uploader nickname
     else
-        $query = "SELECT tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where ORDER BY $qry_order $by $limit";
+        $query = "SELECT f.sticky as sticky, tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where $where GROUP BY f.sticky, $qry_order $by ORDER BY f.sticky $by $limit";
     // End the queries
        $results = get_result($query, true);
 }
 
-
+/*Mod by losmi - sticky mod
+        End Operation #4*/
 
 if ($by == "ASC")
     $mark = "&nbsp;&uarr;";
@@ -255,6 +259,26 @@ if ($count > 0) {
     {
     /*Mod by losmi - end visible mod*/
    $torrenttpl->set("WT1", intval($CURUSER["WT"]) > 0, TRUE);
+/*Mod by losmi - sticky mod
+    Start Operation #5*/
+    $sticky_color=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}sticky ORDER BY id",true);
+    if(mysql_num_rows($sticky_color)>0)
+    {
+    $st=mysql_fetch_assoc($sticky_color);
+    $s_c = $st['color'];
+    }
+    else
+    {
+    /*Default value some green #bce1ac;*/
+    $s_c ='#bce1ac;';
+    }
+    $torrents[$i]["color"] ='';
+        if($data['sticky']==1)
+        {
+            $torrents[$i]["color"] = 'background:'.$s_c;
+        }
+    /*Mod by losmi - sticky mod
+    End Operation #5*/
    $torrenttpl->set("uploader1", $SHOW_UPLOADER, TRUE);
 
     /*Mod by losmi - visible mod*/

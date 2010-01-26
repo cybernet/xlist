@@ -96,6 +96,10 @@ $admintpl=new bTemplate();
 
 switch ($do)
     {
+    case 'sticky':
+      include("$ADMIN_PATH/admin.sticky.php");
+      $tpl->set("main_content",set_block($language["STICKY_SETTINGS"],"center",$admintpl->fetch(load_template("admin.sticky.tpl"))));
+      break;
 
     case 'invitations':
       include("$ADMIN_PATH/admin.invitations.php");
