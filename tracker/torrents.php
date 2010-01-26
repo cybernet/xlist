@@ -73,12 +73,12 @@ if(!$CURUSER || $CURUSER["view_torrents"] != "yes")
 
 if(isset($_GET["search"]))
 {
-    $trova = htmlspecialchars(str_replace ("+"," ",$_GET["search"]));
+    $trova = htmlspecialchars(str_replace ("+"," ", $_GET["search"]));
 } else {
     $trova = "";
 }
  
-$category = (!isset($_GET["category"])?0:explode(";",$_GET["category"]));
+$category = (!isset($_GET["category"])?0:explode(";", $_GET["category"]));
 // sanitize categories id
 if (is_array($category))
     $category = array_map("intval", $category);
@@ -165,7 +165,7 @@ if ($count > 0) {
       if ($search != "")
          $addparam .=  $search . "&amp;";
       else
-          $addparam .= ""; //$scriptname . "?";
+          $addparam .= ""; // $scriptname . "?";
       }
 
     $torrentperpage = intval($CURUSER["torrentsperpage"]);
@@ -178,7 +178,7 @@ if ($count > 0) {
     else
         $order = "data";
 
-    $qry_order = str_replace(array("leechers","seeds","finished"),array($tleechs,$tseeds, $tcompletes),$order);
+    $qry_order = str_replace(array("leechers", "seeds", "finished"), array($tleechs, $tseeds, $tcompletes), $order);
 /*Mod by losmi - visible mod*/
 /*Mod by losmi - sticky mod
 Operation #4*/
@@ -261,10 +261,10 @@ if ($count > 0) {
    $torrenttpl->set("WT1", intval($CURUSER["WT"]) > 0, TRUE);
 /*Mod by losmi - sticky mod
     Start Operation #5*/
-    $sticky_color=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}sticky ORDER BY id",true);
-    if(mysql_num_rows($sticky_color)>0)
+    $sticky_color = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}sticky ORDER BY id", true);
+    if(mysql_num_rows($sticky_color) > 0)
     {
-    $st=mysql_fetch_assoc($sticky_color);
+    $st = mysql_fetch_assoc($sticky_color);
     $s_c = $st['color'];
     }
     else
@@ -272,8 +272,8 @@ if ($count > 0) {
     /*Default value some green #bce1ac;*/
     $s_c ='#bce1ac;';
     }
-    $torrents[$i]["color"] ='';
-        if($data['sticky']==1)
+    $torrents[$i]["color"] = '';
+        if($data['sticky'] == 1)
         {
             $torrents[$i]["color"] = 'background:'.$s_c;
         }
@@ -382,7 +382,7 @@ if ($hover == "")
 
       if ($wait <= 0)$wait = 0;
      if (strlen($data["hash"]) > 0)
-          $torrents[$i]["waiting"] = ($wait>0?$wait." h":"---");
+          $torrents[$i]["waiting"] = ($wait > 0 ? $wait." h":"---");
    //end waitingtime
    }
    else $torrents[$i]["waiting"] = "";
@@ -463,7 +463,7 @@ if ($hover == "")
   else {
        $id = $data['hash'];
        if ($XBTT_USE)
-          $subres = do_sqlquery("SELECT sum(IFNULL(xfu.left,0)) as to_go, count(xfu.uid) as numpeers FROM xbt_files_users xfu INNER JOIN xbt_files xf ON xf.fid=xfu.fid WHERE xf.info_hash=UNHEX('$id') AND xfu.active=1",true) or mysql_error();
+          $subres = do_sqlquery("SELECT sum(IFNULL(xfu.left,0)) as to_go, count(xfu.uid) as numpeers FROM xbt_files_users xfu INNER JOIN xbt_files xf ON xf.fid=xfu.fid WHERE xf.info_hash=UNHEX('$id') AND xfu.active=1", true) or mysql_error();
        else
            $subres = do_sqlquery("SELECT sum(IFNULL(bytes,0)) as to_go, count(*) as numpeers FROM {$TABLE_PREFIX}peers where infohash='$id'" ) or mysql_error();
        $subres2 = do_sqlquery("SELECT size FROM {$TABLE_PREFIX}files WHERE info_hash ='$id'") or mysql_error();
