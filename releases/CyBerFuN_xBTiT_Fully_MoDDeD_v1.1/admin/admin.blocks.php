@@ -5,7 +5,7 @@
 // CyBerFuN .::. Admin - Blocks
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
+// http://xList.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -257,24 +257,24 @@ function read_blocks()
           }
       }
       unset($br);
-      $admintpl->set("frm_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=blocks&amp;action=save");
-      $admintpl->set("top_blocks",$t>0,true);
-      $admintpl->set("left_blocks",$l>0,true);
-      $admintpl->set("center_blocks",$c>0,true);
-      $admintpl->set("right_blocks",$r>0,true);
-      $admintpl->set("bottom_blocks",$b>0,true);
-      $admintpl->set("tops",$tops);
-      $admintpl->set("lefts",$lefts);
-      $admintpl->set("centers",$centers);
-      $admintpl->set("rights",$rights);
-      $admintpl->set("bottoms",$bottom);
-      $admintpl->set("language",$language);
-      $admintpl->set("edit_block",false,true);
-      $admintpl->set("add_new_block","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=blocks&amp;action=edit");
+      $admintpl->set("frm_action", "index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=blocks&amp;action=save");
+      $admintpl->set("top_blocks", $t > 0, true);
+      $admintpl->set("left_blocks", $l > 0, true);
+      $admintpl->set("center_blocks", $c > 0, true);
+      $admintpl->set("right_blocks", $r > 0, true);
+      $admintpl->set("bottom_blocks", $b > 0, true);
+      $admintpl->set("tops", $tops);
+      $admintpl->set("lefts", $lefts);
+      $admintpl->set("centers", $centers);
+      $admintpl->set("rights", $rights);
+      $admintpl->set("bottoms", $bottom);
+      $admintpl->set("language", $language);
+      $admintpl->set("edit_block", false, true);
+      $admintpl->set("add_new_block", "index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=blocks&amp;action=edit");
 
 }
 
-function position_combo($current="l")
+function position_combo($current = "l")
   {
     global $language;
     $ret = "\n<select name=\"block_position\" size=\"1\">";
@@ -384,7 +384,7 @@ switch ($action)
                   $block_minview = sqlesc(intval($_POST["minclassview_".$block["blockid"]]));
                   $block_maxview = sqlesc(intval($_POST["maxclassview_".$block["blockid"]]));
                   $id = $block["blockid"];
-                  do_sqlquery("UPDATE {$TABLE_PREFIX}blocks SET position=$position, sortid=$sort, status=$active, minclassview=$block_minview, maxclassview=$block_maxview WHERE blockid=$id",true);
+                  do_sqlquery("UPDATE {$TABLE_PREFIX}blocks SET position=$position, sortid=$sort, status=$active, minclassview=$block_minview, maxclassview=$block_maxview WHERE blockid=$id", true);
             }
         }            
         // don't break, we read the new block's position ;)

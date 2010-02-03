@@ -476,7 +476,7 @@ if (!isset($array["announce"]))
                   $query = "INSERT INTO {$TABLE_PREFIX}files (tag, info_hash, filename, url, info, category, data, size, comment, comment_notify, external,announce_url, uploader,anonymous, bin_hash, image, screen1, screen2, screen3) VALUES (\"$tag\", \"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$comment_notify,\"yes\",\"$announce\",$curuid,$anonyme,0x$hash, '$file_name', '$file_name_s1', '$file_name_s2', '$file_name_s3')";
         }
       //echo $query;
-      $status = do_sqlquery($query); //makeTorrent($hash, true);
+      $status = do_sqlquery($query); // makeTorrent($hash, true);
 
       /*
 Operation #2

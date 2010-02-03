@@ -64,7 +64,13 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
         {
         stderr("Error!", "You must specify description.");
    }
- 
+ /*Mod by losmi -sticky start*/
+      $sticky = 0;
+   if($_POST["sticky"] == 'on')
+   {
+    $sticky = 1;
+   }
+   /*Mod by losmi -sticky end*/
       /*Mod by losmi -visible start*/
       $visible = 3;
    if(isset($_POST["visible"]) && $_POST["visible"] != '')
@@ -75,7 +81,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
    $fname = htmlspecialchars(AddSlashes(unesc($_POST["name"])));
    $torhash = AddSlashes($_POST["info_hash"]);
    write_log("Modified torrent $fname ($torhash)", "modify");
-   do_sqlquery("UPDATE {$TABLE_PREFIX}files SET tag='".AddSlashes($_POST["tag"])."', filename='$fname', comment='" . AddSlashes($_POST["comment"]) . "', category=" . intval($_POST["category"]) . "  , visible = $visible WHERE info_hash='" . $torhash . "'", true);
+   do_sqlquery("UPDATE {$TABLE_PREFIX}files SET tag='".AddSlashes($_POST["tag"])."', filename='$fname', comment='" . AddSlashes($_POST["comment"]) . "', category=" . intval($_POST["category"]) . "  , visible = $visible, sticky = '" . $sticky . "'WHERE info_hash='" . $torhash . "'", true);
 $userfile = $_FILES["userfile"];
         $screen1 = $_FILES["screen1"];
         $screen2 = $_FILES["screen2"];
@@ -354,7 +360,7 @@ if (isset($_GET["info_hash"])) {
        $ttables = "{$TABLE_PREFIX}files f";
        }
 
-  $query = "SELECT tag, f.image, f.screen1, f.screen2, f.screen3, f.info_hash, f.filename, f.visible, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.category as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.uploader FROM $ttables WHERE f.info_hash ='" . AddSlashes($_GET["info_hash"]) . "'";
+  $query = "SELECT f.sticky, tag, f.image, f.screen1, f.screen2, f.screen3, f.info_hash, f.filename, f.visible, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.category as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.uploader FROM $ttables WHERE f.info_hash ='" . AddSlashes($_GET["info_hash"]) . "'";
   $res = do_sqlquery($query, true);
   $results = mysql_fetch_assoc($res);
 
@@ -387,6 +393,33 @@ if (isset($_GET["info_hash"])) {
 */
 
     $torrent = array();
+              /*Start sticky by losmi*/
+              $query = "SELECT * FROM {$TABLE_PREFIX}sticky";
+              $rez = do_sqlquery($query,true);
+              $rez = mysql_fetch_assoc($rez);
+              $rez_level = $rez['level'];
+              $current_level = getLevel($CURUSER['id_level']);
+              $level_ok = false;
+              
+              if ($CURUSER["uid"]>1 && $current_level>=$rez_level)
+                 {
+                  $torrenttpl->set("LEVEL_OK",true,FALSE);
+                 }
+              else
+                 {
+                  $torrenttpl->set("LEVEL_OK",false,TRUE);
+                 }
+             unset($rez);
+
+            if($results["sticky"] == 1)
+            {
+             $torrent["sticky"] = "<input type='checkbox' name='sticky' checked>" ;
+            }
+            else 
+            {
+                $torrent["sticky"] = "<input type='checkbox' name='sticky'>" ;
+            }
+            /*End sticky by losmi*/
 
               /*Start mod visible by losmi*/
               $query = "SELECT * FROM {$TABLE_PREFIX}visible";

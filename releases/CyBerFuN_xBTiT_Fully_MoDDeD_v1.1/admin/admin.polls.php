@@ -61,7 +61,7 @@ if(isset($_POST['delete'])){
 
 if(isset($_POST['save'])){
   $pollObj = new poll();
-  $pollObj->table_prefix=$TABLE_PREFIX;
+  $pollObj->table_prefix = $TABLE_PREFIX;
 
 
   if(empty($_POST['ID'])){ // new poll
@@ -99,15 +99,15 @@ if(isset($_POST['save'])){
 }
 
 
-$admintpl->set("frm_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=poller");
-$admintpl->set("language",$language);
-$admintpl->set("poll_script","<script type=\"text/javascript\" src=\"$BASEURL/jscript/ajax-poller-admin.js\"></script>");
-$polls=array();
+$admintpl->set("frm_action", "index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=poller");
+$admintpl->set("language", $language);
+$admintpl->set("poll_script", "<script type=\"text/javascript\" src=\"$BASEURL/jscript/ajax-poller-admin.js\"></script>");
+$polls = array();
 
 // Show a list of all the polls
 if(!isset($_POST['new']) && empty($id) && !isset($votes)){
 
-  $block_title=$language["POLLING_SYSTEM"] . " - ".$language["CURRENT_POLLS"];
+  $block_title = $language["POLLING_SYSTEM"] . " - ".$language["CURRENT_POLLS"];
 
    //mysql query to select all information on polls in the database
    $res = do_sqlquery("SELECT p.*, username, prefixcolor, suffixcolor, COUNT(memberID) FROM {$TABLE_PREFIX}poller p LEFT JOIN {$TABLE_PREFIX}users u ON p.starterID=u.id LEFT JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id_level LEFT JOIN {$TABLE_PREFIX}poller_vote pv on p.id=pv.pollerID GROUP BY p.ID DESC",true);
@@ -116,7 +116,7 @@ if(!isset($_POST['new']) && empty($id) && !isset($votes)){
    while($inf = mysql_fetch_array($res)){
       //background color for the current active poll
       $bold = "normal";
-      if ($inf["active"]== "yes") $bold = "bold";
+      if ($inf["active"] == "yes") $bold = "bold";
 
       //link color for number of votes
       $votescolor = linkcolor($inf["COUNT(memberID)"]);
@@ -153,24 +153,24 @@ if(!isset($_POST['new']) && empty($id) && !isset($votes)){
         $vote = "<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=poller&amp;votes=".$inf["ID"]."&amp;voters=".$inf["COUNT(memberID)"]."\"><span style=\"color:".linkcolor($inf["COUNT(memberID)"])."\">".$inf["COUNT(memberID)"]." (".$votes_per_day."/day)</span></a>";
 
       //print information row about poll
-      $polls[$i]["bold"]=$bold;
-      $polls[$i]["id"]=$inf["ID"];
-      $polls[$i]["startdate"]=get_date_time($inf["startDate"]);
-      $polls[$i]["enddate"]=$endDate;
-      $polls[$i]["duration"]=$duration;
-      $polls[$i]["pollertitle"]="<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=poller&amp;id=".$inf["ID"]."\">".$inf["pollerTitle"]."</a>";
-      $polls[$i]["starter"]="<a href=\"index.php?page=userdetails&amp;id=".$inf["starterID"]."\">".StripSlashes($inf["prefixcolor"].$inf["username"].$inf["suffixcolor"])."</a>";
-      $polls[$i]["active"]=$active;
-      $polls[$i]["vote"]=$vote;
+      $polls[$i]["bold"] = $bold;
+      $polls[$i]["id"] = $inf["ID"];
+      $polls[$i]["startdate"] = get_date_time($inf["startDate"]);
+      $polls[$i]["enddate"] = $endDate;
+      $polls[$i]["duration"] = $duration;
+      $polls[$i]["pollertitle"] = "<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=poller&amp;id=".$inf["ID"]."\">".$inf["pollerTitle"]."</a>";
+      $polls[$i]["starter"] = "<a href=\"index.php?page=userdetails&amp;id=".$inf["starterID"]."\">".StripSlashes($inf["prefixcolor"].$inf["username"].$inf["suffixcolor"])."</a>";
+      $polls[$i]["active"] = $active;
+      $polls[$i]["vote"] = $vote;
 
       $i++;
    }
 
 
 
-   $admintpl->set("show_poller",false,true);
-   $admintpl->set("new_poll",false,true);
-   $admintpl->set("polls",$polls);
+   $admintpl->set("show_poller", false, true);
+   $admintpl->set("new_poll", false, true);
+   $admintpl->set("polls", $polls);
 
 
 
@@ -185,7 +185,7 @@ if(isset($_POST['new']) || !empty($id))
 {
 
   $pollObj = new poll();
-  $pollObj->table_prefix=$TABLE_PREFIX;
+  $pollObj->table_prefix = $TABLE_PREFIX;
 
   if(!empty($id)){
     $pollObj->getDataById($id);
@@ -281,14 +281,14 @@ if(isset($votes) && !isset($_POST['new']) && empty($id))
 
     //die("SELECT pv.*, username, prefixcolor, suffixcolor, optionText, defaultChecked FROM {$TABLE_PREFIX}poller_vote pv LEFT JOIN {$TABLE_PREFIX}users u ON pv.memberID=u.id LEFT JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id_level LEFT JOIN {$TABLE_PREFIX}poller_option po on pv.optionID=po.ID WHERE pv.pollerID='".$votes."' GROUP BY pv.voteDate ".$limit."");
 
-    $block_title=$language["POLLING_SYSTEM"]." - ".$language["POLL_VOTERS"];
+    $block_title = $language["POLLING_SYSTEM"]." - ".$language["POLL_VOTERS"];
 
     
     //Per Page Listing Limitation Start - 7:35 PM 3/22/2007
     if ($count > $perpage)
-      $admintpl->set("poll_pager_top",$pagertop);
+      $admintpl->set("poll_pager_top", $pagertop);
       else
-        $admintpl->set("poll_pager_top","");
+        $admintpl->set("poll_pager_top", "");
     //Per Page Listing Limitation Stop
 
     $i=0;
@@ -305,11 +305,11 @@ if(isset($votes) && !isset($_POST['new']) && empty($id))
           $user = "<a href=\"index.php?page=userdetails&amp;id=".$results["memberID"]."\">".StripSlashes($results["prefixcolor"].$results["username"].$results["suffixcolor"])."</a>";
 
         //print rows with voters
-        $polls[$i]["option_text"]=$results["optionText"];
-        $polls[$i]["ip_address"]=long2ip($results["ipAddress"]);
-        $polls[$i]["vote_date"]=get_date_time($results["voteDate"]);
-        $polls[$i]["user"]=$user;
-        $polls[$i]["bold"]=$bold;
+        $polls[$i]["option_text"] = $results["optionText"];
+        $polls[$i]["ip_address"] = long2ip($results["ipAddress"]);
+        $polls[$i]["vote_date"] = get_date_time($results["voteDate"]);
+        $polls[$i]["user"] = $user;
+        $polls[$i]["bold"] = $bold;
 
         $i++;
 
@@ -317,15 +317,15 @@ if(isset($votes) && !isset($_POST['new']) && empty($id))
 
       //Per Page Listing Limitation Start - 7:35 PM 3/22/2007
       if ($count > $perpage)
-        $admintpl->set("poll_pager_bottom",$pagerbottom);
+        $admintpl->set("poll_pager_bottom", $pagerbottom);
       else
-        $admintpl->set("poll_pager_bottom","");
+        $admintpl->set("poll_pager_bottom", "");
           //Per Page Listing Limitation Stop
 
 
-       $admintpl->set("show_poller",true,true);
-       $admintpl->set("new_poll",false,true);
-       $admintpl->set("polls",$polls);
+       $admintpl->set("show_poller", true, true);
+       $admintpl->set("new_poll", false ,true);
+       $admintpl->set("polls", $polls);
 
 
   }

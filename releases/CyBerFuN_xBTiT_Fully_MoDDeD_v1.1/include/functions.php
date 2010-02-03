@@ -111,7 +111,7 @@ function genrelistfaq($append = '',$table = 'faq')
 }
 /*End mod by losmi - faq mod*/
 function load_css($css_name) {
-  // control if input template name exist in current user's stylepath, else return default
+// control if input template name exist in current user's stylepath, else return default
   global $BASEURL, $STYLEPATH, $STYLEURL;
 
   if (@file_exists($STYLEPATH.'/'.$css_name))
@@ -530,7 +530,7 @@ function pager($rpp, $count, $href, $opts = array()) {
 
   if ($pages > 1) {
     $pager .= "\n".'<form name="change_page'.$pagename.'" method="post" action="index.php">'."\n".'<select class="drop_pager" name="pages" onchange="location=document.change_page'.$pagename.'.pages.options[document.change_page'.$pagename.'.pages.selectedIndex].value" size="1">';
-    for ($i = 1; $i <= $pages;$i++) 
+    for ($i = 1; $i <= $pages; $i++) 
         $pager .= "\n<option ".($i == $page ? 'selected="selected"':'')."value=\"$href$pagename=$i\">$i</option>";
     $pager.="\n</select>";
   }
@@ -544,7 +544,7 @@ function pager($rpp, $count, $href, $opts = array()) {
   }
 
   if ($count) {
-    for ($i = $begin;$i <= $end;$i++) {
+    for ($i = $begin; $i <= $end; $i++) {
       if ($i != $page)
         $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename=$i\">$i</a></span>";
       else

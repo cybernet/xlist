@@ -1,4 +1,13 @@
 <?php
+
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. Admin - DButil
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xlist.ro/
+// Modified By cybernet2u
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -63,18 +72,18 @@ $pm = true;
 # END OF SETTINGS, DO NOT EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING!!!!
 
 # init some variable...
-$ratio=0;
-$pick=0;
-$msg='';
-$l_users='';
-$flevel=0;
-$tlevel=0;
+$ratio = 0;
+$pick = 0;
+$msg = '';
+$l_users = '';
+$flevel = 0;
+$tlevel = 0;
 # Actual Code Start
 $error = (isset($_GET['error']))?$_GET['error']:'';
 $error_msg = '';
 $masspm = array();
 $masspm_post = false;
-$ratio_d='';
+$ratio_d = '';
 switch ($action) {
   case 'post':
       if (isset($_POST['masspm'])) {
@@ -88,7 +97,7 @@ switch ($action) {
             $msg = (isset($_POST['msg'])?$_POST['msg']:'');
             $subject = sqlesc($subject);
             # empty message and not debug mode
-            if ($msg=='' && $pm) {
+            if ($msg == '' && $pm) {
                 $error = 'return';
             } else {
                 # append footer
@@ -100,23 +109,23 @@ switch ($action) {
                 if ($ratio)
                     switch($pick) {
                         case 0:
-                            $pick='='.$ratio;
-                            $ratio_d='with a '.$language['RATIO'].' of <b>('.$ratio.')</b>';
+                            $pick = '='.$ratio;
+                            $ratio_d = 'with a '.$language['RATIO'].' of <b>('.$ratio.')</b>';
                             break;
 
                         case 1:
-                            $pick='>='.$ratio;
-                            $ratio_d='with a '.$language['RATIO'].' of <b>('.$ratio.')</b> and above';
+                            $pick = '>='.$ratio;
+                            $ratio_d = 'with a '.$language['RATIO'].' of <b>('.$ratio.')</b> and above';
                             break;
                         case 2:
-                            $pick='<='.$ratio;
-                            $ratio_d='with a '.$language['RATIO'].' of <b>('.$ratio.')</b> and below';
+                            $pick = '<='.$ratio;
+                            $ratio_d = 'with a '.$language['RATIO'].' of <b>('.$ratio.')</b> and below';
                             break;
                     }
                 # get level
-                if ($flevel==0||$tlevel==0) {
+                if ($flevel == 0 || $tlevel == 0) {
                     # selected all
-                    $where='WHERE u.id>1';
+                    $where = 'WHERE u.id>1';
                     $rank_details = 'in all '.$language['USER_LEVEL'].'s';
                 } else {
                     # get id_level names
@@ -126,15 +135,15 @@ switch ($action) {
                     } else {
                         $limit = 2;
                         $where .= ' OR id_level='.$tlevel;
-                        if ($flevel>$tlevel) {
-                            $flevel+=$tlevel;
-                            $tlevel=$flevel-$tlevel;
-                            $flevel-=$tlevel;
+                        if ($flevel > $tlevel) {
+                            $flevel += $tlevel;
+                            $tlevel = $flevel-$tlevel;
+                            $flevel -= $tlevel;
                         }
                     }
                     $levelsRes = get_result('SELECT id_level, level FROM '.$TABLE_PREFIX.'users_level WHERE '.$where.' LIMIT '.$limit);
                     foreach ($levelsRes as $level)
-                        $levels[$level['id_level']]= $level['level'];
+                        $levels[$level['id_level']] = $level['level'];
                     # create query for actual user listing
                     if ($limit == 2) {
                         $where = 'WHERE u.id_level BETWEEN '.$flevel.' AND '.$tlevel.' AND u.id>1';
@@ -156,16 +165,16 @@ switch ($action) {
                 }
                 # get data
                 $pm_users = get_result('SELECT u.id, u.username FROM '.$tables.' '.$where,true);
-                $i=0;
+                $i = 0;
                 # revamp data
                 foreach ($pm_users as $cur) {
                     if ( (!$pm_sender) && $cur['id'] == $CURUSER['uid'])
                         continue;
                     $i++;
                     if ($pm)
-                        send_pm($sender,$cur['id'],$subject,$msg);
+                        send_pm($sender, $cur['id'], $subject, $msg);
                     if ($list_users)
-                        $l_users[] ='<a href="'.$BASEURL.'/index.php?page=userdetails&amp;id='.$cur['id'].'">'.$cur['username'].'</a>';
+                        $l_users[] = '<a href="'.$BASEURL.'/index.php?page=userdetails&amp;id='.$cur['id'].'">'.$cur['username'].'</a>';
                 }
                 # set output vars
                 $block_title = $language['MASS_SENT'];
@@ -216,7 +225,7 @@ switch ($action) {
         $combo.="\n".'<option value="2"'.($pick==2?' selected="selected" ':'').'>'.$language['RATIO_LOW'].'</option>';
         $combo.="\n".'</select>';
         $masspm['combo_pick_ratio'] = $combo;
-        $masspm['body'] = textbbcode('masspm','msg',$msg);
+        $masspm['body'] = textbbcode('masspm', 'msg', $msg);
         $block_title = $language['ACP_MASSPM'];
         break;
 
@@ -225,10 +234,10 @@ switch ($action) {
         redirect('index.php?page=admin&user='.$CURUSER['uid'].'&code='.$CURUSER['random']);
 }
 
-$admintpl->set('frm_error',$error,true);
+$admintpl->set('frm_error',$error, true);
 $admintpl->set('frm_message', $error_msg);
-$admintpl->set('language',$language);
-$admintpl->set('frm_action','index.php?page=admin&amp;user='.$CURUSER['uid'].'&amp;code='.$CURUSER['random'].'&amp;do=masspm&amp;action=post');
-$admintpl->set('masspm',$masspm);
-$admintpl->set('masspm_post',$masspm_post,true);
+$admintpl->set('language', $language);
+$admintpl->set('frm_action', 'index.php?page=admin&amp;user='.$CURUSER['uid'].'&amp;code='.$CURUSER['random'].'&amp;do=masspm&amp;action=post');
+$admintpl->set('masspm', $masspm);
+$admintpl->set('masspm_post', $masspm_post, true);
 ?>

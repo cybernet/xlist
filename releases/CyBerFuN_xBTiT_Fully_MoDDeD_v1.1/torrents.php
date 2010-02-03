@@ -73,12 +73,12 @@ if(!$CURUSER || $CURUSER["view_torrents"] != "yes")
 
 if(isset($_GET["search"]))
 {
-    $trova = htmlspecialchars(str_replace ("+"," ",$_GET["search"]));
+    $trova = htmlspecialchars(str_replace ("+"," ", $_GET["search"]));
 } else {
     $trova = "";
 }
  
-$category = (!isset($_GET["category"])?0:explode(";",$_GET["category"]));
+$category = (!isset($_GET["category"]) ? 0 : explode(";", $_GET["category"]));
 // sanitize categories id
 if (is_array($category))
     $category = array_map("intval", $category);
@@ -136,10 +136,10 @@ if (isset($_GET["search"])) {
    $testocercato = explode(" ", $testocercato);
    if ($_GET["search"] != "")
       $search = "search=" . implode("+",$testocercato);
-    for ($k=0; $k < count($testocercato); $k++) {
+    for ($k = 0; $k < count($testocercato); $k++) {
         $query_select .= " filename LIKE '%" . mysql_real_escape_string($testocercato[$k]) . "%'";
-	$query_select .= "or tag LIKE '%" . mysql_escape_string($testocercato[$k]) . "%'";
-        if ($k<count($testocercato)-1)
+	    $query_select .= "or tag LIKE '%" . mysql_real_escape_string($testocercato[$k]) . "%'";
+        if ($k < count($testocercato) - 1)
            $query_select .= " AND ";
     }
     $where .= " AND " . $query_select;
@@ -165,7 +165,7 @@ if ($count > 0) {
       if ($search != "")
          $addparam .=  $search . "&amp;";
       else
-          $addparam .= ""; //$scriptname . "?";
+          $addparam .= ""; // $scriptname . "?";
       }
 
     $torrentperpage = intval($CURUSER["torrentsperpage"]);
@@ -178,8 +178,11 @@ if ($count > 0) {
     else
         $order = "data";
 
-    $qry_order = str_replace(array("leechers","seeds","finished"),array($tleechs,$tseeds, $tcompletes),$order);
+    $qry_order = str_replace(array("leechers", "seeds", "finished"), array($tleechs, $tseeds, $tcompletes), $order);
 /*Mod by losmi - visible mod*/
+/*Mod by losmi - sticky mod
+Operation #4*/
+
     if (isset($_GET["by"]))
         $by = htmlspecialchars(mysql_real_escape_string($_GET["by"]));
     else
@@ -190,16 +193,17 @@ if ($count > 0) {
 
     // Do the query with the uploader nickname
     if ($SHOW_UPLOADER)
-        $query = "SELECT tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.anonymous, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader as upname, u.username as uploader, prefixcolor, suffixcolor FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id $where ORDER BY $qry_order $by $limit";
+        $query = "SELECT f.sticky as sticky, tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.anonymous, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader as upname, u.username as uploader, prefixcolor, suffixcolor FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id $where GROUP BY f.sticky,$qry_order $by ORDER BY f.sticky $by $limit";
 
     // Do the query without the uploader nickname
     else
-        $query = "SELECT tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where ORDER BY $qry_order $by $limit";
+        $query = "SELECT f.sticky as sticky, tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where GROUP BY f.sticky,$qry_order $by ORDER BY f.sticky $by $limit";
     // End the queries
        $results = get_result($query, true);
 }
 
-
+/*Mod by losmi - sticky mod
+        End Operation #4*/
 
 if ($by == "ASC")
     $mark = "&nbsp;&uarr;";
@@ -255,6 +259,26 @@ if ($count > 0) {
     {
     /*Mod by losmi - end visible mod*/
    $torrenttpl->set("WT1", intval($CURUSER["WT"]) > 0, TRUE);
+/*Mod by losmi - sticky mod
+    Start Operation #5*/
+    $sticky_color = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}sticky ORDER BY id", true);
+    if(mysql_num_rows($sticky_color) > 0)
+    {
+    $st = mysql_fetch_assoc($sticky_color);
+    $s_c = $st['color'];
+    }
+    else
+    {
+    /*Default value some green #bce1ac;*/
+    $s_c ='#bce1ac;';
+    }
+    $torrents[$i]["color"] = '';
+        if($data['sticky'] == 1)
+        {
+            $torrents[$i]["color"] = 'background:'.$s_c;
+        }
+    /*Mod by losmi - sticky mod
+    End Operation #5*/
    $torrenttpl->set("uploader1", $SHOW_UPLOADER, TRUE);
 
     /*Mod by losmi - visible mod*/
@@ -358,7 +382,7 @@ if ($hover == "")
 
       if ($wait <= 0)$wait = 0;
      if (strlen($data["hash"]) > 0)
-          $torrents[$i]["waiting"] = ($wait>0?$wait." h":"---");
+          $torrents[$i]["waiting"] = ($wait > 0 ? $wait." h":"---");
    //end waitingtime
    }
    else $torrents[$i]["waiting"] = "";
@@ -439,7 +463,7 @@ if ($hover == "")
   else {
        $id = $data['hash'];
        if ($XBTT_USE)
-          $subres = do_sqlquery("SELECT sum(IFNULL(xfu.left,0)) as to_go, count(xfu.uid) as numpeers FROM xbt_files_users xfu INNER JOIN xbt_files xf ON xf.fid=xfu.fid WHERE xf.info_hash=UNHEX('$id') AND xfu.active=1",true) or mysql_error();
+          $subres = do_sqlquery("SELECT sum(IFNULL(xfu.left,0)) as to_go, count(xfu.uid) as numpeers FROM xbt_files_users xfu INNER JOIN xbt_files xf ON xf.fid=xfu.fid WHERE xf.info_hash=UNHEX('$id') AND xfu.active=1", true) or mysql_error();
        else
            $subres = do_sqlquery("SELECT sum(IFNULL(bytes,0)) as to_go, count(*) as numpeers FROM {$TABLE_PREFIX}peers where infohash='$id'" ) or mysql_error();
        $subres2 = do_sqlquery("SELECT size FROM {$TABLE_PREFIX}files WHERE info_hash ='$id'") or mysql_error();
@@ -447,8 +471,8 @@ if ($hover == "")
        $subrow = mysql_fetch_array($subres);
        $tmp = 0 + $subrow["numpeers"];
        if ($tmp > 0) {
-          $tsize = (0+$torrent["size"]) * $tmp;
-          $tbyte = 0+$subrow["to_go"];
+          $tsize = (0 + $torrent["size"]) * $tmp;
+          $tbyte = 0 + $subrow["to_go"];
           $prgs = (($tsize - $tbyte) / $tsize) * 100; //100 * (1-($tbyte/$tsize));
           $prgsf = floor($prgs);
           }
