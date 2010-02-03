@@ -56,7 +56,7 @@ if ($act == "takerecover")
     stderr($language["ERROR"], $language["ERR_NO_EMAIL"]);
 
   $res = do_sqlquery("SELECT id, email FROM {$TABLE_PREFIX}users WHERE email=".sqlesc($email)." LIMIT 1", true);
-  $arr = mysql_fetch_assoc($res) or stderr($language["ERROR"],$language["ERR_EMAIL_NOT_FOUND_1"]." <b>$email</b> ".$language["ERR_EMAIL_NOT_FOUND_2"]);
+  $arr = mysql_fetch_assoc($res) or stderr($language["ERROR"], $language["ERR_EMAIL_NOT_FOUND_1"]." <b>$email</b> ".$language["ERR_EMAIL_NOT_FOUND_2"]);
 if ($USE_IMAGECODE)
 {
   if (extension_loaded('gd'))
@@ -92,7 +92,7 @@ if ($USE_IMAGECODE)
         $scode_index = intval($_POST["security_index"]);
         if ($security_code[$scode_index]["answer"] != $_POST["scode_answer"])
            {
-           err_msg($language["ERROR"],$language["ERR_IMAGE_CODE"]);
+           err_msg($language["ERROR"], $language["ERR_IMAGE_CODE"]);
            stdfoot();
            exit;
          }
@@ -159,7 +159,7 @@ if ($random != $arr["random"])
     do_sqlquery("UPDATE {$TABLE_PREFIX}users SET password='".md5($newpassword)."' WHERE id=$id AND random=$random");
 
     if (!mysql_affected_rows())
-        stderr($language["ERROR"],$language["ERR_UPDATE_USER"]);
+        stderr($language["ERROR"], $language["ERR_UPDATE_USER"]);
 
     if($GLOBALS["FORUMLINK"] == "smf")
     {
@@ -170,7 +170,7 @@ if ($random != $arr["random"])
 
 $body = sprintf($language["RECOVER_EMAIL_2"], $arr["username"], $newpassword, "$BASEURL/index.php?page=login", $SITENAME);
 
-  send_mail($email, "$SITENAME ".$language["ACCOUNT_DETAILS"], $body) or stderr($language["ERROR"],$language["ERR_SEND_EMAIL"]);
+  send_mail($email, "$SITENAME ".$language["ACCOUNT_DETAILS"], $body) or stderr($language["ERROR"], $language["ERR_SEND_EMAIL"]);
   redirect("index.php?page=recover&act=recover_ok&id=$id&random=$random");
   die();
 }

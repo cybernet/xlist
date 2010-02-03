@@ -56,13 +56,13 @@ $sub_forums = get_result("SELECT f.*, t.lastpost, t.subject, t.locked, p.userid 
                           " AND f.id_parent<>0 ORDER BY sort,name",true);
 
 
-$subformtpl=new bTemplate();
+$subformtpl = new bTemplate();
 
 if (mysql_num_rows($forums_res) == 0)
-   $forumtpl->set("NO_FORUMS",true,true);
+   $forumtpl->set("NO_FORUMS", true, true);
 else
  {
-   $forums=array();
+   $forums = array();
    $i=0;
    while ($forums_arr = mysql_fetch_assoc($forums_res))
     {
@@ -84,50 +84,50 @@ else
         else
           $forums[$i]["lastpost"]  = $language["NA"];
 
-        $forums[$i]["status"]=image_or_link("$STYLEPATH/images/".$forums_arr["img"].".png","",$img);
+        $forums[$i]["status"] = image_or_link("$STYLEPATH/images/".$forums_arr["img"].".png","",$img);
         // just in case they are no subs
-        $forums[$i]["subforums"]="";
+        $forums[$i]["subforums"] = "";
 
         reset($sub_forums);
         $j=0;
-        $subforums=array();
+        $subforums = array();
         foreach($sub_forums as $id=>$subfor)
             {
-            if ($subfor["id_parent"]==$forums_arr["id"])
+            if ($subfor["id_parent"] == $forums_arr["id"])
                 {
-                $subforums[$j]["status"]=image_or_link("$STYLEPATH/images/".$subfor["img"].".png","",$img);
-                $subforums[$j]["name"]="<a href=\"index.php?page=forum&amp;action=viewforum&amp;forumid=".$subfor["id"]."\">".htmlspecialchars(unesc($subfor["name"]))."</a>";
-                $subforums[$j]["description"]=htmlspecialchars(unesc($subfor["description"]));
-                $subforums[$j]["topics"]=number_format($subfor["topiccount"]);
-                $subforums[$j]["posts"]=number_format($subfor["postcount"]);
+                $subforums[$j]["status"] = image_or_link("$STYLEPATH/images/".$subfor["img"].".png","",$img);
+                $subforums[$j]["name"] = "<a href=\"index.php?page=forum&amp;action=viewforum&amp;forumid=".$subfor["id"]."\">".htmlspecialchars(unesc($subfor["name"]))."</a>";
+                $subforums[$j]["description"] = htmlspecialchars(unesc($subfor["description"]));
+                $subforums[$j]["topics"] = number_format($subfor["topiccount"]);
+                $subforums[$j]["posts"] = number_format($subfor["postcount"]);
                 if ($subfor["uid"])
                    if ($forums_arr["username"])
-                      $subforums[$j]["lastpost"]=date("",$subfor["date"])."<br />" .
+                      $subforums[$j]["lastpost"] = date("",$subfor["date"])."<br />" .
                                 "by <a href=\"index.php?page=userdetails&amp;id=".$subfor["uid"]."\"><b>".unesc($subfor["username"])."</b></a><br />" .
                                 "in <a href=\"index.php?page=forum&amp;action=viewtopic&amp;topicid=".$subfor["topicid"]."&amp;msg=".$subfor["lastpost"]."#".$subfor["lastpost"]."\">".htmlspecialchars(unesc($subfor["subject"]))."</a>";
                    else
-                      $subforums[$j]["lastpost"]  = date("",$subfor["date"])."<br />" .
+                      $subforums[$j]["lastpost"] = date("",$subfor["date"])."<br />" .
                                       "by ".$language["MEMBER"]."[".$subfor["uid"]."]<br />" .
                                       "in <a href=\"index.php?page=forum&amp;action=viewtopic&amp;topicid=".$subfor["topicid"]."&amp;msg=".$subfor["lastpost"]."#".$subfor["lastpost"]."\">".htmlspecialchars(unesc($subfor["subject"]))."</a>";
                 else
-                  $subforums[$j]["lastpost"]  = $language["NA"];
+                  $subforums[$j]["lastpost"] = $language["NA"];
                 $j++;
                 unset($sub_forums[$id]);
              }
          }
         if ($j>0)
           {
-            $subformtpl->set("language",$language);
-            $subformtpl->set("forums",$subforums);
-            $subformtpl->set("parent_forum",htmlspecialchars(unesc($forums_arr["name"]))."'s ".$language["SUBFORUM"]);
-            $forums[$i]["subforums"]=$subformtpl->fetch(load_template("forum.subforums.tpl"));
+            $subformtpl->set("language", $language);
+            $subformtpl->set("forums", $subforums);
+            $subformtpl->set("parent_forum", htmlspecialchars(unesc($forums_arr["name"]))."'s ".$language["SUBFORUM"]);
+            $forums[$i]["subforums"] = $subformtpl->fetch(load_template("forum.subforums.tpl"));
         }
         $i++;
 
     }
 
-    $forumtpl->set("NO_FORUMS",false,true);
-    $forumtpl->set("forums",$forums);
+    $forumtpl->set("NO_FORUMS", false, true);
+    $forumtpl->set("forums", $forums);
 
 }
 

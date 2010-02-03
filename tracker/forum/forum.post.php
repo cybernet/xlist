@@ -53,17 +53,17 @@ switch ($action)
    case 'editpost':
       $postid = intval(0+$_GET["postid"]);
       if (!is_valid_id($postid))
-         stderr($language["ERROR"],$language["ERR_POST_ID_NA"]);
+         stderr($language["ERROR"], $language["ERR_POST_ID_NA"]);
 
       $res = do_sqlquery("SELECT p.*,t.locked FROM {$TABLE_PREFIX}posts p LEFT JOIN {$TABLE_PREFIX}topics t ON p.topicid=t.id WHERE p.id=$postid",true);
 
       if (mysql_num_rows($res) != 1)
-         stderr($language["ERROR"],$language["ERR_NO_POST_WITH_ID"]." $postid.");
+         stderr($language["ERROR"], $language["ERR_NO_POST_WITH_ID"]." $postid.");
 
       $arr = mysql_fetch_assoc($res);
 
       if (!$arr["locked"])
-         stderr($language["ERROR"],$language["ERR_NO_TOPIC_POST_ID"]." $postid.");
+         stderr($language["ERROR"], $language["ERR_NO_TOPIC_POST_ID"]." $postid.");
 
       $locked = ($arr2["locked"] == 'yes');
 
@@ -95,32 +95,32 @@ switch ($action)
         }
 
 
-      $block_title=$language["EDIT_POST"];
-      $forumtpl->set("frm_action","index.php?page=forum&amp;action=editpost&amp;postid=$postid");
-      $forumtpl->set("return_to",htmlspecialchars($_SERVER["HTTP_REFERER"]));
-      $forumtpl->set("post_body",textbbcode("edit","body",htmlspecialchars(unesc($arr["body"]))));
+      $block_title = $language["EDIT_POST"];
+      $forumtpl->set("frm_action", "index.php?page=forum&amp;action=editpost&amp;postid=$postid");
+      $forumtpl->set("return_to", htmlspecialchars($_SERVER["HTTP_REFERER"]));
+      $forumtpl->set("post_body", textbbcode("edit", "body",htmlspecialchars(unesc($arr["body"]))));
 
      break;
 
    case 'reply':
    case 'quotepost':
         
-      if ($action=="quotepost")
-          $quote=true;
+      if ($action == "quotepost")
+          $quote = true;
       else
-          $quote=false;
+          $quote = false;
 
 
-      $topicid=intval(0+$_GET["topicid"]);
+      $topicid = intval(0+$_GET["topicid"]);
       // current user has create acces to this forum ?
-      $aut=get_result("SELECT id,subject FROM {$TABLE_PREFIX}topics WHERE id=$topicid LIMIT 1",true);
-      if (count($aut)<1)
-          stderr($language["ERROR"],$language["TOPIC_NOT_FOUND"]);
+      $aut = get_result("SELECT id,subject FROM {$TABLE_PREFIX}topics WHERE id=$topicid LIMIT 1", true);
+      if (count($aut) < 1)
+          stderr($language["ERROR"], $language["TOPIC_NOT_FOUND"]);
 
       if (!is_valid_id($topicid))
-          stderr($language["ERROR"],$language["BAD_TOPIC_ID"]);
+          stderr($language["ERROR"], $language["BAD_TOPIC_ID"]);
 
-      $block_title=$language["REPLY"]."&nbsp;".$language["TOPIC"]."&nbsp;<a href=\"index.php?page=forum&amp;action=viewtopic&amp;topicid=$topicid\">".htmlspecialchars(unesc($aut[0]["subject"]))."</a>";
+      $block_title = $language["REPLY"]."&nbsp;".$language["TOPIC"]."&nbsp;<a href=\"index.php?page=forum&amp;action=viewtopic&amp;topicid=$topicid\">".htmlspecialchars(unesc($aut[0]["subject"]))."</a>";
 
       unset($aut);
 
@@ -138,44 +138,44 @@ switch ($action)
                   " WHERE topicid=$topicid ORDER BY id DESC LIMIT 10";
 
       // get last 10 posts
-      $res = get_result($query,true);
-      $posts=array();
+      $res = get_result($query, true);
+      $posts = array();
       $pn=0;
       foreach($res as $id=>$arr)
       {
         if ($arr["username"])
-          $posts[$pn]["username"]="<a href=\"index.php?page=userdetails&amp;id=".$arr["userid"]."\">".unesc($arr["username"])."</a>";
+          $posts[$pn]["username"] = "<a href=\"index.php?page=userdetails&amp;id=".$arr["userid"]."\">".unesc($arr["username"])."</a>";
         else
-          $posts[$pn]["username"]="unknown[".$arr["userid"]."]";
+          $posts[$pn]["username"] = "unknown[".$arr["userid"]."]";
 
-        $posts[$pn]["date"]=get_date_time($arr["added"]);
-        $posts[$pn]["elapsed"]="(".get_elapsed_time($arr["added"]) . " ago)";
-        $posts[$pn]["avatar"]="<img onload=\"resize_avatar(this);\" src=\"".($arr["avatar"] && $arr["avatar"] != "" ? htmlspecialchars($arr["avatar"]): "$STYLEURL/images/default_avatar.gif" )."\" alt=\"\" />";
-        $posts[$pn]["user_group"]=$arr["user_group"];
-        $posts[$pn]["flag"]="<img src=\"images/flag/".($arr["flagpic"] && $arr["flagpic"]!=""?$arr["flagpic"]:"unknown.gif")."\" alt=\"".($arr["name"] && $arr["name"]!=""?$arr["name"]:"unknown")."\" />";
-        $posts[$pn]["ratio"]=(intval($arr['downloaded']) > 0?number_format($arr['uploaded'] / $arr['downloaded'], 2):"---");
+        $posts[$pn]["date"] = get_date_time($arr["added"]);
+        $posts[$pn]["elapsed"] = "(".get_elapsed_time($arr["added"]) . " ago)";
+        $posts[$pn]["avatar"] = "<img onload=\"resize_avatar(this);\" src=\"".($arr["avatar"] && $arr["avatar"] != "" ? htmlspecialchars($arr["avatar"]): "$STYLEURL/images/default_avatar.gif" )."\" alt=\"\" />";
+        $posts[$pn]["user_group"] = $arr["user_group"];
+        $posts[$pn]["flag"] = "<img src=\"images/flag/".($arr["flagpic"] && $arr["flagpic"]!=""?$arr["flagpic"]:"unknown.gif")."\" alt=\"".($arr["name"] && $arr["name"]!=""?$arr["name"]:"unknown")."\" />";
+        $posts[$pn]["ratio"] = (intval($arr['downloaded']) > 0?number_format($arr['uploaded'] / $arr['downloaded'], 2):"---");
 
         $sql = get_result("SELECT COUNT(*) as posts FROM {$TABLE_PREFIX}posts p INNER JOIN {$TABLE_PREFIX}users u ON p.userid = u.id WHERE u.id = " . $arr["userid"],true);
-        $posts[$pn]["posts"]=intval(0+$sql[0]["posts"]);
-        $posts[$pn]["id"]=$arr["id"];
+        $posts[$pn]["posts"] = intval(0+$sql[0]["posts"]);
+        $posts[$pn]["id"] = $arr["id"];
 
-        $posts[$pn]["actions"]="";
+        $posts[$pn]["actions"] = "";
         if ((!$locked || $CURUSER["edit_forum"] == "yes") && $usercan_write)
-          $posts[$pn]["actions"].="<a href=\"index.php?page=forum&amp;action=quotepost&amp;topicid=$topicid&amp;postid=".$arr["id"]."\">".image_or_link($STYLEPATH."/images/f_quote.png","","[".$language["QUOTE"]."]")."</a>";
+          $posts[$pn]["actions"] .= "<a href=\"index.php?page=forum&amp;action=quotepost&amp;topicid=$topicid&amp;postid=".$arr["id"]."\">".image_or_link($STYLEPATH."/images/f_quote.png","","[".$language["QUOTE"]."]")."</a>";
 
         if (($CURUSER["uid"] == $posterid && !$locked) || $CURUSER["edit_forum"] == "yes")
-          $posts[$pn]["actions"].="&nbsp;&nbsp;<a href=\"index.php?page=forum&amp;action=editpost&amp;postid=".$arr["id"]."\">".image_or_link($STYLEPATH."/images/f_edit.png","","[".$language["EDIT"]."]")."</a>";
+          $posts[$pn]["actions"] .= "&nbsp;&nbsp;<a href=\"index.php?page=forum&amp;action=editpost&amp;postid=".$arr["id"]."\">".image_or_link($STYLEPATH."/images/f_edit.png","","[".$language["EDIT"]."]")."</a>";
 
         if ($CURUSER["delete_forum"] == "yes")
-          $posts[$pn]["actions"].="&nbsp;&nbsp;<a href=\"index.php?page=forum&amp;action=deletepost&amp;postid=".$arr["id"]."&amp;forumid=$forumid\">".image_or_link($STYLEPATH."/images/f_delete.png","","[".$language["DELETE"]."]")."</a>";
+          $posts[$pn]["actions"] .= "&nbsp;&nbsp;<a href=\"index.php?page=forum&amp;action=deletepost&amp;postid=".$arr["id"]."&amp;forumid=$forumid\">".image_or_link($STYLEPATH."/images/f_delete.png","","[".$language["DELETE"]."]")."</a>";
 
-        $posts[$pn]["body"]=format_comment($arr["body"]);
+        $posts[$pn]["body"] = format_comment($arr["body"]);
 
         if (is_valid_id($arr['editedby']))
-          $posts[$pn]["body"].= "<p><font size=\"1\">".$language["LAST_EDITED_BY"]." <a href=index.php?page=userdetails&amp;id=".$arr["editedby"]."<b>".$arr["editor"]."</b></a> at ".get_date_time($arr['editedat'])."</font></p>\n";
+          $posts[$pn]["body"] .= "<p><font size=\"1\">".$language["LAST_EDITED_BY"]." <a href=index.php?page=userdetails&amp;id=".$arr["editedby"]."<b>".$arr["editor"]."</b></a> at ".get_date_time($arr['editedat'])."</font></p>\n";
 
-        $posts[$pn]["pm"]=($CURUSER["uid"]>1?"<a href=\"index.php?page=usercp&amp;do=pm&amp;action=edit&amp;uid=$userid&amp;what=new&amp;to=".urlencode($arr["username"])."\">".image_or_link("$STYLEPATH/images/pm.png","",$language["PM"])."</a>":"");
-        $posts[$pn]["top"]=image_or_link("$STYLEPATH/images/top.gif","",$language["TOP"]);
+        $posts[$pn]["pm"] = ($CURUSER["uid"]>1?"<a href=\"index.php?page=usercp&amp;do=pm&amp;action=edit&amp;uid=$userid&amp;what=new&amp;to=".urlencode($arr["username"])."\">".image_or_link("$STYLEPATH/images/pm.png","",$language["PM"])."</a>":"");
+        $posts[$pn]["top"] = image_or_link("$STYLEPATH/images/top.gif","", $language["TOP"]);
         ++$pn;
 
       }
@@ -193,10 +193,10 @@ switch ($action)
       $forumtpl->set("post_subject","");
       if ($quote)
         {
-          $postid=intval(0+$_GET["postid"]);
-          $arr=get_result("SELECT p.*, u.username FROM {$TABLE_PREFIX}posts p LEFT JOIN {$TABLE_PREFIX}users u ON p.userid = u.id WHERE p.id=$postid LIMIT 1",true);
-          if (count($arr)<1)
-            stderr($language["ERROR"],$language["ERR_NO_POST_WITH_ID"]."&nbsp;$postid.");
+          $postid = intval(0+$_GET["postid"]);
+          $arr = get_result("SELECT p.*, u.username FROM {$TABLE_PREFIX}posts p LEFT JOIN {$TABLE_PREFIX}users u ON p.userid = u.id WHERE p.id=$postid LIMIT 1",true);
+          if (count($arr) < 1)
+            stderr($language["ERROR"], $language["ERR_NO_POST_WITH_ID"]."&nbsp;$postid.");
       }
 
       $forumtpl->set("post_bbcode",textbbcode("compose","body",($quote?"[quote".($arr[0]["username"]?"=".htmlspecialchars($arr[0]["username"]):"")."]".htmlspecialchars(unesc($arr[0]["body"]))."[/quote]":"")));
@@ -207,16 +207,16 @@ switch ($action)
 
 
    case 'newtopic':
-      $forumid=intval(0+$_GET["forumid"]);
+      $forumid = intval(0+$_GET["forumid"]);
       // current user has create acces to this forum ?
-      $aut=get_result("SELECT id,name FROM {$TABLE_PREFIX}forums WHERE id=$forumid AND minclasscreate<=".$CURUSER["id_level"]." LIMIT 1",true, $btit_settings["cache_duration"]);
-      if (count($aut)<1)
-          stderr($language["ERROR"],$language["ERR_CANT_START_TOPICS"]);
+      $aut = get_result("SELECT id,name FROM {$TABLE_PREFIX}forums WHERE id=$forumid AND minclasscreate<=".$CURUSER["id_level"]." LIMIT 1",true, $btit_settings["cache_duration"]);
+      if (count($aut) < 1)
+          stderr($language["ERROR"], $language["ERR_CANT_START_TOPICS"]);
 
       if (!is_valid_id($forumid))
-          stderr($language["ERROR"],$language["BAD_FORUM_ID"]);
+          stderr($language["ERROR"], $language["BAD_FORUM_ID"]);
 
-      $block_title=$language["NEW_TOPIC"]."&nbsp;".$language["IN"]."&nbsp;<a href=\"index.php?page=forum&amp;action=viewforum&amp;forumid=$forumid\">".$aut[0]["name"]."</a>&nbsp;".$language["FORUM"];
+      $block_title = $language["NEW_TOPIC"]."&nbsp;".$language["IN"]."&nbsp;<a href=\"index.php?page=forum&amp;action=viewforum&amp;forumid=$forumid\">".$aut[0]["name"]."</a>&nbsp;".$language["FORUM"];
 
       $forumtpl->set("old_posts",false,true);
       $forumtpl->set("frm_action","index.php?page=forum&amp;action=post");
@@ -236,7 +236,7 @@ switch ($action)
       if (!is_valid_id($forumid) && !is_valid_id($topicid))
         stderr($language["ERROR"],$language["ERR_FORUM_TOPIC"]);
 
-      if ($_POST["confirm"]==$language["FRM_CONFIRM"])
+      if ($_POST["confirm"] == $language["FRM_CONFIRM"])
         {
 
           $newtopic = $topicid?false:true;
@@ -244,55 +244,55 @@ switch ($action)
 
           if ($newtopic)
           {
-            if (!$subject || $subject=="''")
+            if (!$subject || $subject == "''")
               stderr($language["ERROR"],$language["ERR_SUBJECT"]);
 
             if (strlen($subject) > $maxsubjectlength)
-              stderr($language["ERROR"],$language["SUBJECT_MAX_CHAR"]." $maxsubjectlength ".$language["CHARACTERS"]);
+              stderr($language["ERROR"], $language["SUBJECT_MAX_CHAR"]." $maxsubjectlength ".$language["CHARACTERS"]);
 
-            $query="SELECT id, minclasswrite, minclasscreate FROM {$TABLE_PREFIX}forums WHERE id=$forumid LIMIT 1";
+            $query = "SELECT id, minclasswrite, minclasscreate FROM {$TABLE_PREFIX}forums WHERE id=$forumid LIMIT 1";
           }
           else
             $query = "SELECT f.id, minclasswrite, minclasscreate, t.locked FROM {$TABLE_PREFIX}forums f INNER JOIN {$TABLE_PREFIX}topics t ON t.forumid=f.id WHERE t.id=$topicid LIMIT 1";
 
 
-          $aut=get_result($query,true);
-          $forumid=$aut[0]["id"];
+          $aut = get_result($query ,true);
+          $forumid = $aut[0]["id"];
           //------ Make sure sure user has write access in forum
 
           if ($CURUSER["id_level"] < $aut[0]["minclasswrite"] || ($newtopic && $CURUSER["id_level"] < $aut[0]["minclasscreate"]))
-            stderr($language["ERROR"],$language["ERR_PERM_DENIED"]);
+            stderr($language["ERROR"], $language["ERR_PERM_DENIED"]);
 
           $body = sqlesc(trim($_POST["body"]));
 
           if ($body == "''")
-            stderr($language["ERROR"],$language["ERR_NO_BODY"]);
+            stderr($language["ERROR"], $language["ERR_NO_BODY"]);
 
           $userid = intval($CURUSER["uid"]);
 
           if ($newtopic)
           {
             //---- Create topic
-            $add_topic_count=", topiccount=topiccount+1";
-            do_sqlquery("INSERT INTO {$TABLE_PREFIX}topics (userid, forumid, subject) VALUES($userid, $forumid, $subject)",true);
+            $add_topic_count = ", topiccount=topiccount+1";
+            do_sqlquery("INSERT INTO {$TABLE_PREFIX}topics (userid, forumid, subject) VALUES($userid, $forumid, $subject)", true);
             $topicid = mysql_insert_id() or stderr($language["ERROR"],$language["ERR_NO_TOPIC_ID"]);
           }
           else
           {
             //---- Make sure topic exists and is unlocked
             if ($aut[0]["locked"] == 'yes' && $CURUSER["edit_forum"] != "yes")
-                  stderr($language["ERROR"],$language["ERR_TOPIC_LOCKED"]);
-            $add_topic_count="";
+                  stderr($language["ERROR"], $language["ERR_TOPIC_LOCKED"]);
+            $add_topic_count = "";
           }
 
           //------ Insert post
 
-          do_sqlquery("INSERT INTO {$TABLE_PREFIX}posts (topicid, userid, added, body) VALUES($topicid, $userid, UNIX_TIMESTAMP(), $body)",true);
-          $postid = mysql_insert_id() or stderr($language["ERROR"],$language["ERR_POST_ID_NA"]);
+          do_sqlquery("INSERT INTO {$TABLE_PREFIX}posts (topicid, userid, added, body) VALUES($topicid, $userid, UNIX_TIMESTAMP(), $body)", true);
+          $postid = mysql_insert_id() or stderr($language["ERROR"], $language["ERR_POST_ID_NA"]);
 
           //------ Update topic last post
 
-          do_sqlquery("UPDATE {$TABLE_PREFIX}topics SET lastpost=(SELECT MAX(id) FROM {$TABLE_PREFIX}posts WHERE topicid=$topicid) WHERE id=$topicid",true);
+          do_sqlquery("UPDATE {$TABLE_PREFIX}topics SET lastpost=(SELECT MAX(id) FROM {$TABLE_PREFIX}posts WHERE topicid=$topicid) WHERE id=$topicid", true);
           
           // update post/topic count
 

@@ -78,13 +78,13 @@ switch ($action)
           information_msg($language["FRM_CONFIRM"]."?",$language["ERR_DELETE_TOPIC"]."&nbsp;<a href=\"index.php?page=forum&amp;action=deletetopic&amp;topicid=$topicid&amp;sure=1&amp;forumid=$forumid\">".$language["HERE"]."</a>&nbsp;".$language["IF_YOU_ARE_SURE"]."<br />");
         }
 
-        do_sqlquery("DELETE FROM {$TABLE_PREFIX}topics WHERE id=$topicid",true);
-        $numtopic=mysql_affected_rows();
-        do_sqlquery("DELETE FROM {$TABLE_PREFIX}posts WHERE topicid=$topicid",true);
-        $numposts=mysql_affected_rows();
-        do_sqlquery("DELETE FROM {$TABLE_PREFIX}readposts WHERE topicid=$topicid",true);
+        do_sqlquery("DELETE FROM {$TABLE_PREFIX}topics WHERE id=$topicid", true);
+        $numtopic = mysql_affected_rows();
+        do_sqlquery("DELETE FROM {$TABLE_PREFIX}posts WHERE topicid=$topicid", true);
+        $numposts = mysql_affected_rows();
+        do_sqlquery("DELETE FROM {$TABLE_PREFIX}readposts WHERE topicid=$topicid", true);
 
-        do_sqlquery("UPDATE {$TABLE_PREFIX}forums SET topiccount=topiccount-$numtopic,postcount=postcount-$numposts WHERE id=$forumid",true);
+        do_sqlquery("UPDATE {$TABLE_PREFIX}forums SET topiccount=topiccount-$numtopic,postcount=postcount-$numposts WHERE id=$forumid", true);
 
         redirect("index.php?page=forum&action=viewforum&forumid=$forumid");
     
@@ -98,31 +98,31 @@ switch ($action)
         $topicid = intval(0 + $_GET["topicid"]);
 
         if (!is_valid_id($forumid) || !is_valid_id($topicid) || $CURUSER["edit_forum"] != "yes")
-            stderr($language["ERROR"],$language["BAD_TOPIC_ID"]);
+            stderr($language["ERROR"], $language["BAD_TOPIC_ID"]);
 
-        $res = do_sqlquery("SELECT minclasswrite FROM {$TABLE_PREFIX}forums WHERE id=$forumid",true);
+        $res = do_sqlquery("SELECT minclasswrite FROM {$TABLE_PREFIX}forums WHERE id=$forumid", true);
 
         if (mysql_num_rows($res) != 1)
-            stderr($language["ERROR"],$language["ERR_FORUM_NOT_FOUND"]);
+            stderr($language["ERROR"], $language["ERR_FORUM_NOT_FOUND"]);
 
         $arr = mysql_fetch_row($res);
 
         if ($CURUSER["id_level"] < $arr[0])
-            stderr($language["ERROR"],$language["BAD_TOPIC_ID"]);
+            stderr($language["ERROR"], $language["BAD_TOPIC_ID"]);
 
-        $res = do_sqlquery("SELECT subject,forumid FROM {$TABLE_PREFIX}topics WHERE id=$topicid",true);
+        $res = do_sqlquery("SELECT subject,forumid FROM {$TABLE_PREFIX}topics WHERE id=$topicid", true);
 
         if (mysql_num_rows($res) != 1)
-            stderr($language["ERROR"],$language["TOPIC_NOT_FOUND"]);
+            stderr($language["ERROR"], $language["TOPIC_NOT_FOUND"]);
 
         $arr = mysql_fetch_assoc($res);
 
         if ($arr["forumid"] != $forumid)
-          do_sqlquery("UPDATE {$TABLE_PREFIX}topics SET forumid=$forumid WHERE id=$topicid",true);
+          do_sqlquery("UPDATE {$TABLE_PREFIX}topics SET forumid=$forumid WHERE id=$topicid", true);
 
         // modifying count topics & post
-        $res=do_sqlquery("SELECT count(*) as numposts FROM {$TABLE_PREFIX}posts WHERE topicid=$topicid",true);
-        $numposts=mysql_result($res,0,0);
+        $res = do_sqlquery("SELECT count(*) as numposts FROM {$TABLE_PREFIX}posts WHERE topicid=$topicid", true);
+        $numposts = mysql_result($res, 0, 0);
 
         do_sqlquery("UPDATE {$TABLE_PREFIX}forums SET topiccount=topiccount-1, postcount=postcount-$numposts WHERE id=".$arr["forumid"]);
         do_sqlquery("UPDATE {$TABLE_PREFIX}forums SET topiccount=topiccount+1, postcount=postcount+$numposts WHERE id=$forumid");
@@ -153,10 +153,10 @@ switch ($action)
         $topicid = intval(0 + $_POST["topicid"]);
 
         if (!$topicid || $CURUSER["edit_forum"] != "yes")
-            stderr($language["ERROR"],$language["BAD_TOPIC_ID"]);
+            stderr($language["ERROR"], $language["BAD_TOPIC_ID"]);
 
         $sticky = sqlesc($_POST["sticky"]);
-        do_sqlquery("UPDATE {$TABLE_PREFIX}topics SET sticky=$sticky WHERE id=$topicid",true);
+        do_sqlquery("UPDATE {$TABLE_PREFIX}topics SET sticky=$sticky WHERE id=$topicid", true);
 
         redirect(urldecode($_POST[returnto]));
         die();
@@ -166,17 +166,17 @@ switch ($action)
     case 'rename':
 
         if ($CURUSER["edit_forum"] != "yes")
-          stderr($language["ERROR"],$language["ERR_NOT_AUTH"]);
+          stderr($language["ERROR"], $language["ERR_NOT_AUTH"]);
 
         $topicid = intval(0+$_POST['topicid']);
 
         if (!is_valid_id($topicid))
-          stderr($language["ERROR"],$language["BAD_TOPIC_ID"]);
+          stderr($language["ERROR"], $language["BAD_TOPIC_ID"]);
 
         $subject = $_POST['subject'];
 
         if ($subject == '')
-          stderr($language["ERROR"],$language["ERR_ENTER_NEW_TITLE"]);
+          stderr($language["ERROR"], $language["ERR_ENTER_NEW_TITLE"]);
 
         $subject = sqlesc($subject);
 
@@ -200,7 +200,7 @@ switch ($action)
           $sure = "";
 
       if ($CURUSER["delete_forum"] != "yes" || !is_valid_id($postid))
-        stderr($language["ERROR"],$language["ERR_FORUM_TOPIC"]);
+        stderr($language["ERROR"], $language["ERR_FORUM_TOPIC"]);
 
       //------- Get topic id
 
@@ -217,14 +217,14 @@ switch ($action)
       }
 
       //------- Delete post
-      do_sqlquery("DELETE FROM {$TABLE_PREFIX}posts WHERE id=$postid",true);
-      $numposts=mysql_affected_rows();
+      do_sqlquery("DELETE FROM {$TABLE_PREFIX}posts WHERE id=$postid", true);
+      $numposts = mysql_affected_rows();
     
       // update post's count
       do_sqlquery("UPDATE {$TABLE_PREFIX}forums SET postcount=postcount-$numposts WHERE id=$forumid");
 
       // update last topic's post
-      do_sqlquery("UPDATE {$TABLE_PREFIX}topics SET lastpost=(SELECT MAX(id) FROM {$TABLE_PREFIX}posts WHERE topicid=$topicid) WHERE id=$topicid",true);
+      do_sqlquery("UPDATE {$TABLE_PREFIX}topics SET lastpost=(SELECT MAX(id) FROM {$TABLE_PREFIX}posts WHERE topicid=$topicid) WHERE id=$topicid", true);
 
       redirect("index.php?page=forum&action=viewtopic&topicid=$topicid");
       die();

@@ -217,7 +217,7 @@ switch ($action)
     case 'read':
     case '':
     default:
-        $admintpl->set("language",$language);
+        $admintpl->set("language", $language);
 
         $btit_settings = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
 

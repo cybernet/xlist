@@ -5,8 +5,8 @@
 // xList .::. Menu Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
-// Modified By CyBerNe7
+// http://xList.ro/
+// Modified By cybernet2u
 
 global $CURUSER;
 
@@ -31,7 +31,7 @@ if ($CURUSER["view_users"] == "yes")
 }
    if ($CURUSER["view_forum"] == "yes")
       {
-        if ($GLOBALS["FORUMLINK"] == "" || $GLOBALS["FORUMLINK"]=="internal" || $GLOBALS["FORUMLINK"] == "smf")
+        if ($GLOBALS["FORUMLINK"] == "" || $GLOBALS["FORUMLINK"] == "internal" || $GLOBALS["FORUMLINK"] == "smf")
            print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=forum\">".$language["MNU_FORUM"]."</a></td></tr>\n");
         elseif ($GLOBALS["FORUMLINK"] == "smf")
            print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"".$GLOBALS["FORUMLINK"]."\">".$language["MNU_FORUM"]."</a></td></tr>\n");
