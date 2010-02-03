@@ -78,7 +78,7 @@ if(isset($_GET["search"]))
     $trova = "";
 }
  
-$category = (!isset($_GET["category"])?0:explode(";", $_GET["category"]));
+$category = (!isset($_GET["category"]) ? 0 : explode(";", $_GET["category"]));
 // sanitize categories id
 if (is_array($category))
     $category = array_map("intval", $category);
@@ -136,10 +136,10 @@ if (isset($_GET["search"])) {
    $testocercato = explode(" ", $testocercato);
    if ($_GET["search"] != "")
       $search = "search=" . implode("+",$testocercato);
-    for ($k=0; $k < count($testocercato); $k++) {
+    for ($k = 0; $k < count($testocercato); $k++) {
         $query_select .= " filename LIKE '%" . mysql_real_escape_string($testocercato[$k]) . "%'";
-	$query_select .= "or tag LIKE '%" . mysql_escape_string($testocercato[$k]) . "%'";
-        if ($k<count($testocercato)-1)
+	    $query_select .= "or tag LIKE '%" . mysql_real_escape_string($testocercato[$k]) . "%'";
+        if ($k < count($testocercato) - 1)
            $query_select .= " AND ";
     }
     $where .= " AND " . $query_select;
@@ -471,8 +471,8 @@ if ($hover == "")
        $subrow = mysql_fetch_array($subres);
        $tmp = 0 + $subrow["numpeers"];
        if ($tmp > 0) {
-          $tsize = (0+$torrent["size"]) * $tmp;
-          $tbyte = 0+$subrow["to_go"];
+          $tsize = (0 + $torrent["size"]) * $tmp;
+          $tbyte = 0 + $subrow["to_go"];
           $prgs = (($tsize - $tbyte) / $tsize) * 100; //100 * (1-($tbyte/$tsize));
           $prgsf = floor($prgs);
           }
