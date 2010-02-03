@@ -412,7 +412,7 @@ $language['VIEW_UNREAD'] = 'View Unread';
 $language['VIEWS'] = 'Views';
 $language['VISITOR'] = 'Visitor';
 $language['VISITORS'] = 'Visitors';
-$language['WAIT_ADMIN_VALID'] = 'You should wait for the administrator validation...';
+$language['WAIT_ADMIN_VALID'] = 'You should wait for the administrator validation...<br>You created also an account on the forum.';
 $language['WARNING'] = 'Warning!';
 $language['WELCOME'] = 'Welcome';
 $language['WELCOME_ADMINCP'] = 'Welcome to Admin Control Panel';
@@ -485,5 +485,13 @@ $language['VALIDATION_SENT_TO_2'] = 'You will need to click on the link containe
 // Sticky
 $language["STICKY_TORRENT"] = "<b>Sticky</b>";
 $language["STICKY_TORRENT_EXPLAIN"] = "(Always on top of the torrent list)";
+
+$language['PHPBB3_INTEGRATION_CURRENT'] = 'Last Version:';
+$language['PHPBB3_INTEGRATION_GET'] = 'Get Last Version ';
+$language['PHPBB3_INTEGRATION_INFO'] = 'phpBB3 integration Version Information:';
+$language['PHPBB3_INTEGRATION_INSTALLED'] = 'Version Currently Installed:';
+$language['PHPBB3_INTEGRATION_NO_INFO'] = 'No information received';
+$language['PHPBB3_INTEGRATION_RELEASE'] = 'Here!';
+$language['PHPBB3_INTEGRATION_VERSION'] = 'You have the latest version installed.';
 
 ?>

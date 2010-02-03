@@ -158,8 +158,19 @@ if ($random != $arr["random"])
 
     do_sqlquery("UPDATE {$TABLE_PREFIX}users SET password='".md5($newpassword)."' WHERE id=$id AND random=$random");
 
-    if (!mysql_affected_rows())
-        stderr($language["ERROR"],$language["ERR_UPDATE_USER"]);
+    // start hack phpbb3 integration
+	$phpbb3_user = $arr["username"];
+
+	$phpbb3_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
+	
+if ($btit_settings["phpbb3_prefix"] != "")
+    {
+	// update password on phpbb users
+		do_sqlquery("UPDATE `{$phpbb_db_prefix}users` SET user_password='".md5($newpassword)."' WHERE username = '$phpbb3_user'") or die(mysql_error());
+	}
+
+    // end hack phpbb3 integration
 
     if($GLOBALS["FORUMLINK"] == "smf")
     {
@@ -170,7 +181,7 @@ if ($random != $arr["random"])
 
 $body = sprintf($language["RECOVER_EMAIL_2"], $arr["username"], $newpassword, "$BASEURL/index.php?page=login", $SITENAME);
 
-  send_mail($email, "$SITENAME ".$language["ACCOUNT_DETAILS"], $body) or stderr($language["ERROR"],$language["ERR_SEND_EMAIL"]);
+  send_mail($email, "$SITENAME ".$language["ACCOUNT_DETAILS"], $body) or stderr($language["ERROR"], $language["ERR_SEND_EMAIL"]);
   redirect("index.php?page=recover&act=recover_ok&id=$id&random=$random");
   die();
 }

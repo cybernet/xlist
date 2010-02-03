@@ -5,10 +5,15 @@
 // xList .::. Menu Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
-// Modified By CyBerNe7
+// http://xList.ro/
+// Modified By cybernet2u
 
-global $CURUSER;
+// start hack phpbb3 integration
+   global $CURUSER, $TABLE_PREFIX;
+// info phpbb3
+	$phpbb3_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
+// end hack phpbb3 integration
 
    block_begin(BLOCK_MENU);
    //print("<tr><td class=\"lista\" align=\"center\">\n");
@@ -31,8 +36,10 @@ if ($CURUSER["view_users"] == "yes")
 }
    if ($CURUSER["view_forum"] == "yes")
       {
-        if ($GLOBALS["FORUMLINK"] == "" || $GLOBALS["FORUMLINK"]=="internal" || $GLOBALS["FORUMLINK"] == "smf")
+        // start hack phpbb3 integration	
+if ($GLOBALS["FORUMLINK"] == "" || $GLOBALS["FORUMLINK"] == "internal" || $GLOBALS["FORUMLINK"] == "smf" || $phpbb_db_prefix != "")
            print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=forum\">".$language["MNU_FORUM"]."</a></td></tr>\n");
+// end hack phpbb3 integration
         elseif ($GLOBALS["FORUMLINK"] == "smf")
            print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"".$GLOBALS["FORUMLINK"]."\">".$language["MNU_FORUM"]."</a></td></tr>\n");
         else

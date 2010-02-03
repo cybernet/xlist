@@ -524,7 +524,259 @@ if(strlen(mysql_real_escape_string($pwd)) < 4)
 }
 
 $pid = md5(uniqid(rand(), true));
-do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, status_comment_notify, pm_mail_notify, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '" . md5($pwd) . "', $random, $idlevel, '$email', $status_comment_notify, $pm_mail_notify, $idstyle, $idlangue, $idflag, NOW(), NOW(),'$pid', '".$timezone."')", true);
+
+// start hack phpbb3 integration
+
+	// info phpbb3
+	$phpbb3_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb_integration = $phpbb3_res["phpbb3"];
+	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
+
+	// default setting from phpbb3
+	$ricavo_default_phpbb = mysql_query("SELECT `config_name`, `config_value` FROM `{$phpbb_db_prefix}config`") or die(mysql_error());
+
+	while ($row_config = mysql_fetch_array($ricavo_default_phpbb, MYSQL_ASSOC))
+	{
+		if ($row_config["config_name"] == "default_timezone")
+		{
+			$default_timezone = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "default_dateformat")
+		{
+			$default_dateformat = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "default_style")
+		{
+			$default_style = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "default_lang")
+		{
+			$default_lang = $row_config["config_value"];
+		}
+	}
+	
+	mysql_free_result($ricavo_default_phpbb);
+	
+	$get_group_info = mysql_query("SELECT `group_colour`, `group_id` FROM `{$phpbb_db_prefix}groups`WHERE `group_name` = 'REGISTERED' ") or die(mysql_error());
+	$get_REGISTERED_info = mysql_fetch_assoc($get_group_info);
+	$REGISTERED_colour = $get_REGISTERED_info["group_colour"];
+	$REGISTERED_id = $get_REGISTERED_info["group_id"];
+	// phpBB3 database info
+
+	// estrapolo utenti gi* presenti in phpbb3
+	// get users already registered in phpBB
+	$query_info_users = "SELECT user_id, username FROM `{$phpbb_db_prefix}users`";
+	$phpbb3_info_users = mysql_query($query_info_users);
+
+	//	creo array con utenti gi* presenti in phpbb3
+	// make an array with users already registered in phpBB
+	while( $phpbb3_users_table = mysql_fetch_row($phpbb3_info_users) )
+	{
+	$phpbb3_username[] =  $phpbb3_users_table[1];
+	}
+	mysql_free_result( $phpbb3_info_users );
+	
+	// estrapolo email gi* presenti in phpbb3
+	// get email already registered in phpBB
+	$query_info_email = "SELECT user_id, user_email FROM `{$phpbb_db_prefix}users`";
+	$phpbb3_info_email = mysql_query($query_info_email);
+
+	// creo array con email gi* presenti in phpbb3
+	// make an array with emails already registered in phpBB
+	while( $phpbb3_email_table = mysql_fetch_row($phpbb3_info_email) )
+	{
+	$phpbb3_user_email[] = $phpbb3_email_table[1];
+	}
+	mysql_free_result( $phpbb3_info_email );
+
+		if (in_array("$utente", $phpbb3_username))
+		{	
+			// new user on xbtit
+			do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, status_comment_notify, pm_mail_notify, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '" . md5($pwd) . "', $random, $idlevel, '$email', $status_comment_notify, $pm_mail_notify, $idstyle, $idlangue, $idflag, NOW(), NOW(),'$pid', '".$timezone."')", true);
+		}
+		elseif (in_array("$email", $phpbb3_user_email))
+		{	
+			// new user on xbtit
+			do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, status_comment_notify, pm_mail_notify, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '" . md5($pwd) . "', $random, $idlevel, '$email', $status_comment_notify, $pm_mail_notify, $idstyle, $idlangue, $idflag, NOW(), NOW(),'$pid', '".$timezone."')", true);
+		}
+		else
+		{
+			$pid_phpbb = $_SERVER['REMOTE_ADDR'];
+			$phpbb_user_email_hash	= crc32(strtolower($email)) . strlen($email);
+
+			// new user on xbtit
+			do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, status_comment_notify, pm_mail_notify, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '" . md5($pwd) . "', $random, $idlevel, '$email', $status_comment_notify, $pm_mail_notify, $idstyle, $idlangue, $idflag, NOW(), NOW(),'$pid', '".$timezone."')", true);
+	
+			// new user on phpBB3
+			$ricavo_info_users = mysql_fetch_assoc(mysql_query("SELECT language, time_offset FROM `{$TABLE_PREFIX}users` WHERE username = '$utente'"));
+			$id_language = $ricavo_info_users["language"];
+			$xbtit_timezone = $ricavo_info_users["time_offset"];
+
+			// languages from xbtit 2.0.547 to phpbb
+	switch ($id_language) {
+	  case 1:
+      $user_lang = 'en';
+      break;
+      case 2:
+      $user_lang = 'ro';
+      break;
+      case 3:
+      $user_lang = 'pl';
+      break;
+	  case 5:
+      $user_lang = 'nl';
+      break;
+	  case 6:
+      $user_lang = 'it';
+      break;
+	  case 7:
+      $user_lang = 'ru';
+      break;
+	  case 8:
+      $user_lang = 'de';
+      break;
+	  case 9:
+      $user_lang = 'hu';
+      break;
+	  case 10:
+      $user_lang = 'fr';
+      break;
+	  case 11:
+      $user_lang = 'fi';
+      break;
+	  case 12:
+      $user_lang = 'vi';
+      break;
+	  case 13:
+      $user_lang = 'gr';
+      break;
+	  case 14:
+      $user_lang = 'bg';
+      break;
+	  case 15:
+      $user_lang = 'es';
+      break;
+	  case 16:
+      $user_lang = 'br';
+      break;
+	  case 17:
+      $user_lang = 'pt';
+      break;
+      default:
+      $user_lang = "$default_lang"; // default
+	}
+			// timezone from xbtit 2.0.547 to phpb
+			switch ($xbtit_timezone) {
+			case -12:
+			$user_timezone = '-12.00';
+			break;
+			case -11:
+			$user_timezone = '-11.00';
+			break;
+			case -10:
+			$user_timezone = '-10.00';
+			break;
+			case -9:
+			$user_timezone = '-9.00';
+			break;
+			case -8:
+			$user_timezone = '-8.00';
+			break;
+			case -7:
+			$user_timezone = '-7.00';
+			break;
+			case -6:
+			$user_timezone = '-6.00';
+			break;
+			case -5:
+			$user_timezone = '-5.00';
+			break;
+			case -4:
+			$user_timezone = '-4.00';
+			break;
+			case -3:
+			$user_timezone = '-3.00';
+			break;
+			case '-3.5':
+			$user_timezone = '-3.50';
+			break;
+			case -2:
+			$user_timezone = '-2.00';
+			break;
+			case -1:
+			$user_timezone = '-1.00';
+			break;
+			case 0:
+			$user_timezone = '0.00';
+			break;
+			case 1:
+			$user_timezone = '1.00';
+			break;
+			case 2:
+			$user_timezone = '2.00';
+			break;
+			case 3:
+			$user_timezone = '3.00';
+			break;
+			case '3.5':
+			$user_timezone = '3.50';
+			break;
+			case 4:
+			$user_timezone = '4.00';
+			break;
+			case '4.5':
+			$user_timezone = '4.50';
+			break;
+			case 5:
+			$user_timezone = '5.00';
+			break;
+			case '5.5':
+			$user_timezone = '5.50';
+			break;
+			case 6:
+			$user_timezone = '6.00';
+			break;
+			case 7:
+			$user_timezone = '7.00';
+			break;
+			case 8:
+			$user_timezone = '8.00';
+			break;
+			case 9:
+			$user_timezone = '9.00';
+			break;
+			case '9.5':
+			$user_timezone = '9.50';
+			break;
+			case 10:
+			$user_timezone = '10.00';
+			break;
+			case 11:
+			$user_timezone = '11.00';
+			break;
+			case 12:
+			$user_timezone = '12.00';
+			break;
+			default:
+			$user_timezone = "$default_timezone"; // default timezone
+	}
+	
+			// add user on phpbb users
+			do_sqlquery("INSERT INTO `{$phpbb_db_prefix}users` (`user_id`, `user_type`, `group_id`, `user_permissions`, `user_perm_from`, `user_ip`, `user_regdate`, `username`, `username_clean`, `user_password`, `user_passchg`, `user_pass_convert`, `user_email`, `user_email_hash`, `user_birthday`, `user_lastvisit`, `user_lastmark`, `user_lastpost_time`, `user_lastpage`, `user_last_confirm_key`, `user_last_search`, `user_warnings`, `user_last_warning`, `user_login_attempts`, `user_inactive_reason`, `user_inactive_time`, `user_posts`, `user_lang`, `user_timezone`, `user_dst`, `user_dateformat`, `user_style`, `user_rank`, `user_colour`, `user_new_privmsg`, `user_unread_privmsg`, `user_last_privmsg`, `user_message_rules`, `user_full_folder`, `user_emailtime`, `user_topic_show_days`, `user_topic_sortby_type`, `user_topic_sortby_dir`, `user_post_show_days`, `user_post_sortby_type`, `user_post_sortby_dir`, `user_notify`, `user_notify_pm`, `user_notify_type`, `user_allow_pm`, `user_allow_viewonline`, `user_allow_viewemail`, `user_allow_massemail`, `user_options`, `user_avatar`, `user_avatar_type`, `user_avatar_width`, `user_avatar_height`, `user_sig`, `user_sig_bbcode_uid`, `user_sig_bbcode_bitfield`, `user_from`, `user_icq`, `user_aim`, `user_yim`, `user_msnm`, `user_jabber`, `user_website`, `user_occ`, `user_interests`, `user_actkey`, `user_newpasswd`, `user_form_salt`)  VALUES (NULL, '0', '$REGISTERED_id', '', '0', '$pid_phpbb', UNIX_TIMESTAMP(), '$utente', '".strtolower($utente)."', '".md5($pwd)."', UNIX_TIMESTAMP(), '0', '$email', '$phpbb_user_email_hash', '', '0', UNIX_TIMESTAMP(), '0', '', '', '0', '0', '0', '0', '0', '0', '0', '$user_lang', '$user_timezone', '0', '$default_dateformat', '$default_style', '0', '$REGISTERED_colour', '0', '0', '0', '0', '-3', '0', '0', 't', 'd', '0', 't', 'a', '0', '1', '0', '1', '1', '1', '1', '895', '', '0', '0', '0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')");
+	
+			// add user on phpbb user_group
+			$ricavo_user_id = mysql_fetch_assoc(mysql_query("SELECT user_id FROM `{$phpbb_db_prefix}users` WHERE username = '$utente'"));
+			$phpbb3_user_id = $ricavo_user_id["user_id"];
+			do_sqlquery("INSERT INTO `{$phpbb_db_prefix}user_group` (`group_id`, `user_id`, `group_leader`, `user_pending`) VALUES ('$REGISTERED_id', '$phpbb3_user_id', '0', '0')");
+	
+			// update newest_user_id,newest_username, num_users
+			do_sqlquery("UPDATE `{$phpbb_db_prefix}config` SET `config_value` = '$REGISTERED_colour' WHERE `config_name` = 'newest_user_colour' LIMIT 1 ");
+			do_sqlquery("UPDATE `{$phpbb_db_prefix}config` SET `config_value` = '$phpbb3_user_id' WHERE CONVERT( `{$phpbb_db_prefix}config`.`config_name` USING utf8 ) = 'newest_user_id' LIMIT 1");
+			do_sqlquery("UPDATE `{$phpbb_db_prefix}config` SET `config_value` = '$utente' WHERE CONVERT( `{$phpbb_db_prefix}config`.`config_name` USING utf8 ) = 'newest_username' LIMIT 1 ");
+			do_sqlquery("UPDATE `{$phpbb_db_prefix}config` SET `config_value` = config_value+1 WHERE `config_name` = 'num_users' LIMIT 1 ");
+		}
+
+// end hack phpbb3 integration
 
 $newuid = mysql_insert_id();
 

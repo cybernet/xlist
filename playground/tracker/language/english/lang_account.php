@@ -1,5 +1,5 @@
 <?php
-$language['ACCOUNT_CREATED']='Account Created';
+$language['ACCOUNT_CREATED'] = 'Account Created on Tracker and Forum';
 $language['USER_NAME']='User';
 $language['USER_PWD_AGAIN']='Repeat password';
 $language['USER_PWD']='Password';

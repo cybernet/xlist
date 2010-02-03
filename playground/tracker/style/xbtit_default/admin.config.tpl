@@ -6,6 +6,64 @@
       <td class="lista" align="center" colspan="4" style="color:red"><tag:language.CONFIG_SAVED /></td>
     </tr>
     </if:config_saved>
+
+	<if:export_ok>
+    <tr>
+      <td class="lista" align="center" colspan="4" style="color:red"><tag:language.EXPORT_OK /><ul>
+	  <li><tag:username_added /><tag:language.USERNAME_ADDED /></li>
+	  <li><tag:username_exist /><tag:language.USERNAME_EXIST /></li>
+	  <li><tag:email_exist /><tag:language.EMAIL_EXIST /></li></ul>
+	  </td>
+    </tr>
+    </if:export_ok>
+	<if:import_ok>
+    <tr>
+      <td class="lista" align="center" colspan="4" style="color:red"><tag:language.IMPORT_OK />
+	  <ul>
+	  <li><tag:username_added /><tag:language.USERNAME_IMPORTED /></li>
+	  <li><tag:username_exist /><tag:language.NOT_IMPORTED_USERNAME /></li>
+	  <li><tag:email_exist /><tag:language.NOT_IMPORTED_EMAIL /></li></ul>
+	  </td>
+    </tr>
+    </if:import_ok>
+	<if:import_export_disabled>
+    <tr>
+      <td class="lista" align="center" colspan="4" style="color:red"><tag:language.IMP_EXP_DISABLED /></td>
+    </tr>
+    </if:import_export_disabled>
+	<if:phpbb_disable_reg>
+    <tr>
+      <td class="lista" align="center" colspan="4" style="color:red"><tag:language.PHPBB_DISABLE_REG /><br>
+	  <tag:phpbb_cache />
+	  </td>
+    </tr>
+    </if:phpbb_disable_reg>
+	<if:hide_profile_ok>
+    <tr>
+      <td class="lista" align="center" colspan="4" style="color:red">
+	  <ul>
+	  <li><tag:hide_profile_prosilver /></li>
+	  <li><tag:phpbb_cache_prosilver /></li>
+	  <li><tag:hide_profile_subsilver2 /></li>
+	  <li><tag:phpbb_cache_subsilver2 /></li>
+	  <li><tag:edit_language_profile /></li>
+	  </ul>
+	  </td>
+    </tr>
+    </if:hide_profile_ok>
+	<if:restore_profile_ok>
+    <tr>
+      <td class="lista" align="center" colspan="4" style="color:red">
+	  <ul>
+	  <li><tag:restore_profile_prosilver /></li>
+	  <li><tag:phpbb_cache_prosilver /></li>
+	  <li><tag:restore_profile_subsilver2 /></li>
+	  <li><tag:phpbb_cache_subsilver2 /></li>
+	  <li><tag:restore_language_profile /></li>
+	  </ul>
+	  </td>
+    </tr>
+    </if:restore_profile_ok>
     <tr>
       <td class="header" align="center" colspan="4"><tag:language.XBTT_BACKEND /></td>
     </tr>
@@ -162,6 +220,34 @@
     <tr>
       <td class="header"><tag:language.SETTING_FORUM /></td>
       <td class="lista" colspan="3"><input type="text" name="f_link" value="<tag:config.forum />" size="40" /></td>
+    </tr>
+
+	 <tr>
+      <td class="header" align="center" colspan="4"><tag:language.BLOCKS_PHPBB3 /></td>
+    </tr>
+	<tr>
+      <td class="header"><tag:language.SETTING_PHPBB3 /></td>
+      <td class="lista">&nbsp;<tag:language.YES />&nbsp;<input type="radio" name="phpbb3" value="true"<tag:config.phpbb3yes />&nbsp;<tag:language.NO />&nbsp;<input type="radio" name="phpbb3" value="false"<tag:config.phpbb3no /></td>
+	  <td class="header"><tag:language.SETTING_PHPBB3_PREFIX /></td>
+      <td class="lista" colspan="3"><input type="text" name="phpbb3_prefix" value="<tag:config.phpbb3_prefix />" size="20" /></td>
+    </tr>
+	<tr>
+      <td class="header"><tag:language.EXPORT_IN_PHPBB3 /></td>
+      <td class="lista"><input type="submit" name="export_in_phpbb3" value="<tag:language.PHPBB3_EXPORT />" /></td>
+      <td class="header"><tag:language.IMPORT_FROM_PHPBB3 /></td>
+      <td class="lista"><input type="submit" name="import_from_phpbb3" value="<tag:language.PHPBB3_IMPORT />" /></td>
+    </tr>
+	<tr>
+      <td class="header"><tag:language.DISABLE_PHPBB3_REGISTRATION /></td>
+      <td class="lista"><input type="submit" name="phpbb3_disable" value="<tag:language.DISABLE_PHPBB3_REG />" /></td>
+	  <td class="header"><tag:language.SETTING_PHPBB3_ROOT_PATH /></td>
+      <td class="lista" colspan="3"><input type="text" name="phpbb3_root_path" value="<tag:config.phpbb3_root_path />" size="20" /></td>
+    </tr>
+		<tr>
+      <td class="header"><tag:language.DISABLE_PHPBB3_PROFILE /></td>
+      <td class="lista"><input type="submit" name="phpbb3_disable_profile" value="<tag:language.DISABLE_PHPBB3_REG />" /></td>
+	  <td class="header"><tag:language.RESTORE_PHPBB3_PROFILE /></td>
+      <td class="lista"><input type="submit" name="phpbb3_restore_profile" value="<tag:language.RESTORE_PHPBB3_PRO />" /></td>
     </tr>
     <tr>
       <td class="header" align="center" colspan="4"><tag:language.BLOCKS_SETTING /></td>

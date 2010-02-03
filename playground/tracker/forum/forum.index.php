@@ -113,7 +113,40 @@ if ($btit_settings["forum"]=="smf")
           </div>";
       }
 
-     $tpl->set("main_content",set_block($block_title,"center",$smf_content));
+     $tpl->set("main_content", set_block($block_title, "center", $smf_content));
+// start hack phpbb3 integration	
+elseif ($btit_settings["phpbb3_prefix"] != "")
+  {
+     $FORUMLINK= $btit_settings["forum"];
+     $phpbb_content = "";
+     $phpbb_content .= "
+     <script type=\"text/javascript\" language=\"JavaScript\">
+
+     function autoIframe(frameId){
+     var newheight
+              try{
+                newheight = document.getElementById(frameId).contentWindow.document.body.scrollHeight;
+                document.getElementById(frameId).height = newheight + 45;
+              }
+                catch(err){
+                window.status = err.message;
+              }
+     }
+     </script>
+     <noscript>".
+     err_msg($language["ERROR"], "Resizable window will not work without Javascript.<br />Please enable Javascript or view the forum in a new window <a target='_new' href='$FORUMLINK'>Here</a>")
+     ."</noscript>";
+
+	 $phpbb_content .= "
+          <div align=\"center\">
+          <iframe id=\"forum_ifrm\" onload=\"autoIframe('forum_ifrm')\" name=\"Forum\" border=\"0\" frameborder=\"0\" src=\"$FORUMLINK/index.php\" width=\"98%\">Your browser don't support iframe, then click <a href=\"$FORUMLINK/index.php\">here</a> to get forum page</iframe>
+          </div>";
+
+     $tpl->set("main_content",set_block($block_title,"center",$phpbb_content));
+
+
+}
+// end hack phpbb3 integration
 
 
 }

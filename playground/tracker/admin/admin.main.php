@@ -143,7 +143,28 @@ if (!$btit_last)
       $btit_last = "Last version n/a";
 }
 $current_version = explode(" ", strtolower($tracker_version)); // array('2.0.0','beta','2')
-$last_version = explode("/",strtolower($btit_last));  // array('2.0.0','beta','2')
+$last_version = explode("/", strtolower($btit_last));  // array('2.0.0','beta','2')
+// start hack phpbb3 integration
+$hack_phpbb3_integration_url_last = "http://xbtitnotify.sourceforge.net/last_version/phpbb3_integration_last_version.txt";
+
+// check last version on xbtitnotify.sourceforge.net
+$hack_phpbb3_integration_last = get_cached_version($hack_phpbb3_integration_url_last);
+if (!$hack_phpbb3_integration_last)
+{
+  $hack_phpbb3_integration_last = get_remote_file($hack_phpbb3_integration_url_last);
+  if ($hack_phpbb3_integration_last)
+     write_cached_version($hack_phpbb3_integration_url_last, $hack_phpbb3_integration_last);
+  else
+      $hack_phpbb3_integration_last = $language["PHPBB3_INTEGRATION_NO_INFO"];
+}
+$title_phpbb3_integration = "phpbb3_integration_basic";
+$res_phpbb3_integration_version = get_result("SELECT title, version FROM {$TABLE_PREFIX}hacks WHERE title LIKE '" . $title_phpbb3_integration . "'", true);
+$row0_phpbb3_integration = $res_phpbb3_integration_version[0];
+$row_phpbb3_integration = substr($row0_phpbb3_integration["version"], 0, 5);
+$last_phpbb3_integration_version = explode("/", strtolower($hack_phpbb3_integration_last));
+
+$your_phpbb3_integration_version = "";
+// end hack phpbb3 integration
 
 $your_version = "";
 $hack_email_notification_url_last = "http://xbtitnotify.sourceforge.net/last_version/last_email_notification_version.txt";
@@ -167,21 +188,34 @@ $last_email_notification_version = explode("/",strtolower($hack_email_notificati
 $your_email_notification_version = "cybernet2u@yahoo.com";
 
 // make further control only if differents
-if ((implode(" ",$current_version) != implode(" ",$last_version)))
+if ((implode(" ", $current_version) != implode(" ",$last_version)))
   {
-  $your_version.="<table width=\"100%\"><tr><td align=\"right\">Installed version:</td><td align=\"left\">".implode(" ",$current_version)."</td></tr>\n";
-  $your_version.="<tr><td align=\"right\">Current version:</td><td align=\"left\">".implode(" ",$last_version)."</td></tr>\n";
-  $your_version.="<tr><td colspan=\"2\" align=\"center\">Get Last Version <a href=\"http://www.btiteam.org\" target=\"_blank\">here</a>!</td></tr>\n</table>";
+  $your_version .= "<table width=\"100%\"><tr><td align=\"right\">Installed version:</td><td align=\"left\">".implode(" ",$current_version)."</td></tr>\n";
+  $your_version .= "<tr><td align=\"right\">Current version:</td><td align=\"left\">".implode(" ",$last_version)."</td></tr>\n";
+  $your_version .= "<tr><td colspan=\"2\" align=\"center\">Get Last Version <a href=\"http://www.btiteam.org\" target=\"_blank\">here</a>!</td></tr>\n</table>";
 }
 else
   {
-  $your_version.="You have the latest xBTiT version installed.";
+  $your_version .= "You have the latest xBTiT version installed.";
 }
+// start hack phpbb3 integration
+if (($row_phpbb3_integration != implode(" ", $last_phpbb3_integration_version)))
+  {
+  $your_phpbb3_integration_version .= "<table width=\"100%\"><tr><td align=\"left\">".$language["PHPBB3_INTEGRATION_INSTALLED"]."</td><td align=\"left\">".$row_phpbb3_integration."</td></tr>\n";
+  $your_phpbb3_integration_version .= "<tr><td align=\"left\">".$language["PHPBB3_INTEGRATION_CURRENT"]."</td><td align=\"left\">".implode(" ",$last_phpbb3_integration_version)."</td></tr>\n";
+  $your_phpbb3_integration_version .= "<tr><td align=\"left\"><b>".$language["PHPBB3_INTEGRATION_GET"]."<a href=\"http://xbtitnotify.sourceforge.net/download.php\" target=\"_blank\">".$language["PHPBB3_INTEGRATION_RELEASE"]."</b></a></td></tr>\n</table>";
+}
+else
+  {
+  $your_phpbb3_integration_version .= "".$language["PHPBB3_INTEGRATION_VERSION"]."";
+}
+// end hack phpbb3 integration
+
 if (($row_email_notification != implode(" ",$last_email_notification_version)))
   {
-  $your_email_notification_version.="<table width=\"100%\"><tr><td align=\"left\">".$language["PM_NOTIFY_INSTALLED"]."</td><td align=\"left\">".$row_email_notification."</td></tr>\n";
-  $your_email_notification_version.="<tr><td align=\"left\">".$language["PM_NOTIFY_CURRENT"]."</td><td align=\"left\">".implode(" ", $last_email_notification_version)."</td></tr>\n";
-  $your_email_notification_version.="<tr><td align=\"left\"><b>".$language["PM_NOTIFY_GET"]."<a href=\"http://www.btiteam.org/smf/index.php?topic=10456\" target=\"_blank\">".$language["PM_NOTIFY_OFFICIAL_RELEASE"]."</b></a></td></tr>\n</table>";
+  $your_email_notification_version .= "<table width=\"100%\"><tr><td align=\"left\">".$language["PM_NOTIFY_INSTALLED"]."</td><td align=\"left\">".$row_email_notification."</td></tr>\n";
+  $your_email_notification_version .= "<tr><td align=\"left\">".$language["PM_NOTIFY_CURRENT"]."</td><td align=\"left\">".implode(" ", $last_email_notification_version)."</td></tr>\n";
+  $your_email_notification_version .= "<tr><td align=\"left\"><b>".$language["PM_NOTIFY_GET"]."<a href=\"http://www.btiteam.org/smf/index.php?topic=10456\" target=\"_blank\">".$language["PM_NOTIFY_OFFICIAL_RELEASE"]."</b></a></td></tr>\n</table>";
 }
 else
   {
@@ -190,6 +224,10 @@ else
 
 if (!empty($your_version))
    $admin["xbtit_version"] = $your_version."<br />\n";
+// start hack phpbb3 integration
+if (!empty($your_phpbb3_integration_version))
+   $admin["phpbb3_integration_version"] = $your_phpbb3_integration_version."<br />\n";
+// end hack phpbb3 integration
 if (!empty($your_email_notification_version))
    $admin["email_notification_version"] = $your_email_notification_version."<br />\n";
 

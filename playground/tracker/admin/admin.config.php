@@ -47,6 +47,14 @@ if (!defined("IN_ACP"))
 
 $admintpl->set("config_saved", false, true);
 $admintpl->set("xbtt_error", false, true);
+// start hack phpbb3 integration
+$admintpl->set("export_ok", false, true);
+$admintpl->set("import_ok", false, true);
+$admintpl->set("import_export_disabled", false, true);
+$admintpl->set("phpbb_disable_reg", false, true);
+$admintpl->set("hide_profile_ok", false, true);
+$admintpl->set("restore_profile_ok", false, true);
+// end hack phpbb3 integration
 
 switch ($action)
     {
@@ -93,6 +101,11 @@ switch ($action)
         $btit_settings["validation"] = $_POST["validation"];
         $btit_settings["imagecode"] = isset($_POST["imagecode"])?"true":"false";
         $btit_settings["forum"] = $_POST["f_link"];
+        // start hack phpbb3 integration
+	$btit_settings["phpbb3"] = $_POST["phpbb3"];
+	$btit_settings["phpbb3_prefix"] = $_POST["phpbb3_prefix"];
+	$btit_settings["phpbb3_root_path"] = $_POST["phpbb3_root_path"];
+	// end hack phpbb3 integration
         $btit_settings["clocktype"] = $_POST["clocktype"];
         $btit_settings["forumblocktype"] = $_POST["forumblocktype"];
         $btit_settings["newslimit"] = $_POST["newslimit"];
@@ -245,6 +258,10 @@ switch ($action)
         $btit_settings["imagecode"] = ($btit_settings["imagecode"]=="true"?"checked=\"checked\"":"");
         $btit_settings["clockanalog"] = ($btit_settings["clocktype"]?"checked=\"checked\"":"");
         $btit_settings["clockdigital"] = (!$btit_settings["clocktype"]?"checked=\"checked\"":"");
+        // start hack phpbb3 integration
+	$btit_settings["phpbb3yes"] = ($btit_settings["phpbb3"]?"checked=\"checked\"":"");
+	$btit_settings["phpbb3no"] = (!$btit_settings["phpbb3"]?"checked=\"checked\"":"");
+	// end hack phpbb3 integration
         $btit_settings["forumblockposts"] = ($btit_settings["forumblocktype"]?"checked=\"checked\"":"");
         $btit_settings["forumblocktopics"] = (!$btit_settings["forumblocktype"]?"checked=\"checked\"":"");
         $btit_settings["xbtt_use"] = ($btit_settings["xbtt_use"]=="true"?"checked=\"checked\"":"");
@@ -365,6 +382,57 @@ switch ($action)
 
         $admintpl->set("config", $btit_settings);
         $admintpl->set("frm_action", "index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=config&amp;action=write");
+// start hack phpbb3 integration
+	  $phpbb3_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	  $phpbb_integration = $phpbb3_res["phpbb3"];
+	  if ($phpbb_integration == "true")
+	  {
+		//export
+		if(isset($_POST['export_in_phpbb3'])) 
+		{
+			$export_confirm = xbtit_users_export();
+			$admintpl->set("export_ok", true, true);
+		}
+		
+		// import
+		if(isset($_POST['import_from_phpbb3'])) 
+		{
+			$import_confirm = phpbb3_users_import();
+			$admintpl->set("import_ok", true, true);
+		}
+	  }
+	  else
+	  {
+		// import/export disabled
+		if(isset($_POST['export_in_phpbb3']) || isset($_POST['import_from_phpbb3'])) 
+		{
+			$admintpl->set("import_export_disabled", true, true);
+		}
+	  }
+		//disable registration/email_reuse/username_change on phpbb3
+		if(isset($_POST['phpbb3_disable'])) 
+		{
+			$disable_reg_confirm = phpbb3_disable_reg();
+			$admintpl->set("phpbb_disable_reg", true, true);
+		}
+		
+		// disable 'Edit account settings' on phpbb3
+		if(isset($_POST['phpbb3_disable_profile'])) 
+		{
+			$disable_edit_account = phpbb3_disable_edit_account();
+			$change_lang_ucp = phpbb3_lang_ucp();
+			$admintpl->set("hide_profile_ok", true, true);
+		}
+		
+		// Restore '/language/en/ucp.php' on phpbb3
+		if(isset($_POST['phpbb3_restore_profile'])) 
+		{
+			$restore_lang_ucp = restore_phpbb3_lang_ucp();
+			$restore_edit_account = restore_phpbb3_edit_account();
+			$admintpl->set("restore_profile_ok", true, true);
+		}
+	  	  
+// end hack phpbb3 integration
         break;
 }
 ?>

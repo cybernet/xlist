@@ -132,6 +132,195 @@ switch ($action)
                // <--- Reverify Mail Hack by Petr1fied - End
                   {
                   do_sqlquery("UPDATE {$TABLE_PREFIX}users SET $updateset WHERE id='".$uid."'") or die(mysql_error());
+// start hack phpbb3 integration
+
+	// info phpbb3
+	$phpbb3_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
+	$phpbb3_username = $CURUSER["username"];
+	
+	// default setting from phpbb3
+	$get_default_phpbb = mysql_query("SELECT `config_name`, `config_value` FROM `{$phpbb_db_prefix}config`") or die(mysql_error());
+
+	while ($row_config = mysql_fetch_assoc($get_default_phpbb))
+	{
+		if ($row_config["config_name"] == "default_timezone")
+		{
+			$default_timezone = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "default_dateformat")
+		{
+			$default_dateformat = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "default_style")
+		{
+			$default_style = $row_config["config_value"];
+		}
+		if ($row_config["config_name"] == "default_lang")
+		{
+			$default_lang = $row_config["config_value"];
+		}
+	}
+	
+	mysql_free_result($get_default_phpbb);
+	
+	// languages from xbtit 2.0.547 to phpbb
+	switch ($idlangue) {
+	  case 1:
+      $user_lang = 'en';
+      break;
+      case 2:
+      $user_lang = 'ro';
+      break;
+      case 3:
+      $user_lang = 'pl';
+      break;
+	  case 5:
+      $user_lang = 'nl';
+      break;
+	  case 6:
+      $user_lang = 'it';
+      break;
+	  case 7:
+      $user_lang = 'ru';
+      break;
+	  case 8:
+      $user_lang = 'de';
+      break;
+	  case 9:
+      $user_lang = 'hu';
+      break;
+	  case 10:
+      $user_lang = 'fr';
+      break;
+	  case 11:
+      $user_lang = 'fi';
+      break;
+	  case 12:
+      $user_lang = 'vi';
+      break;
+	  case 13:
+      $user_lang = 'gr';
+      break;
+	  case 14:
+      $user_lang = 'bg';
+      break;
+	  case 15:
+      $user_lang = 'es';
+      break;
+	  case 16:
+      $user_lang = 'br';
+      break;
+	  case 17:
+      $user_lang = 'pt';
+      break;
+      default:
+      $user_lang = "$default_lang"; // default
+	}
+	// timezone from xbtit 2.0.547 to phpb
+			switch ($timezone) {
+			case -12:
+			$user_timezone = '-12.00';
+			break;
+			case -11:
+			$user_timezone = '-11.00';
+			break;
+			case -10:
+			$user_timezone = '-10.00';
+			break;
+			case -9:
+			$user_timezone = '-9.00';
+			break;
+			case -8:
+			$user_timezone = '-8.00';
+			break;
+			case -7:
+			$user_timezone = '-7.00';
+			break;
+			case -6:
+			$user_timezone = '-6.00';
+			break;
+			case -5:
+			$user_timezone = '-5.00';
+			break;
+			case -4:
+			$user_timezone = '-4.00';
+			break;
+			case -3:
+			$user_timezone = '-3.00';
+			break;
+			case '-3.5':
+			$user_timezone = '-3.50';
+			break;
+			case -2:
+			$user_timezone = '-2.00';
+			break;
+			case -1:
+			$user_timezone = '-1.00';
+			break;
+			case 0:
+			$user_timezone = '0.00';
+			break;
+			case 1:
+			$user_timezone = '1.00';
+			break;
+			case 2:
+			$user_timezone = '2.00';
+			break;
+			case 3:
+			$user_timezone = '3.00';
+			break;
+			case '3.5':
+			$user_timezone = '3.50';
+			break;
+			case 4:
+			$user_timezone = '4.00';
+			break;
+			case '4.5':
+			$user_timezone = '4.50';
+			break;
+			case 5:
+			$user_timezone = '5.00';
+			break;
+			case '5.5':
+			$user_timezone = '5.50';
+			break;
+			case 6:
+			$user_timezone = '6.00';
+			break;
+			case 7:
+			$user_timezone = '7.00';
+			break;
+			case 8:
+			$user_timezone = '8.00';
+			break;
+			case 9:
+			$user_timezone = '9.00';
+			break;
+			case '9.5':
+			$user_timezone = '9.50';
+			break;
+			case 10:
+			$user_timezone = '10.00';
+			break;
+			case 11:
+			$user_timezone = '11.00';
+			break;
+			case 12:
+			$user_timezone = '12.00';
+			break;
+			default:
+			$user_timezone = "$default_timezone"; // default timezone
+			}
+	
+	// change email in phpbb3 _users
+	do_sqlquery("UPDATE {$phpbb_db_prefix}users SET user_email='$email' WHERE username='".$CURUSER["username"]."'") or die(mysql_error());
+	do_sqlquery("UPDATE {$phpbb_db_prefix}users SET user_lang='$user_lang' WHERE username='".$CURUSER["username"]."'") or die(mysql_error());
+	do_sqlquery("UPDATE {$phpbb_db_prefix}users SET user_timezone='$user_timezone' WHERE username='".$CURUSER["username"]."'") or die(mysql_error());
+	//
+	// change email, user_lang, user_timezone in phpbb3 _users
+//	do_sqlquery("REPLACE `{$phpbb_db_prefix}users` (`user_email`,`user_lang`,`user_timezone`) VALUES ('$email', '$user_lang', '$user_timezone') WHERE username=$phpbb3_username") or die(mysql_error());
+// end hack phpbb3 integration
 
                   success_msg($language["SUCCESS"], $language["INF_CHANGED"]."<br /><a href=\"index.php?page=usercp&amp;uid=".$uid."\">".$language["BCK_USERCP"]."</a>");
                   stdfoot(true,false);

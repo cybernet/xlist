@@ -63,6 +63,19 @@ switch ($action)
                 else {
                     $arr=mysql_fetch_assoc($respwd);
                     do_sqlquery("UPDATE {$TABLE_PREFIX}users SET password='".md5($_POST["new_pwd"])."' WHERE id=$uid AND password='".md5($_POST["old_pwd"])."' AND username=".sqlesc($CURUSER["username"])."") or die(mysql_error());
+// start hack phpbb3 integration
+
+	// info phpbb3
+	$phpbb3_res = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings");
+	$phpbb_db_prefix = $phpbb3_res["phpbb3_prefix"];
+	
+	// change pass in phpbb3 _users
+	if($phpbb_db_prefix != "")
+	{
+	do_sqlquery("UPDATE {$phpbb_db_prefix}users SET user_password='".md5($_POST["new_pwd"])."' WHERE username=".sqlesc($CURUSER["username"])."") or die(mysql_error());
+	}
+	
+// end hack phpbb3 integration
                     
                 if($GLOBALS["FORUMLINK"]=="smf")
                 {
