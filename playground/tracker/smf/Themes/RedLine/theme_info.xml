@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<theme-info xmlns="http://www.simplemachines.org/xml/theme-info" xmlns:smf="http://www.simplemachines.org/">
+        <!-- Theme name, used purely for aesthetics. -->
+	      <name>Redline2</name>
+	      <!-- Author: your email address or contact information.  The name attribute is optional. -->
+	      <author name="TreetopClimber">treetopclimber@gmail.com</author>
+	      <!-- Website... where to get updates and more information. -->
+	      <website>http://global-bttracker.no-ip.org/forum/</website>
+        <!-- Template layers to use, defaults to "main". -->
+        <layers>main</layers>
+        <!-- Templates to load on startup.  Default is "index". -->
+        <templates>index</templates>
+        <!-- Base this theme off another?  Default is blank, or no.  It could be "default". -->
+				<based-on>Redline2</based-on>
+		 <version>1.1.4</version>
+	<id>TreetopClimber:Redline2</id>
+</theme-info>
