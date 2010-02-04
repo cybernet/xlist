@@ -48,6 +48,7 @@ if(get_magic_quotes_gpc()){
 $CURRENTPATH = dirname(__FILE__);
 
 include $CURRENTPATH.'/xbtit_version.php';
+include($CURRENTPATH.'/CyBerFuN_xBTiT_version.php');
 require_once $CURRENTPATH.'/config.php';
 require_once $CURRENTPATH.'/common.php';
 require_once $CURRENTPATH.'/smilies.php';
@@ -249,7 +250,7 @@ function print_designer() {
      include($STYLEPATH.'/style_copyright.php');
      $design_copyright = ''.$design_copyright.'';
   } else
-     $design_copyright = '[&nbsp;&nbsp;<u>CyBerFuN xBTiT v1.1 By cybernet</u>: <a href="http://xList.ro/" target="_blank">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By <a href="http://www.btiteam.org/" target="_blank">BTiTeam.org</a>&nbsp;]';
+     $design_copyright = '[&nbsp;&nbsp;<u>CyBerFuN xBTiT ' . $CyBerFuN_xBTiT_version . ' By cybernet</u>: <a href="http://xList.ro/" target="_blank">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By <a href="http://www.btiteam.org/" target="_blank">BTiTeam.org</a></u>&nbsp;]<br />';
   return $design_copyright;
 }
 
