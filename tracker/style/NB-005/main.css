@@ -400,6 +400,11 @@ textarea {
 .error { color:black; font-weight: bold; font-size: 14pt; background:url(images/chr.gif); background-repeat: repeat-x;}
 .information { color:black; font-weight: bold; font-size: 14pt; background:url(images/chb.gif); background-repeat: repeat-x;}
 .success { color:black; font-weight: bold; font-size: 14pt; background:url(images/chg.gif); background-repeat: repeat-x;}
+
+td {
+font-size: 8pt;
+}
+
 td.deleted {
     background-color:#FF95AC;
     color:#000000;

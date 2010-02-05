@@ -260,7 +260,9 @@ td.lista {
   border-color: #444; border-style: solid; border-width: 0 1px 1px;
 }
 
-td {}
+td {
+font-size: 8pt;
+}
 
 td.header {
   color: #ffdFa0;

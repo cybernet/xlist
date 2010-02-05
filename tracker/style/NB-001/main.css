@@ -350,7 +350,7 @@ td.lista {
 }
 
 td {
-
+font-size: 8pt;
 }
 input, select {
 	filter: Alpha(Opacity=50);
