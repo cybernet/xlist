@@ -1,0 +1,1008 @@
+<hack>
+<title>Torrent Moderation</title>
+<author>by Losmi</author>
+<version>1.4</version>
+<!--Database modification-->
+<file>
+<name>"database"</name>
+<operation>
+    <action>"sql"</action>
+    <data><![CDATA[ALTER TABLE `{$db_prefix}files` ADD `moder` ENUM('um', 'bad', 'ok') NOT NULL DEFAULT 'um';]]></data>
+</operation>
+<operation>
+    <action>"sql"</action>
+    <data><![CDATA[ALTER TABLE `{$db_prefix}users_level` ADD `trusted` enum('yes', 'no') NOT NULL default 'no';]]></data>
+</operation>
+<operation>
+    <action>"sql"</action>
+    <data><![CDATA[ALTER TABLE `{$db_prefix}users_level` ADD `moderate_trusted` enum('yes', 'no') NOT NULL default 'no';]]></data>
+</operation>
+<operation>
+    <action>"sql"</action>
+    <data><![CDATA[CREATE TABLE IF NOT EXISTS `{$db_prefix}moderate_reasons` (
+      `id` int(11) NOT NULL auto_increment,
+      `title` varchar(255) NOT NULL default '',
+      `description` text NOT NULL,
+      `active` enum('-1','0','1') NOT NULL default '1',
+      `ordering` bigint(20) NOT NULL default '0',
+      PRIMARY KEY  (`id`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;]]></data>
+</operation>
+<operation>
+    <action>"sql"</action>
+    <data><![CDATA[CREATE TABLE IF NOT EXISTS `{$db_prefix}warn_reasons` (
+      `id` int(11) NOT NULL auto_increment,
+      `active` enum('-1','0','1') NOT NULL default '1',
+      `title` varchar(255) NOT NULL default '',
+      `text` text NOT NULL,
+      `level` int(11) NOT NULL default '12',
+      PRIMARY KEY  (`id`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;]]></data>
+</operation>
+</file>
+<!--End database mod-->
+
+<!--mainusertoolbar_block.php mod-->
+<file>
+<name>"$DEFAULT_ROOT/blocks/mainusertoolbar_block.php"</name>
+
+<operation>
+    <search><![CDATA[$rowuser= mysql_fetch_array($resuser);]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+$full="SELECT f.moder as moder, f.filename, f.info_hash, f.uploader as upname, u.username as uploader, c.image, c.name as cname, f.category as catid FROM {$TABLE_PREFIX}files f LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category";
+$sql=$full." WHERE moder='um'";
+$row = do_sqlquery($sql,true);
+$um_t = (int)mysql_num_rows($row);
+
+]]></data>
+    <where>"after"</where>
+</operation>
+
+<operation>
+    <search><![CDATA[if ($CURUSER["admin_access"]=="yes")]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+if ($CURUSER['moderate_trusted']=='yes')
+    print("<td align=\"center\"><a href=\"index.php?page=moder\">".$language["MODERATE_PANEL"]."</a> (".$um_t.")</td>");
+
+]]></data>
+    <where>"before"</where>
+</operation>
+
+</file>
+<!--end mainusertoolbar_block.php mod-->
+
+<!--details.php mod-->
+
+<file>
+<name>"$DEFAULT_ROOT/userdetails.php"</name>
+
+<operation>
+    <search><![CDATA[if ($id>1) {]]></search>
+        <action>"add"</action>
+    <data><![CDATA[
+
+    if ($CURUSER['trusted'])
+       $only="AND 1=1";
+    else
+        $only="AND moder='ok'";
+
+]]></data>
+    <where>"before"</where>
+</operation>
+
+<operation>
+    <search><![CDATA[$uptortpl[$i]["filename"]="<a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=".$rest{"info_hash"}."')\" title=\"".$language["VIEW_DETAILS"].": ".$rest["filename"]."\">".$filename."</a>";]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+                    $uptortpl[$i]["moder"]= getmoderdetails(getmoderstatusbyhash($rest['info_hash']),$rest['info_hash']);
+
+]]></data>
+    <where>"before"</where>
+</operation>
+
+<operation>
+    <search><![CDATA[$uptortpl[$i]["filename"]="<a href=\"index.php?page=torrent-details&amp;id=".$rest{"info_hash"}."\" title=\"".$language["VIEW_DETAILS"].": ".$rest["filename"]."\">".$filename."</a>";]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+                    $uptortpl[$i]["moder"]= getmoderdetails(getmoderstatusbyhash($rest['info_hash']),$rest['info_hash']);
+
+]]></data>
+    <where>"after"</where>
+</operation>
+
+<operation>
+    <search><![CDATA[$tortpl[$i]["filename"]="<a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=".$torlist->infohash."')\" title=\"".$language["VIEW_DETAILS"].": ".$torlist->filename."\">".$filename."</a>";]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+                    $tortpl[$i]["moder"]= getmoderdetails(getmoderstatusbyhash($torlist->infohash),$torlist->infohash);
+
+]]></data>
+    <where>"after"</where>
+</operation>
+
+<operation>
+    <search><![CDATA[$tortpl[$i]["filename"]="<a href=\"index.php?page=torrent-details&amp;id=".$torlist->infohash."\" title=\"".$language["VIEW_DETAILS"].": ".$torlist->filename."\">".$filename."</a>";]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+                    $tortpl[$i]["moder"]= getmoderdetails(getmoderstatusbyhash($torlist->infohash),$torlist->infohash);
+
+    ]]></data>
+    <where>"after"</where>
+<operation>
+    <search><![CDATA[$torhistory[$i]["filename"]="<a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=".$torlist->info_hash."')\" title=\"".$language["VIEW_DETAILS"].": ".$torlist->filename."\">".$filename."</a>";]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+                    getmoderdetails(getmoderstatusbyhash($torlist->infohash),$torlist->infohash);
+
+    ]]></data>
+    <where>"after"</where>
+</operation>
+
+<operation>
+    <search><![CDATA[$torhistory[$i]["filename"]="<a href=\"index.php?page=torrent-details&amp;id=".$torlist->info_hash."\" title=\"".$language["VIEW_DETAILS"].": ".$torlist->filename."\">".$filename."</a>";]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+                    getmoderdetails(getmoderstatusbyhash($torlist->infohash),$torlist->infohash);
+
+    ]]>
+    </data>
+    <where>"after"</where>
+</operation>
+</file>
+
+<!--userdetails.php end mod-->
+
+<!--index.php mod-->
+<file>
+<name>"$DEFAULT_ROOT/index.php"</name>
+
+<operation>
+        <search><![CDATA[case 'index':]]></search>
+        <action>"add"</action>
+        <data><![CDATA[
+
+            case 'moder':
+                require("$THIS_BASEPATH/moder.php");
+                $tpl->set("main_content",set_block($language["MODERATE_TORRENT"],"center",$torrenttpl->fetch(load_template("admin.moder.tpl"))));
+                $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->Torrent->Moderate");
+                break;
+
+]]></data>
+        <where>"before"</where>
+</operation>
+
+</file>
+<!--index.php end mod-->
+
+<!--upload.php mod-->
+
+<file>
+<name>"$DEFAULT_ROOT/upload.php"</name>
+
+<operation>
+    <search><![CDATA[$filename = mysql_escape_string(htmlspecialchars($_FILES["torrent"]["name"]));]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+    if (isset($_POST["moder"]))
+      $moder=$_POST["moder"];
+
+]]></data>
+    <where>"after"</where>
+</operation>
+
+<operation>
+    <search><![CDATA[$status = do_sqlquery($query); //makeTorrent($hash, true);]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+                   updatemoder($TABLE_PREFIX,$moder,$hash);
+
+]]></data>
+    <where>"after"</where>
+</operation>
+<operation>
+    <search><![CDATA[$uploadtpl->set("textbbcode",  $bbc);]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+          if ($CURUSER['trusted']=='yes')
+          {
+          $moder="ok";
+          }
+          else{
+          $moder="um";
+          }
+          
+          $uploadtpl->set("moder", $moder);
+    // moder
+
+]]></data>
+    <where>"after"</where>
+</operation>
+
+</file>
+<!--upload.php end mod-->
+
+
+<!--admin.groups.php mod-->
+
+
+<file>
+<name>"$DEFAULT_ROOT/admin/admin.groups.php"</name>
+<operation>
+        <search><![CDATA[$current_group["edit_news"]=($current_group["edit_news"]=="yes"?"checked=\"checked\"":"");]]></search>
+        <action>"add"</action>
+        <data><![CDATA[
+
+                  $current_group["trusted"]=($current_group["trusted"]=="yes"?"checked=\"checked\"":"");
+                  $current_group["moderate_trusted"]=($current_group["moderate_trusted"]=="yes"?"checked=\"checked\"":"");
+
+]]></data>
+         <where>"after"</where>
+</operation>
+
+<operation>
+    <search><![CDATA[$update[]="delete_forum=".sqlesc(isset($_POST["dforum"])?"yes":"no");]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+                       $update[]="trusted=".sqlesc(isset($_POST["trusted"])?"yes":"no");
+                       $update[]="moderate_trusted=".sqlesc(isset($_POST["moderate_trusted"])?"yes":"no");
+
+]]></data>
+     <where>"after"</where>
+</operation>
+<operation>
+    <search><![CDATA[$groups[$i]["can_download"]=$level["can_download"];]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+                    $groups[$i]["trusted"]=$level["trusted"];
+                    $groups[$i]["moderate_trusted"]=$level["moderate_trusted"];
+
+]]></data>
+    <where>"after"</where>
+</operation>
+</file>
+<!--admin.groups.php end mod-->
+
+<!--admin.groups.tpl mod-->
+
+<file>
+<name>"$DEFAULT_STYLE_PATH/admin.groups.tpl"</name>
+<operation>
+    <search><![CDATA[<td class="header" align="center"><tag:language.MNU_FORUM /><br /><tag:language.VIEW_EDIT_DEL /></td>]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+        <td class="header" align="center"><tag:language.TRUSTED /></td>
+        <td class="header" align="center"><tag:language.TRUSTED_MODERATION /></td>
+
+]]></data>
+    <where>"after"</where>
+</operation>
+<operation>
+    <search><![CDATA[<td class="header" align="center" colspan="10">]]></search>
+    <action>"replace"</action>
+    <data><![CDATA[<td class="header" align="center" colspan="12">]]></data>
+</operation>
+
+<operation>
+    <search><![CDATA[<td class="lista" align="center"><tag:groups[].forum_aut /></td>]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+        <td class="lista" align="center"><tag:groups[].trusted /></td>
+        <td class="lista" align="center"><tag:groups[].moderate_trusted /></td>
+
+]]></data>
+    <where>"after"</where>
+</operation>
+<operation>
+    <search><![CDATA[<td class="header"><tag:language.GROUP_DOWNLOAD /></td>]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+          <td class="header"><tag:language.TRUSTED /></td>
+    
+          <td class="lista"><input type="checkbox" name="trusted" <tag:group.trusted /> /></td>
+    
+        </tr>
+        <tr>
+  
+          <td class="header"><tag:language.TRUSTED_MODERATION /></td>
+    
+          <td class="lista"><input type="checkbox" name="moderate_trusted" <tag:group.moderate_trusted /> /></td>
+
+        </tr>
+
+        <tr>
+]]></data>
+    <where>"before"</where>
+</operation>
+</file>
+<!--admin.groups.tpl end mod-->
+<!--edit.php mod-->
+<file>
+<name>"$DEFAULT_ROOT/edit.php"</name>
+<operation>
+      <search><![CDATA[if ($_POST["action"]==$language["FRM_CONFIRM"])]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[if ($_POST["action"]==$language["FRM_CONFIRM"] || $_POST["action"]==$language["FRM_CONFIRM_VALIDATE"])]]></data>
+</operation>
+<operation>
+      <search><![CDATA[write_log("Modified torrent $fname ($torhash)","modify");]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+ if($_POST["action"]==$language["FRM_CONFIRM"])
+   {
+       if($CURUSER['moderate_trusted']=='yes')
+       {
+            $moder = $_POST['moder'];
+       }
+       else 
+       {
+            $moder = 'bad';
+       }
+   }
+   else 
+   {
+    
+            $moder = 'um';
+       
+   }
+  /* if ($CURUSER['trusted']=='yes')
+          {
+          $moder="ok";
+          }*/
+
+]]></data>
+      <where>"after"</where>
+</operation>
+
+<operation>
+      <search><![CDATA[WHERE info_hash='" . $torhash . "'",true);]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+      
+      updatemoderbyhash($moder,$torhash);
+      
+      if($moder=='ok')
+  {
+    $get_user="SELECT f.moder as moder, f.filename, f.info_hash, f.uploader as upname, u.username as uploader, c.image, c.name as cname, f.category as catid FROM {$TABLE_PREFIX}files f LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category WHERE info_hash='".$torhash."'";
+    $row = do_sqlquery($get_user,true);
+
+if (mysql_num_rows($row)==1) {
+    
+    
+        $username ='';
+        while ($data=mysql_fetch_array($row)) {
+            $username = $data['upname'];
+            $file = $data['filename'];
+            $uploader = $data['uploader'];
+        }
+        $msg = '[b]'.$uploader.' your torrent '.$file.' is approved![/b]
+        Do not reply, this is an automatic message.';
+        do_sqlquery("INSERT INTO `{$TABLE_PREFIX}messages` (`sender`, `receiver`, `added`, `subject`, `msg`) VALUES ('".$CURUSER["uid"]."', '".$username."', UNIX_TIMESTAMP(), '".$file."', '".$msg."')");
+      }
+  }
+ if ($_POST["ex_moder"]!=$moder && $moder=="bad" && $CURUSER["moderate_trusted"]=="yes") {
+redirect("index.php?page=moder&hash=".$torhash."");
+}
+
+]]></data>
+<where>"after"</where>
+</operation>
+
+<operation>
+      <search><![CDATA[$torrenttpl=new bTemplate();]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+
+      $moder_status = getmoderstatusbyhash(AddSlashes($_GET["info_hash"]));
+
+      ]]></data>
+      <where>"before"</where>
+</operation>
+
+<operation>
+    <search><![CDATA[$torrent["cat_combo"]= categories($results["cat_name"]);]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+    
+    if ($CURUSER['edit_torrents']=="yes" && $CURUSER['moderate_trusted']=='yes')
+    {
+        switch ($moder_status)
+        {
+        case 'ok':
+        $checked1="SELECTED";
+        break;
+        case 'bad':
+        $checked2="SELECTED";
+        break;
+        case 'um':
+        $checked3="SELECTED";
+        break;
+        }
+    
+    $torrent["moder"]="<select name=\"moder\" id=\"icon\" onchange=\"showimage()\">
+                                            <option $checked1 value=\"ok\">".$language["MODERATE_STATUS_OK"]."</option>
+                                            <option $checked2 value=\"bad\">".$language["MODERATE_STATUS_BAD"]."</option>
+                                            <option $checked3 value=\"um\">".$language["MODERATE_STATUS_UN"]."</option>
+                                        </select> ";
+    }
+    
+    $torrent["moder"].="<img name=\"icons\" src=\"images/mod/$moder_status.png\" alt=\"$moder_status\" title=\"$moder_status\">";
+    $torrent["ex_moder"]=$moder_status;
+
+    ]]></data>
+    <where>"after"</where>
+</operation>
+</file>
+<!--edit.php end mod-->
+
+<!--torrents.php  mod-->
+
+<file>
+<name>"$DEFAULT_ROOT/torrents.php"</name>
+<operation>
+    <search><![CDATA[foreach ($results as $id=>$data) {]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+       if(getmoderstatusbyhash($data["hash"])=='ok')
+       {
+
+]]></data>
+   <where>"after"</where>
+</operation>
+
+<operation>
+    <search><![CDATA[$i++;]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+    }
+
+]]></data>
+    <where>"after"</where>
+</operation>
+</file>
+<!--torrents.php end mod-->
+
+
+<!--TEMPLATES-->
+
+<file>
+<name>"$DEFAULT_STYLE_PATH/upload.tpl"</name>
+<operation>
+    <search><![CDATA[<td class="lista" align="left"><input type="text" name="filename" size="50" maxlength="200" /></td>]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+    <input type="hidden" name="moder" value="<tag:moder />" />
+
+    ]]></data>
+    <where>"after"</where>
+</operation>
+</file>
+
+<file>
+<name>"$DEFAULT_STYLE_PATH/torrent.edit.tpl"</name>
+
+<operation>
+    <search><![CDATA[<form action="<tag:torrent.link />" method="post" name="edit">]]></search>
+    <action>"replace"</action>
+    <data><![CDATA[<form id="postmodify" action="<tag:torrent.link />" method="post" name="edit">]]></data>
+</operation>
+
+<operation>
+    <search><![CDATA[</tr>]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+    <script language="JavaScript" type="text/javascript">
+        var icon_urls = {
+        "ok": "images/mod/ok.png",
+        "bad": "images/mod/bad.png",
+        "um": "images/mod/um.png",
+        };
+        function showimage()
+        {
+        document.images.icons.src = icon_urls[document.forms.postmodify.icon.options[document.forms.postmodify.icon.selectedIndex].value];
+        }
+        </script>
+    
+          <tr>
+            <td class="header"><tag:language.TORRENT_MODERATION /></td>
+            <td class="lista"><tag:torrent.moder /></td>
+          </tr>
+
+]]></data>
+      <where>"after"</where>
+</operation>
+
+<operation>
+    <search><![CDATA[<input type="hidden" name="info_hash" value="<tag:torrent.info_hash />" />]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+    <input type="hidden" name="ex_moder" value="<tag:torrent.ex_moder />" />
+
+    ]]></data>
+    <where>"after"</where>
+</operation>
+
+<operation>
+    <search><![CDATA[<td align="left">]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+      <td align="left">
+            <input type="submit" class="btn" value="<tag:language.FRM_CONFIRM_VALIDATE />" name="action" />
+      </td>
+
+      ]]></data>
+    <where>"before"</where>
+</operation>
+</file>
+<!--pocetak usercp.main.php-->
+<file>
+<name>"$DEFAULT_ROOT/user/usercp.main.php"</name>
+
+<operation>
+    <search><![CDATA[$uptortpl[$i]["added"]=date("d/m/Y",$rest["added"]-$offset);]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+     $uptortpl[$i]["moder"]= getmoderdetails(getmoderstatusbyhash($rest['hash']),$rest['hash']);
+
+     ]]></data>
+    <where>"after"</where>
+</operation>
+</file>
+<!-- kraj usercp.main.php-->
+
+<file>
+<name>"$DEFAULT_STYLE_PATH/usercp.main.tpl"</name>
+
+<operation>
+    <search><![CDATA[<td align="center" class="header"><tag:language.FILE /></td>]]></search>
+    <action>"replace"</action>
+    <data><![CDATA[<td align="center" class="header"><tag:language.FILE /> <tag:language.TORRENT_STATUS /></td>]]></data>
+</operation>
+
+<operation>
+    <search><![CDATA[<td class="lista" style="padding-left:10px;"><tag:uptor[].filename /></td>]]></search>
+    <action>"replace"</action>
+    <data><![CDATA[<td class="lista" style="padding-left:10px;"><tag:uptor[].filename /><tag:uptor[].moder /></td>]]></data>
+</operation>
+</file>
+<!-- kraj usercp.main.php-->
+
+
+<!--pocetak userdetails.tpl"-->
+<file>
+<name>"$DEFAULT_STYLE_PATH/userdetails.tpl"</name>
+
+<operation>
+    <search><![CDATA[<td align="center" class="header"><tag:language.FILE /></td>]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+    <td align="center" class="header"><tag:language.TORRENT_STATUS /></td>
+
+    ]]></data>
+    <where>"before"</where>
+</operation>
+
+
+<operation>
+    <search><![CDATA[<td class="lista" align="center" style="padding-left:10px;"><tag:uptor[].filename /></td>]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+    <td class="lista" align="center" style="text-align: left;"><tag:uptor[].moder /></td>
+
+    ]]></data>
+    <where>"before"</where>
+</operation>
+
+<operation>
+    <search><![CDATA[<td class="block" align="center" colspan="6">]]></search>
+    <action>"replace"</action>
+    <data><![CDATA[<td class="block" align="center" colspan="7">]]></data>
+</operation>
+
+<operation>
+    <search><![CDATA[<td class="lista" align="center" colspan="6">]]></search>
+    <action>"replace"</action>
+    <data><![CDATA[<td class="lista" align="center" colspan="7">]]></data>
+</operation>
+</file>
+<!-- kraj userdetails.tpl"-->
+
+<!--admin.index.php-->
+<file>
+<name>"$DEFAULT_ROOT/admin/admin.index.php"</name>
+<operation>
+    <search><![CDATA[case 'sanity':]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+        case 'warn':
+          include("$ADMIN_PATH/admin.warn.php");
+          $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.warn.tpl"))));
+          break;
+
+]]></data>
+     <where>"before"</where>
+</operation>
+</file>
+<!--admin.index.php end mod-->
+
+<!--admin.menu.php-->
+<file>
+<name>"$DEFAULT_ROOT/admin/admin.menu.php"</name>
+<operation>
+    <search><![CDATA["description"=>$language["ACP_STYLES"])]]></search>
+    <action>"add"</action>
+    <data><![CDATA[,
+        array(
+                        "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=warn" ,
+                        "description"=>$language["ACP_ADD_WARN"]."<font color='red'>(new)</font>")
+
+]]></data>
+    <where>"after"</where>
+</operation>
+</file>
+<!--admin.menu.php end mod-->
+
+ <!-- Start edit functions.php -->
+<file>
+  <name>"$DEFAULT_ROOT/include/functions.php"</name>
+    <operation>
+      <search><![CDATA[function load_css($css_name) {]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+
+
+  function updatemoder($prefix, $moder, $id)
+  {
+    do_sqlquery("UPDATE {$prefix}files SET moder = '$moder' WHERE info_hash = '".$id."'");
+  }
+  
+  function getmoderdetails($mod,$hash)
+  {
+    global $CURUSER;
+    if ($CURUSER["edit_torrents"]=="yes" && $CURUSER['moderate_trusted']=='yes') {
+                        $link="<a title=\"".$mod."\" href=\"index.php?page=edit&info_hash=".$hash."\"><img alt=\"".$mod."\" src=\"images/mod/".$mod.".png\"></a>";
+                        }
+                        else {
+                        $link="<img alt=\"".$mod."\" src=\"images/mod/".$mod.".png\">";
+                        }
+                        $resend='';
+                    if($mod=='bad')
+                    {
+                        $resend = '<br/>(Edit your torret to resend torrent for validation)';
+                    }
+
+                    return $link.$resend;
+  }
+  function genrelistreasons()
+     {
+
+     global $TABLE_PREFIX;
+
+    $ret = array();
+    $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}warn_reasons ORDER BY id");
+
+    while ($row = mysql_fetch_assoc($res))
+        $ret[] = $row;
+
+    unset($row);
+    mysql_free_result($res);
+
+    return $ret;
+}
+  function updatemoderbyhash($moder,$torhash)
+  {
+    global $TABLE_PREFIX;
+    do_sqlquery("UPDATE {$TABLE_PREFIX}files SET moder = '$moder' WHERE info_hash = '" . $torhash . "'",true);
+  }
+  function getmoderstatusbyhash($hash)
+  {
+    global $TABLE_PREFIX;
+    $query ="SELECT moder FROM {$TABLE_PREFIX}files  WHERE info_hash ='" . $hash . "'";
+
+
+    $res = do_sqlquery($query,true);
+    $results = mysql_fetch_assoc($res);
+
+    return $results['moder'];
+  }
+
+
+]]></data>
+    <where>"before"</where>
+    </operation>
+  </file>
+  <!-- End edit functions.php -->
+  <!--details.php -->
+<file>
+<name>"$DEFAULT_ROOT/details.php"</name>
+
+<operation>
+    <search><![CDATA[if (count($res)<1)]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+    $res_m = getmoderstatusbyhash($id);
+
+    ]]></data>
+    <where>"before"</where>
+</operation>
+
+<operation>
+    <search><![CDATA[$row["speed"]=$speed;]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+    // moder
+    if ($CURUSER['moderate_trusted']=='yes')
+    $moderation=TRUE;
+    $torrenttpl->set("MODER",$moderation,TRUE);
+    
+    $moder=$res_m;
+    $row["moderation"].="<a title=\"".$moder."\" href=\"index.php?page=edit&info_hash=".$row["info_hash"]."\"><img alt=\"".$moder."\" src=\"images/mod/".$moder.".png\"></a>";
+    // moder
+
+    ]]></data>
+    <where>"after"</where>
+</operation>
+</file>
+<!-- end details.php -->
+
+<!--details.tpl mod-->
+<file>
+<name>"$DEFAULT_STYLE_PATH/torrent.details.tpl"</name>
+
+<operation>
+    <search><![CDATA[</tr>]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+    <if:MODER>
+            <tr>
+              <td align="right" class="header"><tag:language.TORRENT_MODERATION /></td>
+              <td class="lista" align="center"><tag:torrent.moderation /></td>
+            </tr>
+    </if:MODER>
+
+    ]]></data>
+    <where>"after"</where>
+</operation>
+</file>
+<!--details.tpl end mod-->
+<!--BLOCKS--> 
+
+<!--lasttorrents_block.php-->
+<file>
+<name>"$DEFAULT_ROOT/blocks/lasttorrents_block.php"</name>
+<operation>
+    <search><![CDATA[echo "<tr>";]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+    if(getmoderstatusbyhash($data['hash'])=='ok')
+            {
+
+]]></data>
+    <where>"before"</where>
+</operation>
+
+<operation>
+    <search><![CDATA[echo "</tr>\n";
+           }]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+    
+    } //end of getmoderstatusbyhash($data['hash'])=='ok'
+    
+    ]]></data>
+    <where>"after"</where>
+</operation>
+</file>
+<!--lasttorrents_block.php end mod-->
+
+<!--seedwanted_block.php-->
+<file>
+<name>"$DEFAULT_ROOT/blocks/seedwanted_block.php"</name>
+<operation>
+    <search><![CDATA[echo "<tr>\n";]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+    if(getmoderstatusbyhash($data['hash'])=='ok')
+            {
+
+]]></data>
+    <where>"before"</where>
+</operation>
+
+<operation>
+    <search><![CDATA[echo "</tr>\n";
+                }]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+    
+    } //end of getmoderstatusbyhash($data['hash'])=='ok'
+    
+    ]]></data>
+    <where>"after"</where>
+</operation>
+</file>
+<!--seedwanted_block.php end mod-->
+
+<!--toptorrents_block.php-->
+<file>
+<name>"$DEFAULT_ROOT/blocks/toptorrents_block.php"</name>
+<operation>
+    <search><![CDATA[echo "<tr>\n";]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+
+    if(getmoderstatusbyhash($data['hash'])=='ok')
+            {
+
+]]></data>
+    <where>"before"</where>
+</operation>
+
+<operation>
+    <search><![CDATA[echo "</tr>\n";
+           }]]></search>
+    <action>"add"</action>
+    <data><![CDATA[
+    
+    } //end of getmoderstatusbyhash($data['hash'])=='ok'
+    
+    ]]></data>
+    <where>"after"</where>
+</operation>
+</file>
+<!--toptorrents_block.php end mod-->
+
+
+<!--LANGUAGES-->
+ <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_admin.php"</name>
+    <operation>
+             <search><![CDATA[?>]]></search>
+              <action>"add"</action>
+              <data><![CDATA[
+
+$language["ACP_ADD_WARN"]="Torrent moderation resaons";
+$language["WARN_TITLE"]="Title of reason";
+$language["WARN_TEXT"]="Explain reason";
+$language["WARN_ADD_REASON"]="Add new reason";
+$language["TRUSTED"]="Trusted";
+$language["TRUSTED_MODERATION"]="Trusted moderation";
+$language["TORRENT_STATUS"]="Torrent status";
+$language["TORRENT_MODERATION"]="Moderation";
+$language["MODERATE_TORRENT"] = "Moderate";
+$language["MODERATE_STATUS_OK"] = "Ok";
+$language["MODERATE_STATUS_BAD"] = "Bad";
+$language["MODERATE_STATUS_UN"] = "Unmoderated";
+$language["FRM_CONFIRM_VALIDATE"] = "Confirm revalidation";
+$language["MODERATE_PANEL"] = "Mod Torrent Panel";
+
+]]></data>
+        <where>"before"</where>
+    </operation>
+  </file>
+  
+<file>
+<name>"$DEFAULT_LANGUAGE_PATH/lang_main.php"</name>
+<operation>
+     <search><![CDATA[?>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+
+$language["ACP_ADD_WARN"]="Torrent moderation resaons";
+$language["WARN_TITLE"]="Title of reason";
+$language["WARN_TEXT"]="Explain reason";
+$language["WARN_ADD_REASON"]="Add new reason";
+$language["TRUSTED"]="Trusted";
+$language["TRUSTED_MODERATION"]="Trusted moderation";
+$language["TORRENT_STATUS"]="Torrent status";
+$language["TORRENT_MODERATION"]="Moderation";
+$language["MODERATE_TORRENT"] = "Moderate";
+$language["MODERATE_STATUS_OK"] = "Ok";
+$language["MODERATE_STATUS_BAD"] = "Bad";
+$language["MODERATE_STATUS_UN"] = "Unmoderated";
+$language["FRM_CONFIRM_VALIDATE"] = "Confirm revalidation";
+$language["MODERATE_PANEL"] = "Mod Torrent Panel";
+
+]]></data>
+      <where>"before"</where>
+</operation>
+</file>
+  
+
+<!--  COPY FILES-->
+
+<file>
+<name>"$CURRENT_FOLDER/toCopy/ok.png"</name>
+<operation>
+<action>"copy"</action>
+<where>"$DEFAULT_ROOT/images/mod"</where>
+<data>"ok.png"</data>
+</operation>
+</file>
+
+<file>
+<name>"$CURRENT_FOLDER/toCopy/bad.png"</name>
+<operation>
+<action>"copy"</action>
+<where>"$DEFAULT_ROOT/images/mod"</where>
+<data>"bad.png"</data>
+</operation>
+</file>
+
+<file>
+<name>"$CURRENT_FOLDER/toCopy/um.png"</name>
+<operation>
+<action>"copy"</action>
+<where>"$DEFAULT_ROOT/images/mod"</where>
+<data>"um.png"</data>
+</operation>
+</file>
+<file>
+<name>"$CURRENT_FOLDER/toCopy/admin.warn.php"</name>
+<operation>
+<action>"copy"</action>
+<where>"$DEFAULT_ROOT/admin"</where>
+<data>"admin.warn.php"</data>
+</operation>
+</file>
+
+<file>
+<name>"$CURRENT_FOLDER/toCopy/moder.php"</name>
+<operation>
+<action>"copy"</action>
+<where>"$DEFAULT_ROOT"</where>
+<data>"moder.php"</data>
+</operation>
+</file>
+
+<file>
+<name>"$CURRENT_FOLDER/toCopy/admin.moder.tpl"</name>
+<operation>
+<action>"copy"</action>
+<where>"$DEFAULT_STYLE_PATH"</where>
+<data>"admin.moder.tpl"</data>
+</operation>
+
+</file>
+
+<file>
+<name>"$CURRENT_FOLDER/toCopy/admin.warn.tpl"</name>
+<operation>
+<action>"copy"</action>
+<where>"$DEFAULT_STYLE_PATH"</where>
+<data>"admin.warn.tpl"</data>
+</operation>
+
+</file>
+</hack>
