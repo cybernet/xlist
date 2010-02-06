@@ -485,5 +485,14 @@ $language['VALIDATION_SENT_TO_2'] = 'You will need to click on the link containe
 // Sticky
 $language["STICKY_TORRENT"] = "<b>Sticky</b>";
 $language["STICKY_TORRENT_EXPLAIN"] = "(Always on top of the torrent list)";
+//GOLD
+$language["GOLD_TYPE"] = "Torrent type";
+$language["GOLD_PICTURE"] = "Gold picture";
+$language["SILVER_PICTURE"] = "Silver picture";
+$language["GOLD_DESCRIPTION"] = "Gold description";
+$language["SILVER_DESCRIPTION"] = "Silver description";
+$language["CLASSIC_DESCRIPTION"] = "Classic description";
+$language["GOLD_LEVEL"] = "Who can add gold/silver torrents";
+//GOLD ENDS
 
 ?>

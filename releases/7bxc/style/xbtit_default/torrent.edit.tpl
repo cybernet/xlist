@@ -79,6 +79,12 @@
       <td align="left">
             <input type="submit" class="btn" value="<tag:language.FRM_CANCEL />" name="action" />
       </td>
+    <if:edit_gold_level>
+      <tr>
+        <td align="right" class="header"><tag:language.GOLD_TYPE /></td>
+        <td class="lista"><tag:torrent.gold /></td>
+      </tr>
+    </if:edit_gold_level>
     </table>
   </form>
 </div>

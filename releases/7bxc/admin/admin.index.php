@@ -34,52 +34,52 @@
 if (!defined("IN_BTIT"))
       die("non direct access!");
 
-if (!$CURUSER || ($CURUSER["admin_access"]!="yes" && $CURUSER["edit_users"]!="yes"))
+if (!$CURUSER || ($CURUSER["admin_access"] != "yes" && $CURUSER["edit_users"] != "yes"))
    {
-       err_msg($language["ERROR"],$language["NOT_ADMIN_CP_ACCESS"]);
+       err_msg($language["ERROR"], $language["NOT_ADMIN_CP_ACCESS"]);
        stdfoot();
        exit;
 }
 
 // Additional admin check by miskotes
 $aid = max(0, $_GET["user"]);
-$arandom = max(0,$_GET["code"]);
-if (!$aid || empty($aid) || $aid==0 || !$arandom || empty($arandom) || $arandom==0)
+$arandom = max(0, $_GET["code"]);
+if (!$aid || empty($aid) || $aid == 0 || !$arandom || empty($arandom) || $arandom == 0)
 {
-       err_msg($language["ERROR"],$language["NOT_ADMIN_CP_ACCESS"]);
+       err_msg($language["ERROR"], $language["NOT_ADMIN_CP_ACCESS"]);
        stdfoot();
        exit;
 }
 //if ($arandom!=$ranid["random"] || $aid!=$ranid["id"])
 //{
-$mqry=do_sqlquery("select u.id, ul.admin_access from {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on ul.id=u.id_level WHERE u.id=$aid AND random=$arandom AND (admin_access='yes' OR edit_users='yes') AND username=".sqlesc($CURUSER["username"]),true);
+$mqry = do_sqlquery("select u.id, ul.admin_access from {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on ul.id=u.id_level WHERE u.id=$aid AND random=$arandom AND (admin_access='yes' OR edit_users='yes') AND username=".sqlesc($CURUSER["username"]), true);
 
-if (mysql_num_rows($mqry)<1)
+if (mysql_num_rows($mqry) < 1)
 {
-       err_msg($language["ERROR"],$language["NOT_ADMIN_CP_ACCESS"]);
+       err_msg($language["ERROR"], $language["NOT_ADMIN_CP_ACCESS"]);
        stdfoot();
        exit;
 }
 else
-$mres=mysql_fetch_assoc($mqry);
-$moderate_user=($mres["admin_access"]=="no");
+$mres = mysql_fetch_assoc($mqry);
+$moderate_user = ($mres["admin_access"] == "no");
 // EOF
 
 
 
-define("IN_ACP",true);
+define("IN_ACP", true);
 
 
-if (isset($_GET["do"])) $do=$_GET["do"];
+if (isset($_GET["do"])) $do = $_GET["do"];
   else $do = "";
 if (isset($_GET["action"]))
-   $action=$_GET["action"];
+   $action = $_GET["action"];
 
-$ADMIN_PATH=dirname(__FILE__);
+$ADMIN_PATH = dirname(__FILE__);
 
 include(load_language("lang_admin.php"));
 
-if ($do!="users"  && $do!="masspm"  && $do!="pruneu"  && $do!="searchdiff" && $moderate_user)
+if ($do != "users"  && $do != "masspm"  && $do != "pruneu"  && $do != "searchdiff" && $moderate_user)
   {
     err_msg($language["ERROR"],$language["NOT_ADMIN_CP_ACCESS"]);
     stdfoot();
@@ -88,14 +88,18 @@ if ($do!="users"  && $do!="masspm"  && $do!="pruneu"  && $do!="searchdiff" && $m
 
 include("$ADMIN_PATH/admin.menu.php");
 
-$menutpl=new bTemplate();
-$menutpl->set("admin_menu",$admin_menu);
+$menutpl = new bTemplate();
+$menutpl->set("admin_menu", $admin_menu);
 $tpl->set("main_left",set_block($language["ACP_MENU"],"center",$menutpl->fetch(load_template("admin.menu.tpl"))));
 
-$admintpl=new bTemplate();
+$admintpl = new bTemplate();
 
 switch ($do)
     {
+    case 'gold':
+          include("$ADMIN_PATH/admin.gold.php");
+          $tpl->set("main_content",set_block($language["ACP_GOLD"],"center",$admintpl->fetch(load_template("admin.gold.tpl"))));
+          break;
     case 'sticky':
       include("$ADMIN_PATH/admin.sticky.php");
       $tpl->set("main_content",set_block($language["STICKY_SETTINGS"],"center",$admintpl->fetch(load_template("admin.sticky.tpl"))));

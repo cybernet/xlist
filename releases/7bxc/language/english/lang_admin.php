@@ -348,4 +348,8 @@ $language["LEVEL_STICKY"] = "Who can add sticky torrents? (default: Uploader)";
 $language["ACP_FAQ_GROUP"] = "Faq groups";
 $language["ACP_FAQ"] = "Faq";
 $language["ACP_FAQ_QUESTION"] = "Faq questions";
+//GOLD
+$language["ACP_GOLD"]="Gold torrents settings";
+//GOLD ENDS
+
 ?>

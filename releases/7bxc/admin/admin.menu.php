@@ -95,6 +95,9 @@ else
             "menu"=>array(0=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=prunet" ,
                     "description"=>$language["ACP_PRUNE_TORRENTS"]),
+                    array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=gold" ,
+                    "description"=>$language["ACP_GOLD"]),
                           1=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=visible" ,
                     "description"=>$language["ACP_VISIBLE_TORRENTS"]),
