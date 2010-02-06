@@ -1,0 +1,417 @@
+/* Dilber Theme*/
+.maindiv
+{
+	border-left: 1px solid #D8A259;
+	border-right: 1px solid #D8A259;
+	border-bottom: 2px solid #D8A259;
+	background: #FFFDFA;
+}
+.mainpage
+{
+	background: #FFFDFA url(images/lightgolden/mainpage.gif) repeat-x;
+}
+
+.topbar
+{
+	background: #D8A259 url(images/lightgolden/topbar.gif) repeat-x;
+}
+
+.topbar2
+{
+	background: #FFD499 url(images/lightgolden/topbar2.gif) repeat-x;
+}
+.menubar
+{
+	background: #D8A259 url(images/lightgolden/menubar.gif) repeat-x;
+	color: #FFFFFF;		
+}
+.menubg , tr.menubg td
+{
+	background: #D8A259 url(images/lightgolden/menubar.gif) repeat-x;
+	color: #FFFFFF;
+}
+
+.menubg2 , tr.menubg2 td
+{
+	background: #A56F26 url(images/lightgolden/menubarSelected.gif) repeat-x;
+	color: #FFFFFF;
+}
+.menubg a:link, .menubg a:visited , .menubg2 a:link, .menubg2 a:visited 
+{
+	color: #FFFFFF;
+}
+.menubg a:hover, .menubg2 a:hover
+{
+	color: #FCFFE0;
+}
+
+.memberbardiv
+{
+	background: transparent url(images/lightgolden/memberbar.gif) repeat-x;
+}
+.memberbardivbottom
+{
+	background: transparent url(images/lightgolden/memberbar2.gif) repeat-x;
+}
+
+.memberbar, tr.memberbar td
+{
+}
+.memberbar a:link, .memberbar a:visited 
+{
+	color: #A56F26;
+}
+.memberbar a:hover
+{
+	color: #FF7B00;
+}
+
+
+/* Normal, standard links. */
+a:link
+{
+	color: #A56F26;
+}
+a:visited
+{
+	color: #A56F26;
+}
+a:hover
+{
+}
+
+/* Navigation links - for the link tree. */
+.nav, .nav:link, .nav:visited
+{
+	color: #A56F26;
+}
+a.nav:hover
+{
+	color: #FF7B00;
+}
+
+/* Tables should show empty cells. */
+table
+{
+}
+
+/* By default (td, body..) use verdana in black. */
+body, td, th , tr
+{
+	color: #000000;
+}
+
+/* The main body of the entire forum. */
+body
+{
+	background-color: #FFD499;
+}
+
+/* Input boxes - just a bit smaller than normal so they align well. */
+input, textarea, button
+{
+	color: #000000;
+}
+input, button
+{
+}
+
+textarea
+{
+	color: #000000;
+}
+
+/* All input elements that are checkboxes or radio buttons. */
+input.check
+{
+}
+
+/* Selects are a bit smaller, because it makes them look even better 8). */
+select
+{
+	color: #000000;
+}
+
+/* Standard horizontal rule.. ([hr], etc.) */
+hr, .hrcolor
+{
+	color: #666666;
+	background-color: #666666;
+}
+
+
+/* A quote, perhaps from another post. */
+.quote
+{
+	color: #000000;
+	background-color: #FCF3E3;
+	border: 1px solid #000000;
+}
+
+/* A code block - maybe even PHP ;). */
+.code
+{
+	color: #000000;
+	background-color: #EEEEEE;
+	/* Put a nice border around it. */
+	border: 1px solid #000000;
+}
+
+/* The "Quote:" and "Code:" header parts... */
+.quoteheader, .codeheader
+{
+	color: #000000;
+}
+
+
+/* /me uses this a lot. (emote, try typing /me in a post.) */
+.meaction
+{
+	color: red;
+}
+
+/* Highlighted text - such as search results. */
+.highlight
+{
+	background-color: #FF7777;
+}
+/* The new icon */
+
+.newicon a:link, .newicon a:visited
+{
+        background-color: #FFFFFF;
+        border: #D8A259 1px solid;
+        color: #666666;
+}
+
+/* Alternating backgrounds for posts, and several other sections of the forum. */
+.windowbg
+{
+	color: #000000;
+	background: #FAEEDA url(images/lightgolden/windowbg.gif) repeat-y;
+}
+.windowbg2
+{
+	color: #000000;
+	background: #FFFDFA url(images/lightgolden/windowbg2.gif) repeat-x;
+}
+.windowbg3
+{
+	color: #000000;
+	background: #FFE4BE url(images/lightgolden/windowbg3.gif) repeat-y;
+}
+/* the today container in calendar */
+.calendar_today
+{
+	background-color: #FFFFFF;
+}
+
+/* These are used primarily for titles, but also for headers (the row that says what everything in the table is.) */
+.titlebg, tr.titlebg th, tr.titlebg td, .titlebg2, tr.titlebg2 th, tr.titlebg2 td
+{
+	color: black;
+	background-color: #FFE4BE;
+	background-image: url(images/lightgolden/titlebg.gif);
+	border-bottom: solid 1px #C3AF96;
+	border-top: solid 1px #FFFFFF;
+}
+.titlebg, .titlebg a:link, .titlebg a:visited
+{
+	color: black;
+}
+
+.titlebg a:hover
+{
+	color: #404040;
+}
+/* same as titlebg, but used where bold text is not needed */
+.titlebg2 a:link, .titlebg2 a:visited
+{
+	color: black;
+}
+
+.titlebg2 a:hover
+{
+}
+.titlebg3, tr.titlebg3 th, tr.titlebg3 td
+{
+	color: #FFFFFF;
+	background-color: #FFE4BE;
+	background-image: url(images/lightgolden/titlebg.gif);
+	background-repeat: repeat-x;
+}
+
+/* This is used for categories, page indexes, and several other areas in the forum.
+.catbg and .catbg2 is for boardindex, while .catbg3 is for messageindex and display headers*/
+.catbg , tr.catbg td , .catbg3 , tr.catbg3 td
+{
+	background-image: url(images/lightgolden/catbg.gif);
+	background-color: #E6B76F;
+	color: #FFFFFF;
+}
+.catbg2 , tr.catbg2 td
+{
+	background-image: url(images/lightgolden/catbg.gif);
+	background-color: #E6B76F;
+	color: #FFFFFF;
+}
+.catbg, .catbg2, .catbg3
+{
+	border-bottom: solid 0px #7D5E2F;
+	background-repeat: repeat-x;
+}
+.catbg, .catbg2
+{
+}
+.catbg3, tr.catbg3 td, .catbg3 a:link, .catbg3 a:visited
+{
+	color: #FFFFFF;
+}
+.catbg a:link, .catbg a:visited , .catbg2 a:link, .catbg2 a:visited
+{
+	color: #FFFFFF;
+}
+.catbg a:hover, .catbg2 a:hover, .catbg3 a:hover
+{
+	color: #FCFFE0;
+}
+/* This is used for tables that have a grid/border background color (such as the topic listing.) */
+.bordercolor
+{
+	background-color: #DFD3CA;
+}
+
+/* This is used on tables that should just have a border around them. */
+.tborder
+{
+	border: 1px solid #D8A259;
+	background-color: #FFFFFF;
+}
+
+
+
+/* Sometimes there will be an error when you post */
+.error{
+	color: red;
+}
+
+
+/* definitions for the main tab, active means the tab reflects which page is displayed */
+.maintab_first, .maintab_back, .maintab_last, .maintab_active_first, .maintab_active_back, .maintab_active_last
+{
+	color: #FFFFFF;
+}
+
+.maintab_first
+{
+	background-image: url(images/lightgolden/maintab_first.gif);
+}
+.maintab_back
+{
+	background-image: url(images/lightgolden/maintab_back.gif);
+}
+.maintab_last
+{
+	background-image: url(images/lightgolden/maintab_last.gif);
+}
+.maintab_active_first
+{
+	background-image: url(images/lightgolden/maintab_active_first.gif);
+}
+.maintab_active_back
+{
+	background-image: url(images/lightgolden/maintab_active_back.gif);
+}
+.maintab_active_last
+{
+	background-image: url(images/lightgolden/maintab_active_last.gif);
+}
+
+/* how links behave in main tab. */
+.maintab_back a:link , .maintab_back a:visited, .maintab_active_back a:link , .maintab_active_back a:visited
+{
+	color: #FFFFFF;
+}
+
+.maintab_back a:hover, .maintab_active_back a:hover
+{
+	color: #FCFFE0;
+}
+/* definitions for the mirror tab */
+.mirrortab_first, .mirrortab_back, .mirrortab_last, .mirrortab_active_first, .mirrortab_active_back, .mirrortab_active_last
+{
+	color: #FFFFFF;
+
+}
+.mirrortab_back, .mirrortab_active_back
+{
+	color: #FFFFFF;
+}
+
+.mirrortab_first
+{
+	background-image: url(images/lightgolden/mirrortab_first.gif);
+}
+.mirrortab_back
+{
+	background-image: url(images/lightgolden/mirrortab_back.gif);
+}
+.mirrortab_last
+{
+	background-image: url(images/lightgolden/mirrortab_last.gif);
+}
+.mirrortab_active_first
+{
+	background-image: url(images/lightgolden/mirrortab_active_first.gif);
+}
+.mirrortab_active_back
+{
+	background-image: url(images/lightgolden/mirrortab_active_back.gif);
+}
+.mirrortab_active_last
+{
+	background-image: url(images/lightgolden/mirrortab_active_last.gif);
+}
+
+/* how links behave in mirror tab. */
+.mirrortab_back a:link , .mirrortab_back a:visited, .mirrortab_active_back a:link , .mirrortab_active_back a:visited
+{
+	color: #FFFFFF;
+}
+
+.mirrortab_back a:hover, .mirrortab_active_back a:hover
+{
+	color: #FCFFE0;
+}
+
+.mainstrip, .mainstrip_first, .mainstrip_last
+{
+	color: #FFFFFF;
+}
+.mainstrip_first
+{
+	background-image: url(images/lightgolden/mainstrip_first.gif);
+}
+.mainstrip_last
+{
+	background-image: url(images/lightgolden/mainstrip_last.gif);
+}
+.mainstrip
+{
+	background-image: url(images/lightgolden/mainstrip.gif);
+}
+.mainstrip a:link , .mainstrip a:visited
+{
+	color: #FFFFFF;
+}
+
+.mainstrip a:hover, .mainstrip a:hover
+{
+	color: #FCFFE0;
+}
+/* The AJAX notifier */
+.ajax_in_progress
+{
+	background: #8DF39D url(images/lightgolden/loading.gif) repeat-x;
+	color: white;
+}
