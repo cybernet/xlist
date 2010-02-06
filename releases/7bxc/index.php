@@ -333,7 +333,11 @@ switch ($pageID) {
         $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->F.A.Q.");
         break;
 /*End mod by losmi faq - mod*/
-    
+    case 'moder':
+                require("$THIS_BASEPATH/moder.php");
+                $tpl->set("main_content",set_block($language["MODERATE_TORRENT"],"center",$torrenttpl->fetch(load_template("admin.moder.tpl"))));
+                $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->Torrent->Moderate");
+                break;
     case 'index':
     case '':
     default:

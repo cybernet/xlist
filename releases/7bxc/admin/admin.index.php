@@ -235,6 +235,11 @@ switch ($do)
       include("$ADMIN_PATH/admin.users.tools.php");
       $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.users.tools.tpl"))));
       break;
+
+    case 'warn':
+          include("$ADMIN_PATH/admin.warn.php");
+          $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.warn.tpl"))));
+          break;
     case 'sanity':
       require_once("$THIS_BASEPATH/include/sanity.php");
 

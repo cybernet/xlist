@@ -1,9 +1,25 @@
 <div align="center">
-  <form action="<tag:torrent.link />" method="post" name="edit" ENCTYPE="multipart/form-data">
+  <form id="postmodify" action="<tag:torrent.link />" method="post" name="edit" ENCTYPE="multipart/form-data">
     <table class="lista">
       <tr>
         <td align="right" class="header"><tag:language.FILE /></td>
         <td class="lista"><input type="text" name="name" value="<tag:torrent.filename />" size="60" /></td>
+       <script language="JavaScript" type="text/javascript">
+        var icon_urls = {
+        "ok": "images/mod/ok.png",
+        "bad": "images/mod/bad.png",
+        "um": "images/mod/um.png",
+        };
+        function showimage()
+        {
+        document.images.icons.src = icon_urls[document.forms.postmodify.icon.options[document.forms.postmodify.icon.selectedIndex].value];
+        }
+        </script>
+    
+          <tr>
+            <td class="header"><tag:language.TORRENT_MODERATION /></td>
+            <td class="lista"><tag:torrent.moder /></td>
+          </tr>
       </tr>
       <tr>
         <td align="right" class="header">Tag</td>
@@ -78,9 +94,13 @@
       </tr>
     </table>
     <input type="hidden" name="info_hash" value="<tag:torrent.info_hash />" />
+    <input type="hidden" name="ex_moder" value="<tag:torrent.ex_moder />" />
     <table>
       <td align="right">
             <input type="submit" class="btn" value="<tag:language.FRM_CONFIRM />" name="action" />
+      </td>
+      <td align="left">
+            <input type="submit" class="btn" value="<tag:language.FRM_CONFIRM_VALIDATE />" name="action" />
       </td>
       <td align="left">
             <input type="submit" class="btn" value="<tag:language.FRM_CANCEL />" name="action" />

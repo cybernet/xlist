@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 06, 2010 at 02:33 PM
+-- Generation Time: Feb 06, 2010 at 04:28 PM
 -- Server version: 5.1.37
 -- PHP Version: 5.2.10-2ubuntu6.4
 
@@ -616,6 +616,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
   `sticky` enum('0','1') NOT NULL DEFAULT '0',
   `tag` text,
   `gold` enum('0','1','2') NOT NULL DEFAULT '0',
+  `moder` enum('um','bad','ok') NOT NULL DEFAULT 'um',
   PRIMARY KEY (`info_hash`),
   KEY `filename` (`filename`),
   KEY `category` (`category`),
@@ -843,6 +844,26 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}messages` (
 
 --
 -- Dumping data for table `{$db_prefix}messages`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}moderate_reasons`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}moderate_reasons` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `description` text NOT NULL,
+  `active` enum('-1','0','1') NOT NULL DEFAULT '1',
+  `ordering` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}moderate_reasons`
 --
 
 
@@ -1459,6 +1480,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users_level` (
   `prefixcolor` varchar(200) NOT NULL DEFAULT '',
   `suffixcolor` varchar(200) NOT NULL DEFAULT '',
   `WT` int(11) NOT NULL DEFAULT '0',
+  `trusted` enum('yes','no') NOT NULL DEFAULT 'no',
+  `moderate_trusted` enum('yes','no') NOT NULL DEFAULT 'no',
   UNIQUE KEY `base` (`id`),
   KEY `id_level` (`id_level`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
@@ -1467,15 +1490,15 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users_level` (
 -- Dumping data for table `{$db_prefix}users_level`
 --
 
-INSERT INTO `{$db_prefix}users_level` (`id`, `id_level`, `level`, `view_torrents`, `edit_torrents`, `delete_torrents`, `view_users`, `edit_users`, `delete_users`, `view_news`, `edit_news`, `delete_news`, `can_upload`, `can_download`, `view_forum`, `edit_forum`, `delete_forum`, `predef_level`, `can_be_deleted`, `admin_access`, `prefixcolor`, `suffixcolor`, `WT`) VALUES
-(1, 1, 'guest', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'guest', 'no', 'no', '', '', 0),
-(2, 2, 'validating', 'yes', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'validating', 'no', 'no', '', '', 0),
-(3, 3, 'Members', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'member', 'no', 'no', '<span style=''color:#000000''>', '</span>', 0),
-(4, 4, 'Uploader', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'uploader', 'no', 'no', '', '', 0),
-(5, 5, 'V.I.P.', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'vip', 'no', 'no', '', '', 0),
-(6, 6, 'Moderator', 'yes', 'yes', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'no', 'yes', 'yes', 'yes', 'yes', 'no', 'moderator', 'no', 'no', '<span style=\\''color: #428D67\\''>', '</span>', 0),
-(7, 7, 'Administrator', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'admin', 'no', 'yes', '<span style=\\''color:#FF8000\\''>', '</span>', 0),
-(8, 8, 'Owner', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'owner', 'no', 'yes', '<span style=''color:#EE4000''>', '</span>', 0);
+INSERT INTO `{$db_prefix}users_level` (`id`, `id_level`, `level`, `view_torrents`, `edit_torrents`, `delete_torrents`, `view_users`, `edit_users`, `delete_users`, `view_news`, `edit_news`, `delete_news`, `can_upload`, `can_download`, `view_forum`, `edit_forum`, `delete_forum`, `predef_level`, `can_be_deleted`, `admin_access`, `prefixcolor`, `suffixcolor`, `WT`, `trusted`, `moderate_trusted`) VALUES
+(1, 1, 'guest', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'guest', 'no', 'no', '', '', 0, 'no', 'no'),
+(2, 2, 'validating', 'yes', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'validating', 'no', 'no', '', '', 0, 'no', 'no'),
+(3, 3, 'Members', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'member', 'no', 'no', '<span style=''color:#000000''>', '</span>', 0, 'no', 'no'),
+(4, 4, 'Uploader', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'uploader', 'no', 'no', '', '', 0, 'no', 'no'),
+(5, 5, 'V.I.P.', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'vip', 'no', 'no', '', '', 0, 'no', 'no'),
+(6, 6, 'Moderator', 'yes', 'yes', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'no', 'yes', 'yes', 'yes', 'yes', 'no', 'moderator', 'no', 'no', '<span style=\\''color: #428D67\\''>', '</span>', 0, 'no', 'no'),
+(7, 7, 'Administrator', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'admin', 'no', 'yes', '<span style=\\''color:#FF8000\\''>', '</span>', 0, 'no', 'no'),
+(8, 8, 'Owner', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'owner', 'no', 'yes', '<span style=''color:#EE4000''>', '</span>', 0, 'no', 'no');
 
 -- --------------------------------------------------------
 
@@ -1496,4 +1519,24 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}visible` (
 
 INSERT INTO `{$db_prefix}visible` (`id`, `color`, `level`) VALUES
 (1, '#000;', 7);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}warn_reasons`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}warn_reasons` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `active` enum('-1','0','1') NOT NULL DEFAULT '1',
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `text` text NOT NULL,
+  `level` int(11) NOT NULL DEFAULT '12',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}warn_reasons`
+--
+
 

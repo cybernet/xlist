@@ -251,6 +251,8 @@ $i = 0;
 
 if ($count > 0) {
   foreach ($results as $id => $data) {
+if(getmoderstatusbyhash($data["hash"]) == 'ok')
+       {
 
     /*Mod by losmi - visible mod*/
     $ok_level = $data['visible'];
@@ -505,6 +507,7 @@ if ($hover == "")
     }
     /*Mod by losmi - end visible mod*/
   $i++;
+ }
   }
 } // if count
 

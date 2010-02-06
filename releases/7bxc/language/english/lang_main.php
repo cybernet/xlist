@@ -495,4 +495,19 @@ $language["CLASSIC_DESCRIPTION"] = "Classic description";
 $language["GOLD_LEVEL"] = "Who can add gold/silver torrents";
 //GOLD ENDS
 
+$language["ACP_ADD_WARN"] = "Torrent moderation resaons";
+$language["WARN_TITLE"] = "Title of reason";
+$language["WARN_TEXT"] = "Explain reason";
+$language["WARN_ADD_REASON"] = "Add new reason";
+$language["TRUSTED"] = "Trusted";
+$language["TRUSTED_MODERATION"] = "Trusted moderation";
+$language["TORRENT_STATUS"] = "Torrent status";
+$language["TORRENT_MODERATION"] = "Moderation";
+$language["MODERATE_TORRENT"] = "Moderate";
+$language["MODERATE_STATUS_OK"] = "Ok";
+$language["MODERATE_STATUS_BAD"] = "Bad";
+$language["MODERATE_STATUS_UN"] = "Unmoderated";
+$language["FRM_CONFIRM_VALIDATE"] = "Confirm revalidation";
+$language["MODERATE_PANEL"] = "Mod Torrent Panel";
+
 ?>

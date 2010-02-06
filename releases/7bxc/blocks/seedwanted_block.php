@@ -49,6 +49,8 @@ else
        {
            while ($data = mysql_fetch_array($row))
            {
+if(getmoderstatusbyhash($data['hash']) == 'ok')
+            {
            echo "<tr>\n";
 
                if ( strlen($data["hash"]) > 0 )
@@ -122,6 +124,7 @@ else
                 }
                 echo "</tr>\n";
                 }
+} //end of getmoderstatusbyhash($data['hash'])=='ok'
            }
        }
        else

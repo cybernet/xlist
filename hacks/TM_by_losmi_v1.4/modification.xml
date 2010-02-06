@@ -47,7 +47,7 @@
 <name>"$DEFAULT_ROOT/blocks/mainusertoolbar_block.php"</name>
 
 <operation>
-    <search><![CDATA[$rowuser= mysql_fetch_array($resuser);]]></search>
+    <search><![CDATA[$rowuser = mysql_fetch_array($resuser);]]></search>
     <action>"add"</action>
     <data><![CDATA[
 
@@ -141,7 +141,7 @@ if ($CURUSER['moderate_trusted']=='yes')
     <action>"add"</action>
     <data><![CDATA[
 
-                    getmoderdetails(getmoderstatusbyhash($torlist->infohash),$torlist->infohash);
+                    $torhistory[$i]["moder"] = getmoderdetails(getmoderstatusbyhash($torlist->infohash),$torlist->infohash);
 
     ]]></data>
     <where>"after"</where>
@@ -152,7 +152,7 @@ if ($CURUSER['moderate_trusted']=='yes')
     <action>"add"</action>
     <data><![CDATA[
 
-                    getmoderdetails(getmoderstatusbyhash($torlist->infohash),$torlist->infohash);
+                    $torhistory[$i]["moder"] = getmoderdetails(getmoderstatusbyhash($torlist->infohash),$torlist->infohash);
 
     ]]>
     </data>
@@ -658,7 +658,7 @@ redirect("index.php?page=moder&hash=".$torhash."");
     <search><![CDATA["description"=>$language["ACP_STYLES"])]]></search>
     <action>"add"</action>
     <data><![CDATA[,
-        array(
+        4=>array(
                         "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=warn" ,
                         "description"=>$language["ACP_ADD_WARN"]."<font color='red'>(new)</font>")
 

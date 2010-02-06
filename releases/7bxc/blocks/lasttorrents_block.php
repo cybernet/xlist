@@ -47,8 +47,10 @@ if (max(0,$CURUSER["WT"])>0)
 
   if ($row)
   {
-      while ($data=mysql_fetch_array($row))
+      while ($data = mysql_fetch_array($row))
       {
+if(getmoderstatusbyhash($data['hash']) == 'ok')
+            {
       echo "<tr>";
           if ( strlen($data["hash"]) > 0 )
           {
@@ -153,6 +155,7 @@ if ($hover=="")
         }
            echo "</tr>\n";
            }
+} //end of getmoderstatusbyhash($data['hash'])=='ok'
       }
   }
   else

@@ -50,6 +50,10 @@
 
     <td class="header" align="center"><tag:language.MNU_FORUM /><br /><tag:language.VIEW_EDIT_DEL /></td>
 
+    <td class="header" align="center"><tag:language.TRUSTED /></td>
+
+    <td class="header" align="center"><tag:language.TRUSTED_MODERATION /></td>
+
     <td class="header" align="center"><tag:language.MNU_UPLOAD /></td>
 
     <td class="header" align="center"><tag:language.DOWNLOAD /></td>
@@ -76,6 +80,10 @@
 
     <td class="lista" align="center"><tag:groups[].forum_aut /></td>
 
+    <td class="lista" align="center"><tag:groups[].trusted /></td>
+
+    <td class="lista" align="center"><tag:groups[].moderate_trusted /></td>
+
     <td class="lista" align="center"><tag:groups[].can_upload /></td>
 
     <td class="lista" align="center"><tag:groups[].can_download /></td>
@@ -92,7 +100,7 @@
 
   <tr>
 
-    <td class="header" align="center" colspan="10"><tag:group_add_new /></td>
+    <td class="header" align="center" colspan="12"><tag:group_add_new /></td>
 
   </tr>
 
@@ -209,6 +217,21 @@
     </tr>
 
     <tr>
+
+       <td class="header"><tag:language.TRUSTED /></td>
+    
+       <td class="lista"><input type="checkbox" name="trusted" <tag:group.trusted /> /></td>
+    
+    </tr>
+    <tr>
+  
+       <td class="header"><tag:language.TRUSTED_MODERATION /></td>
+    
+       <td class="lista"><input type="checkbox" name="moderate_trusted" <tag:group.moderate_trusted /> /></td>
+
+   </tr>
+
+   <tr>
 
       <td class="header"><tag:language.GROUP_DOWNLOAD /></td>
 

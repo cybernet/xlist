@@ -104,6 +104,8 @@ if (isset($_POST["filename"]))
    $filename = mysql_real_escape_string(htmlspecialchars($_POST["filename"]));
 else
     $filename = mysql_real_escape_string(htmlspecialchars($_FILES["torrent"]["name"]));
+if (isset($_POST["moder"]))
+      $moder = $_POST["moder"];
 if (isset($_POST["tag"]))
    $tag = mysql_real_escape_string(htmlspecialchars($_POST["tag"]));
 else
@@ -485,6 +487,7 @@ if (!isset($array["announce"]))
         }
       //echo $query;
       $status = do_sqlquery($query); // makeTorrent($hash, true);
+      updatemoder($TABLE_PREFIX,$moder,$hash);
 
       /*
 Operation #2
@@ -673,6 +676,16 @@ case 0:
       $uploadtpl->set("upload.announces", $announcs);
       $uploadtpl->set("upload_categories_combo", $combo_categories);
       $uploadtpl->set("textbbcode",  $bbc);
+      if ($CURUSER['trusted'] == 'yes')
+          {
+          $moder = "ok";
+          }
+          else{
+          $moder = "um";
+          }
+          
+          $uploadtpl->set("moder", $moder);
+    // moder
       $uploadtpl->set("imageon", $GLOBALS["imageon"] == "true", TRUE);
       $uploadtpl->set("screenon", $GLOBALS["screenon"] == "true", TRUE);
       $tplfile = "upload";
