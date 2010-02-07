@@ -45,6 +45,9 @@ if ($CURUSER["admin_access"] == "yes")
    print("\n<td align=\"center\" style=\"text-align:center;\"><a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."\">".$language["MNU_ADMINCP"]."</a></td>\n");
 
 print("<td style=\"text-align:center;\" align=\"center\"><a href=\"index.php?page=usercp&amp;uid=".$CURUSER["uid"]."\">".$language["USER_CP"]."</a></td>\n");
+//friendlist
+print("<td style=\"text-align:center;\" align=\"center\"><a href=\"index.php?page=friendlist&amp;uid=".$CURUSER["uid"]."\">Friendlist</a></td>\n");
+//end friendlist
 
 if($INVITATIONSON)
 {

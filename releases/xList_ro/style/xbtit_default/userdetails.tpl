@@ -11,7 +11,11 @@
       <td class="lista" align="center" valign="middle" rowspan="4"><tag:userdetail_avatar /></td>
 
     <else:userdetail_has_avatar>
-
+  </tr>
+      <tr>
+      <td class="header">Friendlist</td>
+      <td class="lista"><tag:friend /></td>
+  </tr>
     </if:userdetail_has_avatar>
 
   </tr>

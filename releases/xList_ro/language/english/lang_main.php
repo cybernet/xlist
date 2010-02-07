@@ -485,5 +485,6 @@ $language['VALIDATION_SENT_TO_2'] = 'You will need to click on the link containe
 // Sticky
 $language["STICKY_TORRENT"] = "<b>Sticky</b>";
 $language["STICKY_TORRENT_EXPLAIN"] = "(Always on top of the torrent list)";
+$language["FRIENDLIST"] = "Friendlist";
 
 ?>

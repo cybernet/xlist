@@ -132,7 +132,8 @@ else
 $utorrents = intval($CURUSER["torrentsperpage"]);
 
 $userdetailtpl = new bTemplate();
-$userdetailtpl-> set("language",$language);
+$userdetailtpl-> set("friend","<a href=index.php?page=friendlist&do=add&friend_id=".$id."><font color=green>add to friendlist</font></a>");
+$userdetailtpl-> set("language", $language);
 $userdetailtpl-> set("userdetail_username", unesc($row["username"]). warn($row, true));
 //$userdetailtpl-> set("userdetail_no_guest", $CURUSER["uid"] > 1, TRUE);
 if ($CURUSER["uid"] > 1 && $id != $CURUSER["uid"])
