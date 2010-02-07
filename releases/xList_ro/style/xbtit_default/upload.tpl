@@ -77,6 +77,15 @@ function CheckForm()
       <td class="header" ><tag:language.FILE_NAME /></td>
       <td class="lista" align="left"><input type="text" name="filename" size="50" maxlength="200" /></td>
     </tr>
+   <if:LEVEL_VT>
+        <tr>
+      <td class="header">VIP only Torrent</td>
+           <td class="lista" align="left">
+      <input type="checkbox" name="vip_torrent">
+
+      </td>
+    </tr>
+     </if:LEVEL_VT>
     <tr>
       <td class="header" >Tag</td>
       <td class="lista" align="left"><input type="text" name="tag" size="50" maxlength="200" /></td>

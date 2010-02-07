@@ -63,6 +63,23 @@ if (!isset($TRACKER_ANNOUNCEURLS)) {
   $TRACKER_ANNOUNCEURLS = array();
   $TRACKER_ANNOUNCEURLS[] = $BASEURL.'/announce.php';
 }
+// VIP torrent
+function getLevelVT($cur_level)
+{
+    global $TABLE_PREFIX;
+    $query = "SELECT id, id_level FROM {$TABLE_PREFIX}users_level";
+    $rez = do_sqlquery($query, true);
+
+    while($row = mysql_fetch_assoc($rez))
+    {
+        if($row['id'] == $cur_level)
+        {
+            return $row['id_level'];
+        }
+    }
+    return 0;
+}
+// VIP torrent end
 /*Mod by losmi - sticky mod*/
 function getLevel($cur_level)
 {

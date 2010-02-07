@@ -93,6 +93,13 @@ switch ($action)
         $btit_settings["validation"] = $_POST["validation"];
         $btit_settings["imagecode"] = isset($_POST["imagecode"])?"true":"false";
         $btit_settings["forum"] = $_POST["f_link"];
+// vip torrent
+        $btit_settings["vip_set"] = $_POST["vip_set"];
+        $btit_settings["vip_get"] = $_POST["vip_get"];
+        $btit_settings["vip_get_one"] = $_POST["vip_get_one"];
+        $btit_settings["vip_tekst"] = $_POST["vip_tekst"];
+        $btit_settings["vip_one"] = $_POST["vip_one"];
+// vip torrent end
         $btit_settings["clocktype"] = $_POST["clocktype"];
         $btit_settings["forumblocktype"] = $_POST["forumblocktype"];
         $btit_settings["newslimit"] = $_POST["newslimit"];
@@ -252,6 +259,10 @@ switch ($action)
         $btit_settings["imageonno"] = (!$btit_settings["imageon"]?"checked=\"checked\"":"");
         $btit_settings["screenonyes"] = ($btit_settings["screenon"]?"checked=\"checked\"":"");
         $btit_settings["screenonno"] = (!$btit_settings["screenon"]?"checked=\"checked\"":"");
+// vip torrent
+        $btit_settings["vip_oneyes"] = ($btit_settings["vip_one"]?"checked=\"checked\"":"");
+        $btit_settings["vip_oneno"] = (!$btit_settings["vip_one"]?"checked=\"checked\"":"");
+// vip torrent end
         // language dropdown
         $lres = language_list();
         $btit_settings["language_combo"] = ("\n<select name=\"default_langue\" size=\"1\">");

@@ -218,6 +218,25 @@
       <td class="header"><tag:language.LIMIT_IMAGES /></td>
       <td class="lista"><input type="text" name="limit_im" value="<tag:config.limit_im />" size="40" /></td>
     </tr>
+<tr>
+      <td class="header" align="center" colspan="4">VIP Torrent Settings</td>
+      </tr>
+      <tr>
+      <td class="header">Min Level To Set</td>
+      <td class="lista"><input type="text" name="vip_set" value="<tag:config.vip_set />" size="4" /></td>
+      <td class="header" colspan="1">Level Settings</td>
+      <td class="lista">&nbsp;&nbsp;One Level&nbsp;<input type="radio" name="vip_one" value="true"<tag:config.vip_oneyes /> />&nbsp;&nbsp;From Level&nbsp;<input type="radio" name="vip_one" value="false"<tag:config.vip_oneno /> /></td>
+      </tr>
+      <tr>
+      <td class="header">If One Level</td>
+      <td class="lista"><input type="text" name="vip_get_one" value="<tag:config.vip_get_one />" size="4" /></td>
+      <td class="header">If From Level</td>
+      <td class="lista"><input type="text" name="vip_get" value="<tag:config.vip_get />" size="4" /></td>
+      </tr>
+      <tr>
+   	  <td class="header">None Vip Tekst</td>
+      <td class="lista"><input type="text" name="vip_tekst" value="<tag:config.vip_tekst />" size="60" /></td>
+      </tr>
     <tr>
       <td align="center" class="header" colspan="2"><input type="submit" name="write" class="btn" value="<tag:language.FRM_CONFIRM />" /></td>
       <td align="center" class="header" colspan="2"><input type="submit" name="cancel" class="btn" value="<tag:language.FRM_CANCEL />" /></td>

@@ -111,6 +111,13 @@ else
 
 if (isset($hash) && $hash) $url = $TORRENTSDIR . "/" . $hash . ".btf";
 else $url = 0;
+// vip torrent start
+	if (isset($_POST["vip_torrent"]) && $_POST["vip_torrent"] == 'on')
+	   $vip_torrent =  mysql_real_escape_string(1);
+	else {
+       $vip_torrent = mysql_real_escape_string(0);
+	  }
+	// vip torrent end
 
 
     /*Mod by losmi - sticky mod
@@ -499,6 +506,15 @@ if($visible != 3)
 /*
 Mod by losmi -visible torrent
 */
+// vip torrent
+if($vip_torrent != 0)
+            {
+    $query = "UPDATE {$TABLE_PREFIX}files
+                   SET vip_torrent='$vip_torrent'
+                   WHERE info_hash ='$hash'";
+    do_sqlquery($query, true);
+            }
+//vip torrent
       if ($status)
          {
          $mf = @move_uploaded_file($_FILES["torrent"]["tmp_name"] , $TORRENTSDIR . "/" . $hash . ".btf");
@@ -552,6 +568,20 @@ $status = 0;
 }
 
 $uploadtpl = new bTemplate();
+// VIP torrent
+
+    $current_level = getLevelVT($CURUSER['id_level']);
+    $level_vt = false;
+
+if ($CURUSER["uid"] > 1 && $current_level >= $btit_settings["vip_set"] && $CURUSER['can_upload'] == 'yes')
+   {
+    $uploadtpl->set("LEVEL_VT", true, FALSE);
+   }
+else
+   {
+    $uploadtpl->set("LEVEL_VT", false, TRUE);
+   }
+//VIP torrent end
 
 /*
 Mod by losmi -sticky torrent

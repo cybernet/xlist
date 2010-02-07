@@ -1,16 +1,16 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.5-rc2
+-- version 3.2.5
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 10, 2010 at 12:36 PM
+-- Generation Time: Feb 07, 2010 at 02:58 PM
 -- Server version: 5.1.37
--- PHP Version: 5.2.10-2ubuntu6.3
+-- PHP Version: 5.2.10-2ubuntu6.4
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- Database: `xxxxxx`
+-- Database: `xbtitfm`
 --
 
 -- --------------------------------------------------------
@@ -615,6 +615,9 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
   `visible` int(11) NOT NULL DEFAULT '1',
   `sticky` enum('0','1') NOT NULL DEFAULT '0',
   `tag` text,
+  `free_expire_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `free` enum('yes','no') NOT NULL DEFAULT 'no',
+  `vip_torrent` enum('0','1') NOT NULL DEFAULT '0',
   PRIMARY KEY (`info_hash`),
   KEY `filename` (`filename`),
   KEY `category` (`category`),
@@ -1181,7 +1184,12 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('price_name', '999999'),
 ('irc_server', 'irc.freenode.net'),
 ('irc_port', '6667'),
-('irc_channel', 'test_only');
+('irc_channel', 'test_only'),
+('vip_set', '6'),
+('vip_get', '4'),
+('vip_get_one', '5'),
+('vip_tekst', 'Vip Torrent Only !!'),
+('vip_one', 'true');
 
 -- --------------------------------------------------------
 
@@ -1469,3 +1477,4 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}visible` (
 
 INSERT INTO `{$db_prefix}visible` (`id`, `color`, `level`) VALUES
 (1, '#000;', 7);
+
