@@ -88,7 +88,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
    $fname = htmlspecialchars(AddSlashes(unesc($_POST["name"])));
    $torhash = AddSlashes($_POST["info_hash"]);
    write_log("Modified torrent $fname ($torhash)", "modify");
-   do_sqlquery("UPDATE {$TABLE_PREFIX}files SET tag='".AddSlashes($_POST["tag"])."', filename='$fname', comment='" . AddSlashes($_POST["comment"]) . "', category=" . intval($_POST["category"]) . "  , visible = $visible, sticky = '" . $sticky . ", vip_torrent = '" . $vip_torrent . "''WHERE info_hash='" . $torhash . "'", true);
+   do_sqlquery("UPDATE {$TABLE_PREFIX}files SET tag='".AddSlashes($_POST["tag"])."', filename='$fname', comment='" . AddSlashes($_POST["comment"]) . "', category=" . intval($_POST["category"]) . "  , visible = $visible, sticky = '" . $sticky . "', vip_torrent = '" . $vip_torrent . "' WHERE info_hash='" . $torhash . "'", true);
 $userfile = $_FILES["userfile"];
         $screen1 = $_FILES["screen1"];
         $screen2 = $_FILES["screen2"];
