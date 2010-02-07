@@ -71,7 +71,17 @@ if ($XBTT_USE) {
              list($hash, $seeders, $leechers, $bytes, $filename) = $row;
 
          $timeout = time() - (intval($GLOBALS["report_interval"] * 2));
-
+        //start freeleech
+        $queryd = do_sqlquery("SELECT * FROM `{$TABLE_PREFIX}files` WHERE `external`='no'", true);
+        $configd = mysql_fetch_array($queryd);
+        $expire_dated = $configd['free_expire_date'];
+        $expired = strtotime ($expire_dated);
+        $nowd = strtotime("now");
+        if ($nowd >= $expired )
+        {
+            do_sqlquery("UPDATE `{$TABLE_PREFIX}files` SET `free`='no' WHERE `external`='no'", true);
+        }
+        // end freeleech
          // for testing purpose -- begin
          $resupd = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}peers where lastupdate < ".$timeout ." AND infohash='$hash'");
          if (mysql_num_rows($resupd) > 0)

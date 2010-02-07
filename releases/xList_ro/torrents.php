@@ -193,11 +193,11 @@ Operation #4*/
 
     // Do the query with the uploader nickname
     if ($SHOW_UPLOADER)
-        $query = "SELECT f.sticky as sticky, tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.anonymous, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader as upname, u.username as uploader, prefixcolor, suffixcolor FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id $where GROUP BY f.sticky,$qry_order $by ORDER BY f.sticky $by $limit";
+        $query = "SELECT f.free as free, f.sticky as sticky, tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.anonymous, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader as upname, u.username as uploader, prefixcolor, suffixcolor FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id $where GROUP BY f.sticky,$qry_order $by ORDER BY f.sticky $by $limit";
 
     // Do the query without the uploader nickname
     else
-        $query = "SELECT f.sticky as sticky, tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where GROUP BY f.sticky,$qry_order $by ORDER BY f.sticky $by $limit";
+        $query = "SELECT f.free as free, f.sticky as sticky, tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where GROUP BY f.sticky,$qry_order $by ORDER BY f.sticky $by $limit";
     // End the queries
        $results = get_result($query, true);
 }
@@ -362,6 +362,18 @@ if ($hover == "")
 
    $torrents[$i]["rating"] = "$totrate";
    // end rating
+
+//free leech hack
+
+    $free_picture = '';
+     $res = get_result("SELECT * FROM {$TABLE_PREFIX}files  WHERE `external`='no'", true);
+
+    $torrents[$i]["free"] = '';
+    if($data['free'] == yes)
+    {
+    $torrents[$i]["free"] = '<img src="images/freeleech.gif" alt="free leech"/>';
+    }
+// end free leech
 
    //waitingtime
    // display only if the curuser have some WT restriction

@@ -32,7 +32,30 @@ elseif ($CURUSER["uid"] == 1)
 else
     {
     print("<td class=\"lista\" align=\"center\" style=\"text-align:center;\">".$language["WELCOME_BACK"]." " . $CURUSER["username"] . warn($CURUSER) . " \n");
-    print("<a href=\"logout.php\">(".$language["LOGOUT"].")</a></td></tr></table>\n");
+    print("<a href=\"logout.php\">(".$language["LOGOUT"].")</a></td></tr>\n");
+      // freeleech hack
+
+    $query = do_sqlquery("SELECT *, UNIX_TIMESTAMP(`free_expire_date`) AS `timestamp` FROM `{$TABLE_PREFIX}files` WHERE `external`='no'", true);
+    $row = mysql_fetch_array($query);
+
+
+ if($row["free"] == "yes")
+    { $freec = "red";
+     $till = ' To ';
+     $post = date("l jS F Y \a\\t g:i a",$row["timestamp"]);
+      }
+
+else
+   {  $freec = "blue";
+      $till = '';
+      $post = ' Not Today';
+      }
+
+
+
+print("<tr><td align='center'>Free Leech:<font color='$freec'>$till".ucfirst($post)."</font></td></tr></table>\n");
+
+// end freeleech hack
     }
 ?>
 <table cellpadding="1" cellspacing="1" width="100%">

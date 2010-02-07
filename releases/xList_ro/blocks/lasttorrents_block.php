@@ -23,9 +23,9 @@ else
   <?php
 
   if ($XBTT_USE)
-     $sql = "SELECT f.image as img, f.info_hash as hash, f.seeds+ifnull(x.seeders,0) as seeds , f.leechers + ifnull(x.leechers,0) as leechers, dlbytes AS dwned, format(f.finished+ifnull(x.completed,0),0) as finished, filename, url, info, UNIX_TIMESTAMP(data) AS added, c.image, c.name AS cname, category AS catid, size, external, uploader FROM {$TABLE_PREFIX}files as f LEFT JOIN xbt_files x ON f.bin_hash=x.info_hash LEFT JOIN {$TABLE_PREFIX}categories as c ON c.id = f.category WHERE f.leechers + ifnull(x.leechers,0) + f.seeds+ifnull(x.seeders,0) > 0 ORDER BY data DESC LIMIT " . $GLOBALS["block_last10limit"];
+     $sql = "SELECT f.free as free, f.image as img, f.info_hash as hash, f.seeds+ifnull(x.seeders,0) as seeds , f.leechers + ifnull(x.leechers,0) as leechers, dlbytes AS dwned, format(f.finished+ifnull(x.completed,0),0) as finished, filename, url, info, UNIX_TIMESTAMP(data) AS added, c.image, c.name AS cname, category AS catid, size, external, uploader FROM {$TABLE_PREFIX}files as f LEFT JOIN xbt_files x ON f.bin_hash=x.info_hash LEFT JOIN {$TABLE_PREFIX}categories as c ON c.id = f.category WHERE f.leechers + ifnull(x.leechers,0) + f.seeds+ifnull(x.seeders,0) > 0 ORDER BY data DESC LIMIT " . $GLOBALS["block_last10limit"];
   else
-     $sql = "SELECT f.image as img, info_hash as hash, seeds, leechers, dlbytes AS dwned, format(finished,0) as finished, filename, url, info, UNIX_TIMESTAMP(data) AS added, c.image, c.name AS cname, category AS catid, size, external, uploader FROM {$TABLE_PREFIX}files as f LEFT JOIN {$TABLE_PREFIX}categories as c ON c.id = f.category WHERE leechers + seeds > 0 ORDER BY data DESC LIMIT " . $GLOBALS["block_last10limit"];
+     $sql = "SELECT f.free as free, f.image as img, info_hash as hash, seeds, leechers, dlbytes AS dwned, format(finished,0) as finished, filename, url, info, UNIX_TIMESTAMP(data) AS added, c.image, c.name AS cname, category AS catid, size, external, uploader FROM {$TABLE_PREFIX}files as f LEFT JOIN {$TABLE_PREFIX}categories as c ON c.id = f.category WHERE leechers + seeds > 0 ORDER BY data DESC LIMIT " . $GLOBALS["block_last10limit"];
 
      $row = do_sqlquery($sql) or err_msg($language["ERROR"],$language["CANT_DO_QUERY"].mysql_error());
   ?>
@@ -56,14 +56,25 @@ if (max(0,$CURUSER["WT"])>0)
       echo "<a href=\"download.php?id=".$data["hash"]."&amp;f=" . rawurlencode($data["filename"]) . ".torrent\"><img src='images/torrent.gif' border='0' alt='".$language["DOWNLOAD_TORRENT"]."' title='".$language["DOWNLOAD_TORRENT"]."' /></a>";
       echo "</td>";
 
-       $data["filename"]=unesc($data["filename"]);
-       $filename=cut_string($data["filename"],intval($btit_settings["cut_name"]));
+       $data["filename"] = unesc($data["filename"]);
+       $filename = cut_string($data["filename"], intval($btit_settings["cut_name"]));
+//free leech hack
+
+    $free_picture = '';
+     $res = get_result("SELECT * FROM {$TABLE_PREFIX}files  WHERE `external`='no'", true);
+
+    $free = '';
+    if($data['free'] == yes)
+    {
+    $free = '<img src="images/freeleech.gif" alt="free leech"/>';
+    }
+// end free leech
 // Start baloon hack DT
-$hover=($data["img"]);
-if ($hover=="")
- $balon=("nocover.jpg");
+$hover = ($data["img"]);
+if ($hover == "")
+ $balon = ("nocover.jpg");
  else
- $balon =($data["img"]);
+ $balon = ($data["img"]);
 // End baloon hack DT
 
        if ($GLOBALS["usepopup"])

@@ -574,6 +574,24 @@ function killPeer($userid, $hash, $left, $assumepeer = false)
     }
 }
 
+// freeleech start
+function freeLeech($info_hash,$downloaded)
+{
+     global $TABLE_PREFIX;
+
+     $fr = mysql_query("SELECT free FROM {$TABLE_PREFIX}files WHERE info_hash=\"$info_hash\"");
+     $free = mysql_fetch_assoc($fr);
+         if ($free['free'] == "yes")
+     {
+         $downloaded = 0;
+     }
+          else
+     {
+        // no freeleech
+     }
+     return $downloaded;
+}
+// freeleech end
 
 // Transfers bytes from "left" to "dlbytes" when a peer reports in.
 function collectBytes($peer, $hash, $left, $downloaded = 0, $uploaded = 0, $pid = "")
@@ -594,6 +612,10 @@ function collectBytes($peer, $hash, $left, $downloaded = 0, $uploaded = 0, $pid 
         
     # End       
     ################################################################################################
+
+// freeleech start
+     $downloaded = freeLeech($info_hash,$downloaded);
+// freeleech end
 
     if (!$GLOBALS["countbytes"])
     {
@@ -703,6 +725,10 @@ if ($LIVESTATS)
          //      $newdown=$downloaded;
          // rev 485
 
+// freeleech start
+     $newdown = freeLeech($info_hash, $newdown);
+// freeleech end
+
          quickquery("UPDATE {$TABLE_PREFIX}users SET downloaded=IFNULL(downloaded,0)+$newdown, uploaded=IFNULL(uploaded,0)+$newup WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")."");
          }
        mysql_free_result($resstat);
@@ -757,8 +783,11 @@ switch ($event)
        killPeer($peer_id, $info_hash, $left);
 
        sendRandomPeers($info_hash);
-// cyberfun
-       // update user uploaded/downloaded
+
+// freeleech start
+$downloaded = freeLeech($info_hash, $downloaded);
+// freeleech end
+// update user uploaded/downloaded
        if (!$LIVESTATS)
             @mysql_query("UPDATE {$TABLE_PREFIX}users SET uploaded=IFNULL(uploaded,0)+$uploaded, downloaded=IFNULL(downloaded,0)+$downloaded WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")." AND id>1 LIMIT 1");
 
@@ -786,6 +815,9 @@ switch ($event)
             start($info_hash, $ip, $port, $peer_id, $left, $downloaded, $uploaded, $pid);
         else
         {
+        // freeleech start
+            $downloaded = freeLeech($info_hash, $downloaded);
+        // freeleech end
             quickQuery("UPDATE {$TABLE_PREFIX}peers SET bytes=0, status=\"seeder\", lastupdate=UNIX_TIMESTAMP(), downloaded=$downloaded, uploaded=$uploaded, pid=\"$pid\" WHERE sequence=\"".$GLOBALS["trackerid"]."\" AND infohash=\"$info_hash\"");
 
             // Race check

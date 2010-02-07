@@ -26,11 +26,9 @@ $language['ACP_USERS_TOOLS'] = 'User&rsquo;s Tools';
 $language['ACP_TORRENTS_TOOLS'] = 'Torrent&rsquo;s Tools';
 $language['ACP_OTHER_TOOLS'] = 'Others Tools';
 $language['ACP_MYSQL_STATS'] = 'MySql Statistics';
-// Featured Torrent
+// Featured Torrent start
 $language["ACP_FEATURED"] = "Featured Torrent";
-// CyBerFuN No`NaMe
-$language["ACP_CYBERFUN_TORRENTS"] = "CyBerFuN`Torrents";
-//
+// Featured Torrent end
 $language['XBTT_BACKEND'] = 'xbtt Option';
 $language['XBTT_USE'] = 'Use <a href="http://xbtt.sourceforge.net/tracker/" target="_blank">xbtt</a> as backend?';
 $language['XBTT_URL'] = 'xbtt base url e.g. http://localhost:2710';
@@ -294,7 +292,7 @@ $language["IMAGE_UPLOAD_DIR"] = "Image upload dir";
 $language["FILE_SIZELIMIT"] = "Image size limit";
 $language["ACP_VISIBLE_TORRENTS"] = "Torrent visibility";
 $language["VISIBLE_SETTINGS"] = "Torrent visibility settings";
-$language["LEVEL_VISIBLE"] = "Who can add visibility torrents? (default: Uploader)";//INVITATION SYSTEM
+$language["LEVEL_VISIBLE"] = "Who can add visibility torrents? (default: Uploader)";// INVITATION SYSTEM
 $language['ACP_INVITATION_SYSTEM'] = 'Invitation System';
 $language['ACTIVE_INVITATIONS'] = 'Activate Invitation System:';
 $language['PRIVATE_TRACKER'] = 'Private Tracker';
@@ -348,4 +346,8 @@ $language["LEVEL_STICKY"] = "Who can add sticky torrents? (default: Uploader)";
 $language["ACP_FAQ_GROUP"] = "Faq groups";
 $language["ACP_FAQ"] = "Faq";
 $language["ACP_FAQ_QUESTION"] = "Faq questions";
+// FAQ END
+// FreeLeech start
+$language['ACP_FREECTRL'] = 'Free Leech Control';
+// FreeLeech end
 ?>

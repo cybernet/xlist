@@ -1,0 +1,319 @@
+<hack>
+  <title>Free Leech Hack</title>
+  <author>DiemThuy</author>
+  <version>1.0</version>
+
+   <!--begin SQL-->
+    <file>
+    <name>"database"</name>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[ALTER TABLE `{$db_prefix}files` ADD `free_expire_date` datetime NOT NULL default '0000-00-00 00:00:00']]></data>
+    </operation>
+        <operation>
+      <action>"sql"</action>
+      <data><![CDATA[ALTER TABLE `{$db_prefix}files` ADD `free` ENUM( 'yes', 'no' ) NOT NULL DEFAULT 'no';]]></data>
+    </operation>
+  </file>
+  <!-- end SQL-->
+  
+          <!-- Start mainmenu_block.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/blocks/mainmenu_block.php"</name>
+    <operation>
+      <search><![CDATA[print("<a href=\"logout.php\">(".$language["LOGOUT"].")</a></td></tr></table>\n");]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[
+      print("<a href=\"logout.php\">(".$language["LOGOUT"].")</a></td></tr>\n");
+      // freeleech hack
+
+    $query = do_sqlquery("SELECT *, UNIX_TIMESTAMP(`free_expire_date`) AS `timestamp` FROM `{$TABLE_PREFIX}files` WHERE `external`='no'", true);
+    $row = mysql_fetch_array($query);
+
+
+ if($row["free"]=="yes")
+    { $freec="red";
+     $till=' To ';
+     $post=date("l jS F Y \a\\t g:i a",$row["timestamp"]);
+      }
+
+else
+   {  $freec="blue";
+      $till='';
+      $post=' Not Today';
+      }
+
+
+
+print("<tr><td align='center'>Free Leech:<font color='$freec'>$till".ucfirst($post)."</font></td></tr></table>\n");
+
+// end freeleech hack
+]]></data>
+
+    </operation>
+      </file>
+           <!-- end mainmenu_block.php -->
+  
+        <!-- Start lasttorrents_block.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/blocks/lasttorrents_block.php"</name>
+    <operation>
+      <search><![CDATA[if ($XBTT_USE)
+     $sql = "SELECT]]></search>
+      <action>"add"</action>
+      <data><![CDATA[ f.free as free,]]></data>
+       <where>"after"</where>
+    </operation>
+        <operation>
+      <search><![CDATA[else
+     $sql = "SELECT]]></search>
+      <action>"add"</action>
+      <data><![CDATA[ f.free as free,]]></data>
+       <where>"after"</where>
+    </operation>
+            <operation>
+      <search><![CDATA[$filename=cut_string($data["filename"],intval($btit_settings["cut_name"]));]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+     //free leech hack
+
+    $free_picture ='';
+     $res=get_result("SELECT * FROM {$TABLE_PREFIX}files  WHERE `external`='no'", true);
+
+    $free='';
+    if($data['free'] == yes)
+    {
+    $free = '<img src="images/freeleech.gif" alt="free leech"/>';
+    }
+// end free leech
+          ]]></data>
+       <where>"after"</where>
+   </file>
+     <!-- end lasttorrents_block.php -->
+  
+      <!-- Start torrents.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/torrents.php"</name>
+    <operation>
+      <search><![CDATA[if ($SHOW_UPLOADER)
+        $query = "SELECT]]></search>
+      <action>"add"</action>
+      <data><![CDATA[ f.free as free,]]></data>
+       <where>"after"</where>
+    </operation>
+        <operation>
+      <search><![CDATA[else
+        $query = "SELECT]]></search>
+      <action>"add"</action>
+      <data><![CDATA[ f.free as free,]]></data>
+       <where>"after"</where>
+    </operation>
+            <operation>
+      <search><![CDATA[if (intval($CURUSER["WT"])>0)]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+        //free leech hack
+
+    $free_picture ='';
+     $res=get_result("SELECT * FROM {$TABLE_PREFIX}files  WHERE `external`='no'", true);
+
+    $torrents[$i]["free"]='';
+    if($data['free'] == yes)
+    {
+    $torrents[$i]["free"] = '<img src="images/freeleech.gif" alt="free leech"/>';
+    }
+// end free leech
+          ]]></data>
+       <where>"before"</where>
+    </operation
+
+  </file>
+  <!-- End torrent.php -->
+  
+    <!-- start torrent.list.tpl -->
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/torrent.list.tpl"</name>
+    <operation>
+      <search><![CDATA[<td align="left" class="lista" style="white-space:wrap;padding-left:10px;"><tag:torrents[].filename />]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[<tag:torrents[].free />]]></data>
+    </operation>
+  </file>
+     <!-- end torrent.list.tpl -->
+     
+    <!-- Start announce.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/announce.php"</name>
+    <operation>
+      <search><![CDATA[function collectBytes($peer, $hash, $left, $downloaded=0, $uploaded=0, $pid="")]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+// freeleech start
+function freeLeech($info_hash,$downloaded)
+{
+     global $TABLE_PREFIX;
+
+     $fr=mysql_query("SELECT free FROM {$TABLE_PREFIX}files WHERE info_hash=\"$info_hash\"");
+     $free=mysql_fetch_assoc($fr);
+         if ($free['free']=="yes")
+     {
+         $downloaded = 0;
+     }
+          else
+     {
+        // no freeleech
+     }
+     return $downloaded;
+}
+// freeleech end
+          ]]></data>
+       <where>"before"</where>
+    </operation>
+        <operation>
+      <search><![CDATA[if (!$GLOBALS["countbytes"])]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+// freeleech start
+     $downloaded = freeLeech($info_hash,$downloaded);
+// freeleech end
+          ]]></data>
+       <where>"before"</where>
+    </operation>
+            <operation>
+      <search><![CDATA[quickquery("UPDATE {$TABLE_PREFIX}users SET downloaded=IFNULL(downloaded,0)+$newdown, uploaded=IFNULL(uploaded,0)+$newup WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")."");]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+// freeleech start
+     $newdown = freeLeech($info_hash,$newdown);
+// freeleech end
+          ]]></data>
+       <where>"before"</where>
+    </operation>
+                <operation>
+      <search><![CDATA[@mysql_query("UPDATE {$TABLE_PREFIX}users SET uploaded=IFNULL(uploaded,0)+$uploaded, downloaded=IFNULL(downloaded,0)+$downloaded WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")." AND id>1 LIMIT 1");]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+        // freeleech start
+         $downloaded = freeLeech($info_hash, $downloaded);
+       // freeleech end
+          ]]></data>
+       <where>"before"</where>
+    </operation>
+                    <operation>
+      <search><![CDATA[quickQuery("UPDATE {$TABLE_PREFIX}peers SET bytes=0, status=\"seeder\", lastupdate=UNIX_TIMESTAMP(), downloaded=$downloaded, uploaded=$uploaded, pid=\"$pid\" WHERE sequence=\"".$GLOBALS["trackerid"]."\" AND infohash=\"$info_hash\"");]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+        // freeleech start
+         $downloaded = freeLeech($info_hash, $downloaded);
+        // freeleech end
+          ]]></data>
+       <where>"before"</where>
+    </operation>
+  </file>
+  <!-- End announce.php -->
+  
+    <!-- start sanity.php-->
+      <file>
+    <name>"$DEFAULT_ROOT/include/sanity.php"</name>
+    <operation>
+      <search><![CDATA[// for testing purpose -- begin]]></search>
+      <action>"add"</action>
+      <where>"before"</where>
+      <data><![CDATA[
+       //start freeleech
+        $queryd = do_sqlquery("SELECT * FROM `{$TABLE_PREFIX}files` WHERE `external`='no'", true);
+        $configd = mysql_fetch_array($queryd);
+        $expire_dated = $configd['free_expire_date'];
+        $expired = strtotime ($expire_dated);
+        $nowd = strtotime("now");
+        if ($nowd >= $expired )
+        {
+            do_sqlquery("UPDATE `{$TABLE_PREFIX}files` SET `free`='no' WHERE `external`='no'", true);
+        }
+        // end freeleech
+        ]]></data>
+    </operation>
+   </file>
+       <!-- end sanity.php-->
+       
+    <!-- start admin.menu.php-->
+    <file>
+    <name>"$DEFAULT_ROOT/admin/admin.menu.php"</name>
+    <operation>
+              <search><![CDATA[2=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=language&amp;action=read" ,
+                    "description"=>$language["ACP_LANGUAGES"]),]]></search>
+          <action>"add"</action>
+          <data><![CDATA[
+          31=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=free" ,
+                    "description"=>$language["ACP_FREECTRL"]),
+                    ]]></data>
+       <where>"after"</where>
+    </operation>
+    </file>
+  <!-- End admin.menu.php -->
+  
+  <!-- Start admin.index.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/admin/admin.index.php"</name>
+    <operation>
+      <search><![CDATA[case 'groups':
+      include("$ADMIN_PATH/admin.groups.php");
+      $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.groups.tpl"))));
+      break;]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+      case 'free':
+          include("$ADMIN_PATH/admin.freecontrol.php");
+          $tpl->set("main_content",set_block($language["ACP_FREECTRL"],"center",$admintpl->fetch(load_template("admin.freecontrol.tpl"))));
+          break;
+          ]]></data>
+       <where>"after"</where>
+    </operation>
+  </file>
+  <!-- End admin.index.php -->
+ 
+<!-- Start lang_admin.php -->
+ 
+  <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_admin.php"</name>
+    <operation>
+     <search><![CDATA[?>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[$language['ACP_FREECTRL']='Free Leech Control';]]></data>
+      <where>"before"</where>
+    </operation>
+ <!-- End lang_admin.php -->
+ 
+     <!-- Copy image-->
+    <file>
+  <name>"$CURRENT_FOLDER/files/freeleech.gif"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/images"</where>
+      <data>"freeleech.gif"</data>
+    </operation>
+  </file>
+     <!-- end Copy image-->
+
+    <!-- Copy admin files-->
+   <file>
+  <name>"$CURRENT_FOLDER/files/admin.freecontrol.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/admin"</where>
+      <data>"admin.freecontrol.php"</data>
+    </operation>
+  </file>
+  <file>
+  <name>"$CURRENT_FOLDER/files/admin.freecontrol.tpl"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_STYLE_PATH"</where>
+      <data>"admin.freecontrol.tpl"</data>
+    </operation>
+  </file>
+  <!-- end copy admin files , end hack  -->
+ </hack>

@@ -42,9 +42,12 @@ else
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=language&amp;action=read" ,
                     "description"=>$language["ACP_LANGUAGES"]),
                           3=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=free" ,
+                    "description"=>$language["ACP_FREECTRL"]),
+                          4=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=style&amp;action=read" ,
                     "description"=>$language["ACP_STYLES"])  ,
-                          4=>array(
+                          5=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=seedbonus" ,
                     "description"=>$language["ACP_SEEDBONUS"])
                                  )),
