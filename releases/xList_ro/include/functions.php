@@ -1092,6 +1092,10 @@ if ( !function_exists('htmlspecialchars_decode') ) {
     return strtr($text, array_flip(get_html_translation_table(HTML_SPECIALCHARS)));
   }
 }
-
+if (!function_exists("stripos")) {
+  function stripos($str,$needle) {
+   return strpos(strtolower($str),strtolower($needle));
+  }
+}
 // EOF
 ?>

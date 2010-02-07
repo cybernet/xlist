@@ -236,6 +236,15 @@ switch ($do)
       include("$ADMIN_PATH/admin.users.tools.php");
       $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.users.tools.tpl"))));
       break;
+    case 'banclient':
+      include("$ADMIN_PATH/admin.ban_client.php");
+      $tpl->set("main_content",set_block($language["BAN_CLIENT"],"center",$admintpl->fetch(load_template("admin.ban_client.tpl"))));
+      break;
+      
+    case 'clearclientban':
+      include("$ADMIN_PATH/admin.client_clearban.php");
+      $tpl->set("main_content",set_block($language["REMOVE_CLIENTBAN"],"center",$admintpl->fetch(load_template("admin.client_clearban.tpl"))));
+      break;
     case 'sanity':
       require_once("$THIS_BASEPATH/include/sanity.php");
 
