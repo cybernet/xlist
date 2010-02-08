@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 07, 2010 at 06:30 PM
+-- Generation Time: Feb 07, 2010 at 08:19 PM
 -- Server version: 5.1.37
 -- PHP Version: 5.2.10-2ubuntu6.4
 
@@ -51,6 +51,30 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}ajax_ratings` (
 
 --
 -- Dumping data for table `{$db_prefix}ajax_ratings`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}bannedclient`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}bannedclient` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `peer_id` varchar(16) NOT NULL,
+  `peer_id_ascii` varchar(8) NOT NULL,
+  `user_agent` varchar(255) NOT NULL,
+  `client_name` varchar(255) NOT NULL,
+  `reason` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `peer_id` (`peer_id`),
+  KEY `peer_id_ascii` (`peer_id_ascii`),
+  KEY `user_agent` (`user_agent`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}bannedclient`
 --
 
 
@@ -1396,6 +1420,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
   `invited_by` int(10) NOT NULL DEFAULT '0',
   `invitedate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `seedbonus` decimal(12,6) NOT NULL DEFAULT '0.000000',
+  `parked` int(9) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `id_level` (`id_level`),
@@ -1407,8 +1432,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
 -- Dumping data for table `{$db_prefix}users`
 --
 
-INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `pm_mail_notify`, `status_comment_notify`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `warn`, `warnreason`, `warnadded`, `warns`, `warnaddedby`, `custom_title`, `smf_fid`, `invitations`, `invited_by`, `invitedate`, `seedbonus`) VALUES
-(1, 'Guest', '', 1, 0, 'none', 'true', 'true', 1, 1, '0000-00-00 00:00:00', '2009-10-05 10:23:36', 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 'no', '', '0000-00-00 00:00:00', 0, '', NULL, 0, 0, 0, '0000-00-00 00:00:00', '0.000000');
+INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `pm_mail_notify`, `status_comment_notify`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `warn`, `warnreason`, `warnadded`, `warns`, `warnaddedby`, `custom_title`, `smf_fid`, `invitations`, `invited_by`, `invitedate`, `seedbonus`, `parked`) VALUES
+(1, 'Guest', '', 1, 0, 'none', 'true', 'true', 1, 1, '0000-00-00 00:00:00', '2009-10-05 10:23:36', 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 'no', '', '0000-00-00 00:00:00', 0, '', NULL, 0, 0, 0, '0000-00-00 00:00:00', '0.000000', 0);
 
 -- --------------------------------------------------------
 
@@ -1442,7 +1467,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users_level` (
   `WT` int(11) NOT NULL DEFAULT '0',
   UNIQUE KEY `base` (`id`),
   KEY `id_level` (`id_level`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `{$db_prefix}users_level`
@@ -1456,7 +1481,8 @@ INSERT INTO `{$db_prefix}users_level` (`id`, `id_level`, `level`, `view_torrents
 (5, 5, 'V.I.P.', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'vip', 'no', 'no', '', '', 0),
 (6, 6, 'Moderator', 'yes', 'yes', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'no', 'yes', 'yes', 'yes', 'yes', 'no', 'moderator', 'no', 'no', '<span style=\\''color: #428D67\\''>', '</span>', 0),
 (7, 7, 'Administrator', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'admin', 'no', 'yes', '<span style=\\''color:#FF8000\\''>', '</span>', 0),
-(8, 8, 'Owner', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'owner', 'no', 'yes', '<span style=''color:#EE4000''>', '</span>', 0);
+(8, 8, 'Owner', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'owner', 'no', 'yes', '<span style=''color:#EE4000''>', '</span>', 0),
+(11, 3, 'Parked', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'member', 'yes', 'no', '<span style=''color:#663300''>', '</span>', 0);
 
 -- --------------------------------------------------------
 

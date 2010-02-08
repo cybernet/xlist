@@ -118,21 +118,43 @@ switch ($action)
           $set[]="pm_mail_notify=".sqlesc($_POST["pm_mail_notification"]);
 	  $set[]="status_comment_notify=".sqlesc($_POST["status_comment_notify"]);
 
-               $updateset=implode(",",$set);
+               $updateset = implode(",",$set);
 
                // Reverify Mail Hack by Petr1fied - Start --->
                // If they've tried to change their e-mail, give them a message telling them as much
-               if (($email!="")&&($VALIDATION=="user")&&($email!=$CURUSER["email"]))
+               if (($email != "") && ($VALIDATION == "user") && ($email != $CURUSER["email"]))
                   {
                   success_msg($language["EMAIL_VERIFY_BLOCK"], "".$language["EMAIL_VERIFY_SENT1"]." ".$email." ".$language["EMAIL_VERIFY_SENT2"]."<a href=\"".$BASEURL."\">".$language["MNU_INDEX"]."</a>");
-                  stdfoot(true,false);
+                  stdfoot(true, false);
                   exit;
                   }
-               elseif ($updateset!="")
+               elseif ($updateset = implode(",",$set));
                // <--- Reverify Mail Hack by Petr1fied - End
+               
+                $park = $_POST['park'];
+                if(!is_numeric($park)) {        err_msg(ERROR,"What are you trying to do?");
+                       stdfoot();
+                       exit;
+                }
+               if ($updateset != "")
                   {
-                  do_sqlquery("UPDATE {$TABLE_PREFIX}users SET $updateset WHERE id='".$uid."'") or die(mysql_error());
-
+                  mysql_query("UPDATE {$TABLE_PREFIX}users SET $updateset WHERE id=$uid") or die(mysql_error());
+                  if($park == 0) { 
+                        
+                        $r = mysql_query("SELECT parked from {$TABLE_PREFIX}users where id = $uid");
+                        $p = mysql_result($r, 0, "parked");
+                        if ($p != 0) {
+                            mysql_query("UPDATE {$TABLE_PREFIX}users SET id_level=$p WHERE id=$uid") or die(mysql_error()); 
+                            mysql_query("UPDATE {$TABLE_PREFIX}users SET parked='0' WHERE id=$uid") or die(mysql_error()); 
+                        }
+                  } else {
+                        $r = mysql_query("SELECT id_level from {$TABLE_PREFIX}users where id = $uid");
+                        $cc = mysql_result($r,0,"id_level");
+                        $r = mysql_query("UPDATE {$TABLE_PREFIX}users SET parked = $cc where id = $uid");
+                        $r = mysql_query("UPDATE {$TABLE_PREFIX}users SET id_level = 13 where id = $uid");
+                  }
+                  
+                  
                   success_msg($language["SUCCESS"], $language["INF_CHANGED"]."<br /><a href=\"index.php?page=usercp&amp;uid=".$uid."\">".$language["BCK_USERCP"]."</a>");
                   stdfoot(true,false);
                   exit;
@@ -239,29 +261,48 @@ switch ($action)
       $usercptpl->set("flag",$flagtpl);
 
       //timezone list
-      $tres=timezone_list();
-      $tztpl=array();
+      $tres = timezone_list();
+      $tztpl = array();
         foreach($tres as $timezone)
           {
-        $tztpl["tz_combo"].="\n<option ";
-          if ($timezone["difference"]==$CURUSER["time_offset"])
-        $tztpl["tz_combo"].="selected=\"selected\" ";
-        $tztpl["tz_combo"].="value=\"".$timezone["difference"]."\">".unesc($timezone["timezone"])."</option>";
-        $tztpl["tz_combo"].=($option);
+        $tztpl["tz_combo"] .= "\n<option ";
+          if ($timezone["difference"] == $CURUSER["time_offset"])
+        $tztpl["tz_combo"] .= "selected=\"selected\" ";
+        $tztpl["tz_combo"] .= "value=\"".$timezone["difference"]."\">".unesc($timezone["timezone"])."</option>";
+        $tztpl["tz_combo"] .= ($option);
           }
         unset($tres);
-      $usercptpl->set("tz",$tztpl);
+      $usercptpl->set("tz", $tztpl);
 
-      if ($FORUMLINK=="" || $FORUMLINK=="internal")
+      if ($FORUMLINK == "" || $FORUMLINK == "internal")
         {
-          $usercptpl->set("INTERNAL_FORUM",true,true);
-          $profiletpl["topicsperpage"]=$CURUSER["topicsperpage"];
-          $profiletpl["postsperpage"]=$CURUSER["postsperpage"];
+          $usercptpl->set("INTERNAL_FORUM", true, true);
+          $profiletpl["topicsperpage"] = $CURUSER["topicsperpage"];
+          $profiletpl["postsperpage"] = $CURUSER["postsperpage"];
         }
 
-      $profiletpl["torrentsperpage"]=$CURUSER["torrentsperpage"];
-      $profiletpl["frm_cancel"]="index.php?page=usercp&amp;uid=".$uid."";
-      $usercptpl->set("profile",$profiletpl);
+      $profiletpl["torrentsperpage"] = $CURUSER["torrentsperpage"];
+      $profiletpl["frm_cancel"] = "index.php?page=usercp&amp;uid=".$uid."";
+
+
+        $uid = $CURUSER['uid'];
+                        $r = mysql_query("SELECT parked from {$TABLE_PREFIX}users where id = $uid");
+                        $p = mysql_result($r,0,"parked");
+            
+                      if($p != 0) {
+                                  $profiletpl["parked"] .= "<input name=\"park\" id=\"park\" type=\"radio\" value=\"0\" />
+            ".$language["NO"]."" ;      
+                      $profiletpl["parked"] .= "<input name=\"park\" id=\"park\" type=\"radio\" value=\"1\" checked=\"checked\"  />
+              ".$language["YES"].""  ;
+                  
+              } else { 
+                      $profiletpl["parked"] .= "<input name=\"park\" id=\"park\" type=\"radio\" value=\"0\" checked=\"checked\"  />
+              ".$language["NO"].""  ;
+              $profiletpl["parked"] .= "<input name=\"park\" id=\"park\" type=\"radio\" value=\"1\" />
+            ".$language["YES"]."" ; 
+            $profiletpl["parked"] .= ($option);
+                            }
+      $usercptpl->set("profile", $profiletpl);
     break;
 }
 ?>
