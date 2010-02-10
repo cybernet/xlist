@@ -12,3 +12,14 @@ KEY `added` (`added`)
 ALTER TABLE `{$db_prefix}users_level` ADD `STYLE` INT( 11 ) NOT NULL DEFAULT '1';
 INSERT INTO `{$db_prefix}settings` SET `key`='style', `value`='false';
 -- end of rev 223
+INSERT INTO `{$db_prefix}users_level` 
+      ( `id_level` , `level` , `view_torrents` , `edit_torrents` ,
+      `delete_torrents` , `view_users` , `edit_users` , `delete_users` , 
+      `view_news` , `edit_news` , `delete_news` , `can_upload` , `can_download` , 
+      `view_forum` , `edit_forum` , `delete_forum` , `predef_level` , `can_be_deleted` ,
+      `admin_access` , `prefixcolor` , `suffixcolor` , `WT`  ) 
+       VALUES(
+       '3', 'Parked', 'no', 'no', 'no', 'no', 'no', 'no', 'yes',
+       'no', 'no', 'no', 'no', 'no', 'no', 'no', 'member', 'yes', 'no', '<span style=\'color:#663300\'>', '</span>', '0');
+ALTER TABLE `{$db_prefix}users` ADD `parked` INT( 9 ) NOT NULL DEFAULT '0';
+-- end of rev 224
