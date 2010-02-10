@@ -64,8 +64,14 @@ else
                     "description"=>$language["ACP_CENSORED"]),
                           3=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=blocks&amp;action=read" ,
-                    "description"=>$language["ACP_BLOCKS"]) ,
+                    "description"=>$language["ACP_BLOCKS"]),
                           4=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=rules_cat" ,
+                    "description"=>$language["ACP_RULES_GROUP"]),
+                          5=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=rules" ,
+                    "description"=>$language["ACP_RULES"]),
+                          6=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=featured&amp;action=read" ,
                     "description"=>$language["ACP_FEATURED"])
                     )

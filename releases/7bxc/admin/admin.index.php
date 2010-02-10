@@ -170,6 +170,17 @@ switch ($do)
       include("$ADMIN_PATH/admin.warned_users.php");
       $tpl->set("main_content",set_block("Warned users","center",$admintpl->fetch(load_template("admin.warned_users.tpl"))));
       break; 
+
+/*Mod by losmi - rules*/
+     case 'rules':
+      include("$ADMIN_PATH/admin.rules.php");
+      $tpl->set("main_content",set_block($language["ACP_RULES"],"center",$admintpl->fetch(load_template("admin.rules.tpl"))));
+      break;
+     case 'rules_cat':
+      include("$ADMIN_PATH/admin.rules.categories.php");
+      $tpl->set("main_content",set_block($language["ACP_RULES_GROUP"],"center",$admintpl->fetch(load_template("admin.rules.categories.tpl"))));
+      break;
+/*End mod by losmi - rules*/
     
     case 'mysql_stats':
       $content="";

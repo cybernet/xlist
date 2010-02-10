@@ -262,6 +262,26 @@ function updatemoder($prefix, $moder, $id)
 
     return $results['moder'];
   }
+
+/*Mod by losmi -  rules mod */
+function genrelistrules($append='',$table='rules')
+     {
+
+     global $TABLE_PREFIX;
+
+    $ret = array();
+    $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}$table WHERE active != '-1' ".$append." ORDER BY sort_index");
+
+    while ($row = mysql_fetch_assoc($res))
+        $ret[] = $row;
+
+    unset($row);
+    mysql_free_result($res);
+
+    return $ret;
+}
+/*End mod by losmi - rules mod*/
+
 function load_css($css_name) {
 // control if input template name exist in current user's stylepath, else return default
   global $BASEURL, $STYLEPATH, $STYLEURL;
@@ -402,7 +422,7 @@ function print_designer() {
      $CyBerFuN_xBTiT_version = '' . $CyBerFuN_xBTiT_version . '';
      $design_copyright = '' . $design_copyright . '';
   } else
-     $CyBerFuN_xBTiT_version = 'v1.1.2 ( 7bxc release rev227 )';
+     $CyBerFuN_xBTiT_version = 'v1.1.2 ( 7bxc release rev228 )';
      $design_copyright = '[&nbsp;&nbsp;<u>CyBerFuN xBTiT ' . $CyBerFuN_xBTiT_version . ' By cybernet</u>: <a href="http://xList.ro/" target="_blank">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By <a href="http://www.btiteam.org/" target="_blank">BTiTeam.org</a></u>&nbsp;]<br />';
   return $design_copyright;
 }

@@ -52,6 +52,10 @@ if ($CURUSER["view_torrents"] == "yes")
     {
     print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=torrents\">".$language["MNU_TORRENT"]."</a></td>\n");
     print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=extra-stats\">".$language["MNU_STATS"]."</a></td>\n");
+/*Mod by losmi -  rules mod */
+    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=rules\">".$language["MNU_RULES"]."</a></td>\n");
+   
+/*End mod by losmi -  rules mod*/
    }
 if ($CURUSER["can_upload"] == "yes")
    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=upload\">".$language["MNU_UPLOAD"]."</a></td>\n");

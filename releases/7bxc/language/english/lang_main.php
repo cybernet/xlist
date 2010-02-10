@@ -553,5 +553,12 @@ $language["DB_FIRST_TIME"] = "No backup done yet!";
 $language["DB_FOLDER"] = "Destination's Folder";
 $language["DB_EMAIL"] = "Destination's email";
 $language["DB_AUTO"] = "Automatic Backup every x days (0 = disabled)";
+//RULES
+$language["RULES_SORT"] = "Rule num(sort)";
+$language["RULES"] = "Rules";
+$language["RULE"] = "Rule";
+$language["RULE_ALL"] = "All rules";
+$language["MNU_RULES"] = "Rules";
+$language["RULES_ADD"] = "Insert rule";
 
 ?>

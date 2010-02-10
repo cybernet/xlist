@@ -300,6 +300,14 @@ switch ($pageID) {
         $tpl->set("main_title",$btit_settings["name"]." .::. "."Signup");
         break;
 
+/*Mod by losmi - rules mod*/
+      case 'rules':
+        require("$THIS_BASEPATH/rules.php");
+        $tpl->set("main_content",set_block($language["RULES"],"center",$rulestpl->fetch(load_template("rules.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Rules");
+        break;
+    /*End mod by losmi rules - mod*/
+
     case 'torrent-details':
     case 'details':
         require("$THIS_BASEPATH/details.php");

@@ -29,3 +29,19 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('backup__add_data', 'true');
 INSERT INTO `{$db_prefix}tasks` (`task`, `last_time`) VALUES ('backup', '0');
 -- end of rev 227
+CREATE TABLE `{$db_prefix}rules` (
+  `id` int(11) NOT NULL auto_increment,
+  `text` text NOT NULL,
+  `active` enum('-1','0','1') NOT NULL default '1',
+  `sort_index` int(11) NOT NULL default '0',
+  `cat_id` int(11) NOT NULL,
+  PRIMARY KEY  (`id`)
+) TYPE=MyISAM;
+CREATE TABLE `{$db_prefix}rules_group` (
+  `id` int(11) NOT NULL auto_increment,
+  `active` enum('-1','0','1') NOT NULL default '1',
+  `title` varchar(255) NOT NULL,
+  `sort_index` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) TYPE=MyISAM;
+-- end of rev 228

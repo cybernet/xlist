@@ -367,5 +367,8 @@ $language["MODERATE_STATUS_UN"] = "Unmoderated";
 $language["FRM_CONFIRM_VALIDATE"] = "Confirm revalidation";
 $language["MODERATE_PANEL"] = "Mod Torrent Panel";
 $language["GROUP_STYLE"] = "Style";
+//RULES
+$language["ACP_RULES_GROUP"] = "Rules groups";
+$language["ACP_RULES"] = "Rules";
 
 ?>

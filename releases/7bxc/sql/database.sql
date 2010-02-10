@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 10, 2010 at 08:45 PM
+-- Generation Time: Feb 10, 2010 at 09:13 PM
 -- Server version: 5.1.37
 -- PHP Version: 5.2.10-2ubuntu6.4
 
@@ -1171,6 +1171,45 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}readposts` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `{$db_prefix}rules`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}rules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `text` text NOT NULL,
+  `active` enum('-1','0','1') NOT NULL DEFAULT '1',
+  `sort_index` int(11) NOT NULL DEFAULT '0',
+  `cat_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}rules`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}rules_group`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}rules_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `active` enum('-1','0','1') NOT NULL DEFAULT '1',
+  `title` varchar(255) NOT NULL,
+  `sort_index` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}rules_group`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `{$db_prefix}settings`
 --
 
@@ -1512,7 +1551,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users_level` (
   `STYLE` int(11) NOT NULL DEFAULT '1',
   UNIQUE KEY `base` (`id`),
   KEY `id_level` (`id_level`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `{$db_prefix}users_level`

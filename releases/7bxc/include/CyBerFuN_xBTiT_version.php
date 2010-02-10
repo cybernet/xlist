@@ -1,3 +1,3 @@
 <?php
-$CyBerFuN_xBTiT_version = 'v1.1.2 ( 7bxc release rev227 )';
+$CyBerFuN_xBTiT_version = 'v1.1.2 ( 7bxc release rev228 )';
 ?>
