@@ -22,4 +22,4 @@ INSERT INTO `{$db_prefix}users_level`
        '3', 'Parked', 'no', 'no', 'no', 'no', 'no', 'no', 'yes',
        'no', 'no', 'no', 'no', 'no', 'no', 'no', 'member', 'yes', 'no', '<span style=\'color:#663300\'>', '</span>', '0');
 ALTER TABLE `{$db_prefix}users` ADD `parked` INT( 9 ) NOT NULL DEFAULT '0';
--- end of rev 224
+-- end of rev 226
