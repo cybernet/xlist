@@ -137,6 +137,53 @@ function send_mail($rec_email, $subject, $message, $IsHtml = false, $cc = array(
     return ($mail->Send())?true:$mail->ErrorInfo;
 }
 
+function send_mail_with_attachment($rec_email,$subject,$message, $IsHtml=false, $cc=array(), $bcc=array(), $attachments=array()) {
+    global $THIS_BASEPATH, $btit_settings;
+
+    if (!method_exists('PHPMailer','IsMail'))
+        include($THIS_BASEPATH.'/phpmailer/class.phpmailer.php');
+    $mail=new PHPMailer();
+
+    if ($btit_settings['mail_type']=='php') {
+        $mail->IsMail();                                   # send via mail
+        if (!empty($cc))
+            $mail->AddCustomHeader('Cc: '.implode(',',$cc));
+        if (!empty($bcc))
+            $mail->AddCustomHeader('Bcc: '.implode(',',$bcc));
+    } else {
+        $mail->IsSMTP();                                   # send via SMTP
+        $mail->Host     = $btit_settings['smtp_server'];   # SMTP servers
+        $mail->Port     = $btit_settings['smtp_port'];     # SMTP port
+        $mail->SMTPAuth = true;                            # turn on SMTP authentication
+        $mail->Username = $btit_settings['smtp_username']; # SMTP username
+        $mail->Password = $btit_settings['smtp_password']; # SMTP password
+        if (!empty($cc))
+            foreach($cc as $carbon_copy)
+                $mail->AddCC($carbon_copy[0],$carbon_copy[0]);
+
+        if (!empty($bcc))
+            foreach($bcc as $blind_carbon_copy)
+                $mail->AddBCC($blind_carbon_copy[0],$blind_carbon_copy[0]);
+    }
+
+    $mail->From     = $btit_settings['email'];
+    $mail->FromName = $btit_settings['name'];
+    $mail->CharSet  = $btit_settings['default_charset'];
+    $mail->IsHTML($IsHtml);
+    $mail->AddAddress($rec_email);
+    $mail->AddReplyTo($btit_settings['email'],$btit_settings['name']);
+    $mail->Subject  =  $subject;
+    $mail->Body     =  $message;
+
+    if (!empty($attachments))
+       foreach ($attachments as $att_file)
+       {
+           $mail->AddAttachment($att_file);
+       }
+
+    return ($mail->Send())?true:$mail->ErrorInfo;
+}
+
 function get_remote_file($http_url, $mode = 'r') {
     # for first thing we will try with cURL
     if (function_exists('curl_init')) {

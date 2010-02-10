@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 10, 2010 at 05:34 PM
+-- Generation Time: Feb 10, 2010 at 08:45 PM
 -- Server version: 5.1.37
 -- PHP Version: 5.2.10-2ubuntu6.4
 
@@ -1251,7 +1251,10 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('irc_server', 'irc.freenode.net'),
 ('irc_port', '6667'),
 ('irc_channel', 'test_only'),
-('style', 'false');
+('style', 'false'),
+('backup__add_drop_table', 'true'),
+('backup__add_structure', 'true'),
+('backup__add_data', 'true');
 
 -- --------------------------------------------------------
 
@@ -1320,7 +1323,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}tasks` (
 
 INSERT INTO `{$db_prefix}tasks` (`task`, `last_time`) VALUES
 ('sanity', 1254724448),
-('update', 1254726071);
+('update', 1254726071),
+('backup', 0);
 
 -- --------------------------------------------------------
 
@@ -1508,7 +1512,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users_level` (
   `STYLE` int(11) NOT NULL DEFAULT '1',
   UNIQUE KEY `base` (`id`),
   KEY `id_level` (`id_level`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `{$db_prefix}users_level`
@@ -1562,3 +1566,5 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}warn_reasons` (
 --
 -- Dumping data for table `{$db_prefix}warn_reasons`
 --
+
+

@@ -131,8 +131,10 @@ else
                     "description"=>$language["ACP_SITE_LOG"]),
                           3=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=invitations" ,
-                    "description"=>$language["ACP_INVITATIONS"])
-                    )
+                    "description"=>$language["ACP_INVITATIONS"]),
+                          4=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=db-backup&amp;action=read",
+                    "description"=>$language["DB_BACKUP"]),)
             ),
             
     6=>array(

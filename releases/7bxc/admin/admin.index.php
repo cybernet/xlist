@@ -100,9 +100,15 @@ switch ($do)
           include("$ADMIN_PATH/admin.gold.php");
           $tpl->set("main_content",set_block($language["ACP_GOLD"],"center",$admintpl->fetch(load_template("admin.gold.tpl"))));
           break;
+
     case 'sticky':
       include("$ADMIN_PATH/admin.sticky.php");
       $tpl->set("main_content",set_block($language["STICKY_SETTINGS"],"center",$admintpl->fetch(load_template("admin.sticky.tpl"))));
+      break;
+
+    case 'db-backup':
+      include("$ADMIN_PATH/admin.db-backup.php");
+      $tpl->set("main_content",set_block($language["DB_BACKUP"],"center",$admintpl->fetch(load_template("admin.db-backup.tpl"))));
       break;
 
     case 'invitations':

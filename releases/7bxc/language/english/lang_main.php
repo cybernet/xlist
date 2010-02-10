@@ -514,4 +514,44 @@ $language["ANN"] = "Announcement";
 // ann
 $language['STYLE'] = 'Style';
 
+// DB Backup
+$language["DT_SUNDAY"] = "Sunday";
+$language["DT_MONDAY"] = "Monday";
+$language["DT_TUESDAY"] = "Tuesday";
+$language["DT_WEDNESDAY"] = "Wednesday";
+$language["DT_THURSDAY"] = "Thursday";
+$language["DT_FRIDAY"] = "Friday";
+$language["DT_SATURDAY"] = "Saturday";
+$language["DT_AT"] = "at";
+$language["DT_JANUARY"] = "January";
+$language["DT_FEBRUARY"] = "February";
+$language["DT_MARCH"] = "March";
+$language["DT_APRIL"] = "April";
+$language["DT_MAY"] = "May";
+$language["DT_JUNE"] = "June";
+$language["DT_JULY"] = "July";
+$language["DT_AUGUST"] = "August";
+$language["DT_SEPTEMBER"] = "September";
+$language["DT_OCTOBER"] = "October";
+$language["DT_NOVEMBER"] = "November";
+$language["DT_DECEMBER"] = "December";
+$language["DB_DROP_TABLE"] = "Add `DROP TABLE IF EXISTS` to backup";
+$language["DB_TABLE_STRUCTURE"] = "Table structure for table";
+$language["DB_DO_BACKUP"] = "Do Back-up!";
+$language["DB_DO_EDIT"] = "Edit Settings";
+$language["DB_LAST_FILE"] = "Download last backup";
+$language["DB_ADD_STRUCTURE"] = "Add structure to backup";
+$language["DB_ADD_DATA"] = "Add data to backup";
+$language["DB_SETTINGS"] = "Backup Settings";
+$language["DB_STATUS"] = "Backup Status";
+$language["DB_LAST_BACKUP"] = "Last backup";
+$language["DB_EXPORT_SUCCESS"] = "The export has been successful";
+$language["DB_CANT_OPEN_SQL_FILE"] = "Can't open file";
+$language["DB_CANT_WRITE_SQL_FILE"] = "Can't write file";
+$language["DB_BACKUP"] = "DB Backup";
+$language["DB_FIRST_TIME"] = "No backup done yet!";
+$language["DB_FOLDER"] = "Destination's Folder";
+$language["DB_EMAIL"] = "Destination's email";
+$language["DB_AUTO"] = "Automatic Backup every x days (0 = disabled)";
+
 ?>

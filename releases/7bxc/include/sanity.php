@@ -171,4 +171,7 @@ if (mysql_num_rows($user) > 0)
         "' AND time_invited < DATE_SUB(NOW(), INTERVAL $deadtime SECOND)");
 }
 //end invitation system
+
+include(dirname(__FILE__).'/cron.backup.php');
+
 ?>
