@@ -127,40 +127,41 @@ switch ($action)
                    $gname=sqlesc($_POST["gname"]);
                    $rfields=get_result("SELECT * FROM {$TABLE_PREFIX}users_level WHERE id=$gid",true);
                    // we have unique record, set the first and unique to our array
-                   $rfields=$rfields[0];
+                   $rfields = $rfields[0];
                    foreach($rfields as $key=>$value)
-                          if ($key!="id" && $key!="level" && $key!="can_be_deleted") $fields[]=$key;
+                          if ($key != "id" && $key != "level" && $key != "can_be_deleted") $fields[] = $key;
                    do_sqlquery("INSERT INTO {$TABLE_PREFIX}users_level (can_be_deleted,level,".implode(",",$fields).") SELECT 'yes',$gname,".implode(",",$fields)." FROM {$TABLE_PREFIX}users_level WHERE id=$gid",true);
                    unset($fields);
                    unset($rfields);
                  }
               else
                  {
-                   $gid=max(0,$_GET["id"]);
-                   $update=array();
-                   $update[]="level=".sqlesc($_POST["gname"]);
-                   $update[]="view_torrents=".sqlesc(isset($_POST["vtorrents"])?"yes":"no");
-                   $update[]="edit_torrents=".sqlesc(isset($_POST["etorrents"])?"yes":"no");
-                   $update[]="delete_torrents=".sqlesc(isset($_POST["dtorrents"])?"yes":"no");
-                   $update[]="view_users=".sqlesc(isset($_POST["vusers"])?"yes":"no");
-                   $update[]="edit_users=".sqlesc(isset($_POST["eusers"])?"yes":"no");
-                   $update[]="delete_users=".sqlesc(isset($_POST["dusers"])?"yes":"no");
-                   $update[]="view_news=".sqlesc(isset($_POST["vnews"])?"yes":"no");
-                   $update[]="edit_news=".sqlesc(isset($_POST["enews"])?"yes":"no");
-                   $update[]="delete_news=".sqlesc(isset($_POST["dnews"])?"yes":"no");
-                   $update[]="view_forum=".sqlesc(isset($_POST["vforum"])?"yes":"no");
-                   $update[]="edit_forum=".sqlesc(isset($_POST["eforum"])?"yes":"no");
-                   $update[]="delete_forum=".sqlesc(isset($_POST["dforum"])?"yes":"no");
-	           $update[]="trusted=".sqlesc(isset($_POST["trusted"])?"yes":"no");
-                   $update[]="moderate_trusted=".sqlesc(isset($_POST["moderate_trusted"])?"yes":"no");
-                   $update[]="can_upload=".sqlesc(isset($_POST["upload"])?"yes":"no");
-                   $update[]="can_download=".sqlesc(isset($_POST["down"])?"yes":"no");
-                   $update[]="admin_access=".sqlesc(isset($_POST["admincp"])?"yes":"no");
-                   $update[]="WT=".sqlesc($_POST["waiting"]);
-                   $update[]="prefixcolor=".sqlesc($_POST["pcolor"]);
-                   $update[]="suffixcolor=".sqlesc($_POST["scolor"]);
-                   $strupdate=implode(",",$update);
-                   do_sqlquery("UPDATE {$TABLE_PREFIX}users_level SET $strupdate WHERE id=$gid",true);
+                   $gid = max(0,$_GET["id"]);
+                   $update = array();
+                   $update[] = "level=".sqlesc($_POST["gname"]);
+                   $update[] = "view_torrents=".sqlesc(isset($_POST["vtorrents"])?"yes":"no");
+                   $update[] = "edit_torrents=".sqlesc(isset($_POST["etorrents"])?"yes":"no");
+                   $update[] = "delete_torrents=".sqlesc(isset($_POST["dtorrents"])?"yes":"no");
+                   $update[] = "view_users=".sqlesc(isset($_POST["vusers"])?"yes":"no");
+                   $update[] = "edit_users=".sqlesc(isset($_POST["eusers"])?"yes":"no");
+                   $update[] = "delete_users=".sqlesc(isset($_POST["dusers"])?"yes":"no");
+                   $update[] = "view_news=".sqlesc(isset($_POST["vnews"])?"yes":"no");
+                   $update[] = "edit_news=".sqlesc(isset($_POST["enews"])?"yes":"no");
+                   $update[] = "delete_news=".sqlesc(isset($_POST["dnews"])?"yes":"no");
+                   $update[] = "view_forum=".sqlesc(isset($_POST["vforum"])?"yes":"no");
+                   $update[] = "edit_forum=".sqlesc(isset($_POST["eforum"])?"yes":"no");
+                   $update[] = "delete_forum=".sqlesc(isset($_POST["dforum"])?"yes":"no");
+	           $update[] = "trusted=".sqlesc(isset($_POST["trusted"])?"yes":"no");
+                   $update[] = "moderate_trusted=".sqlesc(isset($_POST["moderate_trusted"])?"yes":"no");
+                   $update[] = "can_upload=".sqlesc(isset($_POST["upload"])?"yes":"no");
+                   $update[] = "can_download=".sqlesc(isset($_POST["down"])?"yes":"no");
+                   $update[] = "admin_access=".sqlesc(isset($_POST["admincp"])?"yes":"no");
+                   $update[] = "STYLE=".sqlesc($_POST["STYLE"]);
+                   $update[] = "WT=".sqlesc($_POST["waiting"]);
+                   $update[] = "prefixcolor=".sqlesc($_POST["pcolor"]);
+                   $update[] = "suffixcolor=".sqlesc($_POST["scolor"]);
+                   $strupdate = implode(",",$update);
+                   do_sqlquery("UPDATE {$TABLE_PREFIX}users_level SET $strupdate WHERE id=$gid", true);
                    unset($update);
                    unset($strupdate);
                  }
@@ -173,16 +174,16 @@ switch ($action)
         case 'read':
         default:
 
-          $block_title=$language["USER_GROUPS"];
+          $block_title = $language["USER_GROUPS"];
           $admintpl->set("list",true,true);
           $admintpl->set("group_add_new","<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=groups&amp;action=add\">".$language["INSERT_USER_GROUP"]."</a>");
           $admintpl->set("language",$language);
           $rlevel=do_sqlquery("SELECT * from {$TABLE_PREFIX}users_level ORDER BY id_level",true);
           $groups=array();
           $i=0;
-          while ($level=mysql_fetch_array($rlevel))
+          while ($level = mysql_fetch_array($rlevel))
             {
-                $groups[$i]["user"]="<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=groups&amp;action=edit&amp;id=".$level["id"]."\">".unesc($level["prefixcolor"]).unesc($level["level"]).unesc($level["suffixcolor"])."</a>";
+                $groups[$i]["user"] = "<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=groups&amp;action=edit&amp;id=".$level["id"]."\">".unesc($level["prefixcolor"]).unesc($level["level"]).unesc($level["suffixcolor"])."</a>";
                 $groups[$i]["torrent_aut"]=$level["view_torrents"]."/".$level["edit_torrents"]."/".$level["delete_torrents"];
                 $groups[$i]["users_aut"]=$level["view_users"]."/".$level["edit_users"]."/".$level["delete_users"];
                 $groups[$i]["news_aut"]=$level["view_news"]."/".$level["edit_news"]."/".$level["delete_news"];
@@ -192,6 +193,7 @@ switch ($action)
                 $groups[$i]["trusted"]=$level["trusted"];
                 $groups[$i]["moderate_trusted"]=$level["moderate_trusted"];
                 $groups[$i]["admin_access"]=$level["admin_access"];
+                $groups[$i]["STYLE"]=$level["STYLE"];
                 $groups[$i]["WT"]=$level["WT"];
                 $groups[$i]["delete"]=($level["can_be_deleted"]=="no"?"No":"<a onclick=\"return confirm('".AddSlashes($language["DELETE_CONFIRM"])."')\" href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=groups&amp;action=delete&amp;id=".$level["id"]."\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>");
                 $i++;

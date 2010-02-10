@@ -218,6 +218,14 @@
       <td class="header"><tag:language.LIMIT_IMAGES /></td>
       <td class="lista"><input type="text" name="limit_im" value="<tag:config.limit_im />" size="40" /></td>
     </tr>
+
+      <tr>
+      <td class="header" align="center" colspan="4">Advanced Style Settings</td>
+    </tr>
+      <tr>
+      <td align="center" class="header">Settings</td>
+     <td class="lista" colspan="3">&nbsp;&nbsp;Forced Group Style&nbsp;<input type="radio" name="style" value="true"<tag:config.styleyes /> />&nbsp;&nbsp;Free Users Style&nbsp;<input type="radio" name="style" value="false"<tag:config.styleno /> /></td>
+     </tr>
     <tr>
       <td align="center" class="header" colspan="2"><input type="submit" name="write" class="btn" value="<tag:language.FRM_CONFIRM />" /></td>
       <td align="center" class="header" colspan="2"><input type="submit" name="cancel" class="btn" value="<tag:language.FRM_CANCEL />" /></td>

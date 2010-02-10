@@ -366,5 +366,6 @@ $language["MODERATE_STATUS_BAD"] = "Bad";
 $language["MODERATE_STATUS_UN"] = "Unmoderated";
 $language["FRM_CONFIRM_VALIDATE"] = "Confirm revalidation";
 $language["MODERATE_PANEL"] = "Mod Torrent Panel";
+$language["GROUP_STYLE"] = "Style";
 
 ?>

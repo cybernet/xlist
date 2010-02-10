@@ -58,6 +58,8 @@
 
     <td class="header" align="center"><tag:language.DOWNLOAD /></td>
 
+    <td class="header" align="center"><tag:language.STYLE /></td>
+
     <td class="header" align="center"><tag:language.ADMIN_CPANEL /></td>
 
     <td class="header" align="center"><tag:language.WT /></td>
@@ -87,6 +89,8 @@
     <td class="lista" align="center"><tag:groups[].can_upload /></td>
 
     <td class="lista" align="center"><tag:groups[].can_download /></td>
+
+    <td class="lista" align="center"><tag:groups[].STYLE /></td>
 
     <td class="lista" align="center"><tag:groups[].admin_access /></td>
 
@@ -133,6 +137,14 @@
       <td class="header"><tag:language.GROUP_SCOLOR />&lt;/span&gt;):</td>
 
       <td class="lista"><input type="text" name="scolor" value="<tag:group.suffixcolor />" size="40" maxlength="150" /></td>
+
+    </tr>
+
+    <tr>
+
+      <td class="header"><tag:language.STYLE /></td>
+
+      <td class="lista"><input type="text" name="STYLE" value="<tag:group.STYLE />" size="10" maxlength="10" /></td>
 
     </tr>
 

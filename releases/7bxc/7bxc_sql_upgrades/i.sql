@@ -8,3 +8,6 @@ CREATE TABLE `{$db_prefix}announcement` (
 PRIMARY KEY (`id`),
 KEY `added` (`added`)
 ) TYPE=MyISAM;
+-- end of rev 222
+ALTER TABLE `{$db_prefix}users_level` ADD `STYLE` INT( 11 ) NOT NULL DEFAULT '1';
+INSERT INTO `{$db_prefix}settings` SET `key`='style', `value`='false';

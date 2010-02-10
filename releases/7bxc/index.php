@@ -9,14 +9,14 @@
 
 if (file_exists("install.unlock") && file_exists("install.php"))
    {
-   if (dirname($_SERVER["PHP_SELF"])=="/" || dirname($_SERVER["PHP_SELF"])=="\\")
+   if (dirname($_SERVER["PHP_SELF"]) == "/" || dirname($_SERVER["PHP_SELF"]) == "\\")
       header("Location: http://".$_SERVER["HTTP_HOST"]."/install.php");
    else
       header("Location: http://".$_SERVER["HTTP_HOST"].dirname($_SERVER["PHP_SELF"])."/install.php");
    exit;
 }
 
-define("IN_BTIT",true);
+define("IN_BTIT", true);
 
 
 $THIS_BASEPATH = dirname(__FILE__);
@@ -44,12 +44,21 @@ dbconn(true);
 
 
 // get user's style
-$resheet=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}style where id=".$CURUSER["style"]."");
+
+if ($btit_settings["style"] == "true") {
+$test = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users_level where id=".$CURUSER["id_level"]."");
+$testt = mysql_fetch_array($test);
+
+$resheet = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}style where id=".$testt["STYLE"]."");   }
+
+else {
+
+$resheet = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}style where id=".$CURUSER["style"]."");   }
 if (!$resheet)
    {
 
-   $STYLEPATH="$THIS_BASEPATH/style/xbtit_default";
-   $STYLEURL="$BASEURL/style/xbtit_default";
+   $STYLEPATH = "$THIS_BASEPATH/style/xbtit_default";
+   $STYLEURL = "$BASEURL/style/xbtit_default";
 }
 else
     {

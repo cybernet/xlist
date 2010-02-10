@@ -512,5 +512,6 @@ $language["MODERATE_PANEL"] = "Mod Torrent Panel";
 // ann
 $language["ANN"] = "Announcement";
 // ann
+$language['STYLE'] = 'Style';
 
 ?>
