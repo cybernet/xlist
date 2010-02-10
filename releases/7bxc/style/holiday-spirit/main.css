@@ -8,6 +8,10 @@ body, td, th , tr {
 }
 
 /* By default (td, body..) use Verdana in black. */
+body.slots {
+    background: #DEEDE5;
+    border: 0px;
+}
 body {
 	font-size: small;
 	font-family: verdana, arial, helvetica, sans-serif;

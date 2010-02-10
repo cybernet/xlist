@@ -5,8 +5,8 @@
 // xList .::. Main Menu Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
-// Modified By CyBerNe7
+// http://xList.ro/
+// Modified By cybernet2u
 
    global $CURUSER;
 
@@ -77,12 +77,13 @@ if ($CURUSER["view_users"] == "yes")
 if ($CURUSER["view_forum"] == "yes")
    {
    if ($GLOBALS["FORUMLINK"] == "" || $GLOBALS["FORUMLINK"] == "internal" || $GLOBALS["FORUMLINK"] == "smf")
-      print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=forum\">".$language["MNU_FORUM"]."</a></td>\n");
+       print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=forum\">".$language["MNU_FORUM"]."</a></td>\n");
    elseif ($GLOBALS["FORUMLINK"] == "smf")
        print("<td class=\"header\" align=\"center\"><a href=\"".$GLOBALS["FORUMLINK"]."\">".$language["MNU_FORUM"]."</a></td>\n");
    else
        print("<td class=\"header\" align=\"center\"><a href=\"".$GLOBALS["FORUMLINK"]."\">".$language["MNU_FORUM"]."</a></td>\n");
     }
+       print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=slots\">Slots</a></td>\n");
 } 
 ?>
   </tr>

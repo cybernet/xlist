@@ -1,4 +1,9 @@
 /* ######### Start Main Tracker Body ######### */
+body.slots {
+    background: #A1BFD9;
+    border:0px;
+}
+
 body {
     font-family: tahoma, arial, helvetica, sans-serif;
     font-size: 8pt;

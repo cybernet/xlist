@@ -27,17 +27,18 @@ global $CURUSER;
       print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=viewnews\">".$language["MNU_NEWS"]."</a></td></tr>\n");
 if ($CURUSER["view_users"] == "yes")
 {
-   print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=staff\">".$language["STAFF"]."</a></td></tr>\n");
+      print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=staff\">".$language["STAFF"]."</a></td></tr>\n");
 }
    if ($CURUSER["view_forum"] == "yes")
       {
         if ($GLOBALS["FORUMLINK"] == "" || $GLOBALS["FORUMLINK"] == "internal" || $GLOBALS["FORUMLINK"] == "smf")
-           print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=forum\">".$language["MNU_FORUM"]."</a></td></tr>\n");
+            print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=forum\">".$language["MNU_FORUM"]."</a></td></tr>\n");
         elseif ($GLOBALS["FORUMLINK"] == "smf")
-           print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"".$GLOBALS["FORUMLINK"]."\">".$language["MNU_FORUM"]."</a></td></tr>\n");
+            print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"".$GLOBALS["FORUMLINK"]."\">".$language["MNU_FORUM"]."</a></td></tr>\n");
         else
             print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"".$GLOBALS["FORUMLINK"]."\">".$language["MNU_FORUM"]."</a></td></tr>\n");
       }
+            print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=Slots\">Slots</a></td></tr>\n");
    if ($CURUSER["uid"] == 1 || !$CURUSER)
       print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=login\">".$language["LOGIN"]."</a></td></tr>\n</table>\n");
    else

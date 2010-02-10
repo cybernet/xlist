@@ -230,6 +230,16 @@ switch ($pageID) {
         $tpl->set("main_content",set_block($language["DELETE_TORRENT"],"center",$torrenttpl->fetch(load_template("torrent.delete.tpl"))));
         $tpl->set("main_title",$btit_settings["name"]." .::. "."Torrent Delete");
         break;
+    case 'slots':
+        require("$THIS_BASEPATH/slotsgo.php");
+        $tpl->set("main_content",set_block("Slots","center",$slotstpl->fetch(load_template("slots.tpl"))));
+        $tpl->set("main_title"," .::. "."Slots");
+        break;
+    case 'slotsgo':
+        require("$THIS_BASEPATH/slots.php");
+        $tpl->set("main_content",set_block("Slots","center",$slotstpl->fetch(load_template("slots.tpl"))));
+        $tpl->set("main_title"," .::. "."Slots");
+        break;
 
     case 'edit':
         require("$THIS_BASEPATH/edit.php");
