@@ -3,14 +3,14 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 06, 2010 at 04:28 PM
+-- Generation Time: Feb 10, 2010 at 05:17 PM
 -- Server version: 5.1.37
 -- PHP Version: 5.2.10-2ubuntu6.4
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- Database: `xbtitfm`
+-- Database: `7bxc`
 --
 
 -- --------------------------------------------------------
@@ -51,6 +51,27 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}ajax_ratings` (
 
 --
 -- Dumping data for table `{$db_prefix}ajax_ratings`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}announcement`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}announcement` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` int(11) NOT NULL DEFAULT '0',
+  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `body` text NOT NULL,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `added` (`added`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}announcement`
 --
 
 
@@ -1436,6 +1457,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
   `invited_by` int(10) NOT NULL DEFAULT '0',
   `invitedate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `seedbonus` decimal(12,6) NOT NULL DEFAULT '0.000000',
+  `announce` enum('yes','no') NOT NULL DEFAULT 'yes',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `id_level` (`id_level`),
@@ -1447,8 +1469,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
 -- Dumping data for table `{$db_prefix}users`
 --
 
-INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `pm_mail_notify`, `status_comment_notify`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `warn`, `warnreason`, `warnadded`, `warns`, `warnaddedby`, `custom_title`, `smf_fid`, `invitations`, `invited_by`, `invitedate`, `seedbonus`) VALUES
-(1, 'Guest', '', 1, 0, 'none', 'true', 'true', 1, 1, '0000-00-00 00:00:00', '2009-10-05 10:23:36', 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 'no', '', '0000-00-00 00:00:00', 0, '', NULL, 0, 0, 0, '0000-00-00 00:00:00', '0.000000');
+INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `pm_mail_notify`, `status_comment_notify`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `warn`, `warnreason`, `warnadded`, `warns`, `warnaddedby`, `custom_title`, `smf_fid`, `invitations`, `invited_by`, `invitedate`, `seedbonus`, `announce`) VALUES
+(1, 'Guest', '', 1, 0, 'none', 'true', 'true', 1, 1, '0000-00-00 00:00:00', '2009-10-05 10:23:36', 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 'no', '', '0000-00-00 00:00:00', 0, '', NULL, 0, 0, 0, '0000-00-00 00:00:00', '0.000000', 'yes');
 
 -- --------------------------------------------------------
 
@@ -1538,5 +1560,3 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}warn_reasons` (
 --
 -- Dumping data for table `{$db_prefix}warn_reasons`
 --
-
-

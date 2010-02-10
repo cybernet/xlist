@@ -32,7 +32,7 @@ else
     $utables = "{$TABLE_PREFIX}users u";
 }
 
-$resuser = do_sqlquery("SELECT seedbonus, $udownloaded as downloaded,$uuploaded as uploaded FROM $utables WHERE u.id=".$CURUSER["uid"]);
+$resuser = do_sqlquery("SELECT announce , seedbonus, $udownloaded as downloaded,$uuploaded as uploaded FROM $utables WHERE u.id=".$CURUSER["uid"]);
 $rowuser = mysql_fetch_array($resuser);
 $full = "SELECT f.moder as moder, f.filename, f.info_hash, f.uploader as upname, u.username as uploader, c.image, c.name as cname, f.category as catid FROM {$TABLE_PREFIX}files f LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category";
 $sql = $full." WHERE moder='um'";
@@ -46,8 +46,10 @@ print("</td><td class=\"yellow\" align=\"center\"> (<img src=\"images/arany.png\
 print("<td class=\"green\" align=\"center\"><a href=index.php?page=modules&module=seedbonus>(BON ".($rowuser['seedbonus'] > 0 ? number_format($rowuser['seedbonus'], 2):"---").")</a></td>\n");
 if ($CURUSER['moderate_trusted'] == 'yes')
     print("<td align=\"center\"><a href=\"index.php?page=moder\">".$language["MODERATE_PANEL"]."</a> (".$um_t.")</td>");
+if ($rowuser["announce"] == "yes")
+    print("<td style=\"text-align:center;\" align=\"center\"><a href=\"index.php?page=announcement&amp;uid=".$CURUSER["uid"]."\"><img src=\"images/ann.png\"></a></td>\n");
 if ($CURUSER["admin_access"] == "yes")
-   print("\n<td align=\"center\" style=\"text-align:center;\"><a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."\">".$language["MNU_ADMINCP"]."</a></td>\n");
+    print("\n<td align=\"center\" style=\"text-align:center;\"><a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."\">".$language["MNU_ADMINCP"]."</a></td>\n");
 
 print("<td style=\"text-align:center;\" align=\"center\"><a href=\"index.php?page=usercp&amp;uid=".$CURUSER["uid"]."\">".$language["USER_CP"]."</a></td>\n");
 

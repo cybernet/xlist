@@ -90,12 +90,12 @@ clearstatcache();
 session_start();
 
 
-check_online(session_id(), ($pageID==""?"index":$pageID));
+check_online(session_id(), ($pageID == "" ? "index" : $pageID));
 
 require(load_language("lang_main.php"));
 
 
-$tpl=new bTemplate();
+$tpl = new bTemplate();
 $tpl->set("main_title",$btit_settings["name"]." .::. "."Index");
 
 // is language right to left?
@@ -127,7 +127,7 @@ if ($left_col=="" && $right_col=="")
 include 'include/jscss.php';
 
 $tpl->set("main_jscript",$morescript);
-if (!$no_columns && $pageID!='admin' && $pageID!='forum' && $pageID!='torrents' && $pageID!='usercp') {
+if (!$no_columns && $pageID != 'admin' && $pageID != 'forum' && $pageID != 'torrents' && $pageID != 'usercp') {
   $tpl->set("main_left",$left_col);
   $tpl->set("main_right",$right_col);
 }
@@ -147,15 +147,15 @@ $tpl->set("main_title",$btit_settings["name"]." .::. "."$object->filename");
 switch ($pageID) {
 
     case 'modules':
-        $module_name=htmlspecialchars($_GET["module"]);
-        $modules=get_result("SELECT * FROM {$TABLE_PREFIX}modules WHERE name=".sqlesc($module_name),true,$btit_settings["cache"]);
-        if (count($modules)<1) // MODULE NOT SET
+        $module_name = htmlspecialchars($_GET["module"]);
+        $modules = get_result("SELECT * FROM {$TABLE_PREFIX}modules WHERE name=".sqlesc($module_name), true, $btit_settings["cache"]);
+        if (count($modules) < 1) // MODULE NOT SET
            stderr($language["ERROR"],$language["MODULE_NOT_PRESENT"]);
 
-        if ($modules[0]["activated"]=="no") // MODULE SET BUT NOT ACTIVED
-           stderr($language["ERROR"],$language["MODULE_UNACTIVE"]);
+        if ($modules[0]["activated"] == "no") // MODULE SET BUT NOT ACTIVED
+           stderr($language["ERROR"], $language["MODULE_UNACTIVE"]);
 
-        $module_out="";
+        $module_out = "";
         if (!file_exists("$THIS_BASEPATH/modules/$module_name/index.php")) // MODULE SET, ACTIVED, BUT WRONG FOLDER??
            stderr($language["ERROR"],$language["MODULE_LOAD_ERROR"]."<br />\n$THIS_BASEPATH/modules/$module_name/index.php");
 
@@ -208,6 +208,12 @@ switch ($pageID) {
         require("$THIS_BASEPATH/commedit.php");
         $tpl->set("main_content",set_block($language["COMMENTS"],"center",$tpl_comment->fetch(load_template("comment.edit.tpl")),false));
         $tpl->set("main_title",$btit_settings["name"]." .::. "."Comment Edit");
+        break;
+
+    case 'announcement':
+        require("$THIS_BASEPATH/announcement.php");
+        $tpl->set("main_content",set_block($language["ANN"],"center",$annountpl->fetch(load_template("announcement.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."".$language["ANN"]."");
         break;
 
     case 'delete':
