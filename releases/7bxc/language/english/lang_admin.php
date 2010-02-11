@@ -370,5 +370,17 @@ $language["GROUP_STYLE"] = "Style";
 //RULES
 $language["ACP_RULES_GROUP"] = "Rules groups";
 $language["ACP_RULES"] = "Rules";
+$language["ACP_ADD_USER"]='Add New User';
+$language["NEW_USER_EMAIL"]='Send an email to new user with password';
+$language["NEW_USER_EMAIL_TEXT"]='
+Hi %s,
+
+You\'ve just be added at %s,
+username: %s
+password: %s
+
+Hope you\'ll enjoy staying with us
+Greetings
+The Staff';
 
 ?>

@@ -95,7 +95,11 @@ else
                     "description"=>"Warned users"),
                           5=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=duplicates" ,
-                    "description"=>$language["DUPLICATES"])
+                    "description"=>$language["DUPLICATES"]),
+
+                          6=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=newuser" ,
+                    "description"=>$language["ACP_ADD_USER"])
                     )
             ),
 

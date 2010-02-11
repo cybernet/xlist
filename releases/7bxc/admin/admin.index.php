@@ -121,6 +121,11 @@ switch ($do)
       $tpl->set("main_content",set_block($language["DUPLICATES"],"center",$admintpl->fetch(load_template("admin.duplicates.tpl"))));
       break;
 
+    case 'newuser':
+      include("$ADMIN_PATH/admin.users.new.php");
+      $tpl->set("main_content",set_block($language["ACP_ADD_USER"],"center",$admintpl->fetch(load_template("admin.users.new.tpl"))));
+      break;
+
     case 'visible':
       include("$ADMIN_PATH/admin.visible.php");
       $tpl->set("main_content",set_block($language["VISIBLE_SETTINGS"],"center",$admintpl->fetch(load_template("admin.visible.tpl"))));
