@@ -45,3 +45,5 @@ CREATE TABLE `{$db_prefix}rules_group` (
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM;
 -- end of rev 228
+
+-- end of rev 230

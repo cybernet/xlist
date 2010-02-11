@@ -267,7 +267,7 @@ $GLOBALS['ipcheck_poller'] = true;
 //number of votes per page listed in admincp
 $votesppage = 25;
 $GLOBALS["imageon"] = $btit_settings["imageon"];
-      $GLOBALS["screenon"] = $btit_settings["screenon"];
+$GLOBALS["screenon"] = $btit_settings["screenon"];
 $GLOBALS["uploaddir"] = $btit_settings["uploaddir"];
 $GLOBALS["file_limit"] = $btit_settings["file_limit"];
 
