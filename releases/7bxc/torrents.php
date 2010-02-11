@@ -193,11 +193,11 @@ Operation #4*/
 
     // Do the query with the uploader nickname
     if ($SHOW_UPLOADER)
-        $query = "SELECT f.gold as gold, f.sticky as sticky, tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.anonymous, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader as upname, u.username as uploader, prefixcolor, suffixcolor FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id $where GROUP BY f.sticky,$qry_order $by ORDER BY f.sticky $by $limit";
+        $query = "SELECT f.vip_torrent as vip_torrent, f.gold as gold, f.sticky as sticky, tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.anonymous, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader as upname, u.username as uploader, prefixcolor, suffixcolor FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id $where GROUP BY f.sticky,$qry_order $by ORDER BY f.sticky $by $limit";
 
     // Do the query without the uploader nickname
     else
-        $query = "SELECT f.gold as gold, f.sticky as sticky, tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where GROUP BY f.sticky,$qry_order $by ORDER BY f.sticky $by $limit";
+        $query = "SELECT f.vip_torrent as vip_torrent, f.gold as gold, f.sticky as sticky, tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where GROUP BY f.sticky,$qry_order $by ORDER BY f.sticky $by $limit";
     // End the queries
        $results = get_result($query, true);
 }
@@ -308,17 +308,25 @@ if ($hover == "")
  $balon = ($data["img"]);
      // End baloon hack DT
 
+//vip_torrent start
+      if($data["vip_torrent"] == 1) {
+$vt = "<img src=images/vip.gif alt='vip only torrent'>";
+}
+else {   $vt = '';
+}
+//vip_torrent end
+
    $torrents[$i]["category"] = "<a href=\"index.php?page=torrents&amp;category=$data[catid]\">".image_or_link(($data["image"] == ""?"":"$STYLEPATH/images/categories/" . $data["image"]),"",$data["cname"])."</a>";
    if ($GLOBALS["usepopup"])
        if ($data["tag"])
-       $torrents[$i]["filename"] = "<img src=\"images/plus.gif\" id=\"expandoGif".$data["hash"]."\" onclick=\"expand('".$data["hash"]."')\"> <a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=".$data["hash"]."');\" onmouseover=\" return overlib('<img src=cyberfun_img/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">".$data["filename"]."</a>".($data["external"] == "no"?"":" (<span style=\"color:red\">Multi.</span>)")."<div id=\"descr".$data["hash"]."\" style=\"margin-left: 12px; display: none;\">".$data["tag"];
+       $torrents[$i]["filename"] = "<img src=\"images/plus.gif\" id=\"expandoGif".$data["hash"]."\" onclick=\"expand('".$data["hash"]."')\"> <a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=".$data["hash"]."');\" onmouseover=\" return overlib('<img src=cyberfun_img/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">".$data["filename"]."</a>".($data["external"] == "no"?"":" (<span style=\"color:red\">Multi.</span>)")."   ".$vt."<div id=\"descr".$data["hash"]."\" style=\"margin-left: 12px; display: none;\">".$data["tag"];
        else
-       $torrents[$i]["filename"] = "<a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."\" onmouseover=\" return overlib('<img src=cyberfun_img/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">".($data["filename"] != ""?$filename:$data["hash"])."</a>".($data["external"] == "no"?"":" (<span style=\"color:red\">Multi.</span>)");
+       $torrents[$i]["filename"] = "<a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."\" onmouseover=\" return overlib('<img src=cyberfun_img/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">".($data["filename"] != ""?$filename:$data["hash"])."</a>".($data["external"] == "no"?"":" (<span style=\"color:red\">Multi.</span>)")."   ".$vt;
        else
        if ($data["tag"])
-       $torrents[$i]["filename"] = "<img src=\"images/plus.gif\" id=\"expandoGif".$data["hash"]."\" onclick=\"expand('".$data["hash"]."')\"> <a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."\" title=\"".$language["VIEW_DETAILS"].": ".$data["filename"]."\">".($data["filename"]!=""?$filename:$data["hash"])."</a>".($data["external"] == "no"?"":" (<span style=\"color:red\">EXT</span>)")."<div id=\"descr".$data["hash"]."\" style=\"margin-left: 12px; display: none;\">".$data["tag"];
+       $torrents[$i]["filename"] = "<img src=\"images/plus.gif\" id=\"expandoGif".$data["hash"]."\" onclick=\"expand('".$data["hash"]."')\"> <a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."\" title=\"".$language["VIEW_DETAILS"].": ".$data["filename"]."\">".($data["filename"]!=""?$filename:$data["hash"])."</a>".($data["external"] == "no"?"":" (<span style=\"color:red\">EXT</span>)")."   ".$vt."<div id=\"descr".$data["hash"]."\" style=\"margin-left: 12px; display: none;\">".$data["tag"];
        else
-       $torrents[$i]["filename"] = "<a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."\" title=\"".$language["VIEW_DETAILS"].": ".$data["filename"]."\">".($data["filename"] != ""?$filename:$data["hash"])."</a>".($data["external"] == "no"?"":" (<span style=\"color:red\">EXT</span>)");
+       $torrents[$i]["filename"] = "<a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."\" title=\"".$language["VIEW_DETAILS"].": ".$data["filename"]."\">".($data["filename"] != ""?$filename:$data["hash"])."</a>".($data["external"] == "no"?"":" (<span style=\"color:red\">EXT</span>)")."   ".$vt;
 
    // search for comments
    $commentres = get_result("SELECT COUNT(*) as comments FROM {$TABLE_PREFIX}comments WHERE info_hash='" . $data["hash"] . "'", true);

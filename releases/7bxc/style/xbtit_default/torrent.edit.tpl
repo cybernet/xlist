@@ -76,6 +76,13 @@
 	<td align="left" class="header"><tag:language.PROFILE_COMMENT_MAIL_NOTIFY /></td>
       <td class="lista">&nbsp;&nbsp;<tag:language.YES /><input type="radio" name="comment_notify" value="true" <tag:torrent.COMMENT_NOTIFY_TRUE /> />&nbsp;&nbsp;<tag:language.NO /><input type="radio" name="comment_notify" value="false" <tag:torrent.COMMENT_NOTIFY_FALSE /> />&nbsp;&nbsp;<tag:language.ALLOW_COMMENT_NOTIFY /></td>
     </tr>
+
+<if:LEVEL_VT>
+      <tr>
+        <td align="right" class="header">VIP Torrent Only</td>
+        <td class="lista"><tag:torrent.vip_torrent /></td>
+      </tr>
+      </if:LEVEL_VT>
       <tr>
         <td align=right class="header"><tag:language.SIZE /></td>
         <td class="lista" ><tag:torrent.size /></td>

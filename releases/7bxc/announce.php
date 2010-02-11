@@ -442,6 +442,33 @@ function start($info_hash, $ip, $port, $peer_id, $left, $downloaded = 0, $upload
     $results = @mysql_query("INSERT INTO {$TABLE_PREFIX}peers SET infohash=\"$info_hash\", peer_id=\"$peer_id\", port=\"$port\", ip=\"$ip\", lastupdate=UNIX_TIMESTAMP(), bytes=\"$left\", status=\"$status\", natuser=\"$nat\", client=\"$agent\", dns=\"$remotedns\", downloaded=$downloaded, uploaded=$uploaded, pid=\"$upid\"");
 
 
+// vip torrent
+global $btit_settings;
+$resvp = do_sqlquery("SELECT vip_torrent FROM {$TABLE_PREFIX}files WHERE info_hash='$info_hash'");
+$rowvp = mysql_fetch_assoc($resvp);
+
+$getlevelvp = mysql_query("SELECT id_level FROM {$TABLE_PREFIX}users WHERE pid='$upid'");
+$levelvp = mysql_fetch_assoc($getlevelvp);
+
+if ($btit_settings["vip_one"] == false)
+{
+if (($rowvp["vip_torrent"] == 1) AND ($levelvp["id_level"] < $btit_settings["vip_get"] ))
+{
+  show_error("VIP only torrent");
+  die();
+}
+}
+if ($btit_settings["vip_one"] == true)
+{
+if (($rowvp["vip_torrent"] == 1) AND ($levelvp["id_level"] != $btit_settings["vip_get_one"] ))
+{
+  show_error("VIP only torrent");
+  die();
+}
+}
+// vip torrent end
+
+
     // Special case: duplicated peer_id.
     if (!$results)
     {

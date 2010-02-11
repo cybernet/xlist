@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 10, 2010 at 09:13 PM
+-- Generation Time: Feb 11, 2010 at 09:44 PM
 -- Server version: 5.1.37
 -- PHP Version: 5.2.10-2ubuntu6.4
 
@@ -638,6 +638,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
   `tag` text,
   `gold` enum('0','1','2') NOT NULL DEFAULT '0',
   `moder` enum('um','bad','ok') NOT NULL DEFAULT 'um',
+  `vip_torrent` enum('0','1') NOT NULL DEFAULT '0',
   PRIMARY KEY (`info_hash`),
   KEY `filename` (`filename`),
   KEY `category` (`category`),
@@ -1293,7 +1294,12 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('style', 'false'),
 ('backup__add_drop_table', 'true'),
 ('backup__add_structure', 'true'),
-('backup__add_data', 'true');
+('backup__add_data', 'true'),
+('vip_set', '6'),
+('vip_get', '4'),
+('vip_get_one', '5'),
+('vip_tekst', 'Vip Torrent Only !!'),
+('vip_one', 'true');
 
 -- --------------------------------------------------------
 
@@ -1549,6 +1555,11 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users_level` (
   `trusted` enum('yes','no') NOT NULL DEFAULT 'no',
   `moderate_trusted` enum('yes','no') NOT NULL DEFAULT 'no',
   `STYLE` int(11) NOT NULL DEFAULT '1',
+  `autorank_state` enum('Enabled','Disabled') NOT NULL DEFAULT 'Disabled',
+  `autorank_position` smallint(3) NOT NULL DEFAULT '0',
+  `autorank_min_upload` bigint(20) NOT NULL DEFAULT '0',
+  `autorank_minratio` decimal(5,2) NOT NULL DEFAULT '0.00',
+  `autorank_smf_group_mirror` int(10) NOT NULL DEFAULT '0',
   UNIQUE KEY `base` (`id`),
   KEY `id_level` (`id_level`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
@@ -1557,15 +1568,15 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users_level` (
 -- Dumping data for table `{$db_prefix}users_level`
 --
 
-INSERT INTO `{$db_prefix}users_level` (`id`, `id_level`, `level`, `view_torrents`, `edit_torrents`, `delete_torrents`, `view_users`, `edit_users`, `delete_users`, `view_news`, `edit_news`, `delete_news`, `can_upload`, `can_download`, `view_forum`, `edit_forum`, `delete_forum`, `predef_level`, `can_be_deleted`, `admin_access`, `prefixcolor`, `suffixcolor`, `WT`, `trusted`, `moderate_trusted`, `STYLE`) VALUES
-(1, 1, 'guest', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'guest', 'no', 'no', '', '', 0, 'no', 'no', 1),
-(2, 2, 'validating', 'yes', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'validating', 'no', 'no', '', '', 0, 'no', 'no', 1),
-(3, 3, 'Members', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'member', 'no', 'no', '<span style=''color:#000000''>', '</span>', 0, 'no', 'no', 1),
-(4, 4, 'Uploader', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'uploader', 'no', 'no', '', '', 0, 'no', 'no', 1),
-(5, 5, 'V.I.P.', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'vip', 'no', 'no', '', '', 0, 'no', 'no', 1),
-(6, 6, 'Moderator', 'yes', 'yes', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'no', 'yes', 'yes', 'yes', 'yes', 'no', 'moderator', 'no', 'no', '<span style=\\''color: #428D67\\''>', '</span>', 0, 'no', 'no', 1),
-(7, 7, 'Administrator', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'admin', 'no', 'yes', '<span style=\\''color:#FF8000\\''>', '</span>', 0, 'no', 'no', 1),
-(8, 8, 'Owner', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'owner', 'no', 'yes', '<span style=''color:#EE4000''>', '</span>', 0, 'no', 'no', 1);
+INSERT INTO `{$db_prefix}users_level` (`id`, `id_level`, `level`, `view_torrents`, `edit_torrents`, `delete_torrents`, `view_users`, `edit_users`, `delete_users`, `view_news`, `edit_news`, `delete_news`, `can_upload`, `can_download`, `view_forum`, `edit_forum`, `delete_forum`, `predef_level`, `can_be_deleted`, `admin_access`, `prefixcolor`, `suffixcolor`, `WT`, `trusted`, `moderate_trusted`, `STYLE`, `autorank_state`, `autorank_position`, `autorank_min_upload`, `autorank_minratio`, `autorank_smf_group_mirror`) VALUES
+(1, 1, 'guest', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'guest', 'no', 'no', '', '', 0, 'no', 'no', 1, 'Disabled', 0, 0, '0.00', 0),
+(2, 2, 'validating', 'yes', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'validating', 'no', 'no', '', '', 0, 'no', 'no', 1, 'Disabled', 0, 0, '0.00', 0),
+(3, 3, 'Members', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'member', 'no', 'no', '<span style=''color:#000000''>', '</span>', 0, 'no', 'no', 1, 'Disabled', 0, 0, '0.00', 0),
+(4, 4, 'Uploader', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'uploader', 'no', 'no', '', '', 0, 'no', 'no', 1, 'Disabled', 0, 0, '0.00', 0),
+(5, 5, 'V.I.P.', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'vip', 'no', 'no', '', '', 0, 'no', 'no', 1, 'Disabled', 0, 0, '0.00', 0),
+(6, 6, 'Moderator', 'yes', 'yes', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'no', 'yes', 'yes', 'yes', 'yes', 'no', 'moderator', 'no', 'no', '<span style=\\''color: #428D67\\''>', '</span>', 0, 'no', 'no', 1, 'Disabled', 0, 0, '0.00', 0),
+(7, 7, 'Administrator', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'admin', 'no', 'yes', '<span style=\\''color:#FF8000\\''>', '</span>', 0, 'no', 'no', 1, 'Disabled', 0, 0, '0.00', 0),
+(8, 8, 'Owner', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'owner', 'no', 'yes', '<span style=''color:#EE4000''>', '</span>', 0, 'no', 'no', 1, 'Disabled', 0, 0, '0.00', 0);
 
 -- --------------------------------------------------------
 

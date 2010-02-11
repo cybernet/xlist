@@ -50,4 +50,11 @@ ADD `autorank_position` SMALLINT( 3 ) NOT NULL DEFAULT '0',
 ADD `autorank_min_upload` BIGINT( 20 ) NOT NULL DEFAULT '0',
 ADD `autorank_minratio` DECIMAL( 5, 2 ) NOT NULL DEFAULT '0.00',
 ADD `autorank_smf_group_mirror` INT( 10 ) NOT NULL DEFAULT '0';
--- end of rev 230
+-- end of rev 231
+ALTER TABLE `{$db_prefix}files` ADD `vip_torrent` ENUM( '0', '1' ) NOT NULL DEFAULT '0';
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('vip_set', '6');
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('vip_get', '4');
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('vip_get_one', '5');
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('vip_tekst', 'Vip Torrent Only !!');
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('vip_one', 'true');
+-- end of rev 232
