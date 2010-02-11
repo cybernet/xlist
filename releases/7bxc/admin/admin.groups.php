@@ -100,6 +100,24 @@ switch ($action)
           $current_group["can_upload"]=($current_group["can_upload"]=="yes"?"checked=\"checked\"":"");
           $current_group["can_download"]=($current_group["can_download"]=="yes"?"checked=\"checked\"":"");
           $current_group["admin_access"]=($current_group["admin_access"]=="yes"?"checked=\"checked\"":"");
+$artype ="\n<option ".(($current_group["autorank_state"]=="Enabled")?" selected=\"selected\" ":"")." value='Enabled'>Enabled</option>";
+$artype.="\n<option ".(($current_group["autorank_state"]=="Disabled")?" selected=\"selected\" ":"")." value='Disabled'>Disabled</option>";
+
+$current_group["autorank_state"]=$artype;
+$current_group["forumlist"]="";
+    
+if($FORUMLINK=="smf")
+{
+    $current_group["forumlist"].=$language['AUTORANK_SMF_LIST'];
+    $res=mysql_query("SELECT `ID_GROUP`, `groupName` FROM `{$db_prefix}membergroups` ORDER BY `ID_GROUP` ASC");
+    if(@mysql_num_rows($res)>0)
+    {
+        while($row=mysql_fetch_assoc($res))
+        {
+            $current_group["forumlist"].=$row["groupName"] . " = " . $row["ID_GROUP"] . "<br />";
+        }
+    }
+}
           $admintpl->set("group",$current_group);
           break;
 
@@ -109,8 +127,8 @@ switch ($action)
           $admintpl->set("list",false,true);
           $admintpl->set("frm_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=groups&amp;action=save&amp;mode=new");
           $admintpl->set("language",$language);
-          $frm_dropdown="\n<select name=\"base_group\" size=\"1\">";
-          $rlevel=do_sqlquery("SELECT DISTINCT id_level,predef_level FROM {$TABLE_PREFIX}users_level ORDER BY id_level",true);
+          $frm_dropdown = "\n<select name=\"base_group\" size=\"1\">";
+          $rlevel = do_sqlquery("SELECT DISTINCT id_level,predef_level FROM {$TABLE_PREFIX}users_level ORDER BY id_level",true);
           while($level=mysql_fetch_array($rlevel))
                 $frm_dropdown.="\n<option value=\"".$level["id_level"]."\">".$level["predef_level"]."</option>";
           $frm_dropdown.="\n</select>";
@@ -119,15 +137,20 @@ switch ($action)
 
 
         case 'save':
-          if ($_POST["write"]==$language["FRM_CONFIRM"])
+          if ($_POST["write"] == $language["FRM_CONFIRM"])
             {
-              if (isset($_GET["mode"]) && $_GET["mode"]=="new")
+              if (isset($_GET["mode"]) && $_GET["mode"] == "new")
                  {
-                   $gid=max(0,$_POST["base_group"]);
-                   $gname=sqlesc($_POST["gname"]);
-                   $rfields=get_result("SELECT * FROM {$TABLE_PREFIX}users_level WHERE id=$gid",true);
+                   $gid = max(0,$_POST["base_group"]);
+                   $gname = sqlesc($_POST["gname"]);
+                   $rfields = get_result("SELECT * FROM {$TABLE_PREFIX}users_level WHERE id=$gid", true);
                    // we have unique record, set the first and unique to our array
                    $rfields = $rfields[0];
+                   unset($rfields["autorank_state"]);
+                   unset($rfields["autorank_position"]);
+                   unset($rfields["autorank_min_upload"]);
+                   unset($rfields["autorank_minratio"]);
+                   unset($rfields["autorank_smf_group_mirror"]);
                    foreach($rfields as $key=>$value)
                           if ($key != "id" && $key != "level" && $key != "can_be_deleted") $fields[] = $key;
                    do_sqlquery("INSERT INTO {$TABLE_PREFIX}users_level (can_be_deleted,level,".implode(",",$fields).") SELECT 'yes',$gname,".implode(",",$fields)." FROM {$TABLE_PREFIX}users_level WHERE id=$gid",true);
@@ -160,6 +183,11 @@ switch ($action)
                    $update[] = "WT=".sqlesc($_POST["waiting"]);
                    $update[] = "prefixcolor=".sqlesc($_POST["pcolor"]);
                    $update[] = "suffixcolor=".sqlesc($_POST["scolor"]);
+                   $update[]="autorank_state=".sqlesc($_POST["arstate"]);
+                   $update[]="autorank_position=".((isset($_POST["arpos"]) && is_numeric($_POST["arpos"]))?$_POST["arpos"]:0);
+                   $update[]="autorank_min_upload=".((isset($_POST["arminup"]) && is_numeric($_POST["arminup"]))?$_POST["arminup"]:0);
+                   $update[]="autorank_minratio=".((isset($_POST["arminratio"]) && is_numeric($_POST["arminratio"]))?$_POST["arminratio"]:"0.00");
+                   $update[]="autorank_smf_group_mirror=".((isset($_POST["arsmfmirr"]) && is_numeric($_POST["arsmfmirr"]))?$_POST["arsmfmirr"]:0);
                    $strupdate = implode(",",$update);
                    do_sqlquery("UPDATE {$TABLE_PREFIX}users_level SET $strupdate WHERE id=$gid", true);
                    unset($update);
@@ -178,8 +206,8 @@ switch ($action)
           $admintpl->set("list",true,true);
           $admintpl->set("group_add_new","<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=groups&amp;action=add\">".$language["INSERT_USER_GROUP"]."</a>");
           $admintpl->set("language",$language);
-          $rlevel=do_sqlquery("SELECT * from {$TABLE_PREFIX}users_level ORDER BY id_level",true);
-          $groups=array();
+          $rlevel = do_sqlquery("SELECT * from {$TABLE_PREFIX}users_level ORDER BY id ASC", true);
+          $groups = array();
           $i=0;
           while ($level = mysql_fetch_array($rlevel))
             {
@@ -196,6 +224,11 @@ switch ($action)
                 $groups[$i]["STYLE"]=$level["STYLE"];
                 $groups[$i]["WT"]=$level["WT"];
                 $groups[$i]["delete"]=($level["can_be_deleted"]=="no"?"No":"<a onclick=\"return confirm('".AddSlashes($language["DELETE_CONFIRM"])."')\" href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=groups&amp;action=delete&amp;id=".$level["id"]."\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>");
+$groups[$i]["arpos"]=(($level["autorank_state"]=="Disabled")?$language["NA"]:$level["autorank_position"]);
+                $groups[$i]["arstate"]=$level["autorank_state"];
+                $groups[$i]["arupdowntrig"]=(($level["autorank_state"]=="Disabled")?$language["NA"]:makesize($level["autorank_min_upload"]));
+                $groups[$i]["arratiotrig"]=(($level["autorank_state"]=="Disabled")?$language["NA"]:$level["autorank_minratio"]);
+                $groups[$i]["arsmfmirr"]=$level["autorank_smf_group_mirror"];
                 $i++;
           }
 

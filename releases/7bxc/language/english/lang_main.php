@@ -560,5 +560,12 @@ $language["RULE"] = "Rule";
 $language["RULE_ALL"] = "All rules";
 $language["MNU_RULES"] = "Rules";
 $language["RULES_ADD"] = "Insert rule";
+$language['AUTORANK_STATE'] = 'Autorank State';
+$language['AUTORANK_POSITION'] = 'Autorank Position';
+$language['AUTORANK_MIN_UPLOAD'] = 'Autorank (Up/Down)load Trigger';
+$language['AUTORANK_IN_BYTES'] = ' (in bytes)';
+$language['AUTORANK_MIN_RATIO'] = 'Autorank Ratio Trigger';
+$language['AUTORANK_SMF_MIRROR'] = 'SMF Forums Rank Mirror';
+$language['AUTORANK_SMF_LIST'] = '<b><u>Current SMF Group List from the database</u></b><br />';
 
 ?>

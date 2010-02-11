@@ -173,5 +173,6 @@ if (mysql_num_rows($user) > 0)
 //end invitation system
 
 include(dirname(__FILE__).'/cron.backup.php');
+do_updateranks();
 
 ?>

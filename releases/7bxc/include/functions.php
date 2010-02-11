@@ -1248,4 +1248,168 @@ if ( !function_exists('htmlspecialchars_decode') ) {
 }
 
 // EOF
+
+function do_updateranks()
+{
+    global $TABLE_PREFIX, $XBTT_USE, $FORUMLINK, $db_prefix;
+
+    // Make sure the full check is only run once in the event the sanity check runs
+    // twice between 4:00am and 4:59pm.
+    if(date("G")==4)
+    {
+        $res=mysql_query("SELECT `smf_fid` FROM `{$TABLE_PREFIX}users` WHERE `id`=1");
+        $row=mysql_fetch_assoc($res);
+        if($row["smf_fid"]==0)
+            $fullcheck="yes";
+        else
+            $fullcheck="no";
+    }
+    if(date("G")==5)
+    {
+        mysql_query("UPDATE `{$TABLE_PREFIX}users` SET `smf_fid`=0 WHERE `id`=1");
+    }
+
+    // Query to grab the parameters for all autorank enabled levels
+    $query ="SELECT `id`, `id_level`, `level` , `autorank_position`, ";
+    $query.="`autorank_min_upload`, `autorank_minratio`, `autorank_smf_group_mirror` ";
+    $query.="FROM `{$TABLE_PREFIX}users_level` ";
+    $query.="WHERE `autorank_state` = 'Enabled' ";
+    $query.="ORDER BY `autorank_position` ASC";
+
+    $res=mysql_query($query);
+
+    $i=0;
+    while ($row=mysql_fetch_assoc($res))
+    {
+        $level[$i]=$row;
+        $i++;
+    }
+    $level2=$level;
+
+    $grouplist="";
+    foreach($level AS $k => $v)
+    {
+
+        $grouplist.=$v["id"].",";
+        if($v["autorank_position"]==0)
+        {
+            $default_level=$v["id"];
+            if($FORUMLINK=="smf")
+            {
+                $default_forum_level=$v["autorank_smf_group_mirror"];
+            }
+            unset($level2[$k]);
+        }
+    }
+    $grouplist=trim($grouplist, ",");
+
+    if ($XBTT_USE)
+    {
+        $udownloaded="`u`.`downloaded`+IFNULL(`x`.`downloaded`,0) `downloaded`";
+        $uuploaded="`u`.`uploaded`+IFNULL(`x`.`uploaded`,0) `uploaded`";
+        $utables="`{$TABLE_PREFIX}users` `u` LEFT JOIN `xbt_users` `x` ON `x`.`uid`=`u`.`id`";
+        $activetorr1="LEFT JOIN `xbt_files_users` `xfu` ON `u`.`id`=`xfu`.`uid` ";
+        $activetorr2="AND `xfu`.`mtime` IS NOT NULL ";
+    }
+    else
+    {
+        $udownloaded="`u`.`downloaded`";
+        $uuploaded="`u`.`uploaded`";
+        $utables="`{$TABLE_PREFIX}users` `u`";
+        $activetorr1="LEFT JOIN `{$TABLE_PREFIX}peers` `p` ON `u`.`pid`=`p`.`pid` ";
+        $activetorr2="AND `p`.`lastupdate` IS NOT NULL ";
+    }
+
+    if(date('G')==4  && $fullcheck=="yes")
+    {
+        // It's between 4:00am and 4:59am so there shouldn't be too many people
+        // about at this time, let's check the entire memberbase.
+        $query ="SELECT `u`.`id`, `u`.`id_level`, ".$uuploaded.", ";
+        $query.=$udownloaded.", `u`.`smf_fid`, ";
+        $query.="(IF(`u`.`downloaded`>0, (`u`.`uploaded`/`u`.`downloaded`),99999)) `ratio` ";
+        $query.="FROM ".$utables." ";
+        $query.="WHERE `u`.`id_level` IN(".$grouplist.") ";
+        $query.="ORDER BY `u`.`id` ASC";
+
+        @mysql_query("UPDATE `{$TABLE_PREFIX}users` SET `smf_fid`='-1' WHERE `id`=1");
+    }
+    else
+    {
+        // Otherwise we'll just check the members that are actually connected to torrents
+        $query ="SELECT `u`.`id`, `u`.`id_level`, ".$uuploaded.", ";
+        $query.=$udownloaded.", `u`.`smf_fid`, ";
+        $query.="(IF(`u`.`downloaded`>0,(`u`.`uploaded`/`u`.`downloaded`),99999)) `ratio` ";
+        $query.="FROM ".$utables." ";
+        $query.=$activetorr1." ";
+        $query.="WHERE `u`.`id_level` IN(".$grouplist.") "; 
+        $query.=$activetorr2." ";
+        $query.="GROUP BY `u`.`id` ";
+        $query.="ORDER BY `u`.`id` ASC";
+    }
+
+    $res=mysql_query($query);
+
+    $user=array();
+    while($row=mysql_fetch_assoc($res))
+    {
+        $user[$row["id"]]["curlev"]=$row["id_level"];
+        $user[$row["id"]]["newlev"]=$default_level;
+        if($FORUMLINK=="smf")
+        {
+            $user[$row["id"]]["newforumlev"]=$default_forum_level;
+            $user[$row["id"]]["smf_fid"]=$row["smf_fid"];
+        }
+        
+        $lock="no";        
+        foreach($level2 as $k => $v)
+        {
+            if($v["autorank_position"]<0)
+            {
+                if($row["downloaded"]>$v["autorank_min_upload"]  && $row["ratio"]<$v["autorank_minratio"] && $lock=="no")
+                {
+                    if($FORUMLINK=="smf")
+                    {
+                        $user[$row["id"]]["newforumlev"]=$v["autorank_smf_group_mirror"];
+                    }
+                    $user[$row["id"]]["newlev"]=$v["id"];
+                    $lock="yes";
+                }
+            }
+            elseif($v["autorank_position"]>0)
+            {
+                if($row["ratio"]>=$v["autorank_minratio"] && $row["uploaded"]>=$v["autorank_min_upload"])
+                {
+                    $user[$row["id"]]["newlev"]=$v["id"];
+                    if($FORUMLINK=="smf")
+                    {
+                        $user[$row["id"]]["newforumlev"]=$v["autorank_smf_group_mirror"];
+                    }
+                }
+            }
+        }
+    }
+    foreach($user as $k => $v)
+    {
+        if ($v["curlev"]!=$v["newlev"])
+        {
+            // Query to update their tracker level
+            $query1 ="UPDATE `{$TABLE_PREFIX}users` ";
+            $query1.="SET `id_level`=".$v["newlev"]." ";
+            $query1.="WHERE `id`=".$k;
+
+            @mysql_query($query1);
+
+            if($FORUMLINK=="smf")
+            {
+                // Query to update their forum level to match
+                $query2 ="UPDATE `{$db_prefix}members` ";
+                $query2.="SET `ID_GROUP`=".$v["newforumlev"]." ";
+                $query2.="WHERE `ID_MEMBER`=".$v["smf_fid"];
+
+                @mysql_query($query2);
+            }
+        }
+    }
+}
+
 ?>

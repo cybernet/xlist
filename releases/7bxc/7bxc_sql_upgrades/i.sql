@@ -45,5 +45,9 @@ CREATE TABLE `{$db_prefix}rules_group` (
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM;
 -- end of rev 228
-
+ALTER TABLE `{$db_prefix}users_level` ADD `autorank_state` ENUM( 'Enabled', 'Disabled' ) NOT NULL DEFAULT 'Disabled',
+ADD `autorank_position` SMALLINT( 3 ) NOT NULL DEFAULT '0',
+ADD `autorank_min_upload` BIGINT( 20 ) NOT NULL DEFAULT '0',
+ADD `autorank_minratio` DECIMAL( 5, 2 ) NOT NULL DEFAULT '0.00',
+ADD `autorank_smf_group_mirror` INT( 10 ) NOT NULL DEFAULT '0';
 -- end of rev 230

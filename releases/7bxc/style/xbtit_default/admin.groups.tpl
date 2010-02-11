@@ -66,6 +66,18 @@
 
     <td class="header" align="center"><tag:language.DELETE /></td>
 
+
+    <td class="header" align="center"><tag:language.AUTORANK_STATE /></td>
+
+    <td class="header" align="center"><tag:language.AUTORANK_POSITION /></td>
+
+    <td class="header" align="center"><tag:language.AUTORANK_MIN_UPLOAD /></td>
+
+    <td class="header" align="center"><tag:language.AUTORANK_MIN_RATIO /></td>
+    
+    <td class="header" align="center"><tag:language.AUTORANK_SMF_MIRROR /></td>
+
+
   </tr>
 
   <loop:groups>
@@ -98,13 +110,25 @@
 
     <td class="lista" align="center"><tag:groups[].delete /></td>
 
+
+    <td class="lista" align="center"><tag:groups[].arstate /></td>
+
+    <td class="lista" align="center"><tag:groups[].arpos /></td>
+
+    <td class="lista" align="center"><tag:groups[].arupdowntrig /></td>
+
+    <td class="lista" align="center"><tag:groups[].arratiotrig /></td>
+    
+    <td class="lista" align="center"><tag:groups[].arsmfmirr /></td>
+
+
   </tr>
 
   </loop:groups>
 
   <tr>
 
-    <td class="header" align="center" colspan="12"><tag:group_add_new /></td>
+    <td class="header" align="center" colspan="17"><tag:group_add_new /></td>
 
   </tr>
 
@@ -256,6 +280,46 @@
       <td class="header"><tag:language.GROUP_GO_CP /></td>
 
       <td class="lista"><input type="checkbox" name="admincp" <tag:group.admin_access /> /></td>
+
+    </tr>
+
+    <tr>
+
+      <td class="header"><tag:language.AUTORANK_STATE /></td>
+
+      <td class="lista"><select name='arstate'><tag:group.autorank_state />\n</select></td>
+
+    </tr>
+
+    <tr>
+
+      <td class="header"><tag:language.AUTORANK_POSITION /></td>
+
+      <td class="lista"><input type="text" name="arpos" value="<tag:group.autorank_position />" /></td>
+
+    </tr>
+
+    <tr>
+
+      <td class="header"><tag:language.AUTORANK_MIN_UPLOAD /><b><tag:language.AUTORANK_IN_BYTES /></b></td>
+
+      <td class="lista"><input type="text" name="arminup" value="<tag:group.autorank_min_upload />" /></td>
+
+    </tr>
+
+    <tr>
+
+      <td class="header"><tag:language.AUTORANK_MIN_RATIO /></td>
+
+      <td class="lista"><input type="text" name="arminratio" value="<tag:group.autorank_minratio />" /></td>
+
+    </tr>
+    
+    <tr>
+
+      <td class="header"><tag:language.AUTORANK_SMF_MIRROR /></td>
+
+      <td class="lista"><tag:group.forumlist /><input type="text" name="arsmfmirr" value="<tag:group.autorank_smf_group_mirror />" /></td>
 
     </tr>
 
