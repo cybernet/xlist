@@ -29,4 +29,5 @@ INSERT INTO `{$db_prefix}users_level`
        '3', 'Parked', 'no', 'no', 'no', 'no', 'no', 'no', 'yes',
        'no', 'no', 'no', 'no', 'no', 'no', 'no', 'member', 'yes', 'no', '<span style=\'color:#663300\'>', '</span>', '0');
 ALTER TABLE `{$db_prefix}users` ADD `parked` INT( 9 ) NOT NULL DEFAULT '0';
+ALTER TABLE `{$db_prefix}style` ADD `google_ad_slot` VARCHAR( 32 ) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '5995179394'
 

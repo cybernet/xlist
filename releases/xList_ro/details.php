@@ -138,12 +138,14 @@ $torrenttpl->set("IMAGEIS", !empty($row["image"]), TRUE);
 $torrenttpl->set("SCREENIS1", !empty($row["screen1"]), TRUE);
 $torrenttpl->set("SCREENIS2", !empty($row["screen2"]), TRUE);
 $torrenttpl->set("SCREENIS3", !empty($row["screen3"]), TRUE);
-$torrenttpl->set("uploaddir", $upload_dir);
+$torrenttpl->set("uploaddir", $uploaddir);
 if (!empty($row["image"]))
 {
 $image1 = "".$row["image"]."";
-$upload_dir = $GLOBALS["uploaddir"];
-$image_new = "$upload_dir/$image1"; // url of picture
+// cybernet
+$uploaddir = $GLOBALS["uploaddir"];
+$xList_img = $GLOBALS["uploaddir"];
+$image_new = "$xList_img/$image1"; // url of picture
 // $image_new = str_replace(' ','%20', $image_new); // take url and replace spaces
 $max_width = "490"; // maximum width allowed for pictures
 $resize_width = "490"; // same as max width
