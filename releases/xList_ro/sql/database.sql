@@ -117,15 +117,15 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}blocks` (
   `minclassview` int(11) NOT NULL DEFAULT '0',
   `maxclassview` int(11) NOT NULL DEFAULT '8',
   PRIMARY KEY (`blockid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=131 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
 
 --
--- Dumping data for table `{$db_prefix}blocks`
+-- Dumping data for table `xlist_l_blocks`
 --
 
 INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `status`, `title`, `cache`, `minclassview`, `maxclassview`) VALUES
 (1, 'menu', 'r', 4, 0, 'BLOCK_MENU', 'no', 3, 8),
-(2, 'clock', 'r', 3, 1, 'BLOCK_CLOCK', 'no', 3, 8),
+(2, 'clock', 'r', 3, 0, 'BLOCK_CLOCK', 'no', 3, 8),
 (3, 'forum', 'l', 3, 0, 'BLOCK_FORUM', 'no', 3, 8),
 (4, 'lastmember', 'l', 4, 1, 'BLOCK_LASTMEMBER', 'no', 3, 8),
 (6, 'trackerinfo', 'r', 5, 0, 'BLOCK_INFO', 'no', 3, 8),
@@ -148,7 +148,8 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 (24, 'twitter', 'l', 5, 0, 'TWITTER', 'no', 3, 8),
 (25, 'categories', 'r', 2, 1, 'BLOCK_CAT', 'no', 3, 8),
 (27, 'login', 'c', 1, 1, 'LOGIN', 'no', 1, 1),
-(28, 'cloud', 'c', 0, 1, 'BLOCK_CLOUD', 'no', 3, 8);
+(28, 'cloud', 'c', 0, 0, 'BLOCK_CLOUD', 'no', 3, 8),
+(29, 'ads', 't', 4, 1, 'xList_aDs', 'no', 8, 8);
 
 -- --------------------------------------------------------
 
