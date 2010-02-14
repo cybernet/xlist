@@ -78,14 +78,14 @@ else
     $peer_id = bin2hex($_GET["peer_id"]);
 }
 
-$iscompact=(isset($_GET["compact"])?$_GET["compact"]=='1':false);
+$iscompact = (isset($_GET["compact"]) ? $_GET["compact"] == '1' : false);
 
 // controll if client can handle gzip
 if ($GZIP_ENABLED)
     {
     if (stristr($_SERVER["HTTP_ACCEPT_ENCODING"],"gzip") && extension_loaded('zlib') && ini_get("zlib.output_compression") == 0)
         {
-        if (ini_get('output_handler')!='ob_gzhandler' && !$iscompact)
+        if (ini_get('output_handler') != 'ob_gzhandler' && !$iscompact)
             {
             // only for non compact
             ob_start("ob_gzhandler");
@@ -141,8 +141,8 @@ show_error("You are not authorized to use this tracker (".$SITENAME.") -- Your I
 die();
 }
 // end banned IP
-$downloaded = max(0,$_GET["downloaded"]);
-$uploaded = max(0,$_GET["uploaded"]);
+$downloaded = max(0, $_GET["downloaded"]);
+$uploaded = max(0, $_GET["uploaded"]);
 $left = $_GET["left"];
 $pid = AddSlashes($pid);
 
@@ -280,7 +280,7 @@ function isFireWalled($hash, $peerid, $ip, $port)
     fwrite($fd, chr(strlen($protocol_name)).$protocol_name.hex2bin("0000000000000000").
         hex2bin($hash));
 
-    $data = fread($fd, strlen($protocol_name)+1+20+20+8); // ideally...
+    $data = fread($fd, strlen($protocol_name) + 1 + 20 + 20 + 8); // ideally...
 
     fclose($fd);
     $offset = 0;
@@ -347,7 +347,7 @@ function getPeerInfo($user, $hash)
 // Any section of code might need to make a new peer, so this is a function here.
 // I don't want to put it into funcsv2, even though it should, just for consistency's sake.
 
-function start($info_hash, $ip, $port, $peer_id, $left, $downloaded=0, $uploaded=0, $upid="")
+function start($info_hash, $ip, $port, $peer_id, $left, $downloaded = 0, $uploaded = 0, $upid = "")
 {
   global $BASEURL;
 
@@ -545,7 +545,7 @@ function killPeer($userid, $hash, $left, $assumepeer = false)
 
 
 // Transfers bytes from "left" to "dlbytes" when a peer reports in.
-function collectBytes($peer, $hash, $left, $downloaded=0, $uploaded=0, $pid="")
+function collectBytes($peer, $hash, $left, $downloaded = 0, $uploaded = 0, $pid = "")
 {
     $peerid = $peer["peer_id"];
 
@@ -618,7 +618,7 @@ if ($LIVESTATS)
                $newup = $uploaded;
 
          if ($downloaded >= $livestat["downloaded"])
-               $newdown = ($downloaded-$livestat["downloaded"]);
+               $newdown = ($downloaded - $livestat["downloaded"]);
          else
                $newdown = $downloaded;
 //Golden Torrents by CobraCRK
