@@ -8,7 +8,7 @@ global $CURUSER;
 dbconn();
 
 //Start User Redirect if Not Logged In
-if ($CURUSER["view_users"]=="yes")
+if ($CURUSER["view_users"] == "yes")
 {
 //Stop User Redirect if Not Logged In
 
@@ -26,12 +26,12 @@ $arrnotes = mysql_num_rows($res);
        $id=$_GET["id"];
 
 //Start Read Personal Note Page
-     if  ($action=="read" && $id=="$id")
+     if  ($action == "read" && $id == "$id")
          {
 $resusrid = mysql_query("SELECT userid FROM notes WHERE id=$id AND userid=$CURUSER[uid]") or sqlerr();
 $arrresusrid = mysql_fetch_array($resusrid);
 $curuserid = $arrresusrid["userid"];
-if ($CURUSER[uid]==$curuserid)
+if ($CURUSER[uid] == $curuserid)
 {
 block_begin("".$curusername."'s Personal Notepad");
 print ("<table border=\"0\" cellspacing=\"2\" cellpadding=\"0\" class=\"lista\" align=\"center\" width=\"100%\">");
@@ -68,12 +68,12 @@ block_end();
 //Stop Read Personal Note Page
 
 //Start Edit Personal Note Page
-     elseif  ($action=="edit" && $id=="$id")
+     elseif  ($action == "edit" && $id == "$id")
          {
 $resusrid = mysql_query("SELECT userid FROM notes WHERE id=$id AND userid=$CURUSER[uid]") or sqlerr();
 $arrresusrid = mysql_fetch_array($resusrid);
 $curuserid = $arrresusrid["userid"];
-if ($CURUSER[uid]==$curuserid)
+if ($CURUSER[uid] == $curuserid)
 {
 block_begin("".$curusername."'s Personal Notepad");
 print("<form name=editnote method=post action=".$_SERVER[PHP_SELF]."?action=takeedit&id=".$_GET[id].">\n");
@@ -114,7 +114,7 @@ block_end();
 //Stop Edit Personal Note Page
 
 //Start Add New Personal Note Page
-     elseif  ($action=="add")
+     elseif  ($action == "add")
          {
 block_begin("".$curusername."'s Personal Notepad");
 print("<form name=takenote method=post action=".$_SERVER[PHP_SELF]."?action=takenote>\n");
@@ -137,7 +137,7 @@ block_end();
 //Stop Add New Personal Note Page
 
 //Start TakeAdd Personal Note Page
-     elseif  ($action=="takenote")
+     elseif  ($action == "takenote")
          {
 $note = $_POST["takenote"];
 $note = sqlesc($note);
@@ -148,7 +148,7 @@ redirect("".$_SERVER[PHP_SELF]."");
 //Stop Take Personal Note Page
 
 //Start TakeEdit Personal Note Page
-     elseif  ($action=="takeedit" && $id=="$id")
+     elseif  ($action == "takeedit" && $id == "$id")
          {
 $id = $_GET["id"];
 $note = $_POST["editnote"];
@@ -160,7 +160,7 @@ redirect("".$_SERVER[PHP_SELF]."");
 //Stop TakeEdit Personal Note Page
 
 //Start TakeDelete Personal Note Page
-     elseif  ($action=="takedelete")
+     elseif  ($action == "takedelete")
          {
 if (empty($_POST["delnote"]))
 {
@@ -224,7 +224,7 @@ print ("<tr><td class=\"header\" align=\"center\">".NOTE_ID."</td><td class=\"he
       $added = $arr[added];
       $number = $arr[id];
       //Name of Note Too big Hack Start
-      if (strlen($note)>38)
+      if (strlen($note) > 38)
       {
       $extension = "...";
       $note = substr($note, 0, 38)."$extension";

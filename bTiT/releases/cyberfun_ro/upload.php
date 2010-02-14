@@ -16,7 +16,7 @@ dbconn();
 
 standardheader('Uploads');
 
-if (!$CURUSER || $CURUSER["can_upload"]=="no")
+if (!$CURUSER || $CURUSER["can_upload"] == "no")
    {
        stderr(ERROR.NOT_AUTHORIZED_UPLOAD,SORRY."...");
    }
@@ -32,7 +32,7 @@ if (isset($_FILES["torrent"]))
    {
       $fd = fopen($_FILES["torrent"]["tmp_name"], "rb") or die(FILE_UPLOAD_ERROR_1);
       is_uploaded_file($_FILES["torrent"]["tmp_name"]) or die(FILE_UPLOAD_ERROR_2);
-      $length=filesize($_FILES["torrent"]["tmp_name"]);
+      $length = filesize($_FILES["torrent"]["tmp_name"]);
       if ($length)
         $alltorrent = fread($fd, $length);
       else {
@@ -60,7 +60,7 @@ if (isset($_FILES["torrent"]))
     //if ($array["announce"]==$BASEURL."/announce.php" && $DHT_PRIVATE)
     if (in_array($array["announce"],$TRACKER_ANNOUNCEURLS) && $DHT_PRIVATE)
       {
-      $array["info"]["private"]=1;
+      $array["info"]["private"] = 1;
       $hash=sha1(BEncode($array["info"]));
       }
     else
@@ -71,7 +71,7 @@ if (isset($_FILES["torrent"]))
       }
 
 if (isset($_POST["filename"]))
-   $filename=htmlspecialchars($_POST["filename"]);
+   $filename = htmlspecialchars($_POST["filename"]);
 else
     $filename = AddSlashes(htmlspecialchars($_FILES["torrent"]["name"]));
 
@@ -92,9 +92,9 @@ for ($i=0;$i<count($_POST["attachment"]);$i++)
 {
 if (preg_match("|http|", $_POST["attachment"][$i]))
 {
-$immagine=$_POST["attachment"][$i];
-$db.="$immagine";
-$db.="<br>";
+$immagine = $_POST["attachment"][$i];
+$db .= "$immagine";
+$db .= "<br>";
 }
 $screen = AddSlashes($db);
 }
@@ -156,10 +156,10 @@ if (isset($upfile["length"]))
 else if (isset($upfile["files"]))
      {
 // multifiles torrent
-         $size=0;
+         $size = 0;
          foreach ($upfile["files"] as $file)
                  {
-                 $size+=floatval($file["length"]);
+                 $size += floatval($file["length"]);
                  }
      }
 else
@@ -180,20 +180,20 @@ if (!isset($array["announce"]))
       $categoria = 0+$_POST["category"];
       $categoria = ($categoria);
       $comment = ($comment);
-      $announce=$array["announce"];
-      $anonyme=$_POST["anonymous"];
+      $announce = $array["announce"];
+      $anonyme = $_POST["anonymous"];
 
       //Torrent Nuke/Req Hack Start - 3:13 PM 9/3/2006
-      $req=$_POST["requested"];
-      $nuke=$_POST["nuked"];
+      $req = $_POST["requested"];
+      $nuke = $_POST["nuked"];
 
       if ("$nuke" == "true")
-      $nuke_reason=$_POST["nuked_reason"];
+      $nuke_reason = $_POST["nuked_reason"];
       else
-      $nuke_reason="";
+      $nuke_reason = "";
       //Torrent Nuke/Req Hack Stop
 
-      if ($categoria==0)
+      if ($categoria == 0)
          {
              err_msg(ERROR,WRITE_CATEGORY);
              print("</td></tr></table>");
@@ -208,7 +208,7 @@ if (!isset($array["announce"]))
          endOutput();
       }
 //      if ($announce!=$BASEURL."/announce.php" && $EXTERNAL_TORRENTS==false)
-      if (!in_array($announce,$TRACKER_ANNOUNCEURLS) && $EXTERNAL_TORRENTS==false)
+      if (!in_array($announce, $TRACKER_ANNOUNCEURLS) && $EXTERNAL_TORRENTS == false)
          {
            err_msg(ERROR,ERR_EXTERNAL_NOT_ALLOWED);
            unlink($_FILES["torrent"]["tmp_name"]);
@@ -290,7 +290,7 @@ $scene=strip_tags($_POST['scene']);
              {
               if ($DHT_PRIVATE)
                    {
-                   $alltorrent=bencode($array);
+                   $alltorrent = bencode($array);
                    $fd = fopen($TORRENTSDIR . "/" . $hash . ".btf", "rb+");
                    fwrite($fd,$alltorrent);
                    fclose($fd);

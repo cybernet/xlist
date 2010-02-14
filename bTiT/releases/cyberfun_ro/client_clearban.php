@@ -25,7 +25,7 @@ dbconn();
 
 standardheader('Clear Client Ban');
 
-if ($CURUSER["admin_access"]=="no")
+if ($CURUSER["admin_access"] == "no")
 {
     err_msg(ERROR,"You're not authorised to view this page");
     stdfoot();
@@ -33,13 +33,13 @@ if ($CURUSER["admin_access"]=="no")
 }
 else
 {
-    (isset($_GET["id"]) ? $id=0+$_GET["id"] : $id="");
-    (isset($_GET["returnto"]) ? $url=urldecode($_GET["returnto"]) : $url="");
-    (isset($_POST["confirm"]) ? $confirm=$_POST["confirm"] : $confirm="");
+    (isset($_GET["id"]) ? $id = 0 + $_GET["id"] : $id = "");
+    (isset($_GET["returnto"]) ? $url = urldecode($_GET["returnto"]) : $url = "");
+    (isset($_POST["confirm"]) ? $confirm = $_POST["confirm"] : $confirm = "");
 
     if($_POST["confirm"])
     {
-        if($confirm=="Yes")
+        if($confirm == "Yes")
         {
             @mysql_query("DELETE FROM `bannedclient` WHERE `id`=".$id);
             block_begin("Success");
@@ -52,7 +52,7 @@ else
         else
             redirect($url);
     }
-    $row=mysql_fetch_assoc(mysql_query("SELECT * FROM `bannedclient` WHERE `id`=$id"));
+    $row = mysql_fetch_assoc(mysql_query("SELECT * FROM `bannedclient` WHERE `id`=$id"));
 
     block_begin("Clear Client Ban");
 

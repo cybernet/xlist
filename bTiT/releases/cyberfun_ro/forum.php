@@ -175,7 +175,7 @@ dbconn();
 
     if ($quote)
     {
-       $postid = 0+$_GET["postid"];
+       $postid = 0 + $_GET["postid"];
        if (!is_valid_id($postid))
          die;
 
@@ -377,12 +377,12 @@ if (!isset($forumid)) $forumid = 0;
 
   if ($action == "viewtopic")
   {
-    $topicid = 0+$_GET["topicid"];
+    $topicid = 0 + $_GET["topicid"];
 
     if (isset($_GET["page"]))
         {
         if (substr($_GET["page"],0,4)=="last")
-            $page=htmlspecialchars($_GET["page"]);
+            $page = htmlspecialchars($_GET["page"]);
         else
             $page = max(1,$_GET["page"]);
         }
@@ -765,7 +765,7 @@ if (!isset($forumid)) $forumid = 0;
 
   if ($action == "reply")
   {
-    $topicid = 0+$_GET["topicid"];
+    $topicid = 0 + $_GET["topicid"];
 
     if (!is_valid_id($topicid))
       die;

@@ -10,7 +10,7 @@ dbconn(true);
 standardheader("msgspy");
 
 
-if (!$CURUSER || $CURUSER["admin_access"]!="yes")
+if (!$CURUSER || $CURUSER["admin_access"] != "yes")
    {
        err_msg(ERROR,NOT_ADMIN_CP_ACCESS);
        stdfoot();
@@ -26,7 +26,7 @@ $res2 = mysql_query("SELECT COUNT(*) FROM messages ORDER BY id DESC");
         $row = mysql_fetch_array($res2);
         $count = $row[0];
 //$perpage = 15;
-$perpage=(max(0,$CURUSER["postsperpage"])>0?$CURUSER["postsperpage"]:20);
+$perpage = (max(0, $CURUSER["postsperpage"]) > 0 ? $CURUSER["postsperpage"] : 20);
 //list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, $_SERVER["PHP_SELF"] ."?msgspy=msgspy&" );
     list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, "msgspy.php?&" );
 echo $pagertop;

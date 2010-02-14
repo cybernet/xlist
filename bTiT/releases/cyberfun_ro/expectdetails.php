@@ -53,7 +53,7 @@ $cres = mysql_query("SELECT username FROM users WHERE id=$num[userid]");
    }
 print("<tr><td align=left class=header><B>" . UPLOADER . ":</B></td><td class=lista align=left><a href=userdetails.php?id=$num[userid]><b>$username</b></td></tr>");
 
-if ($CURUSER["can_upload"]=="yes")
+if ($CURUSER["can_upload"] == "yes")
 {
 		print("<tr><td class=lista align=center width=100% colspan='2'><form method=get action=expected.php#add><input type=submit value=\"".ADD_EXPECTED."\"></form></td></tr>");
 		print("</table>");

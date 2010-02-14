@@ -10,10 +10,10 @@ require_once ("include/config.php");
 dbconn();
 standardheader('Comments');
 
-    if (isset($_GET["do"])) $do=$_GET["do"];
+    if (isset($_GET["do"])) $do = $_GET["do"];
       else $do = "";
     if (isset($_GET["action"]))
-       $action=$_GET["action"];
+       $action = $_GET["action"];
 function comments_list()
          {
 
@@ -26,7 +26,7 @@ function comments_list()
          return $ret;
 }
 
-if ($CURUSER["view_torrents"]=="no")
+if ($CURUSER["view_torrents"] == "no")
    {
        err_msg(ERROR,NOT_ADMIN_CP_ACCESS);
        stdfoot();
@@ -36,13 +36,13 @@ if ($CURUSER["view_torrents"]=="no")
 // Edit comments By Quake
 // Added permissions so other members who not have access to edit and delete not can edit other members comments
 // Was added by fatepower 13/12/07 01:45
-if ($do=="comments" && $action=="edit")
+if ($do=="comments" && $action == "edit")
             {
 			$id = $_GET["id"];
             $subres = mysql_query("SELECT * FROM comments WHERE id = '" . $id . "' ORDER BY added DESC");
             if ($subrow = mysql_fetch_array($subres))
 			 {
-			if ($subrow["user"]==$CURUSER["username"] || $CURUSER["mod_access"]=="yes" || $CURUSER["edit_forum"]=="yes" || $CURUSER["delete_torrents"]=="yes")
+			if ($subrow["user"] == $CURUSER["username"] || $CURUSER["mod_access"] == "yes" || $CURUSER["edit_forum"] == "yes" || $CURUSER["delete_torrents"] == "yes")
 //			if ($subrow["user"]==$CRUSUER["username"] || $subrow["user"]!=$CRUSUER["username"] && $CURUSER["mod_access"]=="no" || $subrow["user"]!=$CRUSUER["username"] && $CURUSER["edit_forum"]=="no" || $subrow["user"]!=$CRUSUER["username"] && $CURUSER["delete_torrents"]=="no")
 			{
             block_begin(EDIT);
@@ -80,7 +80,7 @@ if ($do=="comments" && $action=="edit")
                    }
 
 // Quote Comments by Quake
-elseif ($do=="comments" && $action=="quote")
+elseif ($do == "comments" && $action == "quote")
             {
 
 			$id = $_GET["id"];
@@ -115,11 +115,11 @@ elseif ($do=="comments" && $action=="quote")
 // End Quote Comments by Quake
 
 // Comments by Quake
-     elseif ($do=="comments" && $action=="write")
+     elseif ($do == "comments" && $action == "write")
             {
-            if ($_POST["write"]==FRM_CONFIRM)
+            if ($_POST["write"] == FRM_CONFIRM)
                {
-                       $id=intval($_GET["id"]);
+                       $id = intval($_GET["id"]);
                        $text = $_POST["text"];
 					   $text = sqlesc($text);
                        mysql_query("UPDATE comments SET text=$text,editedby=$CURUSER[uid],editedat=NOW() WHERE id=$id") or sqlerr();
@@ -130,15 +130,15 @@ elseif ($do=="comments" && $action=="quote")
 // End Edit comments
 
 // Quote's by Quake
-     elseif ($do=="comments" && $action=="confirm")
+     elseif ($do == "comments" && $action == "confirm")
             {
-  	   if ($_POST["confirm"]==FRM_CONFIRM)
+  	   if ($_POST["confirm"] == FRM_CONFIRM)
 	    {
                $comment = addslashes($_POST["text"]);
                $user=$CURUSER["username"];
-       if ($user=="") $user="Anonymous";
-               $userid=$CURUSER["uid"];
-       if ($userid=="") $userid="0";
+       if ($user == "") $user = "Anonymous";
+               $userid = $CURUSER["uid"];
+       if ($userid == "") $userid = "0";
  @mysql_query("INSERT INTO comments (added,text,ori_text,user,userid,info_hash) VALUES (NOW(),\"$comment\",\"$comment\",\"$user\",\"$userid\",\"" . StripSlashes($_POST["info_hash"]) . "\")");
  redirect("details.php?id=" . StripSlashes($_POST["info_hash"]) ."#comments");
  }

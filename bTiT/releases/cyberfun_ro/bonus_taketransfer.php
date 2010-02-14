@@ -21,8 +21,8 @@ if ($HTTP_SERVER_VARS["REQUEST_METHOD"] != "POST")
   stderr("Error", "Method");
 
 
-$resuser=mysql_query("SELECT * FROM users WHERE id=".$CURUSER["uid"]);
-$rowuser=mysql_fetch_array($resuser);
+$resuser = mysql_query("SELECT * FROM users WHERE id=".$CURUSER["uid"]);
+$rowuser = mysql_fetch_array($resuser);
 
 $username = $_POST["username"];
 

@@ -11,7 +11,7 @@ dbconn(true);
 
 standardheader('User Control Panel');
 
-$uid=(isset($_GET["uid"])?intval($_GET["uid"]):1);
+$uid=(isset($_GET["uid"]) ? intval($_GET["uid"]):1);
 
 ?>
 <script type="text/javascript">
@@ -29,7 +29,7 @@ function popusers(url)
 </script>
 <?php
 
-if ($CURUSER["uid"]!=$uid || $CURUSER["uid"]==1)
+if ($CURUSER["uid"] != $uid || $CURUSER["uid"] == 1)
    {
        err_msg(ERROR,ERR_USER_NOT_USER);
        stdfoot();
@@ -37,13 +37,13 @@ if ($CURUSER["uid"]!=$uid || $CURUSER["uid"]==1)
 }
 else
     {
-    $utorrents=intval($CURUSER["torrentsperpage"]);
-    if (isset($_GET["do"])) $do=$_GET["do"];
+    $utorrents = intval($CURUSER["torrentsperpage"]);
+    if (isset($_GET["do"])) $do = $_GET["do"];
       else $do = "";
     if (isset($_GET["action"]))
-       $action=$_GET["action"];
+       $action = $_GET["action"];
 	if (isset($_GET["messages"]))
-	   $messages=$_GET["messages"];
+	   $messages = $_GET["messages"];
 
     // begin the real admin page
      block_begin($CURUSER["username"]."'s Control Panel");
@@ -61,7 +61,7 @@ else
 // end invites by TheDevil 25/02/2006 ( original code by EnzoF1 )
      print("\n</tr></table>\n");
 
-     if ($do=="pm" && $action=="list")
+     if ($do == "pm" && $action == "list")
         {
         // MODIFIED select for deletion by gAnDo
             print("<script type=\"text/javascript\">
@@ -86,17 +86,17 @@ else
             ");
 
            if (isset($_GET["what"]) && $_GET["what"])
-                 $what=$_GET["what"];
+                 $what = $_GET["what"];
            else $what = "";
-                   if ($what=="outbox")
+                   if ($what == "outbox")
                   {
                    block_begin(MNU_UCP_OUT);
                    print("\n<form action=\"usercp.php?do=pm&action=deleteall&messages=out&uid=$uid&type=out\" name=\"deleteall\" method=\"post\">");
                    print("\n<table class=lista width=100% align=center>");
                    print("\n<tr><td class=header align=center>".READED."</td><td class=header align=center>".RECEIVER."</td><td class=header align=center>".DATE."</td><td class=header align=center>".SUBJECT."</td>");
                    //$res=mysql_query("select messages.*, users.username as receivername FROM messages INNER JOIN users on users.id=messages.receiver WHERE sender=$uid ORDER BY added DESC");
-                   $res=mysql_query("select messages.*, users.username as receivername FROM messages LEFT JOIN users on users.id=messages.receiver WHERE sender=$uid AND messages.delbysender='no' ORDER BY added DESC");
-                   if (!$res || mysql_num_rows($res)==0)
+                   $res = mysql_query("select messages.*, users.username as receivername FROM messages LEFT JOIN users on users.id=messages.receiver WHERE sender=$uid AND messages.delbysender='no' ORDER BY added DESC");
+                   if (!$res || mysql_num_rows($res) == 0)
                      {
                       print("\n</tr><tr><td class=lista colspan=5 align=center>".NO_MESSAGES."</td></tr>");
                      }
@@ -122,12 +122,12 @@ else
                    print("\n<table class=lista width=100% align=center>");
                    print("\n<tr><td class=header align=center>".READED."</td><td class=header align=center>".SENDER."</td><td class=header align=center>".DATE."</td><td class=header align=center>".SUBJECT."</td>");
                    //$res=mysql_query("select messages.*, users.username as sendername FROM messages INNER JOIN users on users.id=messages.sender WHERE receiver=$uid ORDER BY added DESC");
-                   $res=mysql_query("select messages.*, users.username as sendername FROM messages LEFT JOIN users on users.id=messages.sender WHERE receiver=$uid AND messages.delbyreceiver='no' ORDER BY added DESC");
-                   if (!$res || mysql_num_rows($res)==0)
+                   $res = mysql_query("select messages.*, users.username as sendername FROM messages LEFT JOIN users on users.id=messages.sender WHERE receiver=$uid AND messages.delbyreceiver='no' ORDER BY added DESC");
+                   if (!$res || mysql_num_rows($res) == 0)
                       print("\n</tr><tr><td class=lista colspan=5 align=center>".NO_MESSAGES."</td></tr>");
                    else {
                         print("\n<td class=\"header\" align=\"center\"><input type=\"checkbox\" name=\"all\" onclick=\"SetAllCheckBoxes('deleteall','msg[]',this.checked)\" /></td></tr>");
-                        while ($result=mysql_fetch_array($res))
+                        while ($result = mysql_fetch_array($res))
                               print("\n<tr>
                               <td class=lista align=center>".unesc($result["readed"])."</td>
                               <td class=lista align=center><a href=userdetails.php?id=".$result["sender"].">".unesc($result["sendername"])."</a></td>
@@ -144,34 +144,34 @@ else
                    print("<br />");
                    }
         }
-     elseif ($do=="pm" && $action=="read")
+     elseif ($do = "pm" && $action == "read")
         {
-            $id=intval($_GET["id"]);
-            $what=$_GET["what"];
-            if ($what=="inbox")
-			   $res=mysql_query("select messages.*, messages.sender as userid, users.username as sendername FROM messages INNER JOIN users on users.id=messages.sender WHERE receiver=$uid AND messages.id=$id AND messages.delbyreceiver='no'");
-            elseif ($what=="outbox")
-			   $res=mysql_query("select messages.*, messages.receiver as userid, users.username as sendername FROM messages INNER JOIN users on users.id=messages.receiver WHERE sender=$uid AND messages.id=$id AND messages.delbysender='no'");
+            $id = intval($_GET["id"]);
+            $what = $_GET["what"];
+            if ($what == "inbox")
+			   $res = mysql_query("select messages.*, messages.sender as userid, users.username as sendername FROM messages INNER JOIN users on users.id=messages.sender WHERE receiver=$uid AND messages.id=$id AND messages.delbyreceiver='no'");
+            elseif ($what == "outbox")
+			   $res = mysql_query("select messages.*, messages.receiver as userid, users.username as sendername FROM messages INNER JOIN users on users.id=messages.receiver WHERE sender=$uid AND messages.id=$id AND messages.delbysender='no'");
             block_begin(PRIVATE_MSG);
             if (!$res)
                err_msg(ERROR,BAD_ID);
             else
                 {
                 print("\n<table class=\"lista\" width=\"100%\" align=\"center\" cellpadding=\"2\">");
-                $result=mysql_fetch_array($res);
+                $result = mysql_fetch_array($res);
                 print("\n<tr><td width=30% rowspan=2 class=lista><a href=userdetails.php?id=".$result["userid"].">".unesc($result["sendername"])."</a><br />".get_date_time($result["added"])."<br />(".get_elapsed_time($result["added"])." ago)</td>");
                 print("\n<td class=header>".SUBJECT.": ".format_comment(unesc($result["subject"]))."</td></tr>");
                 print("\n<tr><td>".format_comment(unesc($result["msg"]))."</td></tr>");
                 print("\n</table>");
                 print("<br />");
-                if ($what=="inbox")
+                if ($what == "inbox")
                    {
                    print("\n<table class=lista width=100% align=center>");
                    print("\n<tr><td class=lista align=center><input onclick=\"location.href='usercp.php?do=pm&action=edit&what=quote&uid=$uid&id=$id'\" type=\"button\" value=\"".QUOTE."\"/></td><td class=lista align=center><input onclick=\"location.href='usercp.php?do=pm&action=edit&uid=$uid&id=$id'\" type=\"button\" value=\"".ANSWER."\"/></td><td class=lista align=center><input type=\"button\" onclick=\"location.href='usercp.php?do=pm&action=delete&messages=in&uid=$uid&id=$id'\" value=\"".DELETE."\"/></td></tr>");
                    print("\n</table>");
                    mysql_query("UPDATE messages SET readed='yes' WHERE id=$id");
                 }
-				elseif ($what=="outbox")
+				elseif ($what == "outbox")
                    {
 				   print("\n<table class=lista width=100% align=center>");
                    print("\n<tr><td class=lista align=center><input onclick=\"location.href='usercp.php?do=pm&action=edit&what=quote&uid=$uid&id=$id'\" type=\"button\" value=\"".QUOTE."\"/></td><td class=lista align=center><input onclick=\"location.href='usercp.php?do=pm&action=edit&uid=$uid&id=$id'\" type=\"button\" value=\"".ANSWER."\"/></td><td class=lista align=center><input type=\"button\" onclick=\"location.href='usercp.php?do=pm&action=delete&messages=out&uid=$uid&id=$id'\" value=\"".DELETE."\"/></td></tr>");
@@ -183,23 +183,23 @@ else
             print("<br />");
 
         }
-     elseif ($do=="pm" && $action=="edit")
+     elseif ($do == "pm" && $action == "edit")
         {
             // if new pm will give id=0 and empty array
             if (isset($_GET['id']) && $_GET['id'])
-                        $id=intval(0+$_GET['id']);
-            else $id=0;
+                        $id = intval(0+$_GET['id']);
+            else $id = 0;
             if (!isset($_GET['what'])) $_GET['what'] = '';
             if (!isset($_GET['to'])) $_GET['to'] = '';
 
-            $res=mysql_query("select messages.*, users.username as sendername FROM messages INNER JOIN users on users.id=messages.sender WHERE receiver=$uid AND messages.id=$id");
+            $res = mysql_query("select messages.*, users.username as sendername FROM messages INNER JOIN users on users.id=messages.sender WHERE receiver=$uid AND messages.id=$id");
             block_begin(PRIVATE_MSG);
             if (!$res)
                err_msg(ERROR,BAD_ID);
             else
                 {
                 print("\n<form method=post name=edit action=usercp.php?do=$do&action=post&uid=$uid&what=".htmlspecialchars($_GET["what"])."><table class=\"lista\" align=\"center\" cellpadding=\"2\">");
-                $result=mysql_fetch_array($res);
+                $result = mysql_fetch_array($res);
 				print("\n<tr><td class=header>".RECEIVER.":</td><td class=header><input type=\"text\" name=\"receiver\" value=\"".($_GET["what"]!="new" ? unesc($result["sendername"]):htmlspecialchars(urldecode($_GET["to"])))."\" size=\"40\" maxlength=\"40\" ".($_GET["what"]!="new" ? " readonly" : "")." />&nbsp;&nbsp;".($_GET["what"]=="new" ? "<a href=\"javascript:popusers('searchusers.php');\">".FIND_USER."</a>" : "")."</td></tr>");
 //			    print("\n<tr><td class=header>".RECEIVER.":</td><td class=header><input type=\"text\" name=\"receiver\" value=\"".($_GET["what"]!="new" ? unesc($result["sendername"]):urldecode($_GET["to"]))."\" size=\"40\" maxlength=\"40\" ".($_GET["what"]!="new" ? " readonly" : "")." />&nbsp;&nbsp;".($_GET["what"]=="new" ? "<a href=\"javascript:popusers('searchusers.php');\">".FIND_USER."</a>" : "")."</td></tr>");
                 print("\n<tr><td class=header>".SUBJECT.":</td><td class=header><input type=\"text\" name=\"subject\" value=\"".($_GET["what"]!="new" ? (strpos(unesc($result["subject"]), "Re:")===false?"Re:":"").unesc($result["subject"]):"")."\" size=\"40\" maxlength=\"40\" /></td></tr>");
@@ -219,23 +219,23 @@ else
             print("<br />");
 
         }
-     elseif ($do=="pm" && $action=="delete" && $messages=="in")
+     elseif ($do == "pm" && $action == "delete" && $messages == "in")
         {
             $id=intval($_GET["id"]);
             mysql_query("UPDATE messages SET delbyreceiver='yes' WHERE receiver=$uid AND id=$id") or die(mysql_error());
             redirect("usercp.php?uid=$uid&do=pm&action=list&what=inbox");
         }
-     elseif ($do=="pm" && $action=="delete" && $messages=="out")
+     elseif ($do == "pm" && $action == "delete" && $messages == "out")
         {
             $id=intval($_GET["id"]);
             mysql_query("UPDATE messages SET delbysender='yes' WHERE sender=$uid AND id=$id") or die(mysql_error());
             redirect("usercp.php?uid=$uid&do=pm&action=list&what=inbox");
         }
-     elseif ($do=="pm" && $action=="deleteall" && $messages=="in")
+     elseif ($do == "pm" && $action == "deleteall" && $messages == "in")
         {
         // MODIFIED DELETE ALL VERSION BY gAnDo
             if (isset($_GET["type"]))
-                $what=$_GET["type"];
+                $what = $_GET["type"];
             else
                 {
                 redirect("usercp.php?uid=$uid&do=pm&action=list&what=inbox");
@@ -246,11 +246,11 @@ else
             //mysql_query("DELETE FROM messages WHERE receiver=$uid AND readed='yes'") or die(mysql_error());
            redirect("usercp.php?uid=$uid&do=pm&action=list&what=inbox");
         }
-     elseif ($do=="pm" && $action=="deleteall" && $messages=="out")
+     elseif ($do == "pm" && $action == "deleteall" && $messages == "out")
         {
         // MODIFIED DELETE ALL VERSION BY gAnDo
             if (isset($_GET["type"]))
-                $what=$_GET["type"];
+                $what = $_GET["type"];
             else
                 {
                 redirect("usercp.php?uid=$uid&do=pm&action=list&what=outbox");
@@ -261,31 +261,32 @@ else
             //mysql_query("DELETE FROM messages WHERE receiver=$uid AND readed='yes'") or die(mysql_error());
            redirect("usercp.php?uid=$uid&do=pm&action=list&what=outbox");
         }
-     elseif ($do=="pm" && $action=="post")
+     elseif ($do == "pm" && $action == "post")
         {
-            if ($_POST["confirm"]==FRM_CONFIRM)
+            if ($_POST["confirm"] == FRM_CONFIRM)
                {
-               $res=mysql_query("SELECT id FROM users WHERE username=".sqlesc($_POST["receiver"]));
-               if (!$res || mysql_num_rows($res)==0)
+               $res = mysql_query("SELECT id FROM users WHERE username=".sqlesc($_POST["receiver"]));
+               if (!$res || mysql_num_rows($res) == 0)
                   err_msg(ERROR,ERR_USER_NOT_FOUND);
                else
                    {
-                   $result=mysql_fetch_array($res);
-                   $subject=sqlesc($_POST["subject"]);
-                   $msg=sqlesc($_POST["msg"]);
-                   $rec=$result["id"];
-                   $send=$CURUSER["uid"];
-				   if ($rec==1 || $rec==0 || $rec==$send)
+                   $result = mysql_fetch_array($res);
+                   $subject = sqlesc($_POST["subject"]);
+                   $msg = sqlesc($_POST["msg"]);
+                   $rec = $result["id"];
+                   $send=  $CURUSER["uid"];
+// cybernet left
+				   if ($rec == 1 || $rec == 0 || $rec == $send)
  	  	            err_msg(ERROR,ERR_PM_GUEST);
  	  	           else {
-                   if ($subject=="''")
-                      $subject="'no subject'";
+                   if ($subject == "''")
+                      $subject = "'no subject'";
                    mysql_query("INSERT INTO messages (sender, receiver, added, subject, msg) VALUES ($send,$rec,UNIX_TIMESTAMP(),$subject,$msg)") or die(mysql_error());
                    redirect("usercp.php?uid=$uid&do=pm&action=list");
 				   }
                }
 			   }
-            elseif ($_POST["confirm"]==FRM_PREVIEW)
+            elseif ($_POST["confirm"] == FRM_PREVIEW)
                 {
                 block_begin(PRIVATE_MSG);
                 block_begin(FRM_PREVIEW);
