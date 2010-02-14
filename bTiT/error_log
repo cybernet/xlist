@@ -1,0 +1,56 @@
+[19-Jun-2009 01:38:40] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'tracker_cfn'@'localhost' (using password: YES) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 01:45:03] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'tracker_cfn'@'localhost' (using password: YES) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 01:54:47] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'tracker_cfn'@'localhost' (using password: YES) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 01:59:28] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'tracker_cfn'@'localhost' (using password: YES) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 02:01:36] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'exlist_tracker'@'localhost' (using password: YES) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 07:46:32] BtiTracker: start: MySQL server has gone away
+[19-Jun-2009 08:55:09] BtiTracker: start: MySQL server has gone away
+[19-Jun-2009 10:04:54] PHP Warning:  Division by zero in /home/exlist/s/cfn/tracker/tickets.php on line 25
+[19-Jun-2009 10:08:05] BtiTracker: start: MySQL server has gone away
+[19-Jun-2009 10:25:13] BtiTracker: start: MySQL server has gone away
+[19-Jun-2009 11:09:58] BtiTracker: start: MySQL server has gone away
+[19-Jun-2009 11:38:53] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 11:39:31] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 11:39:33] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 11:39:33] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 11:39:54] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 11:40:31] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 11:40:35] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 11:41:28] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 11:41:32] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 11:42:20] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 11:42:26] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 11:43:02] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 11:43:17] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 11:43:23] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 11:43:56] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[19-Jun-2009 11:44:27] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2) in /home/exlist/s/cfn/tracker/include/functions.php on line 512
+[20-Jun-2009 01:19:09] BtiTracker: start: MySQL server has gone away
+[20-Jun-2009 03:38:27] PHP Warning:  mysql_result() [<a href='function.mysql-result'>function.mysql-result</a>]: Unable to jump to row 0 on MySQL result index 324 in /home/exlist/s/cfn/tracker/include/sanity.php on line 47
+[20-Jun-2009 03:50:42] BtiTracker: start: MySQL server has gone away
+[20-Jun-2009 04:23:59] BtiTracker: start: MySQL server has gone away
+[20-Jun-2009 04:34:11] PHP Warning:  mysql_result() [<a href='function.mysql-result'>function.mysql-result</a>]: Unable to jump to row 0 on MySQL result index 279 in /home/exlist/s/cfn/tracker/include/sanity.php on line 47
+[20-Jun-2009 05:12:15] PHP Warning:  mysql_result() [<a href='function.mysql-result'>function.mysql-result</a>]: Unable to jump to row 0 on MySQL result index 304 in /home/exlist/s/cfn/tracker/include/sanity.php on line 47
+[20-Jun-2009 05:56:34] PHP Warning:  mysql_result() [<a href='function.mysql-result'>function.mysql-result</a>]: Unable to jump to row 0 on MySQL result index 302 in /home/exlist/s/cfn/tracker/include/sanity.php on line 47
+[20-Jun-2009 06:38:42] PHP Warning:  mysql_result() [<a href='function.mysql-result'>function.mysql-result</a>]: Unable to jump to row 0 on MySQL result index 298 in /home/exlist/s/cfn/tracker/include/sanity.php on line 47
+[20-Jun-2009 08:54:45] BtiTracker: start: MySQL server has gone away
+[20-Jun-2009 09:44:22] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/exlist/s/cfn/tracker/include/functions.php on line 842
+[20-Jun-2009 09:44:22] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/exlist/s/cfn/tracker/include/blocks.php on line 88
+[20-Jun-2009 09:44:34] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/exlist/s/cfn/tracker/include/functions.php on line 842
+[20-Jun-2009 09:44:34] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/exlist/s/cfn/tracker/include/blocks.php on line 88
+[20-Jun-2009 09:48:07] BtiTracker: start: MySQL server has gone away
+[20-Jun-2009 10:36:37] BtiTracker: start: MySQL server has gone away
+[20-Jun-2009 10:48:50] BtiTracker: start: MySQL server has gone away
+[20-Jun-2009 11:15:24] PHP Warning:  mysql_result() [<a href='function.mysql-result'>function.mysql-result</a>]: Unable to jump to row 0 on MySQL result index 380 in /home/exlist/s/cfn/tracker/include/sanity.php on line 47
+[20-Jun-2009 11:43:38] /home/exlist/s/cfn/tracker/announce.php - 130
+[20-Jun-2009 11:46:53] BtiTracker: start: MySQL server has gone away
+[20-Jun-2009 12:16:50] BtiTracker: start: MySQL server has gone away
+[20-Jun-2009 12:24:02] PHP Warning:  mysql_result() [<a href='function.mysql-result'>function.mysql-result</a>]: Unable to jump to row 0 on MySQL result index 145 in /home/exlist/s/cfn/tracker/include/sanity.php on line 47
+[20-Jun-2009 12:24:02] PHP Warning:  mysql_result() [<a href='function.mysql-result'>function.mysql-result</a>]: Unable to jump to row 0 on MySQL result index 432 in /home/exlist/s/cfn/tracker/include/sanity.php on line 47
+[20-Jun-2009 12:35:02] BtiTracker: start: MySQL server has gone away
+[20-Jun-2009 12:53:57] BtiTracker: start: MySQL server has gone away
+[20-Jun-2009 12:55:08] PHP Warning:  mysql_result() [<a href='function.mysql-result'>function.mysql-result</a>]: Unable to jump to row 0 on MySQL result index 379 in /home/exlist/s/cfn/tracker/include/sanity.php on line 47
+[20-Jun-2009 13:34:44] PHP Warning:  mysql_result() [<a href='function.mysql-result'>function.mysql-result</a>]: Unable to jump to row 0 on MySQL result index 101 in /home/exlist/s/cfn/tracker/include/sanity.php on line 47
+[20-Jun-2009 13:34:44] PHP Warning:  mysql_result() [<a href='function.mysql-result'>function.mysql-result</a>]: Unable to jump to row 0 on MySQL result index 382 in /home/exlist/s/cfn/tracker/include/sanity.php on line 47
+[20-Jun-2009 14:05:36] PHP Warning:  mysql_result() [<a href='function.mysql-result'>function.mysql-result</a>]: Unable to jump to row 0 on MySQL result index 338 in /home/exlist/s/cfn/tracker/include/sanity.php on line 47
+[20-Jun-2009 14:09:23] BtiTracker: start: MySQL server has gone away

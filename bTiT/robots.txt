@@ -1,0 +1,5 @@
+User-agent: *
+Allow: *
+Disallow: /reseed.php
+Disallow: /report.php
+Disallow: /report_this_.php

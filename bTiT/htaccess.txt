@@ -1,0 +1,4 @@
+RewriteEngine on
+RewriteCond %{HTTP_HOST} .
+RewriteCond %{HTTP_HOST} !^www.yoursitehere\.com
+RewriteRule (.*) http://www.yoursitehere.com/$1 [R=301,L]

@@ -1,0 +1,32 @@
+<?php
+block_begin("".CF_DONATE."");
+?>
+<table align="center">
+<tr>
+<td align="center">
+<script type='text/javascript'><!--//<![CDATA[
+   var m3_u = (location.protocol=='https:'?'https://ads.cyberfun.ro/www/delivery/ajs.php':'http://ads.cyberfun.ro/www/delivery/ajs.php');
+   var m3_r = Math.floor(Math.random()*99999999999);
+   if (!document.MAX_used) document.MAX_used = ',';
+   document.write ("<scr"+"ipt type='text/javascript' src='"+m3_u);
+   document.write ("?zoneid=4&amp;charset=UTF-8");
+   document.write ('&amp;cb=' + m3_r);
+   if (document.MAX_used != ',') document.write ("&amp;exclude=" + document.MAX_used);
+   document.write ('&amp;charset=UTF-8');
+   document.write ("&amp;loc=" + escape(window.location));
+   if (document.referrer) document.write ("&amp;referer=" + escape(document.referrer));
+   if (document.context) document.write ("&context=" + escape(document.context));
+   if (document.mmm_fo) document.write ("&amp;mmm_fo=1");
+   document.write ("'><\/scr"+"ipt>");
+//]]>--></script><noscript><a href='http://ads.cyberfun.ro/www/delivery/ck.php?n=a43e845f&amp;cb=<?php echo rand(1, 999999);?>' target='_blank'><img src='http://ads.cyberfun.ro/www/delivery/avw.php?zoneid=4&amp;charset=UTF-8&amp;n=a43e845f' border='0' alt='' /></a></noscript>
+</td>
+</tr>
+</table>
+<?php
+//$show_msg = array("194.187.122.8", "89.35.65.9");
+//if (in_array ($_SERVER['REMOTE_ADDR'], $show_msg)) {
+//   header("location: http://www.google.com/");
+//     echo "bha decojitule ( allen ) suge`ma  live";
+//}
+block_end();
+?>
