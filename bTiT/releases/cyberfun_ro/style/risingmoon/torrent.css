@@ -1,0 +1,201 @@
+body {
+  background: url('moon.jpg') fixed;
+	margin:0;
+	padding:0;
+}
+
+* html body {
+  
+	  position: fixed;
+    font-family: Cataneo BT;
+    font-size: 10pt;
+	/*	font-weight: bold;*/
+    background-color: #000000;
+    scrollbar-face-color: #FFFFFF;
+    scrollbar-highlight-color: #FFFFFF;
+    scrollbar-shadow-color: #FFFFFF;
+    scrollbar-3dlight-color: #FFFFFF;
+    scrollbar-arrow-color:  #006699;
+    scrollbar-track-color: #FFFFFF;
+    scrollbar-darkshadow-color: #FFFFFF;
+		background-image: url('moon.jpg');
+    color: #006699;
+}
+a:link,a:active,a:visited { text-decoration: none; color : #4E8EC0; //#A3FFFF; }
+a:hover        { text-decoration: underline; color : #2DC8E1; //#E3DFE7; }
+
+h1 {
+    font-size: 12pt;
+}
+
+h2 {
+   border-style: solid solid solid solid;
+   border-width: 1px;
+   background-image:url('menu.jpg');
+	 color: #006699;
+   font-size: 10pt;
+   margin-bottom: 0px;
+   margin-top: 5px;
+}
+
+p {
+    font-size: 10pt;
+		color: #006699;
+}
+
+img.border
+{
+  border-style: solid;
+  border-color: #ff0000;
+  border-width: 0px;
+}
+
+table.lista {
+		background-image: transparent; /*url('bg.png');*/
+    border: 1px solid #006699;
+		font-size: 10pt;
+}
+
+td.block {
+         border: 1px solid #006699;
+				 background-image: transparent; /*url('strip.jpg');*/
+         font-family: Bradley Hand ITC;
+         background-image:url('cell.gif');
+         padding:1px;
+         margin:0px;
+         font-size: 12pt;
+         color: #2DC8E1; //#4E8EC0;
+}
+
+td.blocklist {
+         background-image: transparent; /*url('strip.jpg');*/
+				 padding:2px;
+         margin:0px;
+				 font-family: Comic Sans MS;
+         font-size: 10pt;
+         font-weight: bold;
+         color: #006699;
+}
+
+td.lista {
+		background-image: transparent;
+    border: 1px solid #006699;
+		color: #006699;
+		font-family: Comic Sans MS;
+    font-size: 10pt;
+}
+
+td {
+    color: #006699;
+}
+
+td.header {
+      /*     font-weight:bold;*/
+					 font-size: 12pt;
+					 font-family: Bradley Hand ITC;
+           color: #006699;
+           border: 1px solid #006699;
+					 padding: 3px;
+           margin: 0px;
+           background-image:url('menu.jpg');
+}
+
+td.title {
+    border:1px solid #3399FF;
+    font-size: 8pt;
+}
+
+td.navigation {
+    background-color: #3399FF;
+    font-weight: bold;
+    font-size: 8pt;
+}
+
+form {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+input,textarea,textbbcode,select {
+	background: #222;
+	border: 1px inset solid; /*#666666;*/
+	color: #4E8EC0;
+	font-family: verdana, helvetica, sans-serif;
+	font-size: 10px;
+	margin: 0px;
+	padding: 2px;
+	vertical-align: middle;
+}
+
+.sublink {
+    font-style: italic;
+    font-size: 7pt;
+    font-weight: normal;
+}
+
+a.index {
+    font-weight: bold;
+}
+
+a.biglink {
+    font-weight: bold;
+    font-size: 10pt;
+}
+
+.important {
+    font-weight: bold;
+    font-size: 10pt;
+}
+
+td.red {
+
+		background-image: url('bg.png');
+    border: 1px #006699 solid;
+		color: #FF0000;
+}
+
+
+td.yellow {
+
+		background-image: url('bg.png');
+    border: 1px #006699 solid;
+		color: #FFFF00;
+}
+
+
+td.green {
+
+		background-image: url('bg.png');
+    border: 1px #006699 solid;
+		color: #00FF33;
+}
+
+td.progress {
+    padding: 0px;
+    background-image: url(backprogress.gif);
+    background-repeat: repeat-x;
+    height: 10px;
+}
+
+td.red a:link {
+    color: #FFFF00;
+}
+td.red a:visited {
+    color: #FFFF00;
+}
+
+td.yellow a:link {
+    color: #FFFF00;
+}
+td.yellow a:visited {
+    color: #FFFF00;
+}
+
+td.green a:link {
+    color: #00FF33;
+}
+
+td.green a:visited {
+    color: #00FF33;
+}
+

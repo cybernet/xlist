@@ -1,0 +1,9 @@
+<marquee onmouseover=this.stop() onmouseout=this.start() behavior=scroll scrollamount="2" height="16" width="100%" style="font-size:9px;color:#FFFFFF;font-family:verdana;" direction="left" loop="true" >
+<!-- Start Marquee Content -->
+
+
+xList.Ro / cybernet2u
+
+
+<!-- Stop Marquee Content -->
+</marquee>

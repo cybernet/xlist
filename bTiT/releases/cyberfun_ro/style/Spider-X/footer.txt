@@ -1,0 +1,5 @@
+<marquee onmouseover=this.stop() onmouseout=this.start() behavior=scroll scrollamount="1" height="60" width="100%" direction="up" loop="true" >
+<!-- Start Marquee Content -->
+Have FuN On CyBeR FuN -- Happy Seeding
+<!-- Stop Marquee Content -->
+</marquee>
