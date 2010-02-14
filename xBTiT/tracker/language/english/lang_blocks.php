@@ -28,4 +28,5 @@ $language["TWITTER"] = "Twitter Updates";
 $language["BLOCK_CAT"] = "Categories";
 $language["BLOCK_CLOUD"] = "Search Cloud";
 $language["BLOCK_UNVALIDATED"] = "Account not yet validated";
+$language["xList_aDs"] = "xList aDs";
 ?>
