@@ -1,4 +1,4 @@
-<?
+<?php
 
 // CyBerFuN.ro & xList.ro
 
@@ -99,8 +99,8 @@ if (strpos($pid, "?"))
 {
   $tmp = substr($pid , strpos($pid , "?"));
   $pid  = substr($pid , 0,strpos($pid , "?"));
-  $tmpname = substr($tmp, 1, strpos($tmp, "=")-1);
-  $tmpvalue = substr($tmp, strpos($tmp, "=")+1);
+  $tmpname = substr($tmp, 1, strpos($tmp, "=") - 1);
+  $tmpvalue = substr($tmp, strpos($tmp, "=") + 1);
   $_GET[$tmpname] = $tmpvalue;
 }
 
@@ -117,7 +117,7 @@ else
     $peer_id = bin2hex($_GET["peer_id"]);
 }
 
-$iscompact = (isset($_GET["compact"])?$_GET["compact"] == '1':false);
+$iscompact = (isset($_GET["compact"]) ? $_GET["compact"] == '1' : false);
 
 // controll if client can handle gzip
 if ($GZIP_ENABLED)
@@ -661,12 +661,12 @@ if ($LIVESTATS)
          $livestat = mysql_fetch_assoc($resstat);
          // only if uploaded/downloaded are >= stored data in peer list
          //if ($uploaded >= $livestat["uploaded"])
-               $newup = max(0, ($uploaded-$livestat["uploaded"]));
+               $newup = max(0, ($uploaded - $livestat["uploaded"]));
          //else
          //      $newup=$uploaded;
 
          //if ($downloaded>=$livestat["downloaded"])
-               $newdown = max(0, ($downloaded-$livestat["downloaded"]));
+               $newdown = max(0, ($downloaded - $livestat["downloaded"]));
          //else
          //      $newdown=$downloaded;
          // rev 485
