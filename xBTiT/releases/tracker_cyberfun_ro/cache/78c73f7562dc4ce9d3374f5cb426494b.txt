@@ -1,0 +1,1 @@
+a:3:{i:0;a:3:{s:5:"title";s:11:"BLOCK_CLOCK";s:7:"content";s:5:"clock";s:5:"cache";s:2:"no";}i:1;a:3:{s:5:"title";s:10:"BLOCK_USER";s:7:"content";s:4:"user";s:5:"cache";s:2:"no";}i:2;a:3:{s:5:"title";s:10:"BLOCK_MENU";s:7:"content";s:4:"menu";s:5:"cache";s:2:"no";}}
