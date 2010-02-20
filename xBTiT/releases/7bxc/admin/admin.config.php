@@ -107,6 +107,13 @@ switch ($action)
         $btit_settings["forumlimit"] = $_POST["forumlimit"];
         $btit_settings["last10limit"] = $_POST["last10limit"];
         $btit_settings["mostpoplimit"] = $_POST["mostpoplimit"];
+		$btit_settings["mindlratio"] = $_POST["mindlratio"];
+        if (isset($_POST["mindlratio"]))
+        {
+            $res = do_sqlquery("SELECT `value` FROM `{$TABLE_PREFIX}settings` WHERE `key`='mindlratio'");
+            if (mysql_num_rows($res) == 0)
+                do_sqlquery("INSERT INTO `{$TABLE_PREFIX}settings` SET `key`='mindlratio', `value`='".$_POST["mindlratio"]."'");
+        }
         $btit_settings["imageon"] = $_POST["imageon"];
         $btit_settings["screenon"] = $_POST["screenon"];
         $btit_settings["uploaddir"] = $_POST["uploaddir"];

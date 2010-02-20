@@ -5,8 +5,8 @@
 // xList .::. Seed Wanted Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
-// Modified By CyBerNe7
+// http://xList.ro/
+// Modified By cybernet2u
 
 global $CURUSER, $BASEURL, $STYLEURL, $XBTT_USE;
 
@@ -58,7 +58,7 @@ if(getmoderstatusbyhash($data['hash']) == 'ok')
                   echo "\t<td NOWRAP align=\"center\" class=\"lista\">";
 
 
-           echo "<a href=download.php?id=".$data["hash"]."&amp;f=" . rawurlencode($data["filename"]) . ".torrent><img src='images/torrent.gif' border='0' alt='".$language["DOWNLOAD_TORRENT"]."' title='".$language["DOWNLOAD_TORRENT"]."' /></a>";
+           echo "<a href=index.php?page=downloadcheck&amp;id=".$data["hash"]."><img src='images/torrent.gif' border='0' alt='".$language["DOWNLOAD_TORRENT"]."' title='".$language["DOWNLOAD_TORRENT"]."' /></a>";
 
 
          //waitingtime

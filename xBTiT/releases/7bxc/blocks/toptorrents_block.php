@@ -5,8 +5,8 @@
 // xList .::. Top Torrents Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
-// Modified By CyBerNe7
+// http://xList.ro/
+// Modified By cybernet2u
 
 global $CURUSER;
 if (!$CURUSER || $CURUSER["view_torrents"] == "no")
@@ -55,7 +55,7 @@ if(getmoderstatusbyhash($data['hash'])=='ok')
           if ( strlen($data["hash"]) > 0 )
           {
       echo "\n\t<td align=\"center\" class=\"lista\" width=\"20\" style=\"text-align: center;\">";
-      echo "<a href=\"download.php?id=".$data["hash"]."&amp;f=" . rawurlencode($data["filename"]) . ".torrent\"><img src='images/torrent.gif' border='0' alt='".$language["DOWNLOAD_TORRENT"]."' title='".$language["DOWNLOAD_TORRENT"]."' /></a>";
+      echo "<a href=\"index.php?page=downloadcheck&amp;id=".$data["hash"]."\"><img src='images/torrent.gif' border='0' alt='".$language["DOWNLOAD_TORRENT"]."' title='".$language["DOWNLOAD_TORRENT"]."' /></a>";
       echo "</td>";
 
      $data["filename"] = unesc($data["filename"]);

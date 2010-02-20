@@ -100,6 +100,7 @@ switch ($action)
           $current_group["can_upload"]=($current_group["can_upload"]=="yes"?"checked=\"checked\"":"");
           $current_group["can_download"]=($current_group["can_download"]=="yes"?"checked=\"checked\"":"");
           $current_group["admin_access"]=($current_group["admin_access"]=="yes"?"checked=\"checked\"":"");
+		  $current_group["bypass_dlcheck"]=($current_group["bypass_dlcheck"]==1?"checked=\"checked\"":"");
 $artype ="\n<option ".(($current_group["autorank_state"]=="Enabled")?" selected=\"selected\" ":"")." value='Enabled'>Enabled</option>";
 $artype.="\n<option ".(($current_group["autorank_state"]=="Disabled")?" selected=\"selected\" ":"")." value='Disabled'>Disabled</option>";
 
@@ -183,6 +184,7 @@ if($FORUMLINK=="smf")
                    $update[] = "WT=".sqlesc($_POST["waiting"]);
                    $update[] = "prefixcolor=".sqlesc($_POST["pcolor"]);
                    $update[] = "suffixcolor=".sqlesc($_POST["scolor"]);
+				   $update[] = "bypass_dlcheck=".(isset($_POST["bypass_dlcheck"])?1:0);
                    $update[]="autorank_state=".sqlesc($_POST["arstate"]);
                    $update[]="autorank_position=".((isset($_POST["arpos"]) && is_numeric($_POST["arpos"]))?$_POST["arpos"]:0);
                    $update[]="autorank_min_upload=".((isset($_POST["arminup"]) && is_numeric($_POST["arminup"]))?$_POST["arminup"]:0);
@@ -212,23 +214,24 @@ if($FORUMLINK=="smf")
           while ($level = mysql_fetch_array($rlevel))
             {
                 $groups[$i]["user"] = "<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=groups&amp;action=edit&amp;id=".$level["id"]."\">".unesc($level["prefixcolor"]).unesc($level["level"]).unesc($level["suffixcolor"])."</a>";
-                $groups[$i]["torrent_aut"]=$level["view_torrents"]."/".$level["edit_torrents"]."/".$level["delete_torrents"];
-                $groups[$i]["users_aut"]=$level["view_users"]."/".$level["edit_users"]."/".$level["delete_users"];
-                $groups[$i]["news_aut"]=$level["view_news"]."/".$level["edit_news"]."/".$level["delete_news"];
-                $groups[$i]["forum_aut"]=$level["view_forum"]."/".$level["edit_forum"]."/".$level["delete_forum"];
-                $groups[$i]["can_upload"]=$level["can_upload"];
-                $groups[$i]["can_download"]=$level["can_download"];
-                $groups[$i]["trusted"]=$level["trusted"];
-                $groups[$i]["moderate_trusted"]=$level["moderate_trusted"];
-                $groups[$i]["admin_access"]=$level["admin_access"];
-                $groups[$i]["STYLE"]=$level["STYLE"];
-                $groups[$i]["WT"]=$level["WT"];
+                $groups[$i]["torrent_aut"] = $level["view_torrents"]."/".$level["edit_torrents"]."/".$level["delete_torrents"];
+                $groups[$i]["users_aut"] = $level["view_users"]."/".$level["edit_users"]."/".$level["delete_users"];
+                $groups[$i]["news_aut"] = $level["view_news"]."/".$level["edit_news"]."/".$level["delete_news"];
+                $groups[$i]["forum_aut"] = $level["view_forum"]."/".$level["edit_forum"]."/".$level["delete_forum"];
+                $groups[$i]["can_upload"] = $level["can_upload"];
+                $groups[$i]["can_download"] = $level["can_download"];
+                $groups[$i]["trusted"] = $level["trusted"];
+                $groups[$i]["moderate_trusted"] = $level["moderate_trusted"];
+                $groups[$i]["admin_access"] = $level["admin_access"];
+                $groups[$i]["STYLE"] = $level["STYLE"];
+                $groups[$i]["WT"] = $level["WT"];
+				$groups[$i]["bypass_dlcheck"]=(($level["bypass_dlcheck"]==1)?"yes":"no");
                 $groups[$i]["delete"]=($level["can_be_deleted"]=="no"?"No":"<a onclick=\"return confirm('".AddSlashes($language["DELETE_CONFIRM"])."')\" href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=groups&amp;action=delete&amp;id=".$level["id"]."\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>");
 $groups[$i]["arpos"]=(($level["autorank_state"]=="Disabled")?$language["NA"]:$level["autorank_position"]);
-                $groups[$i]["arstate"]=$level["autorank_state"];
+                $groups[$i]["arstate"] = $level["autorank_state"];
                 $groups[$i]["arupdowntrig"]=(($level["autorank_state"]=="Disabled")?$language["NA"]:makesize($level["autorank_min_upload"]));
                 $groups[$i]["arratiotrig"]=(($level["autorank_state"]=="Disabled")?$language["NA"]:$level["autorank_minratio"]);
-                $groups[$i]["arsmfmirr"]=$level["autorank_smf_group_mirror"];
+                $groups[$i]["arsmfmirr"] = $level["autorank_smf_group_mirror"];
                 $i++;
           }
 
