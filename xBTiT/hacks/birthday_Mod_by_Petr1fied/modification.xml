@@ -1,0 +1,424 @@
+﻿<hack>
+  <title>Birthday Hack</title>
+  <author>Petr1fied</author>
+  <version>1.0</version>
+  <file>
+    <name>"database"</name>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[ALTER TABLE `{$db_prefix}users` ADD `dob` DATE NOT NULL, ADD `birthday_bonus` TINYINT(1) NOT NULL DEFAULT 0;]]></data>
+    </operation>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[INSERT INTO `{$db_prefix}settings` SET `key`='birthday_lower_limit', `value`=4]]></data>
+    </operation>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[INSERT INTO `{$db_prefix}settings` SET `key`='birthday_upper_limit', `value`=100]]></data>
+    </operation>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[INSERT INTO `{$db_prefix}settings` SET `key`='birthday_bonus', `value`='0.1']]></data>
+    </operation>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[INSERT INTO `{$db_prefix}blocks` VALUES ('99', 'birthday', 'l', 1, 1, 'BLOCK_BIRTHDAY', 'no', 3, 8)]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/account.php"</name>
+    <operation>
+      <search><![CDATA[global $SITENAME,$SITEEMAIL,$BASEURL,$VALIDATION,$USERLANG,$USE_IMAGECODE, $TABLE_PREFIX, $XBTT_USE, $language,$THIS_BASEPATH, $FORUMLINK, $db_prefix;]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[global $SITENAME,$SITEEMAIL,$BASEURL,$VALIDATION,$USERLANG,$USE_IMAGECODE, $TABLE_PREFIX, $XBTT_USE, $language,$THIS_BASEPATH, $FORUMLINK, $db_prefix, $btit_settings;
+
+$dobday=str_pad(intval($_POST["dobday"]),2,0,STR_PAD_LEFT);
+$dobmonth=str_pad(intval($_POST["dobmonth"]),2,0,STR_PAD_LEFT);
+$dobyear=str_pad(intval($_POST["dobyear"]),4,0,STR_PAD_LEFT);]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[$pid=md5(uniqid(rand(),true));
+do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '" . md5($pwd) . "', $random, $idlevel, '$email', $idstyle, $idlangue, $idflag, NOW(), NOW(),'$pid', '".$timezone."')",true);]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[$realdate=checkdate($dobmonth,$dobday,$dobyear);
+
+if($realdate)
+{
+    $dob=$dobyear."-".$dobmonth."-".$dobday;
+
+    $age=userage($dobyear, $dobmonth, $dobday);
+    $dobtime=mktime(0,0,0,$dobmonth,$dobday,$dobyear);
+
+    if($dobtime>time())
+    {
+        err_msg($language["ERROR"], $language["ERR_BORN_IN_FUTURE"]);
+        stdfoot();
+        exit();                
+    }
+    elseif($age<$btit_settings["birthday_lower_limit"])
+    {
+        err_msg($language["ERROR"], $language["ERR_DOB_1"] . $age . $language["ERR_DOB_2"]);
+        stdfoot();
+        exit();
+    }
+    elseif($age>$btit_settings["birthday_upper_limit"])
+    {
+        err_msg($language["ERROR"], $language["ERR_DOB_1"] . $age . $language["ERR_DOB_2"]);
+        stdfoot();
+        exit();
+    }
+}
+else
+{
+    err_msg($language["ERROR"], $language["INVALID_DOB_1"].$dobday."/".$dobmonth."/".$dobyear.$language["INVALID_DOB_2"]);
+    stdfoot();
+    exit();
+}
+
+$pid=md5(uniqid(rand(),true));
+do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, style, language, flag, joined, lastconnect, pid, time_offset, dob) VALUES ('$utente', '" . md5($pwd) . "', $random, $idlevel, '$email', $idstyle, $idlangue, $idflag, NOW(), NOW(),'$pid', '".$timezone."','$dob')",true);]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/userdetails.php"</name>
+    <operation>
+      <search><![CDATA[   $res=do_sqlquery("SELECT u.avatar,u.email,u.cip,u.username,$udownloaded as downloaded,$uuploaded as uploaded,UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id",true);]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[   $res=do_sqlquery("SELECT u.avatar,u.email,u.cip,u.username,$udownloaded as downloaded,$uuploaded as uploaded,UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid, u.dob FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id",true);]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[$userdetailtpl= new bTemplate();]]></search>
+      <action>"add"</action>
+      <data><![CDATA[if($row["dob"]!="0000-00-00")
+{
+    $dob=explode("-",$row["dob"]);
+    $age=userage($dob[0], $dob[1], $dob[2]);
+}
+else
+    $age=$language["NA"];
+
+$userdetailtpl-> set("age",$age);]]></data>
+    <where>"after"</where>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_ROOT/admin/admin.index.php"</name>
+    <operation>
+      <search><![CDATA[      $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.users.tools.tpl"))));
+      break;]]></search>
+      <action>"add"</action>
+      <data><![CDATA[    case 'birthday':
+      include("$ADMIN_PATH/admin.birthday.php");
+      $tpl->set("main_content",set_block($language["ACP_BIRTHDAY"],"center",$admintpl->fetch(load_template("admin.birthday.tpl"))));
+      break;]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_ROOT/admin/admin.config.php"</name>
+    <operation>
+      <search><![CDATA[$olm=$btit_settings["offline_msg"];]]></search>
+      <action>"add"</action>
+      <data><![CDATA[$db_ll=$btit_settings["birthday_lower_limit"];
+        $db_ul=$btit_settings["birthday_upper_limit"];
+        $db_b=$btit_settings["birthday_bonus"];]]></data>
+      <where>"after"</where>
+    </operation>
+    <operation>
+      <search><![CDATA[$btit_settings["offline_msg"]=$olm;]]></search>
+      <action>"add"</action>
+      <data><![CDATA[$btit_settings["birthday_lower_limit"]=$db_ll;
+        $btit_settings["birthday_upper_limit"]=$db_ul;
+        $btit_settings["birthday_bonus"]=$db_b;]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_ROOT/admin/admin.menu.php"</name>
+    <operation>
+      <search><![CDATA[                    "description"=>$language["ACP_STYLES"])]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[                    "description"=>$language["ACP_STYLES"]),
+                          4=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=birthday" ,
+                    "description"=>$language["ACP_BIRTHDAY"])]]></data>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_ROOT/include/functions.php"</name>
+    <operation>
+      <search><![CDATA[       return strtr($text, array_flip(get_html_translation_table(HTML_SPECIALCHARS)));
+   }
+}]]></search>
+      <action>"add"</action>
+      <data><![CDATA[function userage($year, $month, $day)
+{
+    $year_diff  = date("Y") - $year;
+    $month_diff = date("m") - $month;
+    $day_diff   = date("d") - $day;
+    if ($month_diff < 0)
+        $year_diff--;
+    elseif ($month_diff==0 && $day_diff < 0)
+        $year_diff--;
+
+    return $year_diff;
+}]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_ROOT/include/sanity.php"</name>
+    <operation>
+      <search><![CDATA[         global $PRIVATE_ANNOUNCE, $TORRENTSDIR, $CURRENTPATH,$LIVESTATS,$LOG_HISTORY, $TABLE_PREFIX;]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[         global $PRIVATE_ANNOUNCE, $TORRENTSDIR, $CURRENTPATH,$LIVESTATS,$LOG_HISTORY, $TABLE_PREFIX, $language, $btit_settings, $FORUMLINK, $db_prefix;]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[            @closedir($dir);
+         }]]></search>
+      <action>"add"</action>
+      <data><![CDATA[             quickQuery("UPDATE `{$TABLE_PREFIX}users` SET `birthday_bonus`=0 WHERE DAYOFMONTH(`dob`)!=".date('j'));
+         if($FORUMLINK=="smf")
+            $res=mysql_query("SELECT `smf_fid`, `id`, `dob` FROM `{$TABLE_PREFIX}users` WHERE DAYOFMONTH(`dob`)=".date('j')." AND MONTH(`dob`)=".date('n')." AND `dob`!=CURDATE() AND `birthday_bonus`=0 ORDER BY `id` ASC");
+         else
+            $res=mysql_query("SELECT `id`, `dob` FROM `{$TABLE_PREFIX}users` WHERE DAYOFMONTH(`dob`)=".date('j')." AND MONTH(`dob`)=".date('n')." AND `dob`!=CURDATE() AND `birthday_bonus`=0 ORDER BY `id` ASC");
+         if(@mysql_num_rows($res)>0)
+         {
+             while($row=mysql_fetch_assoc($res))
+             {
+                 $dob=explode("-", $row["dob"]);
+                 $age=userage($dob[0], $dob[1], $dob[2]);
+                 $bonus=round($age*$btit_settings["birthday_bonus"]*1073741824);
+                 $query1="UPDATE `{$TABLE_PREFIX}users` SET `uploaded`=`uploaded`+$bonus, `birthday_bonus`=1 WHERE `id`=".$row["id"];
+                 if($FORUMLINK=="smf")
+             {
+                 do_sqlquery("INSERT INTO {$db_prefix}personal_messages (ID_MEMBER_FROM, fromName, msgtime, subject, body) VALUES ('1', 'System', UNIX_TIMESTAMP(), '".addslashes($language["HB_SUBJECT"])."', '".addslashes($language["HB_MESSAGE_1"]). makesize($bonus) . addslashes($language["HB_MESSAGE_2"]) . $btit_settings["birthday_bonus"] . addslashes($language["HB_MESSAGE_3"]) . "')");
+                 $pm_id=mysql_insert_id();
+                 do_sqlquery("INSERT INTO {$db_prefix}pm_recipients (ID_PM, ID_MEMBER) VALUES ($pm_id, '".$row["id"]."')");
+                 do_sqlquery("UPDATE {$db_prefix}members SET instantMessages=instantMessages+1, unreadMessages=unreadMessages+1 WHERE ID_MEMBER='".$row["id"]."'");
+             }
+             else
+                 $do_sqlquery="INSERT INTO `{$TABLE_PREFIX}messages` SET `sender`=0, `receiver`=".$row["id"].", `added`=UNIX_TIMESTAMP(), `subject`='".addslashes($language["HB_SUBJECT"])."', `msg`='".addslashes($language["HB_MESSAGE_1"]). makesize($bonus) . addslashes($language["HB_MESSAGE_2"]) . $btit_settings["birthday_bonus"] . addslashes($language["HB_MESSAGE_3"]) . "'";
+                 quickQuery($query1);
+             }
+         }]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_STYLE_PATH/account.tpl"</name>
+    <operation>
+      <search><![CDATA[       <td align="left" class="lista"><input type="text" size="30" name="email_again" id="email_again" autocomplete="off" value="<tag:dati.email />"/></td>
+    </tr>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[    <tr>
+       <td align="left" class="header"><tag:language.DOB />:</td>
+       <td align="left" class="lista"><input type="text" size="2" name="dobday" maxlength="2" value=""/>&nbsp;&nbsp;/&nbsp;&nbsp;<input type="text" size="2" name="dobmonth" maxlength="2" value=""/>&nbsp;&nbsp;/&nbsp;&nbsp;<input type="text" size="4" name="dobyear" maxlength="4" value=""/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tag:language.DOB_FORMAT /></td>
+    </tr>]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_STYLE_PATH/usercp.main.tpl"</name>
+    <operation>
+      <search><![CDATA[<if:AVATAR>
+    <td class="lista" align="center" valign="middle" rowspan="4"><tag:ucp.avatar /></td>
+  </if:AVATAR>
+  </tr>]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[<if:AVATAR>
+    <td class="lista" align="center" valign="middle" rowspan="5"><tag:ucp.avatar /></td>
+  </if:AVATAR>
+  </tr>
+  <tr>
+    <td class="header" align="left"><tag:language.USER_AGE />:</td>
+    <td class="lista" align="left"><tag:ucp.age /></td>
+  </tr>]]></data>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_STYLE_PATH/usercp.profile.tpl"</name>
+    <operation>
+      <search><![CDATA[  </if:AVATAR>
+    </tr>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[    <tr>
+      <td align="left" class="header"><tag:language.DOB />:</td>
+  <if:DOBEDIT> 
+     <td align="left" class="lista"><input type="text" size="2" name="dobday" maxlength="2" value="<tag:profile.dobday />"/>&nbsp;&nbsp;/&nbsp;&nbsp;<input type="text" size="2" name="dobmonth" maxlength="2" value="<tag:profile.dobmonth />"/>&nbsp;&nbsp;/&nbsp;&nbsp;<input type="text" size="4" name="dobyear" maxlength="4" value="<tag:profile.dobyear />"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tag:language.DOB_FORMAT /></td>
+  <else:DOBEDIT>
+     <td align="left" class="lista"><input type="text" size="2" name="dobday" maxlength="2" value="<tag:profile.dobday />" readonly />&nbsp;&nbsp;/&nbsp;&nbsp;<input type="text" size="2" name="dobmonth" maxlength="2" value="<tag:profile.dobmonth />" readonly />&nbsp;&nbsp;/&nbsp;&nbsp;<input type="text" size="4" name="dobyear" maxlength="4" value="<tag:profile.dobyear />" readonly />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tag:language.DOB_FORMAT /></td>
+  </if:DOBEDIT> 
+   </tr>]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_STYLE_PATH/userdetails.tpl"</name>
+    <operation>
+      <search><![CDATA[</if:userdetail_has_avatar>
+
+  </tr>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[  <tr>
+      <td class="header"><tag:language.USER_AGE /></td>
+      <td class="lista"><tag:age /></td>
+  </tr>]]></data>
+      <where>"after"</where>
+    </operation>
+    <operation>
+      <search><![CDATA[<td class="lista" align="center" valign="middle" rowspan="4"><tag:userdetail_avatar /></td>]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[<td class="lista" align="center" valign="middle" rowspan="5"><tag:userdetail_avatar /></td>]]></data>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_ROOT/user/usercp.main.php"</name>
+    <operation>
+      <search><![CDATA[    $res=do_sqlquery("SELECT u.lip,u.username, $udownloaded as downloaded,$uuploaded as uploaded, UNIX_TIMESTAMP(u.joined) as joined, u.flag, c.name, c.flagpic FROM $utables LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$uid",true);]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[    $res=do_sqlquery("SELECT u.lip,u.username, u.dob, $udownloaded as downloaded,$uuploaded as uploaded, UNIX_TIMESTAMP(u.joined) as joined, u.flag, c.name, c.flagpic FROM $utables LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$uid",true);]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[  $ucptpl["ratio"]=$ratio;]]></search>
+      <action>"add"</action>
+      <data><![CDATA[  $dob=explode("-",$row["dob"]);
+  $age=userage($dob[0], $dob[1], $dob[2]);
+  if($row["dob"]=="0000-00-00")
+      $ucptpl["age"]=$language["NA"];
+  else
+      $ucptpl["age"]=$age;]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_ROOT/user/usercp.profile.php"</name>
+    <operation>
+      <search><![CDATA[           $timezone=intval($_POST["timezone"]);]]></search>
+      <action>"add"</action>
+      <data><![CDATA[           $dobday=str_pad(intval($_POST["dobday"]),2,0,STR_PAD_LEFT);
+           $dobmonth=str_pad(intval($_POST["dobmonth"]),2,0,STR_PAD_LEFT);
+           $dobyear=str_pad(intval($_POST["dobyear"]),4,0,STR_PAD_LEFT);
+           $realdate=checkdate($dobmonth,$dobday,$dobyear);
+          
+           if($realdate)
+           {
+               $dob=$dobyear."-".$dobmonth."-".$dobday;
+
+               $age=userage($dobyear, $dobmonth, $dobday);
+               $dobtime=mktime(0,0,0,$dobmonth,$dobday,$dobyear);
+               
+               if($dobtime>time())
+               {
+                   err_msg($language["ERROR"], $language["ERR_BORN_IN_FUTURE"]);
+                   stdfoot();
+                   exit();                
+               }
+               elseif($age<$btit_settings["birthday_lower_limit"])
+               {
+                   err_msg($language["ERROR"], $language["ERR_DOB_1"] . $age . $language["ERR_DOB_2"]);
+                   stdfoot();
+                   exit();
+               }
+               elseif($age>$btit_settings["birthday_upper_limit"])
+               {
+                   err_msg($language["ERROR"], $language["ERR_DOB_1"] . $age . $language["ERR_DOB_2"]);
+                   stdfoot();
+                   exit();
+               }
+           }
+           else
+           {
+               err_msg($language["ERROR"], $language["INVALID_DOB_1"].$dobday."/".$dobmonth."/".$dobyear.$language["INVALID_DOB_2"]);
+               stdfoot();
+               exit();
+           }]]></data>
+      <where>"after"</where>
+    </operation>
+    <operation>
+      <search><![CDATA[               $set[]="torrentsperpage=".intval(0+$_POST["torrentsperpage"]);]]></search>
+      <action>"add"</action>
+      <data><![CDATA[               if(isset($dob))
+                   $set[]="dob='$dob'";]]></data>
+      <where>"after"</where>
+    </operation>
+    <operation>
+      <search><![CDATA[      $profiletpl=array();]]></search>
+      <action>"add"</action>
+      <data><![CDATA[      $row=mysql_fetch_assoc(mysql_query("SELECT `dob` FROM `{$TABLE_PREFIX}users` WHERE `id`=".$uid));
+      $usercptpl->set("DOBEDIT",($row["dob"]=="0000-00-00")?true:false,true);
+      $dob=explode("-",$row["dob"]);
+      $profiletpl["dobday"]=$dob[2];
+      $profiletpl["dobmonth"]=$dob[1];
+      $profiletpl["dobyear"]=$dob[0];]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  <file>
+  <name>"$CURRENT_FOLDER/toCopy/admin.birthday.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/admin"</where>
+      <data>"admin.birthday.php"</data>
+    </operation>
+  </file>
+  <file>
+  <name>"$CURRENT_FOLDER/toCopy/admin.birthday.tpl"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_STYLE_PATH"</where>
+      <data>"admin.birthday.tpl"</data>
+    </operation>
+  </file>
+  <file>
+  <name>"$CURRENT_FOLDER/toCopy/birthday_block.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/blocks"</where>
+      <data>"birthday_block.php"</data>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_LANGUAGE_PATH/lang_admin.php"</name>
+    <operation>
+      <search><![CDATA[$language["USER_NOT_EDIT"]="You cannot edit Guest user or yourself!";]]></search>
+      <action>"add"</action>
+      <data><![CDATA[$language["ACP_BIRTHDAY"]="Birthday Hack Settings";
+$language["BIRTHDAY_LOWER_LIMIT"]="Minimum User Age";
+$language["BIRTHDAY_UPPER_LIMIT"]="Maximum User Age";
+$language["BIRTHDAY_BONUS"]="Birthday Bonus per year (GB)";
+$language["BIRTHDAY_UPDATED"]="Thank you, your Birthday Hack settings have now been updated";]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_LANGUAGE_PATH/lang_blocks.php"</name>
+    <operation>
+      <search><![CDATA[$language["BLOCK_MAXCLASSVIEW"]="Maximum rank that can view";]]></search>
+      <action>"add"</action>
+      <data><![CDATA[$language["BLOCK_BIRTHDAY"]="Today's Birthdays";
+$language["BLOCK_NO_BIRTHDAY"]="No members are celebrating a birthday today";]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_LANGUAGE_PATH/lang_main.php"</name>
+    <operation>
+      <search><![CDATA[$language["MODULE_LOAD_ERROR"]="The module required seems to be wrong!";]]></search>
+      <action>"add"</action>
+      <data><![CDATA[$language["DOB"]="Date of Birth";
+$language["DOB_FORMAT"]="<b>Day (DD) / Month (MM) / Year (YYYY)</b>";
+$language["USER_AGE"]="Age";
+$language["HB_SUBJECT"]="Happy Birthday";
+$language["HB_MESSAGE_1"]=":hbd:\n\nYour account has been credited with ";
+$language["HB_MESSAGE_2"]=" of upload credit. (";
+$language["HB_MESSAGE_3"]=" GB for every year of your life). The staff of $SITENAME wish you all the best for the future.\n\n:yay:";
+$language["ERR_BORN_IN_FUTURE"]="Time Traveller huh? You can't be born in the future!";
+$language["ERR_DOB_1"]="I don't believe you are ";
+$language["ERR_DOB_2"]=" years old.";
+$language["INVALID_DOB_1"]="Entered date of birth (";
+$language["INVALID_DOB_2"]=") is invalid";]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+</hack>

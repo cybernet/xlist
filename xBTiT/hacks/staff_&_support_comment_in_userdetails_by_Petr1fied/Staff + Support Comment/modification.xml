@@ -1,0 +1,116 @@
+<hack>
+  <title>Staff &amp; Support Comment in userdetails</title>
+  <author>GeWa (converted for xbtit by Petr1fied)</author>
+  <version>1.0</version>
+  <file>
+    <name>"database"</name>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[ALTER TABLE `{$db_prefix}users` ADD `modcomment` TEXT NOT NULL, ADD `supcomment` TEXT NOT NULL;]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/index.php"</name>
+    <operation>
+    <search><![CDATA[        $tpl->set("main_content",set_block($language["LAST_NEWS"],"center",$viewnewstpl->fetch(load_template("viewnews.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->News");
+        break;]]></search>
+    <action>"add"</action>
+    <where>"after"</where>
+    <data><![CDATA[    case 'mod_comment':
+        require("$THIS_BASEPATH/mod_comment.php");
+        break;
+
+    case 'sup_comment':
+        require("$THIS_BASEPATH/sup_comment.php");
+        break;]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/userdetails.php"</name>
+    <operation>
+    <search><![CDATA[   $res=do_sqlquery("SELECT u.avatar,u.email,u.cip,u.username,$udownloaded as downloaded,$uuploaded as uploaded,UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id",true);]]></search>
+    <action>"replace"</action>
+    <data><![CDATA[   $res=do_sqlquery("SELECT u.avatar,u.email,u.cip,u.username,$udownloaded as downloaded,$uuploaded as uploaded,UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,u.modcomment,u.supcomment,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id",true);]]></data>
+    </operation>
+    <operation>
+    <search><![CDATA[   unset($forum);
+}]]></search>
+    <action>"add"</action>
+    <where>"after"</where>
+    <data><![CDATA[$userdetailtpl-> set("comment_access", (($CURUSER["edit_users"]=="yes" || $CURUSER["admin_access"]=="yes")?TRUE:FALSE), TRUE);
+$userdetailtpl-> set("modcomment", $row["modcomment"]);
+$userdetailtpl-> set("supcomment", $row["supcomment"]);
+$userdetailtpl-> set("id", $id);]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_userdetails.php"</name>
+    <operation>
+    <search><![CDATA[$language["NO_HISTORY"]         = "No history to display...";]]></search>
+    <action>"add"</action>
+    <where>"after"</where>
+    <data><![CDATA[$language["ADMIN_CONTROLS"]     = "Admin Controls";
+$language["USERCOMMENT"]        = "User Comment:";
+$language["HELPED_FOR"]         = "Helped with:";]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/userdetails.tpl"</name>
+    <operation>
+    <search><![CDATA[  </if:userdetail_forum_internal>
+
+</table>]]></search>
+    <action>"add"</action>
+    <where>"after"</where>
+    <data><![CDATA[<!-- Begin Admin Control Panel -->
+<if:comment_access>
+<table width=100%>
+  <tr>
+    <td class="block" align=center colspan=3><b><tag:language.ADMIN_CONTROLS /></b></td>
+  </tr>
+  <!-- Begin User comment -->
+  <form method="post" action="index.php?page=mod_comment&amp;id=<tag:id />">
+  <input type="hidden" name="returnto" value="index.php?page=userdetails&amp;id=<tag:id />"> 
+  <tr>
+    <td class="header"><tag:language.USERCOMMENT /></td>
+    <td class="lista"><textarea cols="50" rows="4" name="modcomment"><tag:modcomment /></textarea></td>
+    <td class="lista" valign="middle"><center><input type="submit" class="btn" value="<tag:language.UPDATE />"></center></td>
+  </tr>
+  </form>
+  <!-- end User comment -->
+
+  <!-- support comment -->
+  <form method="post" action="index.php?page=sup_comment&amp;id=<tag:id />">
+  <input type="hidden" name="returnto" value="index.php?page=userdetails&amp;id=<tag:id />"> 
+  <tr>
+    <td class=header><tag:language.HELPED_FOR /></td>
+    <td align=left class=lista><textarea cols="50" rows="4" name="supcomment"><tag:supcomment /></textarea></td>
+    <td class="lista" valign="middle"><center><input type="submit" class="btn" value="<tag:language.UPDATE />"></center></td>
+  </tr>
+  </form>
+</table>
+<!-- end support comment -->
+
+<else:comment_access>
+</if:comment_access>
+<!-- End Admin Control Panel -->]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$CURRENT_FOLDER/toCopy/mod_comment.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT"</where>
+      <data>"mod_comment.php"</data>
+    </operation>
+  </file>
+  <file>
+    <name>"$CURRENT_FOLDER/toCopy/sup_comment.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT"</where>
+      <data>"sup_comment.php"</data>
+    </operation>
+  </file>
+</hack>

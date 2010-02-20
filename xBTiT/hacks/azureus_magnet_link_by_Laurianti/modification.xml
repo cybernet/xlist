@@ -1,0 +1,188 @@
+<hack>
+<title>Azureus Magnet Link</title>
+<author>Author: MicroDJS | Conversion by Laurianti</author>
+<version>1.0</version>
+
+<file>
+<name>"$DEFAULT_ROOT/torrents.php"</name>
+
+<operation>
+<search><![CDATA[$torrenttpl->set("torrent_header_average",$language["AVERAGE"]);]]></search>
+<action>"add"</action>
+<where>"after"</where>
+<data><![CDATA[$torrenttpl->set("torrent_header_magnet","Magnet Link");]]></data>
+</operation>
+
+<operation>
+<search><![CDATA[$torrents[$i]["average"]=$prgsf;]]></search>
+<action>"add"</action>
+<where>"after"</where>
+<data><![CDATA[$torrents[$i]["magnet"]="<a href=magnet:?xt=urn:btih:".strtoupper(base32_encode(pack('H*' ,$data["hash"]))). ">".image_or_link("images/azureus.gif","","Magnet Link")."</a>";]]></data>
+</operation>
+
+</file>
+
+<file>
+<name>"$DEFAULT_ROOT/details.php"</name>
+<operation>
+<search><![CDATA[$row["description"]=format_comment($row["comment"]);]]></search>
+<action>"add"</action>
+<where>"after"</where>
+<data><![CDATA[$row["magnet"]="<a href=magnet:?xt=urn:btih:".strtoupper(base32_encode(pack('H*' ,$row["info_hash"]))). ">".image_or_link("images/azureus.gif","","Magnet Link")."</a>";]]></data>
+</operation>
+
+</file>
+
+<file>
+<name>"$DEFAULT_STYLE_PATH/torrent.details.tpl"</name>
+<operation>
+<search><![CDATA[<tr>
+          <td align="right" class="header"><tag:language.INFO_HASH /></td>
+          <td class="lista" align="center"><tag:torrent.info_hash /></td>
+        </tr>]]></search>
+<action>"add"</action>
+<where>"before"</where>
+<data><![CDATA[<tr>
+<td align="right" class="header">Magnet Link</td>
+<td class="lista" align="center"><tag:torrent.magnet /></td>
+</tr>]]></data>
+</operation>
+
+</file>
+
+<file>
+<name>"$DEFAULT_STYLE_PATH/torrent.list.tpl"</name>
+
+<operation>
+<search><![CDATA[<td align="center" width="20" class="header"><tag:torrent_header_download /></td>]]></search>
+<action>"add"</action>
+<where>"after"</where>
+<data><![CDATA[<td align="center" width="45" class="header"><tag:torrent_header_magnet /></td>]]></data>
+</operation>
+
+<operation>
+<search><![CDATA[<td align="center" width="20" class="lista" style="text-align: center;"><tag:torrents[].download /></td>]]></search>
+<action>"add"</action>
+<where>"after"</where>
+<data><![CDATA[<td align="center" width="45" class="lista" style="text-align: center;"><tag:torrents[].magnet /></td>]]></data>
+</operation>
+
+</file>
+
+<file>
+<name>"$DEFAULT_ROOT/include/functions.php"</name>
+
+<operation>
+<search><![CDATA[// EOF]]></search>
+<action>"add"</action>
+<where>"after"</where>
+<data><![CDATA[//
+// +----------------------------------------------------------------------+
+// | Base32 Library                                                       |
+// +----------------------------------------------------------------------+
+// | Copyright (c) 2001 The PHP Group                                     |
+// +----------------------------------------------------------------------+
+// | This source file is dual-licensed. It is available under the terms   |
+// | of the GNU GPL v2.0 and under the terms of the PHP license version   |
+// | 2.02,  available at through the world-wide-web at                    |
+// | available at through the world-wide-web at                           |
+// | http://www.php.net/license/2_02.txt.                                 |
+// +----------------------------------------------------------------------+
+// |  Minor fixes and additional functions by Allan Hansen.               |
+// |  Moodle porting work by Martin Langhoff                              |
+// +----------------------------------------------------------------------+
+// | base32.php - based on race.php  - RACE encode and decode strings.    |
+// +----------------------------------------------------------------------+
+// | Authors: Allan Hansen  <All@nHansen.dk>                              |
+// |          Arjan Wekking <a.wekking@synantics.nl>                      |
+// |          Martin Langhoff <martin@catalyst.net.nz>                    |
+// +----------------------------------------------------------------------+
+//
+
+/**
+* Base32 encode a binary string
+*
+* @param    $inString   Binary string to base32 encode
+*
+* @return   $outString  Base32 encoded $inString
+*
+* @access   private
+*
+*/
+
+function base32_encode ($inString)
+{
+   $outString = "";
+   $compBits = "";
+   $BASE32_TABLE = array(
+                         '00000' => 0x61,
+                         '00001' => 0x62,
+                         '00010' => 0x63,
+                         '00011' => 0x64,
+                         '00100' => 0x65,
+                         '00101' => 0x66,
+                         '00110' => 0x67,
+                         '00111' => 0x68,
+                         '01000' => 0x69,
+                         '01001' => 0x6a,
+                         '01010' => 0x6b,
+                         '01011' => 0x6c,
+                         '01100' => 0x6d,
+                         '01101' => 0x6e,
+                         '01110' => 0x6f,
+                         '01111' => 0x70,
+                         '10000' => 0x71,
+                         '10001' => 0x72,
+                         '10010' => 0x73,
+                         '10011' => 0x74,
+                         '10100' => 0x75,
+                         '10101' => 0x76,
+                         '10110' => 0x77,
+                         '10111' => 0x78,
+                         '11000' => 0x79,
+                         '11001' => 0x7a,
+                         '11010' => 0x32,
+                         '11011' => 0x33,
+                         '11100' => 0x34,
+                         '11101' => 0x35,
+                         '11110' => 0x36,
+                         '11111' => 0x37,
+                         );
+
+   /* Turn the compressed string into a string that represents the bits as 0 and 1. */
+   for ($i = 0; $i < strlen($inString); $i++) {
+       $compBits .= str_pad(decbin(ord(substr($inString,$i,1))), 8, '0', STR_PAD_LEFT);
+   }
+
+   /* Pad the value with enough 0's to make it a multiple of 5 */
+   if((strlen($compBits) % 5) != 0) {
+       $compBits = str_pad($compBits, strlen($compBits)+(5-(strlen($compBits)%5)), '0', STR_PAD_RIGHT);
+   }
+
+   /* Create an array by chunking it every 5 chars */
+   $fiveBitsArray = split("\n",rtrim(chunk_split($compBits, 5, "\n")));
+
+   /* Look-up each chunk and add it to $outstring */
+   foreach($fiveBitsArray as $fiveBitsString) {
+       $outString .= chr($BASE32_TABLE[$fiveBitsString]);
+   }
+
+   return $outString;
+}]]></data>
+</operation>
+
+</file>
+
+
+<file>
+<name>"$CURRENT_FOLDER/image/azureus.gif"</name>
+
+<operation>
+<action>"copy"</action>
+<where>"$DEFAULT_ROOT/images"</where>
+<data>"azureus.gif"</data>
+</operation>
+
+</file>
+
+</hack>
