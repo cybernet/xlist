@@ -727,7 +727,7 @@ case 1:
     if ($PRIVATE_ANNOUNCE || $DHT_PRIVATE) {       
         $uploadtpl->set("MSG_DOWNLOAD_PID", $language["MSG_DOWNLOAD_PID"]);
         $tplfile = "upload_finish";
-        $uploadtpl->set("DOWNLOAD", "<br /><a href=\"download.php?id=$hash&f=".urlencode($filename).".torrent\">".$language["DOWNLOAD"]."</a><br /><br />");
+        $uploadtpl->set("DOWNLOAD", "<br /><a href=\"download.php?id=$hash&f=".urlencode($filename).".torrent&amp;key=".$CURUSER["dlrandom"]."\">".$language["DOWNLOAD"]."</a><br /><br />");
     }
     $tplfile = "upload_finish";
     break;

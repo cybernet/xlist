@@ -417,7 +417,7 @@ else {   $vt = '';
    else $torrents[$i]["waiting"] = "";
 
 
-   $torrents[$i]["download"] = "<a href=\"download.php?id=".$data["hash"]."&amp;f=" . urlencode($data["filename"]) . ".torrent\">".image_or_link("images/download.gif","","torrent")."</a>\n";
+   $torrents[$i]["download"] = "<a href=\"index.php?page=downloadcheck&amp;f=" . urlencode($data["filename"]) . ".torrent\">".image_or_link("images/download.gif","","torrent")."</a>\n";
 
    include("include/offset.php");
    $torrents[$i]["added"] = date("d/m/Y", $data["added"] - $offset); // data

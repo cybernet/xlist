@@ -184,7 +184,15 @@ switch ($pageID) {
         require("$THIS_BASEPATH/forum/forum.index.php");
         $tpl->set("main_title",$btit_settings["name"]." .::. "."Browse Forums");
         break;
+    case 'downloadcheck':
 
+        require("$THIS_BASEPATH/downloadcheck.php");
+
+        $tpl->set("main_content",set_block($language["DOWNLOAD_CHECK"],"center",$dlchecktpl->fetch(load_template("downloadcheck.tpl"))));
+
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Download Check");
+
+        break;
     case 'torrents':
         require("$THIS_BASEPATH/torrents.php");
         $tpl->set("main_content",set_block($language["MNU_TORRENT"],"center",$torrenttpl->fetch(load_template("torrent.list.tpl"))));
