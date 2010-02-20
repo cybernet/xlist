@@ -77,7 +77,8 @@ if ($CURUSER["view_torrents"] == "yes")
     print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=extra-stats\">".$language["MNU_STATS"]."</a></td>\n");
    }
 if ($CURUSER["can_upload"] == "yes")
-   print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=upload\">".$language["MNU_UPLOAD"]."</a></td>\n");
+print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=upload\">".$language["MNU_UPLOAD"]."</a></td>\n");
+
 global $CACHE_DURATION;
 $row = do_sqlquery("SELECT `activated` FROM `{$TABLE_PREFIX}modules` WHERE `name`='irc'", true, $CACHE_DURATION);
 $res = mysql_fetch_assoc($row);
