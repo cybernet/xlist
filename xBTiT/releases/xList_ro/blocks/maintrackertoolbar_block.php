@@ -1,4 +1,5 @@
 <?php
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -35,8 +36,8 @@
 // xList .::. MainTrackerToolbar Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
-// Modified By CyBerNe7
+// http://xList.ro/
+// Modified By cybernet2u
 
 global $CURUSER, $XBTT_USE, $TABLE_PREFIX;
 if (!$CURUSER || $CURUSER["view_torrents"] == "no")
@@ -71,32 +72,32 @@ else
    else
        $users = 0;
 /*
-   $res=do_sqlquery("select sum(seeds) as seeds, sum(leechers) as leechs FROM summary");
+   $res = do_sqlquery("select sum(seeds) as seeds, sum(leechers) as leechs FROM summary");
    if ($res)
       {
-      $row=mysql_fetch_array($res);
-      $seeds=0+$row["seeds"];
-      $leechers=0+$row["leechs"];
+      $row = mysql_fetch_array($res);
+      $seeds = 0 + $row["seeds"];
+      $leechers = 0 + $row["leechs"];
       }
    else {
-      $seeds=0;
-      $leechers=0;
+      $seeds = 0;
+      $leechers = 0;
       }
 */
       if ($leechers > 0)
-         $percent = number_format(($seeds/$leechers)*100,0);
+         $percent = number_format(($seeds / $leechers) * 100, 0);
       else
           $percent = number_format($seeds * 100, 0);
 
    $peers = $seeds + $leechers;
 
    if ($XBTT_USE)
-      $res = do_sqlquery("select sum(u.downloaded+x.downloaded) as dled, sum(u.uploaded+x.uploaded) as upld FROM {$TABLE_PREFIX}users u LEFT JOIN xbt_users x ON x.uid=u.id",true);
+      $res = do_sqlquery("select sum(u.downloaded+x.downloaded) as dled, sum(u.uploaded+x.uploaded) as upld FROM {$TABLE_PREFIX}users u LEFT JOIN xbt_users x ON x.uid=u.id", true);
    else
-      $res = do_sqlquery("select sum(downloaded) as dled, sum(uploaded) as upld FROM {$TABLE_PREFIX}users",true);
+      $res = do_sqlquery("select sum(downloaded) as dled, sum(uploaded) as upld FROM {$TABLE_PREFIX}users", true);
    $row = mysql_fetch_assoc($res);
    $dled = 0 + $row["dled"];
-   $upld = 0+ $row["upld"];
+   $upld = 0 + $row["upld"];
    $traffic = makesize($dled+$upld);
 ?>
 <table class="tool" cellpadding="2" cellspacing="0" width="100%">
