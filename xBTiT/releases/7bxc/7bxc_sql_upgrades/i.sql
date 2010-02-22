@@ -60,4 +60,4 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('vip_one', 'true');
 -- end of rev 232
 ALTER TABLE `{$db_prefix}users` ADD `dlrandom` VARCHAR(8) DEFAULT 0;
 ALTER TABLE `{$db_prefix}users_level` ADD `bypass_dlcheck` TINYINT(1) NOT NULL DEFAULT 0;
--- end of rev 259
+-- end of rev 265
