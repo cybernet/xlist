@@ -81,7 +81,7 @@ function show_wait()
         </tr>
         <tr>
           <td align="right" class="header"><tag:language.TORRENT /></td>
-          <td class="lista" align="center"><a href="download.php?id=<tag:torrent.info_hash />&amp;f=<tag:torrent.filename />.torrent"onClick="javascript:pageTracker._trackPageview('/download/<tag:torrent.info_hash />');"><img src="../images/xList_ro_DownLoad.gif" alt="<tag:torrent.filename />"></a></td>
+          <td class="lista" align="center"><a href="index.php?page=downloadcheck&amp;id=<tag:torrent.info_hash />&amp;f=<tag:torrent.filename />.torrent"onClick="javascript:pageTracker._trackPageview('/download/<tag:torrent.info_hash />');"><img src="../images/xList_ro_DownLoad.gif" alt="<tag:torrent.filename />"></a></td>
         </tr>
 <if:MODER>
             <tr>

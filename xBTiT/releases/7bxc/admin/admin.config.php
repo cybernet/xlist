@@ -107,7 +107,7 @@ switch ($action)
         $btit_settings["forumlimit"] = $_POST["forumlimit"];
         $btit_settings["last10limit"] = $_POST["last10limit"];
         $btit_settings["mostpoplimit"] = $_POST["mostpoplimit"];
-		$btit_settings["mindlratio"] = $_POST["mindlratio"];
+	$btit_settings["mindlratio"] = $_POST["mindlratio"];
         if (isset($_POST["mindlratio"]))
         {
             $res = do_sqlquery("SELECT `value` FROM `{$TABLE_PREFIX}settings` WHERE `key`='mindlratio'");

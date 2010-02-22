@@ -439,7 +439,7 @@ function print_designer() {
      $CyBerFuN_xBTiT_version = '' . $CyBerFuN_xBTiT_version . '';
      $design_copyright = '' . $design_copyright . '';
   } else
-     $CyBerFuN_xBTiT_version = 'v1.1.2 ( 7bxc release rev259 )';
+     $CyBerFuN_xBTiT_version = 'v1.1.2 ( 7bxc release rev264 )';
      $design_copyright = '[&nbsp;&nbsp;<u>CyBerFuN xBTiT ' . $CyBerFuN_xBTiT_version . ' By cybernet</u>: <a href="http://xList.ro/" target="_blank">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By <a href="http://www.btiteam.org/" target="_blank">BTiTeam.org</a></u>&nbsp;]<br />';
   return $design_copyright;
 }
@@ -566,17 +566,17 @@ function userlogin() {
 // guest
     $id = (!isset($_COOKIE['uid']))?1:max(1, $_COOKIE['uid']);
 
-  $res = do_sqlquery("SELECT u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = $id LIMIT 1;") or sqlerr(__FILE__, __LINE__);
+  $res = do_sqlquery("SELECT u.dlrandom, u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = $id LIMIT 1;") or sqlerr(__FILE__, __LINE__);
   $row = mysql_fetch_array($res);
   if (!$row) {
     $id = 1;
-    $res = do_sqlquery("SELECT u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;") or sqlerr(__FILE__, __LINE__);
+    $res = do_sqlquery("SELECT u.dlrandom, u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;") or sqlerr(__FILE__, __LINE__);
     $row = mysql_fetch_array($res);
   }
   if (!isset($_COOKIE['pass'])) $_COOKIE['pass'] = '';
   if (($_COOKIE['pass'] != md5($row['random'].$row['password'].$row['random'])) && $id != 1) {
     $id = 1;
-    $res = do_sqlquery("SELECT u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;") or sqlerr(__FILE__, __LINE__);
+    $res = do_sqlquery("SELECT u.dlrandom, u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;") or sqlerr(__FILE__, __LINE__);
     $row = mysql_fetch_array($res);
   }
 

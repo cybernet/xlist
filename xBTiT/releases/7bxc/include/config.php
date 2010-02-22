@@ -1,4 +1,5 @@
 <?php
+
 // CyBerFuN.ro & xList.ro
 
 // CyBerFuN .::. Config
@@ -134,9 +135,10 @@ function apply_default_settings() {
     if (!array_key_exists('ajax_poller',$btit_settings)) $btit_settings['ajax_poller'] = true;
     if (!array_key_exists('invitation_only',$btit_settings)) $btit_settings['invitation_only'] = false;
     if (!array_key_exists('invitation_reqvalid',$btit_settings)) $btit_settings['invitation_reqvalid'] = false;
+    if (!array_key_exists('mindlratio',$btit_settings)) $btit_settings['mindlratio'] = 0.5;
 }
 
-$btit_settings = get_cached_config('SELECT `key`,`value` FROM '.$TABLE_PREFIX.'settings',$reload_cfg_interval);
+$btit_settings = get_cached_config('SELECT `key`,`value` FROM '.$TABLE_PREFIX.'settings', $reload_cfg_interval);
 
 apply_default_settings();
 

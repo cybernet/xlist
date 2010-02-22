@@ -185,6 +185,13 @@
       <td class="lista"><input type="text" name="mostpoplimit" value="<tag:config.mostpoplimit />" size="3" maxlength="3" /></td>
     </tr>
     <tr>
+      <td class="header" colspan="4" align="center"><tag:language.SETTING_CUSTOM_SETTINGS /></td>
+    </tr>
+    <tr>
+      <td class="header"><tag:language.SETTING_MIN_DLRATIO /></td>
+      <td class="lista" colspan="3"><input type="text" name="mindlratio" value="<tag:config.mindlratio />" size="3" maxlength="6" /></td>
+    </tr>
+    <tr>
       <td class="header" align="center" colspan="4"><tag:language.IRC_SETTINGS /></td>
     </tr>
     <tr>

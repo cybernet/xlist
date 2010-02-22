@@ -1,4 +1,5 @@
 <?php
+
 // CyBerFuN.ro & xList.ro
 
 // xList .::. Last Torrents Block
@@ -49,7 +50,7 @@ if (max(0,$CURUSER["WT"])>0)
   {
       while ($data = mysql_fetch_array($row))
       {
-if(getmoderstatusbyhash($data['hash']) == 'ok')
+if (getmoderstatusbyhash($data['hash']) == 'ok')
             {
       echo "<tr>";
           if ( strlen($data["hash"]) > 0 )
@@ -58,8 +59,8 @@ if(getmoderstatusbyhash($data['hash']) == 'ok')
       echo "<a href=\"index.php?page=downloadcheck&amp;id=".$data["hash"]."\"><img src='images/torrent.gif' border='0' alt='".$language["DOWNLOAD_TORRENT"]."' title='".$language["DOWNLOAD_TORRENT"]."' /></a>";
       echo "</td>";
 
-       $data["filename"]=unesc($data["filename"]);
-       $filename=cut_string($data["filename"],intval($btit_settings["cut_name"]));
+       $data["filename"] = unesc($data["filename"]);
+       $filename = cut_string($data["filename"], intval($btit_settings["cut_name"]));
        //gold mod
      $silver_picture = '';
      $gold_picture = '';
@@ -80,11 +81,11 @@ if(getmoderstatusbyhash($data['hash']) == 'ok')
         }
         //end gold mod
 // Start baloon hack DT
-$hover=($data["img"]);
-if ($hover=="")
- $balon=("nocover.jpg");
+$hover = ($data["img"]);
+if ($hover == "")
+ $balon = ("nocover.jpg");
  else
- $balon =($data["img"]);
+ $balon = ($data["img"]);
 // End baloon hack DT
 
        if ($GLOBALS["usepopup"])
@@ -93,24 +94,24 @@ if ($hover=="")
      echo "\n\t<td width=\"45%\" class=\"lista\" style=\"padding-left:10px;\"><a href=\"index.php?page=torrent-details&amp;id=" . $data['hash'] . "\" onmouseover=\" return overlib('<img src=".$GLOBALS["uploaddir"]."/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">" . $filename . "</a>".$gold.($data["external"]=="no"?"":" (<span style=\"color:red\">Multi.</span>)")."</td>";
        echo "\n\t<td align=\"center\" class=\"lista\" width=\"45\" style=\"text-align: center;\"><a href=\"index.php?page=torrents&amp;category=$data[catid]\">" . image_or_link( ($data["image"] == "" ? "" : "$STYLEPATH/images/categories/" . $data["image"]), "", $data["cname"]) . "</a></td>";
 
-    //waitingtime
+    // waitingtime
     // only if current user is limited by WT
-    if (max(0,$CURUSER["WT"])>0)
+    if (max(0, $CURUSER["WT"]) > 0)
         {
-          $wait=0;
-          $resuser=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"]);
-          $rowuser=mysql_fetch_array($resuser);
-          if (max(0,$rowuser['downloaded'])>0) $ratio=number_format($rowuser['uploaded']/$rowuser['downloaded'],2);
-          else $ratio=0.0;
-          $res2 =do_sqlquery("SELECT * FROM {$TABLE_PREFIX}files WHERE info_hash='".$data["hash"]."'");
-          $added=mysql_fetch_array($res2);
+          $wait = 0;
+          $resuser = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"]);
+          $rowuser = mysql_fetch_array($resuser);
+          if (max(0, $rowuser['downloaded']) > 0) $ratio = number_format($rowuser['uploaded'] / $rowuser['downloaded'], 2);
+          else $ratio = 0.0;
+          $res2 = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}files WHERE info_hash='".$data["hash"]."'");
+          $added = mysql_fetch_array($res2);
           $vz = sql_timestamp_to_unix_timestamp($added["data"]);
           $timer = floor((time() - $vz) / 3600);
-          if($ratio<1.0 && $rowuser['id']!=$added["uploader"]){
-              $wait=$CURUSER["WT"];
+          if($ratio < 1.0 && $rowuser['id'] != $added["uploader"]){
+              $wait = $CURUSER["WT"];
           }
-          $wait -=$timer;
-          if ($wait<=0)$wait=0;
+          $wait -= $timer;
+          if ($wait <= 0) $wait = 0;
 
           echo "\n\t<td align=\"center\" width=\"20\" class=\"lista\" style=\"text-align: center;\">".$wait." h</td>";
         }

@@ -100,9 +100,9 @@ switch ($action)
           $current_group["can_upload"]=($current_group["can_upload"]=="yes"?"checked=\"checked\"":"");
           $current_group["can_download"]=($current_group["can_download"]=="yes"?"checked=\"checked\"":"");
           $current_group["admin_access"]=($current_group["admin_access"]=="yes"?"checked=\"checked\"":"");
-		  $current_group["bypass_dlcheck"]=($current_group["bypass_dlcheck"]==1?"checked=\"checked\"":"");
-$artype ="\n<option ".(($current_group["autorank_state"]=="Enabled")?" selected=\"selected\" ":"")." value='Enabled'>Enabled</option>";
-$artype.="\n<option ".(($current_group["autorank_state"]=="Disabled")?" selected=\"selected\" ":"")." value='Disabled'>Disabled</option>";
+	  $current_group["bypass_dlcheck"]=($current_group["bypass_dlcheck"]==1?"checked=\"checked\"":"");
+$artype = "\n<option ".(($current_group["autorank_state"]=="Enabled")?" selected=\"selected\" ":"")." value='Enabled'>Enabled</option>";
+$artype .= "\n<option ".(($current_group["autorank_state"]=="Disabled")?" selected=\"selected\" ":"")." value='Disabled'>Disabled</option>";
 
 $current_group["autorank_state"]=$artype;
 $current_group["forumlist"]="";
@@ -184,12 +184,12 @@ if($FORUMLINK=="smf")
                    $update[] = "WT=".sqlesc($_POST["waiting"]);
                    $update[] = "prefixcolor=".sqlesc($_POST["pcolor"]);
                    $update[] = "suffixcolor=".sqlesc($_POST["scolor"]);
-				   $update[] = "bypass_dlcheck=".(isset($_POST["bypass_dlcheck"])?1:0);
-                   $update[]="autorank_state=".sqlesc($_POST["arstate"]);
-                   $update[]="autorank_position=".((isset($_POST["arpos"]) && is_numeric($_POST["arpos"]))?$_POST["arpos"]:0);
-                   $update[]="autorank_min_upload=".((isset($_POST["arminup"]) && is_numeric($_POST["arminup"]))?$_POST["arminup"]:0);
-                   $update[]="autorank_minratio=".((isset($_POST["arminratio"]) && is_numeric($_POST["arminratio"]))?$_POST["arminratio"]:"0.00");
-                   $update[]="autorank_smf_group_mirror=".((isset($_POST["arsmfmirr"]) && is_numeric($_POST["arsmfmirr"]))?$_POST["arsmfmirr"]:0);
+		   $update[] = "bypass_dlcheck=".(isset($_POST["bypass_dlcheck"])?1:0);
+                   $update[] = "autorank_state=".sqlesc($_POST["arstate"]);
+                   $update[] = "autorank_position=".((isset($_POST["arpos"]) && is_numeric($_POST["arpos"]))?$_POST["arpos"]:0);
+                   $update[] = "autorank_min_upload=".((isset($_POST["arminup"]) && is_numeric($_POST["arminup"]))?$_POST["arminup"]:0);
+                   $update[] = "autorank_minratio=".((isset($_POST["arminratio"]) && is_numeric($_POST["arminratio"]))?$_POST["arminratio"]:"0.00");
+                   $update[] = "autorank_smf_group_mirror=".((isset($_POST["arsmfmirr"]) && is_numeric($_POST["arsmfmirr"]))?$_POST["arsmfmirr"]:0);
                    $strupdate = implode(",",$update);
                    do_sqlquery("UPDATE {$TABLE_PREFIX}users_level SET $strupdate WHERE id=$gid", true);
                    unset($update);
@@ -225,7 +225,7 @@ if($FORUMLINK=="smf")
                 $groups[$i]["admin_access"] = $level["admin_access"];
                 $groups[$i]["STYLE"] = $level["STYLE"];
                 $groups[$i]["WT"] = $level["WT"];
-				$groups[$i]["bypass_dlcheck"]=(($level["bypass_dlcheck"]==1)?"yes":"no");
+		$groups[$i]["bypass_dlcheck"] = (($level["bypass_dlcheck"] == 1)?"yes":"no");
                 $groups[$i]["delete"]=($level["can_be_deleted"]=="no"?"No":"<a onclick=\"return confirm('".AddSlashes($language["DELETE_CONFIRM"])."')\" href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=groups&amp;action=delete&amp;id=".$level["id"]."\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>");
 $groups[$i]["arpos"]=(($level["autorank_state"]=="Disabled")?$language["NA"]:$level["autorank_position"]);
                 $groups[$i]["arstate"] = $level["autorank_state"];

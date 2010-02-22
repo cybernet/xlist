@@ -55,8 +55,9 @@ if (!$CURUSER || $CURUSER["can_download"] == "no" || $CURUSER["dlrandom"] != $ke
        require(load_language("lang_main.php"));
        die($language["NOT_AUTH_DOWNLOAD"]);
    }
-$rand = substr(md5(mt_rand()), 0, 8);
 
+
+$rand = substr(md5(mt_rand()), 0, 8);
 do_sqlquery("UPDATE {$TABLE_PREFIX}users SET dlrandom='$rand' WHERE id=".$CURUSER["uid"]);
 
 if(ini_get('zlib.output_compression'))

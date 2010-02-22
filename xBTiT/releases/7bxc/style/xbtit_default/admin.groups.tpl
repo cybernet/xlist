@@ -66,6 +66,7 @@
 
     <td class="header" align="center"><tag:language.DELETE /></td>
 
+    <td class="header" align="center"><tag:language.BYPASS_DLCHECK /></td>
 
     <td class="header" align="center"><tag:language.AUTORANK_STATE /></td>
 
@@ -110,6 +111,7 @@
 
     <td class="lista" align="center"><tag:groups[].delete /></td>
 
+    <td class="lista" align="center"><tag:groups[].bypass_dlcheck /></td>
 
     <td class="lista" align="center"><tag:groups[].arstate /></td>
 
@@ -128,7 +130,7 @@
 
   <tr>
 
-    <td class="header" align="center" colspan="17"><tag:group_add_new /></td>
+    <td class="header" align="center" colspan="19"><tag:group_add_new /></td>
 
   </tr>
 
@@ -280,6 +282,13 @@
       <td class="header"><tag:language.GROUP_GO_CP /></td>
 
       <td class="lista"><input type="checkbox" name="admincp" <tag:group.admin_access /> /></td>
+    </tr>
+
+    <tr>
+
+      <td class="header"><tag:language.BYPASS_DLCHECK /></td>
+
+      <td class="lista"><input type="checkbox" name="bypass_dlcheck" <tag:group.bypass_dlcheck /></td>
 
     </tr>
 
