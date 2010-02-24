@@ -5,8 +5,8 @@
 // xList .::. Online Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
-// Modified By CyBerNe7
+// http://xList.ro/
+// Modified By cybernet2u
 
 global $CURUSER;
 if (!$CURUSER || $CURUSER["view_users"] == "no")
@@ -21,7 +21,7 @@ else
 
      $u_online = array();
      $group = array();
-     $u_online = get_result("SELECT * FROM {$TABLE_PREFIX}online ol",true);
+     $u_online = get_result("SELECT * FROM {$TABLE_PREFIX}online ol", true);
 
      $total_online = count($u_online);
      $uo = array();
@@ -30,7 +30,7 @@ else
             if (isset($group[unesc(ucfirst($users_online["user_group"]))]))
                $group[unesc(ucfirst($users_online["user_group"]))]++;
             else
-               $group[unesc(ucfirst($users_online["user_group"]))]=1;
+               $group[unesc(ucfirst($users_online["user_group"]))] = 1;
             if ($users_online["user_id"]>1)
                 $uo[]="<a href=\"index.php?page=userdetails&amp;id=".$users_online["user_id"]."\" title=\"".unesc(ucfirst($users_online["location"]))."\">".
                        unesc($users_online["prefixcolor"]).unesc($users_online["user_name"]). warn($users_online) . unesc($users_online["suffixcolor"])."</a>";

@@ -5,8 +5,8 @@
 // xList .::. Paypal Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
-// Modified By CyBerNe7
+// http://xList.ro/
+// Modified By cybernet2u
 
 block_begin("Donate");
 ?>

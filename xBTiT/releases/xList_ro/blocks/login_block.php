@@ -5,8 +5,8 @@
 // xList .::. Login Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
-// Modified By CyBerNe7
+// http://xList.ro/
+// Created By cybernet2u
 
 require_once(load_language("lang_account.php"));
 block_begin("".BLOCK_USER."");

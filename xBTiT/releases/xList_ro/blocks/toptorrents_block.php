@@ -5,8 +5,8 @@
 // xList .::. Top Torrents Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
-// Modified By CyBerNe7
+// http://xList.ro/
+// Modified By cybernet2u
 
 global $CURUSER;
 if (!$CURUSER || $CURUSER["view_torrents"] == "no")

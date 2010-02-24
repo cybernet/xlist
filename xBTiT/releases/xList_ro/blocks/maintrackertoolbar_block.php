@@ -55,11 +55,11 @@ else
       $row = mysql_fetch_array($res);
       $torrents = $row["tot"];
       $seeds = 0 + $row["seeds"];
-      $leechers = 0+$row["leechs"];
+      $leechers = 0 + $row["leechs"];
       }
    else {
       $seeds = 0;
-      $leechers= 0;
+      $leechers = 0;
       $torrents = 0;
       }
 

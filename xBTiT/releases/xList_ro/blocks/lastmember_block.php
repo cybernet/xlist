@@ -35,8 +35,8 @@
 // xList .::. Last Member Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
-// Modified By CyBerNe7
+// http://xList.ro/
+// Modified By cybernet2u
 
 global $CURUSER;
 if (!$CURUSER || $CURUSER["view_users"] == "no")

@@ -5,8 +5,8 @@
 // xList .::. Poll Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
-// Modified By CyBerNe7
+// http://xList.ro/
+// Modified By cybernet2u
 
 
 
@@ -50,7 +50,7 @@ if($CURUSER["uid"] == $voters["memberid"]) $check = 1;
                     
                 $percent = $votes == 0 ? 0 : $votes / $result["votes"] * 100;
                 $percent = sprintf( '%.2f' , $percent );
-                $width   = $percent > 0 ? floor( round( $percent )*0.7) : 0;
+                $width   = $percent > 0 ? floor( round( $percent ) * 0.7) : 0;
             $percent = floor($percent);
                 
             print ("<tr><td width=50% class=lista>$choice</td><td class=lista> (<b>$votes</b>) </td><td class=lista><img src=images/bar.gif width=$width height=11 align=left /></td><td align=left class=lista>&nbsp;($percent%)</td></tr>");
@@ -94,7 +94,7 @@ if($CURUSER["uid"] == $voters["memberid"]) $check = 1;
 </form>
 <?php
 }               
-if(isset($_POST['submit']) && $_POST['submit'] == 'Submit' && isset($_POST['poll_vote']) && $check!=1){
+if(isset($_POST['submit']) && $_POST['submit'] == 'Submit' && isset($_POST['poll_vote']) && $check != 1){
     $voteid = $_POST['poll_vote'];
     $memberid = $CURUSER["uid"];
     $ip = $_SERVER['REMOTE_ADDR'];
@@ -107,11 +107,11 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Submit' && isset($_POST['poll
                 $id     = $var[0];
                 $choice = $var[1];
                 $votes  = $var[2];
-        if($id==$voteid) $votes++;
+        if($id == $voteid) $votes++;
         $new_poll_array[] = array( $id, $choice, $votes);
     }
     $votings = addslashes(serialize($new_poll_array));
-    $uvotes = $result["votes"]+1;
+    $uvotes = $result["votes"] + 1;
     do_sqlquery("UPDATE {$TABLE_PREFIX}polls SET choices='$votings' WHERE pid='$pid'");
     do_sqlquery("UPDATE {$TABLE_PREFIX}polls SET votes='$uvotes' WHERE pid='$pid'");
     redirect($_SERVER['REQUEST_URI']);

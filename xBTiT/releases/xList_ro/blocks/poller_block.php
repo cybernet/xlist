@@ -5,8 +5,8 @@
 // xList .::. Last Torrent Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
-// Modified By CyBerNe7
+// http://xList.ro/
+// Modified By cybernet2u
 
 global $STYLEURL;
 
@@ -147,7 +147,7 @@ if($CURUSER["uid"] == $voters["memberid"]) $check = 1;
                    
             $percent = $votes == 0 ? 0 : $votes / $result["votes"] * 100;
             $percent = sprintf( '%.2f' , $percent );
-            $width   = $percent > 0 ? floor( round( $percent )*0.7) : 0;
+            $width   = $percent > 0 ? floor( round( $percent ) * 0.7) : 0;
       $percent = floor($percent);
             
       print ("<tr><td width=\"50%\" class=\"lista\">$choice</td><td class=\"lista\"> (<b>$votes</b>) </td><td class=\"lista\"><img src=\"images/bar.gif\" width=\"4\" height=\"11\" align=\"left\" alt=\"\" title=\"bar\" border=\"0\" /></td><td align=\"left\" class=\"lista\">&nbsp;($percent%)</td></tr>");

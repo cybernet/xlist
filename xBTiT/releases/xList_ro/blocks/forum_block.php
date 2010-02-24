@@ -5,8 +5,8 @@
 // xList .::. Forum Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
-// Modified By CyBerNe7
+// http://xList.ro/
+// Modified By cybernet2u
 
 global $CURUSER, $CACHE_DURATION, $FORUMLINK, $THIS_BASEPATH, $db_prefix, $block_forumlimit, $btit_settings;
 
@@ -36,15 +36,15 @@ $realLastPosts = $btit_settings['forumblocktype']; # 0=topics, 1=posts
 # check number of topics
 if ($topics != 0) {
     # inits
-    $limit='LIMIT '.((isset($block_forumlimit))?$block_forumlimit:5).';';
-    $postsList='';
+    $limit = 'LIMIT '.((isset($block_forumlimit))?$block_forumlimit:5).';';
+    $postsList = '';
     # test forum type
     if ($FORUMLINK == 'smf') {
         $boards = get_result('SELECT ID_BOARD, memberGroups FROM `'.$db_prefix.'boards`;');
         $exclude = ($realLastPosts)?'':'WHERE t.ID_LAST_MSG=m.ID_MSG';
         foreach ($boards as $check) {
             $forumid = $check['ID_BOARD'];
-            $read = explode(',',$check['memberGroups']);
+            $read = explode(',', $check['memberGroups']);
             if (!in_array($CURUSER['id_level'] + 10, $read))
                 $exclude .= (($exclude == '')?'WHERE ':' AND ').'m.ID_BOARD!='.$forumid;
         }

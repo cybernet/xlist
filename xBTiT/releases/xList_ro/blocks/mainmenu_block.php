@@ -5,8 +5,8 @@
 // xList .::. Main Menu Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
-// Modified By CyBerNe7
+// http://xList.ro/
+// Modified By cybernet2u
 
    global $CURUSER;
 
@@ -82,6 +82,7 @@ print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=upload\">"
 global $CACHE_DURATION;
 $row = do_sqlquery("SELECT `activated` FROM `{$TABLE_PREFIX}modules` WHERE `name`='irc'", true, $CACHE_DURATION);
 $res = mysql_fetch_assoc($row);
+/*
 if ($res["activated"] == 'yes' && ($CURUSER["view_users"] == "yes"))
 // link in the menu fixed by cybernet / http://tracker.cyberfun.ro/
 // http://xlist.ro/
@@ -89,7 +90,7 @@ if ($res["activated"] == 'yes' && ($CURUSER["view_users"] == "yes"))
 
 if ($CURUSER["view_users"] == "yes")
    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=users\">".$language["MNU_MEMBERS"]."</a></td>\n");
-/*
+
 if ($CURUSER["view_news"] == "yes")
    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=viewnews\">".$language["MNU_NEWS"]."</a></td>\n");
 */

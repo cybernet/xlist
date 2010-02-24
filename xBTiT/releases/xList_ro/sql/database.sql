@@ -107,46 +107,46 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}bannedip` (
 --
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}blocks` (
-  `blockid` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `content` varchar(255) NOT NULL DEFAULT '',
-  `position` char(1) NOT NULL DEFAULT '',
-  `sortid` int(11) unsigned NOT NULL DEFAULT '0',
-  `status` tinyint(3) unsigned DEFAULT NULL,
-  `title` varchar(255) NOT NULL DEFAULT '',
+  `blockid` int(11) unsigned NOT NULL auto_increment,
+  `content` varchar(255) NOT NULL default '',
+  `position` char(1) NOT NULL default '',
+  `sortid` int(11) unsigned NOT NULL default '0',
+  `status` tinyint(3) unsigned default NULL,
+  `title` varchar(255) NOT NULL default '',
   `cache` enum('yes','no') NOT NULL,
-  `minclassview` int(11) NOT NULL DEFAULT '0',
-  `maxclassview` int(11) NOT NULL DEFAULT '8',
-  PRIMARY KEY (`blockid`)
+  `minclassview` int(11) NOT NULL default '0',
+  `maxclassview` int(11) NOT NULL default '8',
+  PRIMARY KEY  (`blockid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
 
 --
--- Dumping data for table `xlist_l_blocks`
+-- Dumping data for table `{$db_prefix}blocks`
 --
 
 INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `status`, `title`, `cache`, `minclassview`, `maxclassview`) VALUES
-(1, 'menu', 'r', 4, 0, 'BLOCK_MENU', 'no', 3, 8),
-(2, 'clock', 'r', 3, 0, 'BLOCK_CLOCK', 'no', 3, 8),
-(3, 'forum', 'l', 3, 0, 'BLOCK_FORUM', 'no', 3, 8),
-(4, 'lastmember', 'l', 4, 1, 'BLOCK_LASTMEMBER', 'no', 3, 8),
-(6, 'trackerinfo', 'r', 5, 0, 'BLOCK_INFO', 'no', 3, 8),
-(7, 'user', 'r', 4, 0, 'BLOCK_USER', 'no', 3, 8),
+(1, 'menu', 'r', 5, 0, 'BLOCK_MENU', 'no', 3, 8),
+(2, 'clock', 'r', 4, 0, 'BLOCK_CLOCK', 'no', 3, 8),
+(3, 'forum', 'l', 2, 0, 'BLOCK_FORUM', 'no', 3, 8),
+(4, 'lastmember', 'l', 3, 0, 'BLOCK_LASTMEMBER', 'no', 3, 8),
+(6, 'trackerinfo', 'r', 7, 0, 'BLOCK_INFO', 'no', 3, 8),
+(7, 'user', 'r', 6, 0, 'BLOCK_USER', 'no', 3, 8),
 (8, 'online', 'b', 1, 1, 'BLOCK_ONLINE', 'no', 3, 8),
-(10, 'toptorrents', 'c', 8, 0, 'BLOCK_TOPTORRENTS', 'no', 3, 8),
+(10, 'toptorrents', 'c', 8, 1, 'BLOCK_TOPTORRENTS', 'no', 3, 8),
 (11, 'lasttorrents', 'c', 7, 1, 'BLOCK_LASTTORRENTS', 'no', 3, 8),
 (12, 'news', 'c', 5, 0, 'BLOCK_NEWS', 'no', 3, 8),
 (13, 'mainmenu', 't', 1, 1, 'BLOCK_MENU', 'no', 1, 8),
 (14, 'maintrackertoolbar', 't', 2, 1, 'BLOCK_MAINTRACKERTOOLBAR', 'no', 3, 8),
 (15, 'mainusertoolbar', 't', 3, 1, 'BLOCK_MAINUSERTOOLBAR', 'no', 3, 8),
 (16, 'serverload', 'c', 9, 1, 'BLOCK_SERVERLOAD', 'no', 8, 8),
-(17, 'poller', 'l', 2, 1, 'BLOCK_POLL', 'no', 3, 8),
+(17, 'poller', 'r', 3, 0, 'BLOCK_POLL', 'no', 3, 8),
 (18, 'seedwanted', 'c', 6, 0, 'BLOCK_SEEDWANTED', 'no', 3, 8),
 (19, 'paypal', 'r', 1, 0, 'BLOCK_PAYPAL', 'no', 1, 8),
-(20, 'ajax_shoutbox', 'c', 3, 1, 'BLOCK_SHOUTBOX', 'no', 3, 8),
+(20, 'ajax_shoutbox', 'c', 3, 0, 'BLOCK_SHOUTBOX', 'no', 3, 8),
 (21, 'featured', 'c', 4, 0, 'BLOCK_FEATURED', 'yes', 3, 8),
-(22, 'lasttorrent', 'l', 1, 1, 'BLOCK_LASTTORRENT', '', 3, 8),
+(22, 'lasttorrent', 'l', 1, 0, 'BLOCK_LASTTORRENT', '', 3, 8),
 (23, 'lasttorrentmarq', 'c', 2, 0, 'BLOCK_LASTTORRENT_MARQ', '', 3, 8),
-(24, 'twitter', 'l', 5, 0, 'TWITTER', 'no', 3, 8),
-(25, 'categories', 'r', 2, 1, 'BLOCK_CAT', 'no', 3, 8),
+(24, 'twitter', 'l', 4, 0, 'TWITTER', 'no', 3, 8),
+(25, 'categories', 'r', 2, 0, 'BLOCK_CAT', 'no', 3, 8),
 (27, 'login', 'c', 1, 1, 'LOGIN', 'no', 1, 1),
 (28, 'cloud', 'c', 0, 0, 'BLOCK_CLOUD', 'no', 3, 8),
 (29, 'ads', 't', 4, 1, 'xList_aDs', 'no', 8, 8);

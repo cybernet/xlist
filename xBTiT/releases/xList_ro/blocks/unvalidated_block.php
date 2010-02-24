@@ -1,6 +1,12 @@
 <?php
 
+// CyBerFuN.ro & xList.ro
 
+// xList .::. Revalidation Block
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xList.ro/
+// Modified By cybernet2u
 
 /*---------------------------------------------------\
 

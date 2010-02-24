@@ -2,10 +2,10 @@
 
 // CyBerFuN.ro & xList.ro
 
-// xList .::. user Block
+// xList .::. User Block
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
+// http://xList.ro/
 // Modified By cybernet2u
 
 global $CURUSER, $user, $USERLANG, $FORUMLINK, $db_prefix;
@@ -64,7 +64,7 @@ print("</td></tr>");
             <?php
 			  
 			 
-			 print("\n<tr align=\"center\"><td class=\"yellow\" align=\"center\"><center><img src=\"images/arany.png\"> ".($rowuser['downloaded'] > 0 ? number_format($rowuser['uploaded'] / $rowuser['downloaded'], 2):"---")."</center></td><tr>\n");
+			 print("\n<tr align=\"center\"><td class=\"yellow\" align=\"center\"><center><img src=\"images/arany.png\"> ".($rowuser['downloaded'] > 0 ? number_format($rowuser['uploaded'] / $rowuser['downloaded'], 2) : "---")."</center></td><tr>\n");
              if($FORUMLINK == "smf")
                  $resmail = do_sqlquery("SELECT unreadMessages FROM {$db_prefix}members WHERE ID_MEMBER=".$CURUSER["smf_fid"]);
              else
