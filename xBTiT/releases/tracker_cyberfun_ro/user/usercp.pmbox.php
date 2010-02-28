@@ -10,6 +10,7 @@ $usercptpl->set("MSG_READ",false,true);
 $usercptpl->set("MSG_EDIT",false,true);
 $usercptpl->set("MSG_MENU",false,true);
 $usercptpl->set("PREVIEW",false,true);
+$usercptpl->set("OUTBOX",(($_GET["what"]=="outbox")?true:false),true);
 
 global $FORUMLINK, $db_prefix;
 

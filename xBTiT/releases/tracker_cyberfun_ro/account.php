@@ -18,9 +18,9 @@ if (isset($_GET["returnto"])) $link = urldecode($_GET["returnto"]);
 if (isset($_GET["act"])) $act = $_GET["act"];
  else $act = "signup";
 if (isset($_GET["language"])) $idlangue = intval($_GET["language"]);
- else $idlangue = max(1,$btit_settings["default_language"]);
+ else $idlangue = max(1, $btit_settings["default_language"]);
 if (isset($_GET["style"])) $idstyle = intval($_GET["style"]);
- else $idstyle = "";
+ else $idstyle = max(1, $btit_settings["default_style"]);
 if (isset($_GET["flag"])) $idflag = intval($_GET["flag"]);
  else $idflag = "";
 
@@ -160,12 +160,13 @@ function tabella($action, $dati = array()) {
    global $SITENAME, $INVITATIONSON, $code, $inviter, $idflag, $link, $idlangue, $idstyle, $CURUSER, $USE_IMAGECODE, $TABLE_PREFIX, $language, $tpl_account, $THIS_BASEPATH;
 
 
-   if ($action=="signup" || $action == "invite")
+   if ($action == "signup" || $action == "invite")
      {
           $tpl_account->set("BY_INVITATION", false, true);
           $dati["username"] = "";
           $dati["email"] = "";
           $dati["language"] = $idlangue;
+          $dati["style"] = $idstyle;
 
      }
 

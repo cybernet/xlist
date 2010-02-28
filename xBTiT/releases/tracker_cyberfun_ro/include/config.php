@@ -185,14 +185,18 @@ $GLOBALS['maxleech'] = $btit_settings['maxpid_leech'];
 //Tracker's name
 $SITENAME = $btit_settings['name'];
 //Tracker's Base URL
-$BASEURL = $btit_settings['url'];
+$BASEURL=$btit_settings['url'];
 // tracker's announce urls, can be more than one
-$TRACKER_ANNOUNCEURLS = array();
-$TRACKER_ANNOUNCEURLS = unserialize($btit_settings['announce']);
-for($i=0,$count = count($TRACKER_ANNOUNCEURLS); $i<$count; $i++)
-  $TRACKER_ANNOUNCEURLS[$i] = trim(str_replace(array("\r\n","\r","\n"),'', $TRACKER_ANNOUNCEURLS[$i]));
+$TRACKER_ANNOUNCE_URL=array();
+$TRACKER_ANNOUNCEURLS=array();
+$TRACKER_ANNOUNCE_URL=unserialize($btit_settings['announce']);
+for($i=0,$count=count($TRACKER_ANNOUNCE_URL); $i<$count; $i++)
+  {
+  if (trim($TRACKER_ANNOUNCE_URL[$i])!='')
+     $TRACKER_ANNOUNCEURLS[]=trim($TRACKER_ANNOUNCE_URL[$i]);
+}
 //Tracker's email (owner email)
-$SITEEMAIL = $btit_settings['email'];
+$SITEEMAIL=$btit_settings['email'];
 //Torrent's DIR
 $TORRENTSDIR = $btit_settings['torrentdir'];
 //validation type (must be none, user or admin

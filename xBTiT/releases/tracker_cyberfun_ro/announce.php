@@ -36,6 +36,7 @@ if ($XBTT_USE)
 
     if (isset ($_GET["pid"])) {
        $pid = $_GET["pid"];
+    if (strpos($pid , "?")!==false)
        $pid  = substr($pid , 0,strpos($pid , "?"));
        unset($_GET["pid"]);
     } else
