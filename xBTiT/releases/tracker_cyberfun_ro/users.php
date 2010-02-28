@@ -42,7 +42,7 @@ else
          $addparams="";
          if ($search!="")
             {
-            $where=" AND u.username LIKE '%".htmlspecialchars(mysql_escape_string($_GET["searchtext"]))."%'";
+            $where=" AND u.username LIKE '%".htmlspecialchars(mysql_real_escape_string($_GET["searchtext"]))."%'";
             $addparams="searchtext=$search";
             }
          else

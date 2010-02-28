@@ -7,7 +7,7 @@ if (!defined("IN_BTIT"))
       die("non direct access!");
 
 
-$id = mysql_escape_string($_GET["info_hash"]);
+$id = mysql_real_escape_string($_GET["info_hash"]);
 
 if (!isset($id) || !$id)
     die("Error ID");
@@ -38,7 +38,7 @@ if ($link == "")
 
 if (isset($_POST["action"])) {
 
-   if ($_POST["action"] == $language["DELETE"]) {
+   if ($_POST["action"] == $language["FRM_DELETE"]) {
 
       $ris = do_sqlquery("SELECT info_hash,filename,url FROM {$TABLE_PREFIX}files WHERE info_hash=\"$hash\"") or die(mysql_error());
       if (mysql_num_rows($ris) == 0)

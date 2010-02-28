@@ -63,9 +63,9 @@ if (isset($_FILES["torrent"]))
       }
 
 if (isset($_POST["filename"]))
-   $filename = mysql_escape_string(htmlspecialchars($_POST["filename"]));
+   $filename = mysql_real_escape_string(htmlspecialchars($_POST["filename"]));
 else
-    $filename = mysql_escape_string(htmlspecialchars($_FILES["torrent"]["name"]));
+    $filename = mysql_real_escape_string(htmlspecialchars($_FILES["torrent"]["name"]));
 
 if (isset($hash) && $hash) $url = $TORRENTSDIR . "/" . $hash . ".btf";
 else $url = 0;
@@ -78,7 +78,7 @@ else $url = 0;
     End Operation #1*/
 
 if (isset($_POST["info"]) && $_POST["info"]!="")
-   $comment = mysql_escape_string($_POST["info"]);
+   $comment = mysql_real_escape_string($_POST["info"]);
 else { // description is now required (same as for edit.php)
 //    $comment = "";
         err_msg($language["ERROR"],$language["EMPTY_DESCRIPTION"]);
@@ -88,11 +88,11 @@ else { // description is now required (same as for edit.php)
 
 // filename not writen by user, we get info directly from torrent.
 if (strlen($filename) == 0 && isset($array["info"]["name"]))
-   $filename = mysql_escape_string(htmlspecialchars($array["info"]["name"]));
+   $filename = mysql_real_escape_string(htmlspecialchars($array["info"]["name"]));
 
 // description not writen by user, we get info directly from torrent.
 if (isset($array["comment"]))
-   $info = mysql_escape_string(htmlspecialchars($array["comment"]));
+   $info = mysql_real_escape_string(htmlspecialchars($array["comment"]));
 else
     $info = "";
 
@@ -137,7 +137,7 @@ if (!isset($array["announce"]))
              stdfoot();
              exit();
       }
-      @mysql_free_result($rs);
+      @mysql_free_result($rc);
 
       $announce=str_replace(array("\r\n","\r","\n"),"",$array["announce"]);
 
@@ -396,7 +396,7 @@ if (!isset($array["announce"]))
          $internal=true;
          // inserting into xbtt table
          if ($XBTT_USE)
-              do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$hash ON DUPLICATE KEY UPDATE flags=0",true);
+              do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$hash, ctime=UNIX_TIMESTAMP() ON DUPLICATE KEY UPDATE flags=0",true);
          $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, url, info, category, data, size, comment, comment_notify, uploader,anonymous, bin_hash, image, screen1, screen2, screen3) VALUES (\"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$comment_notify,$curuid,$anonyme,0x$hash, '$file_name', '$file_name_s1', '$file_name_s2', '$file_name_s3')";
       }else
           {
