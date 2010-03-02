@@ -1,4 +1,8 @@
 <?php
+
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 /********
 Copyright © 2007 BTITeam.org. All Rights Reserved. 
 PB Edition 1.5 Copyright © 2007 PantheraBits.com. All Rights Reserved. 
@@ -7,7 +11,7 @@ Do not remove the Copyright in footer!
 require_once("include/functions.php");
 
 dbconn();
-if (!$CURUSER || $CURUSER["mod_access"]!="yes")
+if (!$CURUSER || $CURUSER["mod_access"] != "yes")
   {
       err_msg(ERROR,NOT_ADMIN_CP_ACCESS);
       stdfoot();

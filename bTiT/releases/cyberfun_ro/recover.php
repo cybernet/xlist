@@ -1,4 +1,8 @@
 <?php
+
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 /********
 Copyright © 2007 BTITeam.org. All Rights Reserved. 
 PB Edition 1.5 Copyright © 2007 PantheraBits.com. All Rights Reserved. 
@@ -142,7 +146,7 @@ if ($USE_IMAGECODE)
    if (extension_loaded('gd'))
      {
        $arr = gd_info();
-       if ($arr['FreeType Support']==1)
+       if ($arr['FreeType Support'] == 1)
         {
          $p=new ocr_captcha();
 

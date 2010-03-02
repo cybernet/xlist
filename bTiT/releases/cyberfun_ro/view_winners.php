@@ -1,5 +1,8 @@
 <?php
 
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 require_once("include/config.php");
 require_once("include/functions.php");
 
@@ -9,7 +12,7 @@ standardheader(VIEW_WINNERS);
 
 block_begin(VIEW_WINNERS);
 
-if(!$CURUSER || $CURUSER["view_news"]!="yes")
+if(!$CURUSER || $CURUSER["view_news"] != "yes")
 {
     err_msg(ERROR.NOT_AUTHORIZED."!",SORRY."...");
 	block_end();
@@ -17,14 +20,14 @@ if(!$CURUSER || $CURUSER["view_news"]!="yes")
     exit();
 }
 
-    $winres=mysql_query("SELECT COUNT(*) FROM lottery_winners ORDER BY id DESC");
-    $winnum=mysql_fetch_row($winres);
-    $num=$winnum[0];
+    $winres = mysql_query("SELECT COUNT(*) FROM lottery_winners ORDER BY id DESC");
+    $winnum = mysql_fetch_row($winres);
+    $num = $winnum[0];
 //$perpage= 25;
-    $perpage=(max(0,$CURUSER["postsperpage"])>0?$CURUSER["postsperpage"]:30);
+    $perpage = (max(0,$CURUSER["postsperpage"]) > 0?$CURUSER["postsperpage"]:30);
     list($pagertop, $pagerbottom, $limit) = pager($perpage, $num, "view_winners.php?&");
 
-$query=mysql_query("SELECT * FROM lottery_winners ORDER BY id DESC $limit");
+$query = mysql_query("SELECT * FROM lottery_winners ORDER BY id DESC $limit");
 
 print $pagertop;
 print("<table width=90% align=center class=lista>");
