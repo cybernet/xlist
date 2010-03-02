@@ -6,7 +6,8 @@
 
 <?php
 
-
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
 
    global $CURUSER;
 
@@ -16,7 +17,7 @@ if (!$CURUSER)
 
    {
 
-       // anonymous=guest
+       // anonymous = guest
 
    print("<td class=header align=center>".WELCOME." ".GUEST."\n");
 
@@ -85,31 +86,33 @@ if ($CURUSER["view_torrents"] == "yes")
 if ($GLOBALS["enable_expected"] == true && $CURUSER["view_torrents"] == "yes")
     {
 	print("<td class=header align=center><a href=viewexpected.php>".EXPECTED."</a></td>\n");
-	}
+    }
+/*
 if ($GLOBALS["enable_bonus"] == true && $CURUSER["view_torrents"] == "yes")
     {	
 	print("<td class=header align=center><a href=seedbonus.php>".SEED_BONUS."</a></td>\n");
-	}
+    }
+
 if ($CURUSER["view_torrents"] == "yes")
 
     {	
 
     print("<td class=header align=center><a href=extra-stats.php>".MNU_STATS."</a></td>\n");
 
-   }
-
+    }
+*/
 if ($CURUSER["can_upload"] == "yes")
 
    print("<td class=header align=center><a href=upload.php>".MNU_UPLOAD."</a></td>\n");
-
+/*
 if ($GLOBALS["enable_games"] == true && $CURUSER["view_torrents"] == "yes")
    {
    print("<td class=header align=center><a href=games.php>Games</a></td>\n");
    }
 if ($GLOBALS["enable_episodes"] == true && $CURUSER["view_torrents"] == "yes")
-	{
+   {
    print("<td class=header align=center><a href=shows.php>".MNU_EPISODES."</a></td>\n");
-	}
+   }
 if ($CURUSER["view_users"] == "yes")
 
    print("<td class=header align=center><a href=users.php>".MNU_MEMBERS."</a></td>\n");
@@ -122,6 +125,7 @@ if ($CURUSER["view_news"] == "yes")
 
    print("<td class=header align=center><a href=donate.php>".MNU_DONATE."</a></td>\n");
     }
+*/
 if ($GLOBALS["enable_helpdesk"] == true && $CURUSER["view_news"] == "yes")
    {
    print("<td class=header align=center><a href=helpdesk.php>Helpdesk</a></td>\n");
