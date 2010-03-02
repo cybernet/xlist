@@ -25,7 +25,7 @@ else
     <td colspan="2" align="center" class="header">&nbsp;<?php echo TORRENT_FILE; ?>&nbsp;</td>
     <td align="center" class="header">&nbsp;<?php echo CATEGORY; ?>&nbsp;</td>
 <?php
-if (max(0,$CURUSER["WT"])>0)
+if (max(0, $CURUSER["WT"]) > 0)
     print("<td align=\"center\" class=\"header\">&nbspWT&nbsp;</td>");
 ?>
     <td align="center" class="header">&nbsp;<?php echo ADDED; ?>&nbsp;</td>
