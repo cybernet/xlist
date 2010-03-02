@@ -1,4 +1,8 @@
 <?php
+
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 require_once("include/config.php");
 require_once("include/functions.php");
 
@@ -22,7 +26,7 @@ $ratioerr = "<font color=\"red\"><b>".NEED_UPLOAD."</b></font>";
 
 $res = mysql_query("SELECT downloaded, uploaded FROM users WHERE id=".$CURUSER['uid']." ") or die(mysql_error());
 $result = mysql_fetch_assoc($res);
-$purch = floor($result["uploaded"]/$minupload);
+$purch = floor($result["uploaded"] / $minupload);
 $total = mysql_num_rows(mysql_query("SELECT * FROM tickets"));
 $me = mysql_num_rows(mysql_query("SELECT * FROM tickets WHERE user=".$CURUSER['uid']." "));
 $pot = $total * $minupload;

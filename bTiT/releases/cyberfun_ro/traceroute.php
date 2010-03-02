@@ -1,4 +1,8 @@
 <?php
+
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 // Traceroute mode from TbDev.Net by cazzole
 // Adapted for BtitTracker Vers 1.4.x by DeathDealer 
 // Powered by http://www.btiteam.org

@@ -1,6 +1,9 @@
 <?php
 
-$BASEPATH=dirname(__FILE__);
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
+$BASEPATH = dirname(__FILE__);
 
 require("$BASEPATH/include/config.php");
 require("$BASEPATH/include/common.php");
@@ -32,9 +35,9 @@ error_reporting(0);
 
 // connect to db
 if ($GLOBALS["persist"])
-    $conres=mysql_pconnect($dbhost, $dbuser, $dbpass) or show_error("Tracker errore - mysql_connect: " . mysql_error());
+    $conres = mysql_pconnect($dbhost, $dbuser, $dbpass) or show_error("Tracker errore - mysql_connect: " . mysql_error());
 else
-    $conres=mysql_connect($dbhost, $dbuser, $dbpass) or show_error("Tracker errore - mysql_connect: " . mysql_error());
+    $conres = mysql_connect($dbhost, $dbuser, $dbpass) or show_error("Tracker errore - mysql_connect: " . mysql_error());
 
     mysql_select_db($database) or show_error("Tracker errore - $database - ".mysql_error());
 
@@ -55,7 +58,7 @@ $usehash = false;
 $pid = AddSlashes($pid);
 
 // if private announce turned on and PID empty string or not send by client
-if (($pid=="" || !$pid) && $PRIVATE_SCRAPE)
+if (($pid == "" || !$pid) && $PRIVATE_SCRAPE)
    show_error("Sorry. Private scrape is ON and PID system is required");
 
 
@@ -76,7 +79,7 @@ if (isset($_GET["info_hash"]))
         else
             continue; // showError(INVALID_INFO_HASH);
 
-         $newmatches[]=$ihash;
+         $newmatches[] = $ihash;
       }
     }
 
@@ -107,7 +110,7 @@ else
     $query = mysql_query("SELECT summary.info_hash, summary.seeds, summary.leechers, summary.finished FROM summary LEFT JOIN namemap ON namemap.info_hash=summary.info_hash  WHERE namemap.external='no' ORDER BY summary.info_hash") or show_error("Database error. Cannot complete request.");
 
 
-$result="d5:filesd";
+$result = "d5:filesd";
 
 while ($row = mysql_fetch_row($query))
 {

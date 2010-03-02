@@ -17,7 +17,7 @@ require_once ("include/config.php");
 
 dbconn();
 standardheader('Helpdesk');
-if (!$CURUSER || $CURUSER["view_torrents"]=="no")
+if (!$CURUSER || $CURUSER["view_torrents"] == "no")
    {
     err_msg(ERROR.NOT_AUTHORIZED." ",SORRY."...");
     stdfoot();
@@ -79,7 +79,7 @@ $hd_reply['3'] = array("Die n00b","Die n00b! Such a thing knows even my grandma!
 
 // POST & GET
 $id = $_GET["id"];
-$hd_answer=$_POST["hd_answer"];
+$hd_answer = $_POST["hd_answer"];
 if ($hd_answer) {
 		$body = $hd_reply[$hd_answer][1];
  }

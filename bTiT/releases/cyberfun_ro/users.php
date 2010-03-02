@@ -1,4 +1,8 @@
 <?php
+
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 /********
 Copyright © 2007 BTITeam.org. All Rights Reserved. 
 PB Edition 1.5 Copyright © 2007 PantheraBits.com. All Rights Reserved. 
@@ -11,7 +15,7 @@ dbconn();
 
 standardheader('Members');
 
-if ($CURUSER["view_users"]=="no")
+if ($CURUSER["view_users"] == "no")
    {
        err_msg(ERROR,NOT_AUTHORIZED." ".MEMBERS."!");
        stdfoot();

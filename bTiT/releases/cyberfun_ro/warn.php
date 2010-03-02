@@ -1,4 +1,8 @@
 <?php
+
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 /********
 Copyright © 2007 BTITeam.org. All Rights Reserved. 
 PB Edition 1.5 Copyright © 2007 PantheraBits.com. All Rights Reserved. 
@@ -9,7 +13,7 @@ require_once ("include/config.php");
 
 
 dbconn();
-if (!$CURUSER || $CURUSER["admin_access"]=="no" || $CURUSER["edit_users"]=="no")
+if (!$CURUSER || $CURUSER["admin_access"] == "no" || $CURUSER["edit_users"] == "no")
    {
 	require_once "include/functions.php";
 	require_once "include/config.php";
@@ -24,7 +28,7 @@ else
    {
 standardheader("User Warning System");
 
-      if (isset($_GET["action"])) $action=$_GET["action"];
+      if (isset($_GET["action"])) $action = $_GET["action"];
          else $action = "";
 
       function warn_expiration($timestamp = 0)
@@ -33,7 +37,7 @@ standardheader("User Warning System");
         }
 
 //warn users script bellow
-	if  ($action=="warn")
+	if  ($action == "warn")
 	   {
 	     if ($HTTP_POST_VARS["reason"] == "" ||$HTTP_POST_VARS["username"] == "" || $HTTP_POST_VARS["warnfor"] == "")
 		{
@@ -50,7 +54,7 @@ standardheader("User Warning System");
 			//7 days warning period start
 			if ($_POST[warnfor] == 7)
 			 {
-			   $weekswarn = $_POST[warnfor]/7;
+			   $weekswarn = $_POST[warnfor] / 7;
 			   $period = "a 1 week";
 			   $expiration  = warn_expiration(mktime(date("H"), date("i"), date("s"), date("m"), date("d")+7, date("Y")));
 			 }
@@ -59,7 +63,7 @@ standardheader("User Warning System");
 			//14 days warning period start
 			elseif ($_POST[warnfor] == 14)
 			 {
-			   $weekswarn = $_POST[warnfor]/7;
+			   $weekswarn = $_POST[warnfor] / 7;
 			   $period = "a 2 weeks";
 			   $expiration = warn_expiration(mktime(date("H"), date("i"), date("s"), date("m"), date("d")+14,  date("Y")));
 			 }
@@ -68,7 +72,7 @@ standardheader("User Warning System");
 			//21 days warning period start
 			elseif ($_POST[warnfor] == 21)
 			 {
-			   $weekswarn = $_POST[warnfor]/7;
+			   $weekswarn = $_POST[warnfor] / 7;
 			   $period = "a 3 weeks";
 			   $expiration  = warn_expiration(mktime(date("H"), date("i"), date("s"), date("m"),  date("d")+21,  date("Y")));
 			 }
@@ -77,7 +81,7 @@ standardheader("User Warning System");
 			//28 days warning period start
 			elseif ($_POST[warnfor] == 28)
 			{
-			   $weekswarn = $_POST[warnfor]/7;
+			   $weekswarn = $_POST[warnfor] / 7;
 			   $period = "a 4 weeks";
 			   $expiration  = warn_expiration(mktime(date("H"), date("i"), date("s"), date("m")+1,  date("d"),  date("Y")));
 			}
@@ -150,7 +154,7 @@ standardheader("User Warning System");
 	   }
 
 //remove warn from users script bellow
-	elseif  ($action=="removewarn")
+	elseif  ($action == "removewarn")
 	   {
 	     $username = $_GET["username"];
 	     $url = $_GET["returnto"];
@@ -178,7 +182,7 @@ standardheader("User Warning System");
 
 
 //remove warn from admincp.php script bellow
-	elseif  ($action=="admincpremovewarn")
+	elseif  ($action == "admincpremovewarn")
 	   {
 	     if (empty($_POST["remwarn"]))
 		{
@@ -208,7 +212,7 @@ standardheader("User Warning System");
 
 		     while ($get_id = mysql_fetch_array($message))
 			{
-			  $uid=$get_id[id];
+			  $uid = $get_id[id];
 			  mysql_query("INSERT INTO messages (sender, receiver, added, msg, subject) VALUES(0,$uid,UNIX_TIMESTAMP(),$msg,$subj)") or sqlerr(__FILE__, __LINE__);
 			}
 
@@ -219,7 +223,7 @@ standardheader("User Warning System");
 
 
 //reset user warn level script bellow
-	elseif  ($action=="resetwarnlevel")
+	elseif  ($action == "resetwarnlevel")
 	   {
 	     //get data for queries
 	     $userid = max(0,$_GET[uid]);
@@ -240,7 +244,7 @@ standardheader("User Warning System");
 	     //send a private message to every user that got his warn removed
 	     $message = mysql_query("SELECT username, id FROM users WHERE id='$userid' ") or sqlerr();
 	     $get_id = mysql_fetch_array($message);
-	     $uid=$get_id[id];
+	     $uid = $get_id[id];
 	     mysql_query("INSERT INTO messages (sender, receiver, added, msg, subject) VALUES(0,$uid,UNIX_TIMESTAMP(),$msg,$subj)") or sqlerr(__FILE__, __LINE__);
 
 	     //redirect back to admincp
@@ -249,7 +253,7 @@ standardheader("User Warning System");
 
 
 //disable account script bellow
-	elseif  ($action=="disable")
+	elseif  ($action == "disable")
 	   {
 	     //get data for queries
 	     $disabled = $_POST[disable];
@@ -293,7 +297,7 @@ standardheader("User Warning System");
 
 
 //delete disabled accounts from admincp.php script bellow
-	elseif  ($action=="admincpremovedisabled")
+	elseif  ($action == "admincpremovedisabled")
 	   {
 
 	     if (empty($_POST["remdisabled"]))
@@ -318,7 +322,7 @@ standardheader("User Warning System");
 
 
 //enable account script bellow
-	elseif  ($action=="enable")
+	elseif  ($action == "enable")
 	   {
 	     //get data for queries
 	     $disabled = $_POST[disable];

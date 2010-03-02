@@ -1,4 +1,8 @@
 <?php
+
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 /********
 Copyright © 2007 BTITeam.org. All Rights Reserved. 
 PB Edition 1.5 Copyright © 2007 PantheraBits.com. All Rights Reserved. 
@@ -11,7 +15,7 @@ require_once ("include/config.php");
 dbconn();
 
 standardheader('Staff');
-if ($CURUSER["view_news"]=="yes")
+if ($CURUSER["view_news"] == "yes")
 {
 
 block_begin("Staff @ $SITENAME");
@@ -32,16 +36,16 @@ global $CURUSER, $STYLEPATH;
 	   <td class=header align=center>Info</td>
        <td class=header align=center>Status</td>
        <?
-       $query="select prefixcolor, suffixcolor, users.id, downloaded,uploaded, username,level,avatar, users.support,UNIX_TIMESTAMP(joined) AS joined,UNIX_TIMESTAMP(lastconnect) AS lastconnect, flag, flagpic, name FROM users INNER JOIN users_level ON users.id_level=users_level.id LEFT JOIN countries ON users.flag=countries.id WHERE users.id_level>7 and users.id_level<11 ORDER BY users.id_level DESC";
+       $query = "select prefixcolor, suffixcolor, users.id, downloaded,uploaded, username,level,avatar, users.support,UNIX_TIMESTAMP(joined) AS joined,UNIX_TIMESTAMP(lastconnect) AS lastconnect, flag, flagpic, name FROM users INNER JOIN users_level ON users.id_level=users_level.id LEFT JOIN countries ON users.flag=countries.id WHERE users.id_level>7 and users.id_level<11 ORDER BY users.id_level DESC";
        //print($query);
-       $rusers=mysql_query($query);
+       $rusers = mysql_query($query);
 
-       if (mysql_num_rows($rusers)==0)
+       if (mysql_num_rows($rusers) == 0)
           // flag hack
           print("<tr><td class=lista colspan=6>No Staff found</td></tr>");
        else
            {
-               while ($row_user=mysql_fetch_array($rusers))
+               while ($row_user = mysql_fetch_array($rusers))
                      {
                      print("<tr>\n");
                    
@@ -61,8 +65,8 @@ else
 
 $last = $row_user['lastconnect'];
 
-$online=time();
-      $online-=60*15;
+$online = time();
+      $online -= 60 * 15;
 if($last > $online)
       {
       print("<td class=lista align=center><img src=./images/p_online.gif border=0></td>");

@@ -327,9 +327,9 @@ in your details page which is in your account.
 Yes. The tracker now updates the stats correctly for all bittorrent clients. However, we still recommend
 that you <b>avoid</b> the following clients:<br>
 <br>
-• BitTorrent++,<br>
-• Nova Torrent,<br>
-• TorrentStorm.<br>
+- BitTorrent++,<br>
+- Nova Torrent,<br>
+- TorrentStorm.<br>
 <br>
 These clients do not report correctly to the tracker when canceling/finishing a torrent session.
 If you use them then a few MB may not be counted towards
@@ -908,8 +908,7 @@ the trick.</li>
 </tr></table>
 <p align=right><font size=1 color=#004E98><b>FAQ edited 2007-03-22 &nbsp;</b></font></p>
 </td></tr></table>
-<?
+<?php
 block_end();
-
 stdfoot();
 ?>

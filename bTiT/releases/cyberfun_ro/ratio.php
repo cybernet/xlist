@@ -9,7 +9,7 @@ require_once ("include/config.php");
 
 
 dbconn();
-if (!$CURUSER || $CURUSER["owner_access"]!="yes")
+if (!$CURUSER || $CURUSER["owner_access"] != "yes")
   {
       err_msg(ERROR,NOT_ADMIN_CP_ACCESS);
       stdfoot();

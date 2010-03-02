@@ -60,7 +60,7 @@ if (!$pid)
    @mysql_query("UPDATE users SET pid='".$pid."' WHERE id='".$CURUSER['uid']."'");
 }
 
-$result=mysql_query("SELECT * FROM namemap WHERE info_hash='".$infohash."'");
+$result = mysql_query("SELECT * FROM namemap WHERE info_hash='".$infohash."'");
 $row = mysql_fetch_assoc($result);
 //SiteURL
 global $TORRENT_URL_NAME;

@@ -112,29 +112,29 @@ if(isset($_COOKIE['lastseen'])){
 if ($_COOKIE['lastseen'] <= $filetime) {
   $is_new = '<img alt="old" src="images/new.png" />';
 }
-else {   $is_new='';
+else {   $is_new = '';
 }
 }
   //Torrent Nuke/Req Hack Start - 22:53 07.08.2006
   if ($results["requested"] == "true") {
     $is_req = '<img title="This release was requested." src="images/req.gif" />';
   }
-  else {   $is_req='';
+  else {   $is_req = '';
   }
 
   if ($results["nuked"] == "true") {
     $is_nuke = '<img title="'.$results[nuke_reason].'" src="images/nuked.gif" />&nbsp;';
   }
-  else {   $is_nuke='';
+  else {   $is_nuke = '';
   }
   //Torrent Nuke/Req Hack Stop
-  if($results['free']=="yes") {
+  if($results['free'] == "yes") {
 		$golden = '<img alt="Golden Torrent" src="images/golden.gif" />';	 
-	} else { $golden=""; }
+	} else { $golden = ""; }
 //End
       echo "<TR>";
       echo "<td align=\"center\" class=\"lista\"><a href=torrents.php?category=$results[catid]>".image_or_link(($results["image"]==""?"":"images/categories/" . $results["image"]),"",$results["cname"])."</td>";
-if ($GLOBALS["enable_cutname"]==true)
+if ($GLOBALS["enable_cutname"] == true)
 {
    global $CUTNAME;
 
@@ -156,7 +156,7 @@ if ($GLOBALS["enable_cutname"]==true)
    elseif ($SHOW_UPLOADER && $results["anonymous"] == "false")
          echo "<td align=\"center\" class=\"lista\">" .$results["uploader"] . "</td>";
 		 
-   if ($results["external"]=="no")
+   if ($results["external"] == "no")
       {
        if ($GLOBALS["usepopup"])
          {

@@ -1,4 +1,7 @@
-<?
+<?php
+
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
 
 //!miskotes TORRENT REQUEST
 

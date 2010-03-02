@@ -1,4 +1,8 @@
 <?php
+
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 /********
 Copyright © 2007 BTITeam.org. All Rights Reserved. 
 PB Edition 1.5 Copyright © 2007 PantheraBits.com. All Rights Reserved. 
@@ -15,10 +19,10 @@ if(!isset($_COOKIE['lastseen'])){
  setcookie('lastseen', $time, time()+60*60*24*30, '/', false, 0);
 }
 
-if (isset($_GET["mark"])) $mark=$_GET["mark"];
- else $mark="";
-if($mark ==old){
- $time =  date("YmdHis");
+if (isset($_GET["mark"])) $mark = $_GET["mark"];
+ else $mark = "";
+if($mark == old){
+ $time = date("YmdHis");
  setcookie('lastseen', $time, time()+60*60*24*30, '/', false, 0);
  header ("Location: /torrents.php");
 }
@@ -35,7 +39,7 @@ print($hr);
 }
 //JavaScript Torrents Browse Hack Stop
 
-if(!$CURUSER || $CURUSER["view_torrents"]!="yes")
+if(!$CURUSER || $CURUSER["view_torrents"] != "yes")
 {
     err_msg(ERROR.NOT_AUTHORIZED." ".MNU_TORRENT."!",SORRY."...");
     stdfoot();
@@ -103,37 +107,37 @@ function poppeer(url)
 
     if(isset($_GET["active"]))
     {
-        $active=intval($_GET["active"]);
+        $active = intval($_GET["active"]);
     } else {
-        $active=1;
+        $active = 1;
     }
     // all
-    if($active==0)
+    if($active == 0)
     {
         $where = " WHERE 1=1";
-        $addparam.="active=0";
+        $addparam .= "active=0";
     } // active only
-    elseif($active==1){
+    elseif($active == 1){
         $where = " WHERE leechers+seeds > 0";
-        $addparam.="active=1";
+        $addparam .= "active=1";
     } // dead only
-    elseif($active==2){
+    elseif($active == 2){
         $where = " WHERE leechers+seeds = 0";
-        $addparam.="active=2";
+        $addparam .= "active=2";
 	} // Free Torrent added 03-08-07 by fatepower
-    elseif($active==3){
+    elseif($active == 3){
         $where = " WHERE free = 1";
         $addparam.="active=3";
     }
      // No EXT
-	elseif($active==4){
+	elseif($active == 4){
 		$where = " WHERE external = 'no'";
-		$addparam.="active=4";
+		$addparam .= "active=4";
 	}
      // EXT
-	elseif($active==5){
+	elseif($active == 5){
 		$where = " WHERE external = 'yes'";
-		$addparam.="active=5";
+		$addparam .= "active=5";
 	}
   ?>
   </td>
@@ -160,9 +164,9 @@ function poppeer(url)
 
 // echo "Totale torrents trovati: $count";
 // selezione categoria
-if ($category[0]>0) {
+if ($category[0] > 0) {
    $where .= " AND category IN (".implode(",",$category).")"; // . $_GET["category"];
-   $addparam.="&amp;category=".implode(";",$category); // . $_GET["category"];
+   $addparam .= "&amp;category=".implode(";",$category); // . $_GET["category"];
 }
 global $pagertop, $pagerbottom, $query_select;
 // Search
@@ -179,7 +183,7 @@ if (isset($_GET["search"])) {
     $where .= " AND " . $query_select;
 }
 
- if($CURUSER['showporn']=='no'){
+ if($CURUSER['showporn'] == 'no'){
 $where .= " AND category != 13 ";
 }
 
@@ -208,21 +212,21 @@ if ($count) {
           $addparam .= ""; //$scriptname . "?";
       }
 
-    $torrentperpage=intval($CURUSER["torrentsperpage"]);
-    if ($torrentperpage==0)
-        $torrentperpage=($ntorrents==0?15:$ntorrents);
+    $torrentperpage = intval($CURUSER["torrentsperpage"]);
+    if ($torrentperpage == 0)
+        $torrentperpage = ($ntorrents==0?15:$ntorrents);
 
     // getting order
     if (isset($_GET["order"]))
-         $order=htmlspecialchars(mysql_escape_string($_GET["order"]));
+         $order = htmlspecialchars(mysql_escape_string($_GET["order"]));
     else
-        $order="data";
+        $order = "data";
 
     if (isset($_GET["by"]))
-        $by=htmlspecialchars(mysql_escape_string($_GET["by"]));
+        $by = htmlspecialchars(mysql_escape_string($_GET["by"]));
     else
-        $by="DESC";
-$stickyorder="namemap.sticky ASC, ";
+        $by = "DESC";
+$stickyorder = "namemap.sticky ASC, ";
 
     list($pagertop, $pagerbottom, $limit) = pager($torrentperpage, $count,  $scriptname."?" . $addparam.(strlen($addparam)>0?"&amp;":"")."order=$order&amp;by=$by&amp;");
 
@@ -239,10 +243,10 @@ else
 
 $i = 0;
 
-if ($by=="ASC")
-    $mark="&nbsp;&#8593";
+if ($by == "ASC")
+    $mark = "&nbsp;&#8593";
 else
-    $mark="&nbsp;&#8595";
+    $mark = "&nbsp;&#8595";
 
 ?>
 </TR>
@@ -310,33 +314,33 @@ else
 if ($count) {
   if (!isset($values[$i % 2])) $writeout = "";
   else $writeout = $values[$i % 2];
-  while ($data=mysql_fetch_array($results))
+  while ($data = mysql_fetch_array($results))
   {
 if(isset($_COOKIE['lastseen'])){
  $filetime =  date("YmdHis",$data["added"]);
 if ($_COOKIE['lastseen'] <= $filetime) {
   $is_new = '<img alt="old" src="images/new.png" />';
 }
-else {   $is_new='';
+else {   $is_new = '';
 }
 }
   //Torrent Nuke/Req Hack Start - 22:53 07.08.2006
   if ($data["requested"] == "true") {
     $is_req = '<img title="This release was requested." src="images/req.gif" />';
   }
-  else {   $is_req='';
+  else {   $is_req = '';
   }
 
   if ($data["nuked"] == "true") {
     $is_nuke = '<img title="'.$data[nuke_reason].'" src="images/nuked.gif" />&nbsp;';
   }
-  else {   $is_nuke='';
+  else {   $is_nuke = '';
   }
   //Torrent Nuke/Req Hack Stop
-  if($data['free']=="yes") {
+  if($data['free'] == "yes") {
 		$golden = '<img alt="Golden Torrent" src="images/golden.gif" />';	 
-	} else { $golden=""; }
-$sticky = ($data[sticky]=="yes" ? "<img src='images/sticky.gif' bored='0' alt='sticky'> <b>Sticky</b><br>" : "");
+	} else { $golden = ""; }
+$sticky = ($data[sticky] == "yes" ? "<img src='images/sticky.gif' bored='0' alt='sticky'> <b>Sticky</b><br>" : "");
    // search for comments
    $commentres = mysql_query("SELECT COUNT(*) as comments FROM comments WHERE info_hash='" . $data["hash"] . "'");
    $commentdata = mysql_fetch_assoc($commentres);
@@ -347,7 +351,7 @@ $sticky = ($data[sticky]=="yes" ? "<img src='images/sticky.gif' bored='0' alt='s
    //    echo "\t<TD align=\"left\" class=\"lista\"><A HREF=\"javascript:popdetails('details.php?id=".$data["hash"]."');\" title=\"".VIEW_DETAILS.": ".$data["filename"]."\">".((strlen($data["filename"]>='20')? substr($data["filename"],0,20)."..":$data["filename"])."</A>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."</td>";
    //else
    //    echo "\t<TD align=\"left\" class=\"lista\"><A HREF=\"details.php?id=".$data["hash"]."\" title=\"".VIEW_DETAILS.": ".$data["filename"]."\">".$data["filename"]."</A>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."</td>";
-if ($GLOBALS["enable_cutname"]==true)
+if ($GLOBALS["enable_cutname"] == true)
 {
    global $CUTNAME;
    if ($GLOBALS["usepopup"])
@@ -355,12 +359,12 @@ if ($GLOBALS["enable_cutname"]==true)
    else
        echo "\t<TD align=\"left\" class=\"lista\" style=\"white-space:nowrap\">".$sticky."<A HREF=\"javascript:klappe('".$data["hash"]."')\" title=\"".VIEW_DETAILS.": ".$data["filename"]."\">".((strlen($data["filename"])>='$CUTNAME')? substr($data["filename"],0,$CUTNAME)."...":$data["filename"])."</A>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."".$golden.""."".$is_nuke."".$is_req."".$is_new."</td>";
 }
-else if ($GLOBALS["enable_cutname"]==false)
+else if ($GLOBALS["enable_cutname"] == false)
 {
    if ($GLOBALS["usepopup"])
-       echo "\t<TD align=\"left\" class=\"lista\" style=\"white-space:nowrap\">".$sticky."<A HREF=\"javascript:klappe('".$data["hash"]."')\" title=\"".VIEW_DETAILS.": ".$data["filename"]."\">".$data["filename"]."</A>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."".$golden.""."".$is_nuke."".$is_req."".$is_new."</td>";
+       echo "\t<TD align=\"left\" class=\"lista\" style=\"white-space:nowrap\">".$sticky."<A HREF=\"javascript:klappe('".$data["hash"]."')\" title=\"".VIEW_DETAILS.": ".$data["filename"]."\">".$data["filename"]."</A>".($data["external"] == "no"?"":" (<span style=\"color:red\">EXT</span>)")."".$golden.""."".$is_nuke."".$is_req."".$is_new."</td>";
    else
-       echo "\t<TD align=\"left\" class=\"lista\" style=\"white-space:nowrap\">".$sticky."<A HREF=\"javascript:klappe('".$data["hash"]."')\" title=\"".VIEW_DETAILS.": ".$data["filename"]."\">".$data["filename"]."</A>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."".$golden.""."".$is_nuke."".$is_req."".$is_new."</td>";
+       echo "\t<TD align=\"left\" class=\"lista\" style=\"white-space:nowrap\">".$sticky."<A HREF=\"javascript:klappe('".$data["hash"]."')\" title=\"".VIEW_DETAILS.": ".$data["filename"]."\">".$data["filename"]."</A>".($data["external"] == "no"?"":" (<span style=\"color:red\">EXT</span>)")."".$golden.""."".$is_nuke."".$is_req."".$is_new."</td>";
 }
    //Torrent Nuke/Req Hack Stop
 //   if ($commentdata) {
@@ -379,10 +383,10 @@ else if ($GLOBALS["enable_cutname"]==false)
    // Rating
    $vres = mysql_query("SELECT sum(rating) as totrate, count(*) as votes FROM ratings WHERE infohash = '" . $data["hash"] . "'");
    $vrow = @mysql_fetch_array($vres);
-   if ($vrow && $vrow["votes"]>=1)
+   if ($vrow && $vrow["votes"] >= 1)
       {
-      $totrate=round($vrow["totrate"]/$vrow["votes"],1);
-      if ($totrate==5)
+      $totrate = round($vrow["totrate"] / $vrow["votes"], 1);
+      if ($totrate == 5)
          $totrate="<img src=$STYLEPATH/5.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
       elseif ($totrate>4.4 && $totrate<5)
          $totrate="<img src=$STYLEPATH/4.5.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
@@ -407,22 +411,22 @@ else if ($GLOBALS["enable_cutname"]==false)
    echo "\t<TD align=\"center\" class=\"lista\">$totrate</td>\n";
     // end rating
 
-    //waitingtime
+    // waitingtime
     // display only if the curuser have some WT restriction
-    if (intval($CURUSER["WT"])>0)
+    if (intval($CURUSER["WT"]) > 0)
         {
-        $wait=0;
-        $resuser=mysql_query("SELECT * FROM users WHERE id=".$CURUSER["uid"]);
-        $rowuser=mysql_fetch_array($resuser);
-        $wait=0;
-        if (intval($rowuser['downloaded'])>0) $ratio=number_format($rowuser['uploaded']/$rowuser['downloaded'],2);
-        else $ratio=0.0;
-//        $res2 =mysql_query("SELECT * FROM namemap WHERE info_hash='".$data["hash"]."'");
-//        $added=mysql_fetch_array($res2);
+        $wait = 0;
+        $resuser = mysql_query("SELECT * FROM users WHERE id=".$CURUSER["uid"]);
+        $rowuser = mysql_fetch_array($resuser);
+        $wait = 0;
+        if (intval($rowuser['downloaded']) > 0) $ratio = number_format($rowuser['uploaded'] / $rowuser['downloaded'], 2);
+        else $ratio = 0.0;
+//        $res2 = mysql_query("SELECT * FROM namemap WHERE info_hash='".$data["hash"]."'");
+//        $added = mysql_fetch_array($res2);
         $vz = $data["added"];
         $timer = floor((time() - $vz) / 3600);
-        if($ratio<1.0 && $rowuser['id']!=$data["uploader"]){
-            $wait=$CURUSER["WT"];
+        if($ratio < 1.0 && $rowuser['id'] != $data["uploader"]) {
+            $wait = $CURUSER["WT"];
         }
         $wait -=$timer;
 
@@ -442,13 +446,13 @@ echo "\t<td align=\"center\" class=\"lista\">" . ANONYMOUS . "</td>\n";
 elseif ($SHOW_UPLOADER && $data["anonymous"] == "false")
 echo "\t<td align=\"center\" class=\"lista\"><a href=userdetails.php?id=" . $data["upname"] . ">".StripSlashes($data['prefixcolor'].$data["uploader"].$data['suffixcolor'])."</a>".Warn_disabled($data['upname'])."</td>\n";
 //Uploaders nick details
-   if ($data["external"]=="no")
+   if ($data["external"] == "no")
       {
        if ($GLOBALS["usepopup"])
          {
          echo "\t<td align=\"center\" class=\"".linkcolor($data["seeds"])."\"><a href=\"javascript:poppeer('peers.php?id=".$data["hash"]."');\" title=\"".PEERS_DETAILS."\">" . $data["seeds"] . "</a></td>\n";
          echo "\t<td align=\"center\" class=\"".linkcolor($data["leechers"])."\"><a href=\"javascript:poppeer('peers.php?id=".$data["hash"]."');\" title=\"".PEERS_DETAILS."\">" .$data["leechers"] . "</a></td>\n";
-         if ($data["finished"]>0)
+         if ($data["finished"] > 0)
             echo "\t<td align=\"center\" class=\"lista\"><a href=\"javascript:poppeer('torrent_history.php?id=".$data["hash"]."');\" title=\"History - ".$data["filename"]."\">" . number_format($data["finished"],0) . "</a></td>";
          else
              echo "\t<td align=\"center\" class=\"lista\">---</td>";
@@ -457,7 +461,7 @@ echo "\t<td align=\"center\" class=\"lista\"><a href=userdetails.php?id=" . $dat
          {
          echo "\t<td align=\"center\" class=\"".linkcolor($data["seeds"])."\"><a href=\"peers.php?id=".$data["hash"]."\" title=\"".PEERS_DETAILS."\">" . $data["seeds"] . "</a></td>\n";
          echo "\t<td align=\"center\" class=\"".linkcolor($data["leechers"])."\"><a href=\"peers.php?id=".$data["hash"]."\" title=\"".PEERS_DETAILS."\">" .$data["leechers"] . "</a></td>\n";
-         if ($data["finished"]>0)
+         if ($data["finished"] > 0)
             echo "\t<td align=\"center\" class=\"lista\"><a href=\"torrent_history.php?id=".$data["hash"]."\" title=\"History - ".$data["filename"]."\">" . number_format($data["finished"],0) . "</a></td>";
          else
              echo "\t<td align=\"center\" class=\"lista\">---</td>";
@@ -468,17 +472,17 @@ echo "\t<td align=\"center\" class=\"lista\"><a href=userdetails.php?id=" . $dat
        // linkcolor
        echo "\t<td align=\"center\" class=\"".linkcolor($data["seeds"])."\">" . $data["seeds"] . "</td>";
        echo "\t<td align=\"center\" class=\"".linkcolor($data["leechers"])."\">" .$data["leechers"] . "</td>";
-       if ($data["finished"]>0)
+       if ($data["finished"] > 0)
           echo "\t<td align=\"center\" class=\"lista\">" . number_format($data["finished"],0) . "</td>";
        else
            echo "\t<td align=\"center\" class=\"lista\">---</td>";
    }
-   if ($data["dwned"]>0)
+   if ($data["dwned"] > 0)
       echo "\t<td align=\"center\" class=\"lista\">" . makesize($data["dwned"]) . "</td>";
    else
        echo "\t<td align=\"center\" class=\"lista\">".NA."</td>";
 
-   if ($data["speed"] < 0 || $data["external"]=="yes") {
+   if ($data["speed"] < 0 || $data["external"] == "yes") {
       $speed = NA;
       echo "\t<TD align=\"center\" class=\"lista\">$speed</TD>\n";
    }
@@ -491,20 +495,20 @@ echo "\t<td align=\"center\" class=\"lista\"><a href=userdetails.php?id=" . $dat
                echo "\t<TD align=\"center\" class=\"lista\">$speed</TD>\n";
    }
   // progress
-  if ($data["external"]=="yes")
-     $prgsf=NA;
+  if ($data["external"] == "yes")
+     $prgsf = NA;
   else {
        $id = $data['hash'];
        $subres = mysql_query("SELECT sum(bytes) as to_go, count(*) as numpeers FROM peers where infohash='$id'" ) or mysql_error();
        $subres2 = mysql_query("SELECT size FROM namemap WHERE info_hash ='$id'") or mysql_error();
        $torrent = mysql_fetch_array($subres2);
        $subrow = mysql_fetch_array($subres);
-       $tmp=0+$subrow["numpeers"];
-       if ($tmp>0) {
-          $tsize=(0+$torrent["size"])*$tmp;
-          $tbyte=0+$subrow["to_go"];
-          $prgs=(($tsize-$tbyte)/$tsize) * 100; //100 * (1-($tbyte/$tsize));
-          $prgsf=floor($prgs);
+       $tmp = 0 + $subrow["numpeers"];
+       if ($tmp > 0) {
+          $tsize = (0+$torrent["size"]) * $tmp;
+          $tbyte = 0+$subrow["to_go"];
+          $prgs = (($tsize - $tbyte) / $tsize) * 100; //100 * (1-($tbyte/$tsize));
+          $prgsf = floor($prgs);
           }
        else
            $prgsf=0;
@@ -545,28 +549,28 @@ echo "\t<td align=\"center\" class=\"lista\"><a href=userdetails.php?id=" . $dat
       print("<td class=\"lista\" align=\"center\">&nbsp;</td>");
 */
 
-//Recommended start
-  if ($CURUSER["mod_access"]=="yes" and $GLOBALS["show_recommended"] == "true")
+// Recommended start
+  if ($CURUSER["mod_access"] == "yes" and $GLOBALS["show_recommended"] == "true")
 {
       print("<td class=lista align=center><a href=recommended.php?action=add&info_hash=".$data["hash"].">".image_or_link("images/Recomend.jpg","","Recommend")."</a></td>");
 }
 //  else
 //      print("<td class=lista align=center>&nbsp;</td>");
-//Recommended Ends
+// Recommended Ends
 
    echo "</TR>\n";
 
-//JavaScript Torrents Browse Hack Start - 11:31 AM 3/18/2007
+// JavaScript Torrents Browse Hack Start - 11:31 AM 3/18/2007
 print("\n\n<tr><td colspan=\"13\" class=lista align=center>\n");
 print("<div id=\"".$data['hash']."\" style=\"display: none;\">\n");
 
-//print begin table
+// print begin table
 print("<table border=0 cellspacing=2 cellpadding=2 width=100%>\n");
 
-//print horizontal rule
+// print horizontal rule
 print_hr("90%", "$STYLEPATH/line_a.gif", "$STYLEPATH/line_b.gif", "$STYLEPATH/line_c.gif");
 
-//print options menu
+// print options menu
 print("<tr><td class=lista align=left><table align=left border=0 cellspacing=0 cellpadding=0 width=70%><tr><td class=lista align=left>\n");
 print("<b>Options: </b></td>\n");
 
@@ -590,12 +594,12 @@ print("<td class=lista align=left title=\"ViewNFO:&nbsp;".$data["filename"]."\">
 //print comments
    if ($commentdata)
      {
-      if ($commentdata["comments"]>0)
+      if ($commentdata["comments"] > 0)
 	{
 	  $res1000 = mysql_query("SELECT text, user FROM comments WHERE info_hash='".$data["hash"]."' ORDER BY added DESC LIMIT 1");
 	  $arr1000 = mysql_fetch_array($res1000);
-	  $user=$arr1000["user"];
-	  $latestcomment=$arr1000["text"];
+	  $user = $arr1000["user"];
+	  $latestcomment = $arr1000["text"];
 	  echo "\t<td class=lista align=left style=\"white-space:nowrap\"><table border=0 cellspacing=0 cellpadding=0 align=left onClick=\"window.open('details.php?id=".$data["hash"]."&amp;hit=1','_self')\" style=\"cursor:pointer; cursor:hand;\"><tr><td style=\"background-image: url(images/torrent_comments.gif); background-repeat: no-repeat; width:17px; height:17px;\" align=center></td><td>&nbsp;".COMMENTS." (<b>".$commentdata["comments"]."</b>)</td></tr></table></A></td>\n";
 	}
       else

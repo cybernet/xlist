@@ -1,4 +1,8 @@
 <?php
+
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 require_once ("include/functions.php");
 require_once ("include/config.php");
 

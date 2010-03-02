@@ -1,10 +1,14 @@
 <?php
+
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 require_once ("include/functions.php");
 require_once ("include/config.php");
 
 dbconn();
 
-if (!$CURUSER || $CURUSER["owner_access"]!="yes")
+if (!$CURUSER || $CURUSER["owner_access"] != "yes")
    {
 	block_begin(ERROR);
 	err_msg("Error", "Get a freakin' life and stop trying to hack the tracker !<br>Piss off !!! Staff only !");
@@ -66,7 +70,7 @@ print("<td class=header align=center>" . PEER_COUNTRY . "</td>");
 print("<td class=header align=center>" . USER_JOINED . "</td>");
 print("\n<td class=\"header\" align=\"center\"><input type=\"checkbox\" name=\"all\" onclick=\"SetAllCheckBoxes('changeall','user[]',this.checked)\" /></td></tr>");
 
-while ($row_user=mysql_fetch_array($rusers))
+while ($row_user = mysql_fetch_array($rusers))
         {
         print("<tr>\n");
 		print("<td class=lista align=center>".$row_user["id"]."</td>");
@@ -79,13 +83,13 @@ while ($row_user=mysql_fetch_array($rusers))
 		print("\n<tr>\n<td class=\"lista\" align=\"right\" colspan=\"5\"><input type=\"submit\" name=\"confirm\" value=\"Validate\" /></td><td class=\"lista\" align=\"right\"><input type=\"submit\" name=\"delete\" value=\"Delete\" /></td></tr></form>");
 		print("</table>\n<br />");
 
-if ($_POST["confirm"]=='Validate')
+if ($_POST["confirm"] == 'Validate')
    {
    foreach($_POST["user"] as $selected=>$user)
    mysql_query("UPDATE users SET id_level=3 WHERE id_level=2 AND id='$user'");
    redirect("unconfirmed.php");
    }
-if ($_POST["delete"]=='Delete')
+if ($_POST["delete"] == 'Delete')
    {
    foreach($_POST["user"] as $selected=>$user)
    mysql_query("DELETE FROM users WHERE id_level=2 AND id='$user'");
