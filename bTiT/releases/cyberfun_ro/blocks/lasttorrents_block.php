@@ -1,6 +1,10 @@
 <?php
+
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 global $CURUSER;
-if (!$CURUSER || $CURUSER["view_torrents"]=="no")
+if (!$CURUSER || $CURUSER["view_torrents"] == "no")
    {
     // do nothing
    }
@@ -34,7 +38,7 @@ if (max(0,$CURUSER["WT"])>0)
 
   if ($row)
   {
-      while ($data=mysql_fetch_array($row))
+      while ($data = mysql_fetch_array($row))
       {
       echo "<tr>\n";
 
@@ -60,7 +64,7 @@ if (max(0,$CURUSER["WT"])>0)
 
        echo "</td>";
 	   
-if ($GLOBALS["enable_cutname"]==true)
+if ($GLOBALS["enable_cutname"] == true)
 {
        global $CUTNAME;
        if ($GLOBALS["usepopup"])
@@ -69,28 +73,28 @@ if ($GLOBALS["enable_cutname"]==true)
           echo "\t<td width=60% class=\"lista\"><a href=\"details.php?id=" . $data['hash'] . "\" title=\"" . VIEW_DETAILS . ": ".$data["filename"]."\">".((strlen($data["filename"])>='$CUTNAME')? substr($data["filename"],0,$CUTNAME)."...":$data["filename"])."</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."</td>";
 }
        elseif ($GLOBALS["usepopup"])
-          echo "\t<td width=60% class=\"lista\"><a href=\"javascript:popdetails('details.php?id=" . $data['hash'] . "');\" title=\"" . VIEW_DETAILS . ": " . $data["filename"] . "\">" . $data["filename"] . "</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."</td>";
+          echo "\t<td width=60% class=\"lista\"><a href=\"javascript:popdetails('details.php?id=" . $data['hash'] . "');\" title=\"" . VIEW_DETAILS . ": " . $data["filename"] . "\">" . $data["filename"] . "</a>".($data["external"] == "no"?"":" (<span style=\"color:red\">EXT</span>)")."</td>";
        else
           echo "\t<td width=60% class=\"lista\"><a href=\"details.php?id=" . $data['hash'] . "\" title=\"" . VIEW_DETAILS . ": " . $data["filename"] . "\">" . $data["filename"] . "</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."</td>";
        echo "\t<td align=\"center\" class=\"lista\"><a href=torrents.php?category=$data[catid]>" . image_or_link( ($data["image"] == "" ? "" : "images/categories/" . $data["image"]), "", $data["cname"]) . "</td>";
 
-    //waitingtime
+    // waitingtime
     // only if current user is limited by WT
-    if (max(0,$CURUSER["WT"])>0)
+    if (max(0, $CURUSER["WT"]) > 0)
         {
-          $wait=0;
-          $resuser=mysql_query("SELECT * FROM users WHERE id=".$CURUSER["uid"]);
-          $rowuser=mysql_fetch_array($resuser);
-          if (max(0,$rowuser['downloaded'])>0) $ratio=number_format($rowuser['uploaded']/$rowuser['downloaded'],2);
-          else $ratio=0.0;
-          $res2 =mysql_query("SELECT * FROM namemap WHERE info_hash='".$data["hash"]."'");
-          $added=mysql_fetch_array($res2);
+          $wait = 0;
+          $resuser = mysql_query("SELECT * FROM users WHERE id=".$CURUSER["uid"]);
+          $rowuser = mysql_fetch_array($resuser);
+          if (max(0, $rowuser['downloaded']) > 0) $ratio = number_format($rowuser['uploaded'] / $rowuser['downloaded'], 2);
+          else $ratio = 0.0;
+          $res2 = mysql_query("SELECT * FROM namemap WHERE info_hash='".$data["hash"]."'");
+          $added= mysql_fetch_array($res2);
           $vz = sql_timestamp_to_unix_timestamp($added["data"]);
           $timer = floor((time() - $vz) / 3600);
-          if($ratio<1.0 && $rowuser['id']!=$added["uploader"]){
-              $wait=$CURUSER["WT"];
+          if($ratio < 1.0 && $rowuser['id'] != $added["uploader"]) {
+              $wait = $CURUSER["WT"];
           }
-          $wait -=$timer;
+          $wait -= $timer;
           if ($wait<=0)$wait=0;
 
           echo "\t<td align=\"center\" class=\"lista\">".$wait." h</td>";
@@ -106,7 +110,7 @@ if ($GLOBALS["enable_cutname"]==true)
                 {
                 echo "\t<td align=\"center\" class=\"".linkcolor($data["seeds"])."\"><a href=\"javascript:poppeer('peers.php?id=".$data["hash"]."');\" title=\"".PEERS_DETAILS."\">" . $data["seeds"] . "</a></td>\n";
                 echo "\t<td align=\"center\" class=\"".linkcolor($data["leechers"])."\"><a href=\"javascript:poppeer('peers.php?id=".$data["hash"]."');\" title=\"".PEERS_DETAILS."\">" .$data["leechers"] . "</a></td>\n";
-                if ($data["finished"]>0)
+                if ($data["finished"] > 0)
                    echo "\t<td align=\"center\" class=\"lista\"><a href=\"javascript:poppeer('torrent_history.php?id=".$data["hash"]."');\" title=\"History - ".$data["filename"]."\">" . $data["finished"] . "</a></td>";
                 else
                     echo "\t<td align=\"center\" class=\"lista\">---</td>";
@@ -116,7 +120,7 @@ if ($GLOBALS["enable_cutname"]==true)
                 {
                 echo "\t<td align=\"center\" class=\"".linkcolor($data["seeds"])."\"><a href=\"peers.php?id=".$data["hash"]."\" title=\"".PEERS_DETAILS."\">" . $data["seeds"] . "</a></td>\n";
                 echo "\t<td align=\"center\" class=\"".linkcolor($data["leechers"])."\"><a href=\"peers.php?id=".$data["hash"]."\" title=\"".PEERS_DETAILS."\">" .$data["leechers"] . "</a></td>\n";
-                if ($data["finished"]>0)
+                if ($data["finished"] > 0)
                    echo "\t<td align=\"center\" class=\"lista\"><a href=\"torrent_history.php?id=".$data["hash"]."\" title=\"History - ".$data["filename"]."\">" . $data["finished"] . "</a></td>";
                 else
                     echo "\t<td align=\"center\" class=\"lista\">---</td>";
@@ -128,7 +132,7 @@ if ($GLOBALS["enable_cutname"]==true)
                // linkcolor
                echo "\t<td align=\"center\" class=\"".linkcolor($data["seeds"])."\">" . $data["seeds"] . "</td>";
                echo "\t<td align=\"center\" class=\"".linkcolor($data["leechers"])."\">" .$data["leechers"] . "</td>";
-               if ($data["finished"]>0)
+               if ($data["finished"] > 0)
                   echo "\t<td align=\"center\" class=\"lista\">" . $data["finished"] . "</td>";
                else
                    echo "\t<td align=\"center\" class=\"lista\">---</td>";

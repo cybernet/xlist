@@ -1,4 +1,8 @@
-<?
+<?php
+
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 require_once ("include/functions.php");
 require_once ("include/config.php");
 
@@ -6,7 +10,7 @@ dbconn();
 
 
 global $CURUSER;
-if (!$CURUSER || $CURUSER["view_torrents"]=="no")
+if (!$CURUSER || $CURUSER["view_torrents"] == "no")
    {
     // do nothing
    }
@@ -32,7 +36,7 @@ print("\n<table class=\"lista\" align=\"center\" width=\"100%\">");
 <p><input type="submit" value=" Send Invitation ">
 </form>
 
-<?
+<?php
 end_table();
 block_end();
 }

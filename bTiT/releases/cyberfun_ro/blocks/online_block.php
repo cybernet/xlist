@@ -1,6 +1,10 @@
 <?php
+
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 global $CURUSER;
-if (!$CURUSER || $CURUSER["view_users"]=="no")
+if (!$CURUSER || $CURUSER["view_users"] == "no")
    {
     // do nothing
    }

@@ -1,30 +1,33 @@
 <?php
 
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 require_once ("include/functions.php");
 require_once ("include/config.php");
 
 dbconn();
 
-     $res =mysql_query("SELECT * FROM polls WHERE status='true'") or die(mysql_error());
-     $result=mysql_fetch_array($res);
-	 $pid=$result["pid"];
-if($result){
-     $res2=mysql_query("SELECT * FROM poll_voters WHERE pid='$pid'") or die(mysql_error());
-     $question=$result["poll_question"];
+     $res = mysql_query("SELECT * FROM polls WHERE status='true'") or die(mysql_error());
+     $result = mysql_fetch_array($res);
+	 $pid = $result["pid"];
+if($result) {
+     $res2 = mysql_query("SELECT * FROM poll_voters WHERE pid='$pid'") or die(mysql_error());
+     $question = $result["poll_question"];
      block_begin("Poll: $question");
      print("<tr><td class=blocklist align=center>\n");
      print("<table cellspacing=2 cellpading=2>\n");
 if(!isset ($CURUSER)) global $CURUSER;
 $total_votes = 0;
-$check=0;
-if($CURUSER["id_level"]<3 || (isset($_POST['showres']) && $_POST['showres'] == 'Show Results')) $check=1;
-else $check=0;
-while($voters=mysql_fetch_array($res2)){
-if($CURUSER["uid"]==$voters["memberid"]) $check=1;
+$check = 0;
+if($CURUSER["id_level"] < 3 || (isset($_POST['showres']) && $_POST['showres'] == 'Show Results')) $check = 1;
+else $check = 0;
+while($voters = mysql_fetch_array($res2)){
+if($CURUSER["uid"] == $voters["memberid"]) $check = 1;
 }
 
 
-        if($check==1){	
+        if($check == 1){	
         	
         	$poll_answers = unserialize(stripslashes($result["choices"]));
         	
@@ -45,7 +48,7 @@ if($CURUSER["uid"]==$voters["memberid"]) $check=1;
                		
         		$percent = $votes == 0 ? 0 : $votes / $result["votes"] * 100;
         		$percent = sprintf( '%.2f' , $percent );
-        		$width   = $percent > 0 ? floor( round( $percent )*0.7) : 0;
+        		$width   = $percent > 0 ? floor( round( $percent ) * 0.7) : 0;
 			$percent = floor($percent);
         		
 			print ("<tr><td width=50% class=lista>$choice</td><td class=lista> (<b>$votes</b>) </td><td class=lista><img src=images/bar.gif width=$width height=11 align=left /></td><td align=left class=lista>&nbsp;($percent%)</td></tr>");
@@ -54,7 +57,7 @@ if($CURUSER["uid"]==$voters["memberid"]) $check=1;
 
 
 
-	elseif($check==0){
+	elseif($check == 0){
 // Show poll form
 
 
@@ -90,10 +93,10 @@ if($CURUSER["uid"]==$voters["memberid"]) $check=1;
 <?php
 }	        	
 if(isset($_POST['submit']) && $_POST['submit'] == 'Submit' && isset($_POST['poll_vote']) && $check!=1){
-	$voteid=$_POST['poll_vote'];
-	$memberid=$CURUSER["uid"];
-	$ip= $_SERVER['REMOTE_ADDR'];
-	$new_poll_array=array();
+	$voteid = $_POST['poll_vote'];
+	$memberid = $CURUSER["uid"];
+	$ip = $_SERVER['REMOTE_ADDR'];
+	$new_poll_array = array();
 	mysql_query("INSERT INTO poll_voters SET ip='$ip', votedate='".time()."', pid='$pid', memberid='$memberid'");
 	$poll_answers = unserialize(stripslashes($result["choices"]));
 	reset($poll_answers);

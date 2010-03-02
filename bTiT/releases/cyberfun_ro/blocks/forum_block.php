@@ -1,6 +1,10 @@
 <?php
+
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 global $CURUSER;
-if (!$CURUSER || $CURUSER["view_forum"]=="no")
+if (!$CURUSER || $CURUSER["view_forum"] == "no")
    {
     // do nothing
    }
@@ -20,8 +24,8 @@ else
       {
         $row = mysql_fetch_array($res1);
         $posts = $row['post_total'];
-        if ($posts>0)
-           $posts_avg = number_format(($topics/$posts) * 100, 0);
+        if ($posts > 0)
+           $posts_avg = number_format(($topics / $posts) * 100, 0);
         else
             $posts_avg = 0;
       }
@@ -45,9 +49,9 @@ else
   if ( $topics > 0 )
   {
        if (isset($GLOBALS["block_forumlimit"]))
-           $limit="LIMIT " . $GLOBALS["block_forumlimit"];
+           $limit = "LIMIT " . $GLOBALS["block_forumlimit"];
        else
-           $limit="LIMIT 5";
+           $limit = "LIMIT 5";
 
       //$tres = mysql_query("SELECT id, subject FROM topics ORDER BY lastpost DESC $limit") or die(mysql_error());
        $tres = mysql_query("SELECT topics.id, topics.subject,topics.lastpost FROM topics inner join forums on forums.id=topics.forumid WHERE forums.minclassread<=".$CURUSER["id_level"]." ORDER BY lastpost DESC $limit") or die(mysql_error());
@@ -64,8 +68,8 @@ else
         $last_poster = $lprow['username'];
         $last_post_time = get_date_time($lprow['added']);
 
-        $pcolor=unesc($lprow["prefixcolor"]);
-        $scolor=unesc($lprow["suffixcolor"]);
+        $pcolor = unesc($lprow["prefixcolor"]);
+        $scolor = unesc($lprow["suffixcolor"]);
 
      }
 

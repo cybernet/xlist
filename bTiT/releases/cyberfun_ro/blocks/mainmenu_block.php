@@ -24,7 +24,7 @@ if (!$CURUSER)
 
    }
 
-elseif ($CURUSER["uid"]==1)
+elseif ($CURUSER["uid"] == 1)
 
        // anonymous=guest
 
@@ -66,7 +66,7 @@ $donor = "&nbsp;<img src=\"images/star.gif\" style=\"border-style: none\">";
 
 print("<td class=header align=center><a href=./>".MNU_INDEX."</a></td>\n");
 
-if ($GLOBALS["dox"]==true && $CURUSER["uid"]>1) 
+if ($GLOBALS["dox"] == true && $CURUSER["uid"] > 1) 
 
 	{
 
@@ -74,7 +74,7 @@ if ($GLOBALS["dox"]==true && $CURUSER["uid"]>1)
 
    }
 
-if ($CURUSER["view_torrents"]=="yes")
+if ($CURUSER["view_torrents"] == "yes")
 
     {
 
@@ -82,15 +82,15 @@ if ($CURUSER["view_torrents"]=="yes")
 
 	print("<td class=header align=center><a href=viewrequests.php>".REQUESTS."</a></td>\n");
     }
-if ($GLOBALS["enable_expected"] == true && $CURUSER["view_torrents"]=="yes")
+if ($GLOBALS["enable_expected"] == true && $CURUSER["view_torrents"] == "yes")
     {
 	print("<td class=header align=center><a href=viewexpected.php>".EXPECTED."</a></td>\n");
 	}
-if ($GLOBALS["enable_bonus"] == true && $CURUSER["view_torrents"]=="yes")
+if ($GLOBALS["enable_bonus"] == true && $CURUSER["view_torrents"] == "yes")
     {	
 	print("<td class=header align=center><a href=seedbonus.php>".SEED_BONUS."</a></td>\n");
 	}
-if ($CURUSER["view_torrents"]=="yes")
+if ($CURUSER["view_torrents"] == "yes")
 
     {	
 
@@ -98,23 +98,23 @@ if ($CURUSER["view_torrents"]=="yes")
 
    }
 
-if ($CURUSER["can_upload"]=="yes")
+if ($CURUSER["can_upload"] == "yes")
 
    print("<td class=header align=center><a href=upload.php>".MNU_UPLOAD."</a></td>\n");
 
-if ($GLOBALS["enable_games"]==true && $CURUSER["view_torrents"]=="yes")
+if ($GLOBALS["enable_games"] == true && $CURUSER["view_torrents"] == "yes")
    {
    print("<td class=header align=center><a href=games.php>Games</a></td>\n");
    }
-if ($GLOBALS["enable_episodes"] == true && $CURUSER["view_torrents"]=="yes")
+if ($GLOBALS["enable_episodes"] == true && $CURUSER["view_torrents"] == "yes")
 	{
    print("<td class=header align=center><a href=shows.php>".MNU_EPISODES."</a></td>\n");
 	}
-if ($CURUSER["view_users"]=="yes")
+if ($CURUSER["view_users"] == "yes")
 
    print("<td class=header align=center><a href=users.php>".MNU_MEMBERS."</a></td>\n");
 
-if ($CURUSER["view_news"]=="yes")
+if ($CURUSER["view_news"] == "yes")
 
     {
 
@@ -122,22 +122,22 @@ if ($CURUSER["view_news"]=="yes")
 
    print("<td class=header align=center><a href=donate.php>".MNU_DONATE."</a></td>\n");
     }
-if ($GLOBALS["enable_helpdesk"]==true && $CURUSER["view_news"]=="yes")
+if ($GLOBALS["enable_helpdesk"] == true && $CURUSER["view_news"] == "yes")
    {
    print("<td class=header align=center><a href=helpdesk.php>Helpdesk</a></td>\n");
    }
-if ($CURUSER["view_news"]=="yes")
+if ($CURUSER["view_news"] == "yes")
 
    {
    print("<td class=header align=center><a href=staff.php>Staff</a></td>\n");
 
    }
 
-if ($CURUSER["view_forum"]=="yes")
+if ($CURUSER["view_forum"] == "yes")
 
    {
 
-   if ($GLOBALS["FORUMLINK"]=="" || $GLOBALS["FORUMLINK"]=="internal")
+   if ($GLOBALS["FORUMLINK"] == "" || $GLOBALS["FORUMLINK"] == "internal")
 
       print("<td class=header align=center><a href=forum.php>".MNU_FORUM."</a></td>\n");
 

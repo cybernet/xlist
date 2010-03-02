@@ -1,5 +1,8 @@
 <?php
 
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 block_begin("Trackerload");
 
 if (!function_exists("getmicrotime"))
@@ -10,13 +13,13 @@ if (!function_exists("getmicrotime"))
        }
 }
 
-$percent = min(100, round(@exec('ps ax | grep -c apache') / 256 * 10 ),4);
+$percent = min(100, round(@exec('ps ax | grep -c apache') / 256 * 10 ), 4);
 
 // try other method
 if ($percent == 0)
     {
     $time_start = getmicrotime();
-    $time = round(getmicrotime() - $time_start,4);
+    $time = round(getmicrotime() - $time_start, 4);
     $percent = $time * 60;
     }
 
@@ -34,11 +37,11 @@ echo "<center>" . trim(@exec('uptime')) . "</center><br>";
 if (isset($load))
 print("<tr><td class=blocklist>10min load average (%)</td><td align=right>$load</td></tr>\n");
 print("<br>");
-$percent = min(100, round(@exec('ps ax | grep -c apache') / 256 * 50),4);
+$percent = min(100, round(@exec('ps ax | grep -c apache') / 256 * 50), 4);
 // try other method
 if ($percent == 0)
     {
-    $time = round(getmicrotime() - $time_start,4);
+    $time = round(getmicrotime() - $time_start, 4);
     $percent = $time * 60;
     }
 
