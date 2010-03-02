@@ -13,7 +13,7 @@ dbconn();
 
 //Fix Code added 06-07-2007
 global $CURUSER;
-if (!$CURUSER || $CURUSER["view_torrents"]=="no")
+if (!$CURUSER || $CURUSER["view_torrents"] == "no")
 {
 standardheader("Access Denied");
 block_begin("Access Denied");
@@ -420,13 +420,13 @@ print("<tr><td align=\"right\" class=\"header\"> ".ADDED.":</td><td class=\"list
 
 if ($row["anonymous"]=="true")
 {
-   if ($CURUSER["edit_torrents"]=="yes")
-       $uploader="<a href=userdetails.php?id=".$row['uploader'].">".TORRENT_ANONYMOUS."</a>";
+   if ($CURUSER["edit_torrents"] == "yes")
+       $uploader = "<a href=userdetails.php?id=".$row['uploader'].">".TORRENT_ANONYMOUS."</a>";
    else
-      $uploader=TORRENT_ANONYMOUS;
+      $uploader = TORRENT_ANONYMOUS;
    }
 else
-    $uploader="<a href=userdetails.php?id=".$row['uploader'].">".$row["username"]."</a>";
+    $uploader = "<a href=userdetails.php?id=".$row['uploader'].">".$row["username"]."</a>";
 
 print("<tr><td align=\"right\" class=\"header\"> ".UPLOADER.":</td><td class=\"lista\" >$uploader" . Warn_disabled($row['uploader']) . "</td></tr>\n");
 
@@ -434,7 +434,7 @@ if ($row["speed"] < 0) {
   $speed = "N/D";
 }
 else if ($row["speed"] > 2097152) {
-  $speed = round($row["speed"]/1048576,2) . " MB/sec";
+  $speed = round($row["speed"] / 1048576, 2) . " MB/sec";
 }
 else {
   $speed = round($row["speed"] / 1024, 2) . " KB/sec";
@@ -442,14 +442,14 @@ else {
 
 print("<tr><td align=\"right\" class=\"header\"> ".SPEED.":</td><td class=\"lista\" align=\"center\">" . $speed . "</td></tr>\n");
 //Reqseed Start
-if ($row["seeds"] == 0 && $row["external"]=="no")
+if ($row["seeds"] == 0 && $row["external"] == "no")
 {
 	print("<tr><td align=right class=\"header\">Request Reseed:</td><td class=\"lista\"  align=\"left\" ><a href=reseed.php?id=" . $row["info_hash"]. ">".image_or_link("images/reseedbutton.png","","Req Seed")."</a></td></tr>\n");
 }
 //print("<tr><td align=right class=\"header\">Req Seed:</td><td class=\"lista\" ><a href=reseed.php?id=" . $row["info_hash"]. ">".image_or_link("images/seed.png","","Req Seed")."</a></td></tr>\n");
 //Reqseed Ends
 //Update 06-12-07
-if ($row["external"]=="no") {
+if ($row["external"] == "no") {
 // snatchers start
 print("<tr><td align=right class=\"header\"> ".SNATCHERS.":</td><td class=\"lista\">");
   $sres = mysql_query("SELECT * FROM history WHERE infohash = '$id'");
@@ -473,13 +473,13 @@ else {
 print("<tr><td align=\"right\" class=\"header\"> ".DOWNLOADED.":</td><td class=\"lista\" align=\"center\">" . $row["finished"] . " " . X_TIMES. "</td></tr>\n");
 print("<tr><td align=\"right\" class=\"header\"> ".PEERS.":</td><td class=\"lista\" align=\"center\"> ".SEEDERS.": " . $row["seeds"] . ", ".LEECHERS.": " . $row["leechers"] ." = " . ($row["leechers"]+$row["seeds"]) . " ".PEERS."</td></tr>\n");
 }
-if ($row["leechers"]+$row["seeds"] == 0) {
+if ($row["leechers"] + $row["seeds"] == 0) {
 print("<tr><td align=right class=\"header\"> Statistic: </td><td class=\"lista\" >Not available!</td></tr>");
 }
 else {
 print("<tr><td align=right class=\"header\"> Statistic: </td><td class=\"lista\" ><img src=stat.php?id=".$row["info_hash"]."></td></tr>");
 }
-if ($row["external"]=="yes")
+if ($row["external"] == "yes")
    {
        print("<tr><td valign=\"middle\" align=\"right\" class=\"header\"><a href=details.php?act=update&id=".$row["info_hash"]."&surl=".urlencode($row["announce_url"]).">".UPDATE."</a></td><td class=\"lista\" align=\"center\"><b>EXTERNAL</b><br />".$row["announce_url"]."</td></tr>\n");
        print("<tr><td valign=\"middle\" align=\"right\" class=\"header\">".LAST_UPDATE."</td><td class=\"lista\" align=\"center\">".get_date_time($row["lastupdate"])."</td></tr>\n");
@@ -501,8 +501,8 @@ if ($srow["userid"]==0 && $uploaderrow["uploader"]!=$user)
 $sres = mysql_query("SELECT * FROM thanks WHERE infohash = '$id'");
 while ($srow = mysql_fetch_array($sres))
 {
-$res =mysql_query("SELECT prefixcolor, suffixcolor, users.id, username, level FROM users INNER JOIN users_level ON users.id_level=users_level.id WHERE users.id='".$srow["userid"]."'") or die(mysql_error());
-$result=mysql_fetch_array($res);
+$res = mysql_query("SELECT prefixcolor, suffixcolor, users.id, username, level FROM users INNER JOIN users_level ON users.id_level=users_level.id WHERE users.id='".$srow["userid"]."'") or die(mysql_error());
+$result = mysql_fetch_array($res);
 print("<a href=userdetails.php?id=$result[id]>".unesc($result["prefixcolor"]).unesc($result["username"]).unesc($result["suffixcolor"])."</a>, ");
 }
 print("</td></tr>\n");
@@ -511,8 +511,8 @@ print("</table>\n");
 print("<a name=\"comments\" /></a>");
 // comments...
 $subres = mysql_query("SELECT avatar, comments.id, text, UNIX_TIMESTAMP(added) as data, user, users.id as uid, editedby, editedat, users.custom_title, users.id_level, UNIX_TIMESTAMP(lastconnect) AS lastconnect FROM comments LEFT JOIN users ON comments.user=users.username WHERE info_hash = '" . $id . "' ORDER BY added ASC");
-if (!$subres || mysql_num_rows($subres)==0) {
-   if($CURUSER["uid"]>1)
+if (!$subres || mysql_num_rows($subres) == 0) {
+   if($CURUSER["uid"] > 1)
        $s = "<br /><br />\n<table width=\"95%\" class=\"lista\">\n<tr>\n<td align=\"center\">\n<a href=comment.php?id=" . $id . "&usern=".urlencode($CURUSER["username"]).">".NEW_COMMENT."</a>\n</td>\n</tr>\n";
    else
        $s = "<br /><br />\n<table width=\"95%\" class=\"lista\">\n";
@@ -521,7 +521,7 @@ if (!$subres || mysql_num_rows($subres)==0) {
 }
 else {
      print("<br /><br />");
-     if($CURUSER["uid"]>1)
+     if($CURUSER["uid"] > 1)
        $s = "<br /><br />\n<table width=\"95%\" class=\"lista\"><tr><td colspan=\"3\" align=\"center\"><a href=comment.php?id=" . $id . "&usern=".urlencode($CURUSER["username"]).">".NEW_COMMENT."</a></td></tr>\n";
      else
          $s = "<br /><br />\n<table width=95% class=lista>\n";
@@ -554,22 +554,22 @@ print($s);
 include("include/offset.php");
        $s .= "<tr><td class=\"header\"><a href=userdetails.php?id=".$subrow["uid"].">" . $subrow["user"] . "</a>" . Warn_disabled($subrow['uid']) . " (".$title.")</td><td class=\"header\">" . date("d/m/Y H.i.s",$subrow["data"]-$offset) . "</td>\n";
  // Edit and delete comments... 
-        if ($CURUSER["mod_access"]=="yes" || $CURUSER["edit_forum"]=="yes" || $CURUSER["delete_torrents"]=="yes") {
+        if ($CURUSER["mod_access"] == "yes" || $CURUSER["edit_forum"] == "yes" || $CURUSER["delete_torrents"] == "yes") {
 	   	$s .= "<td class=\"header\" align=\"right\"><a onclick=\"return confirm\" href=\"edit_comment.php?do=comments&action=quote&id=".$subrow["id"]."\">".image_or_link($STYLEPATH."/f_quote.png","","[".QUOTE."]")."</a>&nbsp;<a href=\"edit_comment.php?do=comments&action=edit&id=".$subrow["id"]."\">".image_or_link($STYLEPATH."/f_edit.png","","[".EDIT."]")."</a>&nbsp;<a onclick=\"return confirm('". str_replace("'","\'",DELETE_CONFIRM)."')\" href=\"comment.php?id=$id&cid=" . $subrow["id"] . "&action=delete\">".image_or_link($STYLEPATH."/f_delete.png","","[".DELETE."]")."</a></td>\n";
         } 
 		elseif ($subrow["user"] == $CURUSER["username"]) {
 		$s .= "<td class=\"header\" align=\"right\"><a onclick=\"return confirm\" href=\"edit_comment.php?do=comments&action=quote&id=".$subrow["id"]."\">".image_or_link($STYLEPATH."/f_quote.png","","[".QUOTE."]")."</a>&nbsp;<a href=\"edit_comment.php?do=comments&action=edit&id=".$subrow["id"]."\">".image_or_link($STYLEPATH."/f_edit.png","","[".EDIT."]")."</a></td>\n";		
 		}
-		elseif ($CURUSER["view_torrents"]=="yes") {
+		elseif ($CURUSER["view_torrents"] == "yes") {
 		$s .= "<td class=\"header\" align=\"right\"><a onclick=\"return confirm\" href=\"edit_comment.php?do=comments&action=quote&id=".$subrow["id"]."\">".image_or_link($STYLEPATH."/f_quote.png","","[".QUOTE."]")."</a></td>\n";
 		}
-       $s .="</tr>\n";
+       $s .= "</tr>\n";
        $s .= "<tr><td class=lista width=15% align=center><img width=150 border=0 src=".($subrow["avatar"])."></td><td valign=\"top\" colspan=\"3\" class=\"lista\">" . format_comment($subrow["text"]) . "</td></tr>\n";
 // insert Last Edited
 // Online User		   
 $last = $subrow['lastconnect'];
-$online=time();
-      $online-=60*15;
+$online = time();
+      $online -= 60 * 15;
 if($last > $online)
 {
       $online = "User is online <img src=images/online.gif border=0>";
