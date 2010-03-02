@@ -1,5 +1,8 @@
-
 <?php
+
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 /********
 Copyright © 2007 BTITeam.org. All Rights Reserved. 
 PB Edition 1.5 Copyright © 2007 PantheraBits.com. All Rights Reserved. 
@@ -10,7 +13,7 @@ require_once ("include/config.php");
 dbconn();
 
 
-if (!$CURUSER || $CURUSER["edit_users"]!="yes")
+if (!$CURUSER || $CURUSER["edit_users"] != "yes")
    {
  require_once "include/functions.php";
  require_once "include/config.php";
@@ -32,13 +35,13 @@ standardheader("Change Custom Title");
           if (isset($_POST["title"])) $custom=mysql_escape_string($_POST["title"]);
              else $custom = "";
            if (isset($_GET["returnto"]))
-              $url=$_GET["returnto"];
+              $url = $_GET["returnto"];
 
-           $userid = max(0,$_GET["uid"]);
+           $userid = max(0, $_GET["uid"]);
            $user = mysql_escape_string($_POST["username"]);
 
 
-    if ("$custom"=="")
+    if ("$custom" == "")
         {
            mysql_query("UPDATE users SET custom_title=NULL WHERE id='".$userid."' AND username='".$user."'") or sqlerr(__FILE__, __LINE__);
         }

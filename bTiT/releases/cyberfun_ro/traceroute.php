@@ -15,7 +15,7 @@ dbconn();
 
 standardheader('Traceroute');
 block_begin(Traceroute);
-if ($CURUSER["mod_access"]=="no")
+if ($CURUSER["mod_access"] == "no")
    {
        err_msg(ERROR,NOT_AUTH_VIEW_NEWS);
        stdfoot();

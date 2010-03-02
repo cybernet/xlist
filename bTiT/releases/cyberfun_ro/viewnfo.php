@@ -1,4 +1,8 @@
-<?
+<?php
+
+// CyBerFuN.Ro source by cybernet2u
+// http://cyberfun.ro/
+
 /********
 Copyright © 2007 BTITeam.org. All Rights Reserved. 
 PB Edition 1.5 Copyright © 2007 PantheraBits.com. All Rights Reserved. 
@@ -85,8 +89,8 @@ block_begin(TORRENT_DETAIL);
 $id = $_GET["info_hash"];
 $getItems = "SELECT nfo, filename FROM namemap WHERE info_hash = '$id'";
 
-$doGet=mysql_query($getItems) or die(mysql_error());
-$item=mysql_fetch_array($doGet);
+$doGet = mysql_query($getItems) or die(mysql_error());
+$item = mysql_fetch_array($doGet);
   
 $nfo = code($item["nfo"]);
 //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
