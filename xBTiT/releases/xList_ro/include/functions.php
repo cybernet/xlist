@@ -280,15 +280,15 @@ pageTracker._trackPageview();
 } catch(err) {}</script>
 <!-- Piwik -->
 <script type=\"text/javascript\">
-var pkBaseURL = ((\"https:\" == document.location.protocol) ? \"https://stats.xlist.ro/\" : \"http://stats.xlist.ro/\");
+var pkBaseURL = ((\"https:\" == document.location.protocol) ? \"https://stats.xdns.ro/\" : \"http://stats.xdns.ro/\");
 document.write(unescape(\"%3Cscript src='\" + pkBaseURL + \"piwik.js' type='text/javascript'%3E%3C/script%3E\"));
 </script><script type=\"text/javascript\">
 try {
-var piwikTracker = Piwik.getTracker(pkBaseURL + \"piwik.php\", 1);
+var piwikTracker = Piwik.getTracker(pkBaseURL + \"piwik.php\", 2);
 piwikTracker.trackPageView();
 piwikTracker.enableLinkTracking();
 } catch( err ) {}
-</script><noscript><p><img src=\"http://stats.xlist.ro/piwik.php?idsite=1\" style=\"border:0\" alt=\"\"/></p></noscript>
+</script><noscript><p><img src=\"http://stats.xdns.ro/piwik.php?idsite=2\" style=\"border:0\" alt=\"\"/></p></noscript>
 <!-- End Piwik Tag -->";
      $design_copyright = '[&nbsp;&nbsp;<u>CyBerFuN xBTiT ' . $CyBerFuN_xBTiT_version . ' By cybernet</u>: <a href="http://xList.ro/" target="_blank">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By <a href="http://www.btiteam.org/" target="_blank">BTiTeam.org</a></u>&nbsp;]<br />';
   return $design_copyright;
