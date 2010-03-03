@@ -1,4 +1,4 @@
-<?
+<?php
 // CyBerFuN.ro & xList.ro
 
 error_reporting(E_ALL ^ E_NOTICE);

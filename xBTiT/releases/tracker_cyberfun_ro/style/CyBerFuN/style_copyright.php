@@ -11,7 +11,7 @@ pageTracker._trackPageview();
 } catch(err) {}</script>
 <!-- Piwik -->
 <script type=\"text/javascript\">
-var pkBaseURL = ((\"https:\" == document.location.protocol) ? \"https://stats.xlist.ro/\" : \"http://stats.xlist.ro/\");
+var pkBaseURL = ((\"https:\" == document.location.protocol) ? \"https://stats.xdns.ro/\" : \"http://stats.xdns.ro/\");
 document.write(unescape(\"%3Cscript src='\" + pkBaseURL + \"piwik.js' type='text/javascript'%3E%3C/script%3E\"));
 </script><script type=\"text/javascript\">
 try {
@@ -19,6 +19,6 @@ var piwikTracker = Piwik.getTracker(pkBaseURL + \"piwik.php\", 3);
 piwikTracker.trackPageView();
 piwikTracker.enableLinkTracking();
 } catch( err ) {}
-</script><noscript><p><img src=\"http://stats.xlist.ro/piwik.php?idsite=3\" style=\"border:0\" alt=\"\"/></p></noscript>
+</script><noscript><p><img src=\"http://stats.xdns.ro/piwik.php?idsite=3\" style=\"border:0\" alt=\"\"/></p></noscript>
 <!-- End Piwik Tag -->";
 ?>
