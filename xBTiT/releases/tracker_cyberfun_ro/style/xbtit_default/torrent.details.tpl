@@ -166,11 +166,12 @@ window.open('http://digg.com/submit?url='+encodeURIComponent(ShareURL)+'&title=[
           <td align="right" class="header" valign="top"><tag:language.DESCRIPTION /></td>
           <td class="lista" align="center"><tag:torrent.description /></td>
         </tr>
-<tr>
+         <tr>
+<if:SCREENIS1>
       <td align="right" class="header" valign="top"><tag:language.SCREEN /></td>
       <td class="lista">
       <table class="lista" border="0" cellspacing="0" cellpadding="0">
-        <if:SCREENIS1>
+        
           <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen1 />" title="view image" rel="lightbox"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen1 />"></a></td>
         </if:SCREENIS1>
         <if:SCREENIS2>
