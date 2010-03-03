@@ -91,10 +91,10 @@ if (!empty($row["image"]))
 {
 $image1 = "".$row["image"]."";
 $uploaddir = $GLOBALS["uploaddir"];
-$image_new = "cyberfun_img/$image1"; //url of picture
+$image_new = "$uploaddir/$image1"; //url of picture
 //$image_new = str_replace(' ','%20',$image_new); //take url and replace spaces
 $max_width = "490"; //maximum width allowed for pictures
-$resize_width= "490"; //same as max width
+$resize_width = "490"; //same as max width
 $size = getimagesize("$image_new"); //get the actual size of the picture
 $width = $size[0]; // get width of picture
 $height = $size[1]; // get height of picture
@@ -135,7 +135,9 @@ if ($CURUSER["uid"] > 1 && ($CURUSER["uid"] == $row["uploader"] || $CURUSER["del
 
 
 $torrenttpl->set("mod_task", $torrent_mod);
-	$torrenttpl->set("show_fblink","<script>function fbs_click() {u=location.href;t=document.title;window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;}</script><a href=\"http://www.facebook.com/share.php?u=<url>\" onclick=\"return fbs_click()\" target=\"_blank\"><b>".image_or_link("images/facebook.png","","share_on_facebook")."	&nbsp;	&nbsp;".$language["SHARE_ON_FB"]."</b></a>");
+/*
+$torrenttpl->set("show_fblink","<script>function fbs_click() {u=location.href;t=document.title;window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;}</script><a href=\"http://www.facebook.com/share.php?u=<url>\" onclick=\"return fbs_click()\" target=\"_blank\"><b>".image_or_link("images/facebook.png","","share_on_facebook")."	&nbsp;	&nbsp;".$language["SHARE_ON_FB"]."</b></a>");
+*/
 
 if (!empty($row["comment"]))
    $row["description"] = format_comment($row["comment"]);
