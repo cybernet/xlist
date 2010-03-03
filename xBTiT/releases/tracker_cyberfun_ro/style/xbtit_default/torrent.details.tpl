@@ -11,6 +11,22 @@ function ShowHide(id,id1) {
     }
 }
 
+function PostToFacebook()
+{
+var ShareURL = window.location.href;
+
+window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(ShareURL)+'&t=[tracker.cyberfun.ro]<tag:torrent.filename /> torrent');
+return false;
+}
+
+function PostToTwitter()
+{
+var ShareURL = window.location.href;
+
+window.open('http://twitter.com/home?status=Check out this torrent '+encodeURIComponent(ShareURL));
+return false;
+}
+
 function windowunder(link)
 {
   window.opener.document.location=link;
@@ -31,6 +47,22 @@ function ShowUpdate()
   document.getElementById('loading').style.display='none';
   document.getElementById('thanks_div').innerHTML = myout[0]; //at.response;
   disable_button(myout[1]);
+}
+
+function PostToDigg()
+{
+var ShareURL = window.location.href;
+
+window.open('http://digg.com/submit?url='+encodeURIComponent(ShareURL)+'&title=[tracker.cyberfun.ro]<tag:torrent.filename /> torrent');
+
+}
+
+function PostToMyspace()
+{
+var ShareURL = window.location.href;
+
+window.open('http://www.myspace.com/index.cfm?fuseaction=postto&c=Check out this torrent&l=2&u='+encodeURIComponent(ShareURL)+'&r='+encodeURIComponent(ShareURL));
+
 }
 
 function thank_you(ia)
@@ -90,54 +122,13 @@ function show_wait()
 
 <a href="#" onClick='javascript:PostToTwitter()'><img src="http://twitter.com/favicon.ico" alt="Tweet this"></a>
 
-<script>
-function PostToTwitter()
-{
-var ShareURL = window.location.href;
-
-window.open('http://twitter.com/home?status=Check out this torrent '+encodeURIComponent(ShareURL));
-return false;
-}
-</script>
-
 <a href="#" onClick='javascript:PostToFacebook()'><img src="http://facebook.com/favicon.ico" alt="Share on Facebook"></a>
-
-<script>
-function PostToFacebook()
-{
-var ShareURL = window.location.href;
-
-window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(ShareURL)+'&t=[tracker.cyberfun.ro]<tag:torrent.filename /> torrent');
-return false;
-}
-</script>
-
 
 <a href="javascript:PostToMyspace()"><img src="http://myspace.com/favicon.ico" alt="Share on MySpace"></a>
 
-<script>
-function PostToMyspace()
-{
-var ShareURL = window.location.href;
-
-window.open('http://www.myspace.com/index.cfm?fuseaction=postto&c=Check out this torrent&l=2&u='+encodeURIComponent(ShareURL)+'&r='+encodeURIComponent(ShareURL));
-
-}
-</script>
-
 <a href="javascript:PostToDigg()"><img src="http://digg.com/favicon.ico" alt="Digg this"></a>
 
-<script>
-function PostToDigg()
-{
-var ShareURL = window.location.href;
-
-window.open('http://digg.com/submit?url='+encodeURIComponent(ShareURL)+'&title=[tracker.cyberfun.ro]<tag:torrent.filename /> torrent');
-
-}
-</script>
-
-</td>
+        </td>
         </tr>
         <if:IMAGEIS>
         <tr>
