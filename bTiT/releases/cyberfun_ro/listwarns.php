@@ -51,9 +51,9 @@ else{
 // print warnings
 
 while ($arr = mysql_fetch_array($showsql)){
-if ($arr["warnedfor"]==0)
+if ($arr["warnedfor"] == 0)
 $duration = "".WARNED_UNLIMITED."";
-elseif ($arr['warnedfor']==1)
+elseif ($arr['warnedfor'] == 1)
 $duration = "".$arr['warnedfor']."".WARNED_WEEK."";
 else
 $duration = "".$arr['warnedfor']."".WARNED_WEEKS."";

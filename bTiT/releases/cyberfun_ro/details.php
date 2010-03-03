@@ -299,32 +299,32 @@ print("<tr><td align=\"right\" class=\"header\"> ".RATING.":</td><td class=\"lis
 
 $vres = mysql_query("SELECT sum(rating) as totrate, count(*) as votes FROM ratings WHERE infohash = '$id'");
 $vrow = @mysql_fetch_array($vres);
-if ($vrow && $vrow["votes"]>=1)
+if ($vrow && $vrow["votes"] >= 1)
    {
-   $totrate=round($vrow["totrate"]/$vrow["votes"],1);
-   if ($totrate==5)
-      $totrate="<img src=\"$STYLEPATH/5.gif\" title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
-   elseif ($totrate>4.4 && $totrate<5)
-      $totrate="<img src=$STYLEPATH/4.5.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
-   elseif ($totrate>3.9 && $totrate<4.5)
-      $totrate="<img src=$STYLEPATH/4.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
-   elseif ($totrate>3.4 && $totrate<4)
-      $totrate="<img src=$STYLEPATH/3.5.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
-   elseif ($totrate>2.9 && $totrate<3.5)
-      $totrate="<img src=$STYLEPATH/3.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
-   elseif ($totrate>2.4 && $totrate<3)
-      $totrate="<img src=$STYLEPATH/2.5.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
-   elseif ($totrate>1.9 && $totrate<2.5)
-      $totrate="<img src=$STYLEPATH/2.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
-   elseif ($totrate>1.4 && $totrate<2)
-      $totrate="<img src=$STYLEPATH/1.5.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
+   $totrate = round($vrow["totrate"] / $vrow["votes"], 1);
+   if ($totrate == 5)
+      $totrate = "<img src=\"$STYLEPATH/5.gif\" title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
+   elseif ($totrate > 4.4 && $totrate < 5)
+      $totrate = "<img src=$STYLEPATH/4.5.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
+   elseif ($totrate > 3.9 && $totrate < 4.5)
+      $totrate = "<img src=$STYLEPATH/4.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
+   elseif ($totrate > 3.4 && $totrate < 4)
+      $totrate = "<img src=$STYLEPATH/3.5.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
+   elseif ($totrate > 2.9 && $totrate < 3.5)
+      $totrate = "<img src=$STYLEPATH/3.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
+   elseif ($totrate > 2.4 && $totrate < 3)
+      $totrate = "<img src=$STYLEPATH/2.5.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
+   elseif ($totrate > 1.9 && $totrate < 2.5)
+      $totrate = "<img src=$STYLEPATH/2.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
+   elseif ($totrate > 1.4 && $totrate < 2)
+      $totrate = "<img src=$STYLEPATH/1.5.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
    else
-      $totrate="<img src=$STYLEPATH/1.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
+      $totrate = "<img src=$STYLEPATH/1.gif title=\"$vrow[votes] ".VOTES_RATING.": $totrate/5.0)\" />";
    }
 else
-    $totrate=NA;
+    $totrate = NA;
 
-if ($row["username"]!=$CURUSER["username"] && $CURUSER["uid"]>1)
+if ($row["username"] != $CURUSER["username"] && $CURUSER["uid"] > 1)
    {
    $ratings = array(5 => FIVE_STAR,4 => FOUR_STAR,3 => THREE_STAR,2 => TWO_STAR,1 => ONE_STAR);
    $xres = mysql_query("SELECT rating, added FROM ratings WHERE infohash = '$id' AND userid = " . $CURUSER["uid"]);
@@ -384,14 +384,14 @@ if (file_exists($row["url"]))
         <td align=\"center\" class=\"header\">".FILE_NAME."</td>
         <td align=\"center\" class=\"header\">".SIZE."</td>
         </tr>");
-    $ffile=fopen($row["url"],"rb");
-    $content=fread($ffile,filesize($row["url"]));
+    $ffile = fopen($row["url"],"rb");
+    $content = fread($ffile,filesize($row["url"]));
     fclose($ffile);
-    $content=BDecode($content);
-    $numfiles=0;
+    $content = BDecode($content);
+    $numfiles = 0;
     if (isset($content["info"]) && $content["info"])
       {
-        $thefile=$content["info"];
+        $thefile = $content["info"];
         if (isset($thefile["length"]))
           {
           $numfiles++;
@@ -453,15 +453,15 @@ if ($row["external"] == "no") {
 // snatchers start
 print("<tr><td align=right class=\"header\"> ".SNATCHERS.":</td><td class=\"lista\">");
   $sres = mysql_query("SELECT * FROM history WHERE infohash = '$id'");
-  $line=0;
+  $line = 0;
   while ($srow = mysql_fetch_array($sres)) {
-$res =mysql_query("SELECT prefixcolor, suffixcolor, users.id, username,level FROM users INNER JOIN users_level ON users.id_level=users_level.id WHERE users.id='".$srow["uid"]."'") or die(mysql_error());
-$result=mysql_fetch_array($res);
+$res = mysql_query("SELECT prefixcolor, suffixcolor, users.id, username,level FROM users INNER JOIN users_level ON users.id_level=users_level.id WHERE users.id='".$srow["uid"]."'") or die(mysql_error());
+$result = mysql_fetch_array($res);
 print("<a href=userdetails.php?id=$result[id]>".unesc($result["prefixcolor"]).unesc($result["username"]).unesc($result["suffixcolor"])."</a>, ");
 $line++;
 if ($line>6){
 print ("<br>");
-$line=0;
+$line = 0;
 }
 }
 print("</td></tr>\n");
@@ -491,7 +491,7 @@ $uploaderres = mysql_query("SELECT uploader FROM namemap AS uploader WHERE info_
 $uploaderrow = mysql_fetch_array($uploaderres);
 $sres = mysql_query("SELECT * FROM thanks WHERE infohash = '$id' AND userid = '$user'");
 $srow = mysql_fetch_array($sres);
-if ($srow["userid"]==0 && $uploaderrow["uploader"]!=$user)
+if ($srow["userid"] == 0 && $uploaderrow["uploader"] != $user)
 {
  print("<form action=\"thanks.php\" method=\"post\">");
  print("<input type=\"submit\" name=\"submit\" value=\"Say Thanks!\">");

@@ -15,7 +15,7 @@ $id2 = $_GET["id"];
 $res = mysql_query("SELECT * FROM expected WHERE id=$id2");
 $row = mysql_fetch_array($res);
 
-if ($CURUSER["uid"] == $row["userid"] || $CURUSER["can_upload"]== "yes")
+if ($CURUSER["uid"] == $row["userid"] || $CURUSER["can_upload"] == "yes")
 
 {
 

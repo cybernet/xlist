@@ -30,7 +30,7 @@ $url = "expectedit.php?id=$id";
  $editlink = "a href=\"$url\"";
 print("<table class=lista align=center width=550 cellspacing=2 cellpadding=0>\n");
 print("<br><tr><td align=left class=header><B>" . Name . ": </B></td><td class=lista width=70% align=left>$num[expect]");
-if ($CURUSER["uid"] == $num["userid"] || $CURUSER["can_upload"]== "yes")
+if ($CURUSER["uid"] == $num["userid"] || $CURUSER["can_upload"] == "yes")
 {
 print("&nbsp;&nbsp;&nbsp;<".$editlink."><b>[" . EDIT . "]</b></a></td></tr>");
 }
