@@ -31,9 +31,9 @@ dbconn();
 
 standardheader("Delete your account");
 
-$minratio=0.8; // Edit this to prevent users with a ratio lower than this from deleting their account
+$minratio = 0.8; // Edit this to prevent users with a ratio lower than this from deleting their account
 
-if (!$CURUSER || $CURUSER["uid"]==1)
+if (!$CURUSER || $CURUSER["uid"] == 1)
 {
     block_begin("Please login");
     err_msg(ERROR,"You must be logged in to access this file");
@@ -42,9 +42,9 @@ if (!$CURUSER || $CURUSER["uid"]==1)
     exit();
 }
 
-$row=mysql_fetch_assoc(mysql_query("SELECT (uploaded/downloaded) AS ratio FROM users WHERE id=".$CURUSER["uid"]));
+$row = mysql_fetch_assoc(mysql_query("SELECT (uploaded/downloaded) AS ratio FROM users WHERE id=".$CURUSER["uid"]));
 
-if ($CURUSER["mod_access"]=="yes" || $CURUSER["edit_torrents"]=="yes")
+if ($CURUSER["mod_access"] == "yes" || $CURUSER["edit_torrents"] == "yes")
 {
     block_begin("Access denied");
     err_msg(ERROR,"Staff accounts can not be deleted via this page");
@@ -52,7 +52,7 @@ if ($CURUSER["mod_access"]=="yes" || $CURUSER["edit_torrents"]=="yes")
     stdfoot();
     exit();
 }
-elseif ($CURUSER["id_level"]>=5 && $CURUSER["id_level"]<=7)
+elseif ($CURUSER["id_level"] >= 5 && $CURUSER["id_level"] <= 7)
 {
     block_begin("Access denied");
     err_msg(ERROR,"VIP, Uploader & Design accounts can not be deleted via this page");
@@ -60,7 +60,7 @@ elseif ($CURUSER["id_level"]>=5 && $CURUSER["id_level"]<=7)
     stdfoot();
     exit();
 }
-elseif (is_null($row["ratio"]) || $row["ratio"]<$minratio)
+elseif (is_null($row["ratio"]) || $row["ratio"] < $minratio)
 {
     block_begin("Permission denied");
     err_msg(ERROR,"You must have a minimum ratio of ".number_format($minratio, 2)." in order to delete your account, your current ratio is ".number_format($row["ratio"], 2));
@@ -81,12 +81,12 @@ else
             if (extension_loaded('gd'))
             {
                 $arr = gd_info();
-                if ($arr['FreeType Support']==1)
+                if ($arr['FreeType Support'] == 1)
                 {
-                    $public=$_POST['public_key'];
-                    $private=$_POST['private_key'];
+                    $public = $_POST['public_key'];
+                    $private = $_POST['private_key'];
 
-                    $p=new ocr_captcha();
+                    $p = new ocr_captcha();
 
                     if ($p->check_captcha($public,$private) != true)
                     {
@@ -119,14 +119,14 @@ else
         if (extension_loaded('gd'))
         {
             $arr = gd_info();
-            if ($arr['FreeType Support']==1)
+            if ($arr['FreeType Support'] == 1)
             {
-                $p=new ocr_captcha();
+                $p = new ocr_captcha();
 
                 print("<tr><td align='right' class='header'>".IMAGE_CODE.":</td>");
                 print("<td align=left class='lista'><input type='text' name='private_key' value='' maxlength='6' size='7'>");
                 print($p->display_captcha(true));
-                $private=$p->generate_private();
+                $private = $p->generate_private();
                 print("</td></tr>");
             }
         }

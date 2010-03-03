@@ -56,9 +56,9 @@ if (isset($_GET["act"]))
        exit();
    }
 
-if (isset($_GET["vote"]) && $_GET["vote"]==VOTE)
+if (isset($_GET["vote"]) && $_GET["vote"] == VOTE)
    {
-if (isset($_GET["rating"]) && $_GET["rating"]==0)
+if (isset($_GET["rating"]) && $_GET["rating"] == 0)
 {
    err_msg(ERROR,ERR_NO_VOTE);
      block_end();
@@ -85,18 +85,18 @@ print("<div align=center><table class=\"lista\" border=\"0\" cellspacing=\"5\" c
 //print("<tr><td align=\"right\" class=\"header\"> ".FILE_NAME.":</td><td class=\"lista\" align=\"center\">" . $row["filename"]. "</td></tr>\n");
 print("<tr><td align=\"right\" class=\"header\"> ".FILE_NAME);
 
-if ($CURUSER["uid"]>1 && ($CURUSER["uid"]==$row["uploader"] || $CURUSER["edit_torrents"]=="yes" || $CURUSER["delete_torrents"]=="yes"))
+if ($CURUSER["uid"] > 1 && ($CURUSER["uid"] == $row["uploader"] || $CURUSER["edit_torrents"] == "yes" || $CURUSER["delete_torrents"] == "yes"))
     print("<br />&nbsp;&nbsp;");
 
 // edit and delete picture/link
-if ($CURUSER["uid"]>1 && ($CURUSER["uid"]==$row["uploader"] || $CURUSER["edit_torrents"]=="yes")) {
+if ($CURUSER["uid"] > 1 && ($CURUSER["uid"] == $row["uploader"] || $CURUSER["edit_torrents"] == "yes")) {
       if ($GLOBALS["usepopup"])
         print("<a href=\"javascript: windowunder('edit.php?info_hash=".$row["info_hash"]."&amp;returnto=".urlencode("torrents.php")."')\">".image_or_link("$STYLEPATH/edit.png","",EDIT)."</a>&nbsp;&nbsp;");
       else
         print("<a href=edit.php?info_hash=".$row["info_hash"]."&amp;returnto=".urlencode("torrents.php").">".image_or_link("$STYLEPATH/edit.gif","",EDIT)."</a>&nbsp;&nbsp;");
 }
 
-if ($CURUSER["uid"]>1 && ($CURUSER["uid"]==$row["uploader"] || $CURUSER["delete_torrents"]=="yes")) {
+if ($CURUSER["uid"] > 1 && ($CURUSER["uid"] == $row["uploader"] || $CURUSER["delete_torrents"] == "yes")) {
       if ($GLOBALS["usepopup"])
         print("<a href=\"javascript: windowunder('delete.php?info_hash=".$row["info_hash"]."&amp;returnto=".urlencode("torrents.php")."')\">".image_or_link("$STYLEPATH/delete.png","",DELETE)."</a>&nbsp;&nbsp;");
       else
@@ -164,7 +164,7 @@ print("<tr><td align=\"right\" class=\"header\"> ".VIDEO.":</td><td class=\"list
 }
 
 if (!empty($row["dd"]))
-if (($CURUSER["id_level"])>"5")
+if (($CURUSER["id_level"]) > "5")
 {
 print("<tr><td align=\"right\" class=\"header\"> ".DD.":</td><td class=\"lista\" align=\"center\"><a href=\"".$row["dd"]."\">".DD."</a></td></tr>\n");
 }
@@ -418,7 +418,7 @@ if (file_exists($row["url"]))
 include("include/offset.php");
 print("<tr><td align=\"right\" class=\"header\"> ".ADDED.":</td><td class=\"lista\" align=\"center\">" . date("d/m/Y",$row["data"]-$offset). "</td></tr>\n");
 
-if ($row["anonymous"]=="true")
+if ($row["anonymous"] == "true")
 {
    if ($CURUSER["edit_torrents"] == "yes")
        $uploader = "<a href=userdetails.php?id=".$row['uploader'].">".TORRENT_ANONYMOUS."</a>";
@@ -541,7 +541,7 @@ else
 include("include/offset.php");
        $s .= "<tr><td class=\"header\"><a href=userdetails.php?id=".$subrow["uid"].">" . $subrow["user"] . "</a>" . Warn_disabled($subrow['uid']) . " (".$title.")</td><td class=\"header\">" . date("d/m/Y H.i.s",$subrow["data"]-$offset) . "</td>\n";
        // only users able to delete torrents can delete comments...
-       if ($CURUSER["mod_access"]=="yes")
+       if ($CURUSER["mod_access"] == "yes")
          $s .= "<td class=\"header\" align=\"right\"><a onclick=\"return confirm('". str_replace("'","\'",DELETE_CONFIRM)."')\" href=\"comment.php?id=$id&cid=" . $subrow["id"] . "&action=delete\">".image_or_link("$STYLEPATH/delete.png","",DELETE)."</a></td>\n";
        $s .="</tr>\n";
        $s .= "<tr><td class=lista width=15% align=center><img width=150 border=0 src=".($subrow["avatar"])."></td><td valign=\"top\" colspan=\"3\" class=\"lista\">" . format_comment($subrow["text"]) . "</td></tr>\n";

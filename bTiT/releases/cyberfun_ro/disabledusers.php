@@ -9,7 +9,7 @@ require_once ("include/config.php");
 
 dbconn();
 
-if (!$CURUSER || $CURUSER["admin_access"]=="no" || $CURUSER["edit_users"]=="no")
+if (!$CURUSER || $CURUSER["admin_access"] == "no" || $CURUSER["edit_users"] == "no")
    {
 	require_once "include/functions.php";
 	require_once "include/config.php";
