@@ -320,11 +320,6 @@ $name = $name . get_user_icons($row);
       <data><![CDATA[c.name, u.donor FROM {$TABLE_PREFIX}users]]></data>
     </operation>
     <operation>
-      <search><![CDATA[c.name FROM {$TABLE_PREFIX}users]]></search>
-      <action>replace</action>
-      <data><![CDATA[c.name, u.donor FROM {$TABLE_PREFIX}users]]></data>
-    </operation>
-    <operation>
       <search><![CDATA[.unesc($rowuser["username"]).]]></search>
       <action>replace</action>
       <data><![CDATA[.unesc($rowuser["username"]) . get_user_icons($rowuser) .]]></data>
