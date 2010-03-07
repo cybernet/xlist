@@ -297,8 +297,11 @@ function getData($lastID) {
         $id   = $row[id];
         $uid  = $row[uid];
         $time = $row[time];
-$rd=mysql_fetch_row(mysql_query("SELECT warn FROM {$TABLE_PREFIX}users WHERE id=$uid"));
-$row["warn"]=$rd[0];
+$rd = mysql_fetch_row(mysql_query("SELECT donor FROM {$TABLE_PREFIX}users WHERE id=$uid"));
+$row["donor"] = $rd[0];
+unset($rd);
+$rd = mysql_fetch_row(mysql_query("SELECT warn FROM {$TABLE_PREFIX}users WHERE id=$uid"));
+$row["warn"] = $rd[0];
 unset($rd);
 $name = $name . warn($row);
         $name = $row[name];
@@ -307,8 +310,8 @@ $name = $name . warn($row);
         # if no name is present somehow, $name and $text are set to the strings under
         # we assume all must be ok, othervise no post will be made by javascript check
         # if ($name == '') { $name = 'Anonymous'; $text = 'No message'; }
-  
-      # we lego put together our chat using some conditions and css and javascript this time
+$name = $name . get_user_icons($row); 
+        # we lego put together our chat using some conditions and css and javascript this time
 
       print "<span class='name'>".date("d/m/Y H:i:s", $time - $offset)." | <a href=\"javascript:windowunder('index.php?page=userdetails&amp;id=".$uid."')\">".$name."</a>:</span>";
 
