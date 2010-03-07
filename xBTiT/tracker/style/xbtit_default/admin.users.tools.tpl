@@ -28,7 +28,7 @@ function convert() {
 	<table width="100%" border="0" class="lista">
 		<tr>
 			<td class="header" align="left" ><tag:language.USER_NAME />:</td>
-			<td class="lista" align="left" ><input type="text" size="40" name="username" maxlength="100" value="<tag:profile.username />"/></td>
+			<td class="lista" align="left" ><input type="text" size="40" name="username" maxlength="100" value="<tag:profile.username />"/>&nbsp;Donor&nbsp;<input type="checkbox" name="donor" <tag:profile.donor /> /></td>
 			<td class="lista" style="text-align:center;" rowspan="6" ><tag:profile.avatar /></td>
 		</tr>
 		<tr>

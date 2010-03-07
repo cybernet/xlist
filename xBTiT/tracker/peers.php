@@ -101,9 +101,9 @@ while ($row = mysql_fetch_array($res))
  if ($XBTT_USE)
     $resu = TRUE;
  elseif ($PRIVATE_ANNOUNCE)
-    $resu = do_sqlquery("SELECT u.username,u.id,c.flagpic,c.name FROM {$TABLE_PREFIX}users u LEFT JOIN {$TABLE_PREFIX}countries c ON c.id=u.flag WHERE u.pid='".$row["pid"]."'");
+    $resu = do_sqlquery("SELECT u.username,u.id,c.flagpic,c.name, u.donor FROM {$TABLE_PREFIX}users u LEFT JOIN {$TABLE_PREFIX}countries c ON c.id=u.flag WHERE u.pid='".$row["pid"]."'");
  else
-    $resu = do_sqlquery("SELECT u.username,u.id,c.flagpic,c.name FROM {$TABLE_PREFIX}users u LEFT JOIN {$TABLE_PREFIX}countries c ON c.id=u.flag WHERE u.cip='".$row["ip"]."'");
+    $resu = do_sqlquery("SELECT u.username,u.id,c.flagpic,c.name, u.donor FROM {$TABLE_PREFIX}users u LEFT JOIN {$TABLE_PREFIX}countries c ON c.id=u.flag WHERE u.cip='".$row["ip"]."'");
 
  if ($resu)
     {
@@ -120,10 +120,10 @@ else
     if ($rowuser && $rowuser["id"] > 1)
       {
       if ($GLOBALS["usepopup"]){
-       $peers[$i]["USERNAME"] = "<a href=\"javascript: windowunder('index.php?page=userdetails&amp;id=".$rowuser["id"]."')\">".unesc($rowuser["username"])."</a>";
+       $peers[$i]["USERNAME"] = "<a href=\"javascript: windowunder('index.php?page=userdetails&amp;id=".$rowuser["id"]."')\">".unesc($rowuser["username"]) . get_user_icons($rowuser) ."</a>";
        $peers[$i]["PM"] = "<a href=\"javascript: windowunder('index.php?page=usercp&amp;do=pm&amp;action=edit&amp;uid=$CURUSER[uid]&amp;what=new&amp;to=".urlencode(unesc($rowuser["username"]))."')\">".image_or_link("$STYLEPATH/images/pm.png","","PM")."</a>";
   }    else {
-        $peers[$i]["USERNAME"] = "<a href=\"index.php?page=userdetails&amp;id=".$rowuser["id"]."\">".unesc($rowuser["username"])."</a>";
+        $peers[$i]["USERNAME"] = "<a href=\"index.php?page=userdetails&amp;id=".$rowuser["id"]."\">".unesc($rowuser["username"]) . get_user_icons($rowuser) ."</a>";
         $peers[$i]["PM"] = "<a href=\"index.php?page=usercp&amp;do=pm&amp;action=edit&amp;uid=".$CURUSER["uid"]."&amp;what=new&amp;to=".urlencode(unesc($rowuser["username"]))."\">".image_or_link("$STYLEPATH/images/pm.png","","PM")."</a>";
        }
       }

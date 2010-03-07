@@ -35,57 +35,57 @@ if (!defined('IN_ACP'))
 
 include(load_language('lang_usercp.php'));
 # get uid
-$uid=isset($_GET['uid'])?(int)$_GET['uid']:0;
+$uid = isset($_GET['uid'])?(int)$_GET['uid']:0;
 # test uid
-if ($uid==$CURUSER['uid'] || $uid==1) {
-    if ($action=='delete') # cannot delete guest/myself
-        stderr($language['ERROR'],$language['USER_NOT_DELETE']);
+if ($uid == $CURUSER['uid'] || $uid == 1) {
+    if ($action == 'delete') # cannot delete guest/myself
+        stderr($language['ERROR'], $language['USER_NOT_DELETE']);
     # cannot edit guest/myself
-    stderr($language['ERROR'],$language['USER_NOT_EDIT']);
+    stderr($language['ERROR'], $language['USER_NOT_EDIT']);
 }
 
 # get uid info
 if ($XBTT_USE)
-    $curu=get_result('SELECT u.username, u.cip, ul.level, ul.id_level as base_level, u.email, u.avatar, u.joined, u.lastconnect, u.id_level, u.language, u.style, u.flag, u.time_offset, u.topicsperpage, u.postsperpage, u.torrentsperpage, (u.downloaded+x.downloaded) as downloaded, (u.uploaded+x.uploaded) as uploaded FROM '.$TABLE_PREFIX.'users u INNER JOIN '.$TABLE_PREFIX.'users_level ul ON ul.id=u.id_level LEFT JOIN xbt_users x ON x.uid=u.id WHERE u.id='.$uid.' LIMIT 1',true);
+    $curu = get_result('SELECT u.donor, u.username, u.cip, ul.level, ul.id_level as base_level, u.email, u.avatar, u.joined, u.lastconnect, u.id_level, u.language, u.style, u.flag, u.time_offset, u.topicsperpage, u.postsperpage, u.torrentsperpage, (u.downloaded+x.downloaded) as downloaded, (u.uploaded+x.uploaded) as uploaded FROM '.$TABLE_PREFIX.'users u INNER JOIN '.$TABLE_PREFIX.'users_level ul ON ul.id=u.id_level LEFT JOIN xbt_users x ON x.uid=u.id WHERE u.id='.$uid.' LIMIT 1',true);
 else
-    $curu=get_result('SELECT u.username, u.cip, ul.level, ul.id_level as base_level, u.email, u.avatar, u.joined, u.lastconnect, u.id_level, u.language, u.style, u.flag, u.time_offset, u.topicsperpage, u.postsperpage, u.torrentsperpage, u.downloaded, u.uploaded FROM '.$TABLE_PREFIX.'users u INNER JOIN '.$TABLE_PREFIX.'users_level ul ON ul.id=u.id_level WHERE u.id='.$uid.' LIMIT 1',true);
+    $curu = get_result('SELECT u.donor, u.username, u.cip, ul.level, ul.id_level as base_level, u.email, u.avatar, u.joined, u.lastconnect, u.id_level, u.language, u.style, u.flag, u.time_offset, u.topicsperpage, u.postsperpage, u.torrentsperpage, u.downloaded, u.uploaded FROM '.$TABLE_PREFIX.'users u INNER JOIN '.$TABLE_PREFIX.'users_level ul ON ul.id=u.id_level WHERE u.id='.$uid.' LIMIT 1',true);
 $pm_mail_notify = mysql_query("SELECT pm_mail_notify FROM {$TABLE_PREFIX}users WHERE id=$uid");$status_comment_notify = mysql_query("SELECT status_comment_notify FROM {$TABLE_PREFIX}users WHERE id=$uid");
 
 # test for bad id
 if (!isset($curu[0]))
     stderr($language['ERROR'],$language['BAD_ID']);
 # save memory address sums
-$curu=$curu[0];
+$curu = $curu[0];
 # test levels
 if ($CURUSER['id_level'] < $curu['base_level']){
-    if ($action=='delete') # cannot delete guest/myself
-        stderr($language['ERROR'],$language['USER_NOT_DELETE_HIGHER']);
+    if ($action == 'delete') # cannot delete guest/myself
+        stderr($language['ERROR'], $language['USER_NOT_DELETE_HIGHER']);
     # cannot edit guest/myself
-    stderr($language['ERROR'],$language['USER_NOT_EDIT_HIGHER']);
+    stderr($language['ERROR'], $language['USER_NOT_EDIT_HIGHER']);
 }
 $note='';
 # find smf_id
-if ($FORUMLINK=='smf') {
-    if (!isset($curu['smf_id']) || $curu['smf_id']==0) {
+if ($FORUMLINK == 'smf') {
+    if (!isset($curu['smf_id']) || $curu['smf_id'] == 0) {
         # go full mysql search on it's ass
-        $smf_user=get_result('SELECT `ID_MEMBER` FROM `'.$db_prefix.'members` WHERE `memberName`='.sqlesc($curu['username']).' LIMIT 1;');
+        $smf_user = get_result('SELECT `ID_MEMBER` FROM `'.$db_prefix.'members` WHERE `memberName`='.sqlesc($curu['username']).' LIMIT 1;');
         if (isset($smf_user[0])) {
-            $smf_fid=$smf_user[0]['ID_MEMBER'];
+            $smf_fid = $smf_user[0]['ID_MEMBER'];
             quickQuery('UPDATE `'.$TABLE_PREFIX.'users` SET `smf_fid`='.$smf_fid.' WHERE `id`='.$uid.' LIMIT 1;');
         } else {
-            $smf_fid=false;
-            $note=' User not found in SMF.';
+            $smf_fid = false;
+            $note = ' User not found in SMF.';
         }
-    } else $smf_fid=$curu['smf_fid'];
-} else $smf_fid=false;
+    } else $smf_fid = $curu['smf_fid'];
+} else $smf_fid = false;
 
 # init vars
 if (isset($_GET['returnto'])) {
-    $ret_decode=urldecode($_GET['returnto']);
-    $ret_url=htmlspecialchars($_GET['returnto']);
+    $ret_decode = urldecode($_GET['returnto']);
+    $ret_url = htmlspecialchars($_GET['returnto']);
 } else {
-    $ret_decode='index.php';
-    $ret_url='index.php';
+    $ret_decode = 'index.php';
+    $ret_url = 'index.php';
 }
 $edit=true;
 $profile=array();
@@ -159,6 +159,7 @@ switch ($action) {
         $opts['default']=$curu['id_level'];
         $profile['custom_title']=unesc($curu['custom_title']);
         # rank list
+        $profile["donor"]=($curu["donor"]=="yes"?"checked=\"checked\"":"");
         $ranks=rank_list();
         $admintpl->set('rank_combo',get_combo($ranks, $opts));
         # lang list
@@ -305,6 +306,7 @@ switch ($action) {
                     $set[]='uploaded='.$uploaded;
                 if ($downloaded != $curu['downloaded'])
                     $set[]='downloaded='.$downloaded;
+                    $set[]="donor='".(isset($_POST["donor"])?"yes":"no")."'";
             }
             if ($chpass) {
                 $set[]='password='.sqlesc(md5($pass));

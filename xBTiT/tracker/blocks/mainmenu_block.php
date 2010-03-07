@@ -26,12 +26,12 @@ if (!$CURUSER)
 elseif ($CURUSER["uid"] == 1)
        // anonymous=guest
     {
-   print("<td class=\"lista\" align=\"center\" style=\"text-align:center;\">".$language["WELCOME"]." " . $CURUSER["username"] . warn($CURUSER) . " \n");
+   print("<td class=\"lista\" align=\"center\" style=\"text-align:center;\">".$language["WELCOME"]." " . $CURUSER["username"] . get_user_icons($CURUSER) . warn($CURUSER) . " \n");
    print("<a href=\"index.php?page=login\">(".$language["LOGIN"].")</a></td>\n");
     }
 else
     {
-    print("<td class=\"lista\" align=\"center\" style=\"text-align:center;\">".$language["WELCOME_BACK"]." " . $CURUSER["username"] . warn($CURUSER) . " \n");
+    print("<td class=\"lista\" align=\"center\" style=\"text-align:center;\">".$language["WELCOME_BACK"]." " . $CURUSER["username"] . get_user_icons($CURUSER) . warn($CURUSER) . " \n");
     print("<a href=\"logout.php\">(".$language["LOGOUT"].")</a></td></tr></table>\n");
     }
 ?>

@@ -264,22 +264,23 @@ function check_online($session_id, $location) {
 
   $location = sqlesc($location);
   $ip = getip();
-  $uid = max(0,$CURUSER['uid']);
+  $uid = max(0, $CURUSER['uid']);
   $suffix = sqlesc($CURUSER['suffixcolor']);
   $prefix = sqlesc($CURUSER['prefixcolor']);
   $uname = sqlesc($CURUSER['username']);
   $ugroup = sqlesc($CURUSER['level']);
+  $donor = sqlesc($CURUSER['donor']);
   $warn = sqlesc($CURUSER['warn']);
   if ($uid == 1)
     $where = "WHERE session_id='$session_id'";
   else
     $where = "WHERE user_id='$uid' OR session_id='$session_id'";
 
-  @quickQuery("UPDATE {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, location=$location, user_id=$uid, warn=$warn, lastaction=UNIX_TIMESTAMP() $where");
+  @quickQuery("UPDATE {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, location=$location, user_id=$uid, donor=$donor, warn=$warn, lastaction=UNIX_TIMESTAMP() $where");
   // record don't already exist, then insert it
   if (mysql_affected_rows() == 0) { 
     @quickQuery("UPDATE {$TABLE_PREFIX}users SET lastconnect=NOW() WHERE id=$uid AND id>1");
-    @quickQuery("INSERT INTO {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, user_id=$uid, user_ip='$ip', location=$location, warn=$warn, lastaction=UNIX_TIMESTAMP()");
+    @quickQuery("INSERT INTO {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, user_id=$uid, user_ip='$ip', location=$location, donor=$donor, warn=$warn, lastaction=UNIX_TIMESTAMP()");
   }
 
   $timeout = time() - 900; // 15 minutes
@@ -339,7 +340,23 @@ function hash_pad($hash) {
   return str_pad($hash, 20);
 }
 
+function get_user_icons($arr, $big = false)
+{
+  if ($big)
+    {
+     $donorpic = "donor_big.gif";
+     $style = "style=\"margin-left: 4pt\"";
+  }
+  else
+    {
+     $donorpic = "donor.gif";
+     $style = "style=\"margin-left: 2pt\"";
+  }
 
+  $pics = $arr["donor"]=="yes" ? "<img src=\"images/$donorpic\" alt=\"Donor\" border=\"0\" $style />" : "";
+
+  return $pics;
+}
       
 function warn($arr, $big = false)
 {
@@ -378,17 +395,17 @@ function userlogin() {
 // guest
     $id = (!isset($_COOKIE['uid']))?1:max(1, $_COOKIE['uid']);
 
-  $res = do_sqlquery("SELECT u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = $id LIMIT 1;") or sqlerr(__FILE__, __LINE__);
+  $res = do_sqlquery("SELECT u.donor, u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = $id LIMIT 1;") or sqlerr(__FILE__, __LINE__);
   $row = mysql_fetch_array($res);
   if (!$row) {
     $id = 1;
-    $res = do_sqlquery("SELECT u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;") or sqlerr(__FILE__, __LINE__);
+    $res = do_sqlquery("SELECT u.donor, u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;") or sqlerr(__FILE__, __LINE__);
     $row = mysql_fetch_array($res);
   }
   if (!isset($_COOKIE['pass'])) $_COOKIE['pass'] = '';
   if (($_COOKIE['pass'] != md5($row['random'].$row['password'].$row['random'])) && $id != 1) {
     $id = 1;
-    $res = do_sqlquery("SELECT u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;") or sqlerr(__FILE__, __LINE__);
+    $res = do_sqlquery("SELECT u.donor, u.warn, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;") or sqlerr(__FILE__, __LINE__);
     $row = mysql_fetch_array($res);
   }
 

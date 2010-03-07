@@ -33,7 +33,7 @@ else
                $group[unesc(ucfirst($users_online["user_group"]))]=1;
             if ($users_online["user_id"]>1)
                 $uo[]="<a href=\"index.php?page=userdetails&amp;id=".$users_online["user_id"]."\" title=\"".unesc(ucfirst($users_online["location"]))."\">".
-                       unesc($users_online["prefixcolor"]).unesc($users_online["user_name"]). warn($users_online) . unesc($users_online["suffixcolor"])."</a>";
+                       unesc($users_online["prefixcolor"]).unesc($users_online["user_name"]). get_user_icons($users_online) .  warn($users_online) . unesc($users_online["suffixcolor"])."</a>";
 
      }
 

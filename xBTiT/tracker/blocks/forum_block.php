@@ -55,9 +55,12 @@ if ($topics != 0) {
             # get topic subject
             $title = get_result('SELECT subject FROM '.$db_prefix.'messages WHERE ID_MSG='.$post['spid'].' LIMIT 1;');
             $title = $title[0]['subject'];
+            $rd = mysql_fetch_row(mysql_query("SELECT donor FROM {$TABLE_PREFIX}users WHERE smf_fid='".$post['userid']."'"));
+               $post['donor'] = $rd[0];
+               unset($rd);
             # cut it if necessary
             $post['title'] = (strlen($title>33))?substr($title,0,30).'...':$title;
-            $postsList .= '<tr><td class="lista"><b><a title="'.$language['FIRST_UNREAD'].': '.$post['title'].'" href="'.$btit_settings['url'].'/index.php?page=forum&amp;action=viewtopic&amp;topicid='.$post['tid'].'.msg'.$post['pid'].'#msg'.$post['pid'].'">'.$post['title'].'</a></b><br />'.$language['LAST_POST_BY'].' <a href="'.$btit_settings['url'].'/index.php?page=forum&amp;action=profile;u='.$post['userid'].'">'.$post['username'].'</a><br />On '.date('d/m/Y H:i:s',$post['added']).'</td></tr>';
+            $postsList .= '<tr><td class="lista"><b><a title="'.$language['FIRST_UNREAD'].': '.$post['title'].'" href="'.$btit_settings['url'].'/index.php?page=forum&amp;action=viewtopic&amp;topicid='.$post['tid'].'.msg'.$post['pid'].'#msg'.$post['pid'].'">'.$post['title'].'</a></b><br />'.$language['LAST_POST_BY'].' <a href="'.$btit_settings['url'].'/index.php?page=forum&amp;action=profile;u='.$post['userid'].'">'.$post['username']. get_user_icons($post) . warn($user).'</a><br />On '.date('d/m/Y H:i:s',$post['added']).'</td></tr>';
         }
     } else {
         # get posts based if can read
@@ -65,12 +68,12 @@ if ($topics != 0) {
         # format posts
         foreach($lastPosts as $post) {
             # get username
-            $user = get_result('SELECT ul.prefixcolor, u.username, u.warn, ul.suffixcolor FROM '.$TABLE_PREFIX.'users_level as ul LEFT JOIN '.$TABLE_PREFIX.'users as u ON u.id_level=ul.id WHERE u.id='.$post['userid'].' LIMIT 1;', true, $CACHE_DURATION);
+            $user = get_result('SELECT ul.prefixcolor, u.username, u.donor, u.warn, ul.suffixcolor FROM '.$TABLE_PREFIX.'users_level as ul LEFT JOIN '.$TABLE_PREFIX.'users as u ON u.id_level=ul.id WHERE u.id='.$post['userid'].' LIMIT 1;', true, $CACHE_DURATION);
             if (isset($user[0])) {
                 $user = $user[0];
                 $post['username'] = unesc($user['prefixcolor'].$user['username'].$user['suffixcolor']);
             } else $post['username'] = '[DELETED USER]';
-            $postsList .= '<tr><td class="lista"><b><a href="'.$btit_settings['url'].'/index.php?page=forum&amp;action=viewtopic&amp;topicid='.$post['tid'].'&amp;msg='.$post['pid'].'#'.$post['pid'].'">'.htmlspecialchars(unesc($post['subject'])).'</a></b><br />'.$language['LAST_POST_BY'].' <a href="'.$btit_settings['url'].'/index.php?page=userdetails&amp;id='.$post['userid'].'">'.$post['username'].warn($user).'</a><br />On '.get_date_time($post['added']).'</td></tr>';
+            $postsList .= '<tr><td class="lista"><b><a href="'.$btit_settings['url'].'/index.php?page=forum&amp;action=viewtopic&amp;topicid='.$post['tid'].'&amp;msg='.$post['pid'].'#'.$post['pid'].'">'.htmlspecialchars(unesc($post['subject'])).'</a></b><br />'.$language['LAST_POST_BY'].' <a href="'.$btit_settings['url'].'/index.php?page=userdetails&amp;id='.$post['userid'].'">'.$post['username']. get_user_icons($post) . warn($user).'</a><br />On '.get_date_time($post['added']).'</td></tr>';
         }
     }
 } else $postsList='<tr><td class="lista">'.$language['NO_TOPIC'].'</td></tr>';

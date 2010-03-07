@@ -102,7 +102,7 @@ if(!$CURUSER || $CURUSER["view_torrents"] != "yes")
 }
 
 
-$res = get_result("SELECT tag, f.screen1, f.screen2, f.screen3, f.image, u.warn, f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'", true);
+$res = get_result("SELECT u.donor, tag, f.screen1, f.screen2, f.screen3, f.image, u.warn, f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'", true);
 
 // die("SELECT f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'");
 
@@ -324,7 +324,7 @@ if ($row["anonymous"] == "true")
       $uploader = $language["TORRENT_ANONYMOUS"];
    }
 else
-    $uploader = "<a href=\"index.php?page=userdetails&amp;id=".$row['uploader']."\">".$row["username"].warn($row) ."</a>";
+    $uploader = "<a href=\"index.php?page=userdetails&amp;id=".$row['uploader']."\">".$row["username"] . get_user_icons($row) . warn($row) ."</a>";
 
 $row["uploader"] = $uploader;
 
@@ -375,7 +375,7 @@ if ($XBTT_USE)
 else
     {
 
-$subres = do_sqlquery("SELECT u.downloaded as downloaded, u.uploaded as uploaded, u.avatar, u.id_level, u.custom_title, c.id, u.warn, text, UNIX_TIMESTAMP(added) as data, user, u.id as uid FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username WHERE info_hash = '" . $id . "' ORDER BY added DESC");
+$subres = do_sqlquery("SELECT u.downloaded as downloaded, u.uploaded as uploaded, u.avatar, u.id_level, u.custom_title, c.id, u.donor, u.warn, text, UNIX_TIMESTAMP(added) as data, user, u.id as uid FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username WHERE info_hash = '" . $id . "' ORDER BY added DESC");
 }
 if (!$subres || mysql_num_rows($subres) == 0) {
      if($CURUSER["uid"] > 1)
@@ -405,7 +405,7 @@ else {
         $title = "".$lvl['level']."";
        else
         $title = unesc($subrow["custom_title"]);
-       $comments[$count]["user"] = "<a href=\"index.php?page=userdetails&amp;id=".$subrow["uid"]."\">" . unesc($subrow["user"]).warn($row)."</a>";
+       $comments[$count]["user"] = "<a href=\"index.php?page=userdetails&amp;id=".$subrow["uid"]."\">" . unesc($subrow["user"]).get_user_icons($row).warn($row)."</a>";
        $comments[$count]["user"] .= "</a><br/> ".$title;
        $comments[$count]["date"] = date("d/m/Y H.i.s", $subrow["data"] - $offset);
 

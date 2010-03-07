@@ -33,8 +33,8 @@ require_once(load_language("lang_account.php"));
              // user information
              $style = style_list();
              $langue = language_list();
-             print("\n<form name=\"jump\" method=\"post\" action=\"index.php\">\n<table class=\"poller\" width=\"100%\" cellspacing=\"0\">\n<tr><td align=\"center\">".$language["USER_NAME"].":  " .unesc($CURUSER["username"] . warn($CURUSER))."</td></tr>\n");
-             print("<tr><td align=\"center\">".$language["USER_LEVEL"].": ".$CURUSER["level"]."</td></tr>\n");		         ?>
+             print("\n<form name=\"jump\" method=\"post\" action=\"index.php\">\n<table class=\"poller\" width=\"100%\" cellspacing=\"0\">\n<tr><td align=\"center\">".$language["USER_NAME"].":  " .unesc($CURUSER["username"] . get_user_icons($CURUSER) . warn($CURUSER))."</td></tr>\n");
+             print("<tr><td align=\"center\">".$language["USER_LEVEL"].": ".$CURUSER["level"]."</td></tr>\n"); ?>
 			 </table>
 
 <table class="lista" width="100%">
