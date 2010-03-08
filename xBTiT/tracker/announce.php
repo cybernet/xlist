@@ -252,9 +252,9 @@ if ($PRIVATE_ANNOUNCE) {
         }
         $wait -= $timer;
         if ($wait <= 0)$wait = 0;
-        elseif($wait != 0 && $left != 0){
+        elseif ($wait != 0 && $left != 0){
                show_error($rowpid["username"]." your Waiting Time = ".$wait." h");
-                                        }
+                                         }
       }
       //end
   }
@@ -263,7 +263,7 @@ if ($PRIVATE_ANNOUNCE) {
    $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE u.cip='$ip' LIMIT 1");
    if (!$respid || mysql_num_rows($respid) != 1)
      // maybe it's guest with new query I must found at least guest user
-    $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE u.id=1 LIMIT 1");
+   $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE u.id=1 LIMIT 1");
     if (!$respid || mysql_num_rows($respid) != 1)
       {
         // do nothing but tracker is misconfigured!!!
