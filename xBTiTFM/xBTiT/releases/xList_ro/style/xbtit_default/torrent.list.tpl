@@ -85,11 +85,6 @@ function expandAll()
           <td align="center" width="30" class="header"><tag:torrent_header_seeds /></td>
           <td align="center" width="30" class="header"><tag:torrent_header_leechers /></td>
           <td align="center" width="30" class="header"><tag:torrent_header_complete /></td>
-          <if:XBTT>
-          <else:XBTT>
-          <td align="center" width="45" class="header"><tag:torrent_header_speed /></td>
-          </if:XBTT>
-          <td align="center" width="45" class="header"><tag:torrent_header_average /></td>
         </tr>      
         <loop:torrents>
         <tr>
@@ -104,11 +99,6 @@ function expandAll()
           <td align="center" width="30" class="<tag:torrents[].classe_seeds />" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].seeds /></td>
           <td align="center" width="30" class="<tag:torrents[].classe_leechers />" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].leechers /></td>
           <td align="center" width="30" class="lista" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].complete /></td>
-         <if:XBTT1>
-          <else:XBTT1>
-          <td align="center" width="45" class="lista" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].speed /></td>
-          </if:XBTT1>
-          <td align="center" width="45" class="lista" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].average /></td>
         </tr>
         </loop:torrents>
       </table>
