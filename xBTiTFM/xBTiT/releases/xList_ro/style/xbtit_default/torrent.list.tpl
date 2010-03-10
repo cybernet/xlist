@@ -81,9 +81,11 @@ function expandAll()
           <else:WT>
           </if:WT>
           <td align="center" width="20" class="header"><tag:torrent_header_download /></td>
-          <td align="center" width="85" class="header"><tag:torrent_header_added /></td>
+          <td align="center" width="65" class="header"><tag:torrent_header_added /></td>
+          <td align="center" width="50" class="header"><tag:torrent_header_size /></td>
           <td align="center" width="30" class="header"><tag:torrent_header_seeds /></td>
           <td align="center" width="30" class="header"><tag:torrent_header_leechers /></td>
+          <td align="center" width="30" class="header"><tag:torrent_header_uploader /></td>
           <td align="center" width="30" class="header"><tag:torrent_header_complete /></td>
         </tr>      
         <loop:torrents>
@@ -95,9 +97,11 @@ function expandAll()
           <else:WT1>
           </if:WT1>
           <td align="center" width="20" class="lista" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].download /></td>
-          <td align="center" width="85" class="lista" style="white-space:wrap; text-align:center;<tag:torrents[].color />"><tag:torrents[].added /></td>
+          <td align="center" width="65" class="lista" style="white-space:wrap; text-align:center;<tag:torrents[].color />"><tag:torrents[].added /></td>
+          <td align="center" width="50" class="lista"><tag:torrents[].size /></td>
           <td align="center" width="30" class="<tag:torrents[].classe_seeds />" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].seeds /></td>
           <td align="center" width="30" class="<tag:torrents[].classe_leechers />" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].leechers /></td>
+          <td align="center" width="30" class="lista"><tag:torrents[].uploader /></td>
           <td align="center" width="30" class="lista" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].complete /></td>
         </tr>
         </loop:torrents>
