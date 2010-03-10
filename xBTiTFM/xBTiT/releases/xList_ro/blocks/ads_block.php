@@ -12,8 +12,8 @@ return $q["google_ad_slot"];
 google_ad_client = "pub-2155280844524582";
 /* 468x60, created 1/28/10 */
 google_ad_slot = "<?php echo google_ad_slot(); ?>";
-google_ad_width = 468;
-google_ad_height = 60;
+google_ad_width = 728;
+google_ad_height = 90;
 //-->
 </script>
 <script type="text/javascript"
