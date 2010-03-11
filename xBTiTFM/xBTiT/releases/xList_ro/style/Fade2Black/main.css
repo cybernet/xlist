@@ -332,9 +332,9 @@ li{
 list-style-position:inside;
 } 
 
-.error { color:black; font-weight: bold; font-size: 14pt; background:url(images/chr.gif); background-repeat: repeat-x;}
+.error { color:#a5badc; font-weight: bold; font-size: 14pt; background:url(images/block.png); background-repeat: repeat-x;}
 .information { color:black; font-weight: bold; font-size: 14pt; background:url(images/chb.gif); background-repeat: repeat-x;}
-.success { color:black; font-weight: bold; font-size: 14pt; background:url(images/chg.gif); background-repeat: repeat-x;}
+.success { color:#a5badc; font-weight: bold; font-size: 14pt; background:url(images/block.png); background-repeat: repeat-x;}
 
 /* ######### End Main Tracker Body ######### Start Ajax Poll System ######### */
 

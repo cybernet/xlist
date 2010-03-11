@@ -7,8 +7,8 @@
        </td>
     </tr>
     <tr>
-      <td bgcolor="#ECEDF3" align="center" style="color:#000000">
-        <img src="<tag:error_image />" alt="" style="float:left; margin:5px" />
+      <td bgcolor="#373d47" align="center" style="color:#000000">
+        <img src="<tag:error_image />" alt="Warning" style="float:left; margin:5px" />
         <br />
         <tag:error_message />
         <br />
@@ -22,4 +22,3 @@
   <tag:error_footer />
 </div>
 <br />
-
