@@ -62,7 +62,7 @@ $lang = array(
     <br />",
 'faq_uploading_header' => "Uploading",
 'faq_uploading' => "<ul>
-        <li><a href='#up1' class='altlink'>Why can't I upload torrents?</a> </li>
+        <li><a href='#up1' class='altlink'>Why can't I upload torrents?</a> <img src='{$TBDEV['pic_base_url']}new.png' alt='New' width='27' height='11' /></li>
       <li><a href='#up2' class='altlink'>What criteria must I meet before I can join the Uploader team?</a></li>
       <li><a href='#up3' class='altlink'>Can I upload your torrents to other trackers?</a>
       <img src='{$TBDEV['pic_base_url']}new.png' alt='New' width='27' height='11' /></li>
@@ -448,6 +448,7 @@ $lang = array(
     <b>Why can't I upload torrents?</b><a name='up1'></a><br />
     <br />
     Only specially authorized users (<font color='#4040C0'><b>Uploaders</b></font>) have permission to upload torrents.<br />
+    Or you have been disabled to upload by SysOP, contact him for more info
     <br />
     <br />
     <b>What criteria must I meet before I can join the <font color='#4040C0'>Uploader</font> team?</b><a name='up2'></a><br />
