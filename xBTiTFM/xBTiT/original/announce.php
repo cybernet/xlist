@@ -177,6 +177,12 @@ if (preg_match("/^Mozilla|^Opera|^Links|^Lynx/i", $agent))
     die("This a a bittorrent application and can't be loaded into a browser");
 }
 
+// cybernet2u tests
+
+
+
+// cybernet2u tests
+
 // check if al needed information is sent by the client
 if (!isset($_GET["port"]) || !isset($_GET["downloaded"]) || !isset($_GET["uploaded"]) || !isset($_GET["left"]))
     show_error("Invalid information received from BitTorrent client");
