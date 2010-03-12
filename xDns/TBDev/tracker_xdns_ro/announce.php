@@ -227,7 +227,7 @@ $seeder = ($left == 0) ? "yes" : "no";
 dbconn();
 
 
-$user_query = mysql_query("SELECT id, uploaded, downloaded, class, enabled FROM users WHERE passkey=".sqlesc($passkey)) or err("Tracker error 2");
+$user_query = mysql_query("SELECT id, uploaded, downloaded, class, enabled, downloadpos FROM users WHERE passkey=".sqlesc($passkey)) or err("Tracker error 2");
 
 if ( mysql_num_rows($user_query) != 1 )
 
@@ -235,6 +235,7 @@ if ( mysql_num_rows($user_query) != 1 )
  
 	$user = mysql_fetch_assoc($user_query);
 	if( $user['enabled'] == 'no' ) err('Permission denied, you\'re not enabled');
+        if( $user['downloadpos'] == 'no' ) err('Permission denied, you\'re not allowed to download');
 	
 	
 $res = mysql_query("SELECT id, banned, seeders + leechers AS numpeers, added AS ts FROM torrents WHERE info_hash = " .sqlesc($info_hash));//" . hash_where("info_hash", $info_hash));

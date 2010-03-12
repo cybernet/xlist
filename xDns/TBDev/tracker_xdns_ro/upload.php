@@ -28,7 +28,7 @@ loggedinorreturn();
     
     $HTMLOUT = '';
 
-    if ($CURUSER['class'] < UC_UPLOADER)
+    if ($CURUSER['class'] < UC_UPLOADER OR $CURUSER["uploadpos"] == 'no')
     {
         stderr($lang['upload_sorry'], $lang['upload_no_auth']);
     }

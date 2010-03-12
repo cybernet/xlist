@@ -62,7 +62,65 @@ if ((isset($_POST['action'])) && ($_POST['action'] == "edituser"))
 
     $modcomment = get_date( time(), 'DATE', 1 ) . " - $what to '" . get_user_class_name($class) . "' by $CURUSER[username].\n". $modcomment;
     }
+    // Set Upload Enable / Disable
+    if ((isset($_POST['uploadpos'])) && (($uploadpos = $_POST['uploadpos']) != $user['uploadpos']))
+    {
+    if ($uploadpos == 'yes')
+    {
+    $modcomment = get_date( time(), 'DATE', 1 ) . " - Upload enabled by " . $CURUSER['username'] . ".\n" . $modcomment;
+    $msg = sqlesc("You have been given upload rights by " . $CURUSER['username'] . ". You can now upload torrents.");
+    $added = time();
+    mysql_query("INSERT INTO messages (sender, receiver, msg, added) VALUES (0, $userid, $msg, $added)") or sqlerr(__FILE__, __LINE__);
+    }
+    elseif ($uploadpos == 'no')
+    {
+     $modcomment = get_date( time(), 'DATE', 1 ) . " - Upload disabled by " . $CURUSER['username'] . ".\n" . $modcomment;
+    $msg = sqlesc("Your upload rights have been removed by " . $CURUSER['username'] . ". Please PM ".$CURUSER['username']." for the reason why.");
+    $added = time();
+    mysql_query("INSERT INTO messages (sender, receiver, msg, added) VALUES (0, $userid, $msg, $added)") or sqlerr(__FILE__, __LINE__);
+    }
+    $updateset[] = "uploadpos = " . sqlesc($uploadpos);
+    }
 
+    // Set Download Enable / Disable
+    if ((isset($_POST['downloadpos'])) && (($downloadpos = $_POST['downloadpos']) != $user['downloadpos']))
+    {
+    if ($downloadpos == 'yes')
+    {
+     $modcomment = get_date( time(), 'DATE', 1 ) . " - Download enabled by " . $CURUSER['username'] . ".\n" . $modcomment;
+    $msg = sqlesc("Your download rights have been given back by " . $CURUSER['username'] . ". You can download torrents again.");
+    $added = time();
+    mysql_query("INSERT INTO messages (sender, receiver, msg, added) VALUES (0, $userid, $msg, $added)") or sqlerr(__FILE__, __LINE__);
+    }
+    elseif ($downloadpos == 'no')
+    {
+     $modcomment = get_date( time(), 'DATE', 1 ) . " - Download disabled by " . $CURUSER['username'] . ".\n" . $modcomment;
+    $msg = sqlesc("Your download rights have been removed by " . $CURUSER['username'] . ", Please PM ".$CURUSER['username']." for the reason why.");
+    $added = time();
+    mysql_query("INSERT INTO messages (sender, receiver, msg, added) VALUES (0, $userid, $msg, $added)") or sqlerr(__FILE__, __LINE__);
+    }
+    $updateset[] = "downloadpos = " . sqlesc($downloadpos);
+    }
+    
+    // Forum Post Enable / Disable
+    if ((isset($_POST['forumpost'])) && (($forumpost = $_POST['forumpost']) != $user['forumpost']))
+    {
+    if ($forumpost == 'yes')
+    {
+    $modcomment = get_date( time(), 'DATE', 1 ) . " - Forum posting enabled by " . $CURUSER['username'] . ".\n" . $modcomment;
+    $msg = sqlesc("Your Posting rights have been given back by ".$CURUSER['username'].". You can post to forum again.");
+    $added = time();
+    mysql_query("INSERT INTO messages (sender, receiver, msg, added) VALUES (0, $userid, $msg, $added)") or sqlerr(__FILE__, __LINE__);
+    }
+    else
+    {
+    $modcomment = get_date( time(), 'DATE', 1 ) . " - Forum posting disabled by " . $CURUSER['username'] . ".\n" . $modcomment;
+    $msg = sqlesc("Your Posting rights have been removed by ".$CURUSER['username'].", Please PM ".$CURUSER['username']." for the reason why.");
+    $added = time();
+    mysql_query("INSERT INTO messages (sender, receiver, msg, added) VALUES (0, $userid, $msg, $added)") or sqlerr(__FILE__, __LINE__);
+    }
+    $updateset[] = "forumpost = " . sqlesc($forumpost);
+    }
     // Clear Warning - Code not called for setting warning
     if (isset($_POST['warned']) && (($warned = $_POST['warned']) != $user['warned']))
     {

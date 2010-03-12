@@ -66,6 +66,9 @@ $lang = array(
 'userdetails_pass_msg' => "Any active torrents must be downloaded again to continue leeching/seeding.",
 'userdetails_okay' => "Okay",
 'userdetails_details' => "Details for",
+'userdetails_fpost' => "Forum post possible",
+'userdetails_upos' => "Upload possible",
+'userdetails_dpos' => "Download possible",
 
 
 );

@@ -30,6 +30,10 @@
   loggedinorreturn();
   
   $lang = array_merge( load_language('global'), load_language('forums') );
+if ($CURUSER["forumpost"] == 'no')
+    {
+    stderr($lang['forum_sorry'], $lang['forum_no_auth']);
+    }
   
   $action = isset($_GET["action"]) ? $_GET["action"] : '';
   $forum_pic_url = $TBDEV['pic_base_url'] . 'forumicons/';

@@ -23,7 +23,12 @@ dbconn();
 
 loggedinorreturn();
 
-  $lang = load_language('download');
+$lang = load_language('download');
+
+if (!($CURUSER["id"] == $row["owner"])) {
+if ($CURUSER["downloadpos"] == "no")
+stderr("ERROR","{$lang['download_rights_disabled_lol']}");
+}
   
   $id = isset($_GET['torrent']) ? intval($_GET['torrent']) : 0;
 

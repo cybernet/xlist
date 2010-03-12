@@ -1,16 +1,16 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.0-rc3
+-- version 3.3.0
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 08, 2010 at 07:41 AM
+-- Generation Time: Mar 12, 2010 at 06:16 PM
 -- Server version: 5.1.37
 -- PHP Version: 5.2.10-2ubuntu6.4
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- Database: `xdns_source`
+-- Database: `tracker_xdns_ro`
 --
 
 -- --------------------------------------------------------
@@ -714,6 +714,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `time_offset` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `dst_in_use` tinyint(1) NOT NULL DEFAULT '0',
   `auto_correct_dst` tinyint(1) NOT NULL DEFAULT '1',
+  `uploadpos` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
+  `forumpost` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
+  `downloadpos` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `ip` (`ip`),

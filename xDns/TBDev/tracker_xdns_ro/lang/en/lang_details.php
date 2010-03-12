@@ -45,6 +45,7 @@ $lang = array(
 'details_add_comment' => "Add a Comment",
 'details_no_comment' => "No Comments yet!",
 'details_details' => "Details for torrent ",
+'details_dloadpos' => "You are not allowed to download !",
 
 );
 

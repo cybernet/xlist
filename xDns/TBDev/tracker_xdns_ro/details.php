@@ -119,7 +119,9 @@ if (!$row || ($row["banned"] == "yes" && !$moderator))
 //		if ($owned)
 //			$s .= " $spacer<$editlink>[Edit torrent]</a>";
 //		tr("Name", $s, 1);
-
+if ($CURUSER["id"] == $row["owner"]) $CURUSER["downloadpos"] = "yes";
+if ($CURUSER["downloadpos"] != "no")
+{
 		$HTMLOUT .= "<tr><td class='rowhead' width='1%'>{$lang['details_download']}</td><td width='99%' align='left'><a class='index' href='download.php?torrent=$id'>" . htmlspecialchars($row["filename"]) . "</a></td></tr>";
 /*
 		function hex_esc($matches) {
@@ -127,6 +129,10 @@ if (!$row || ($row["banned"] == "yes" && !$moderator))
 		}
 		$HTMLOUT .= tr("{$lang['details_info_hash']}", preg_replace_callback('/./s', "hex_esc", hash_pad($row["info_hash"])));
 */
+}
+else {
+$HTMLOUT .= tr("{$lang['details_download']}", "{$lang['details_dloadpos']}");
+}
 		$HTMLOUT .= tr("{$lang['details_info_hash']}", $row["info_hash"]);
 
 		if (!empty($row["descr"]))
