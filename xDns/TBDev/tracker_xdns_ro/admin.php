@@ -51,7 +51,7 @@
                         'docleanup'       => 'docleanup',
                         'log'             => 'log',
                         'news'            => 'news',
-                        'forummanage'     => 'forummanage'
+                        'forummanage'     => 'forummanage',
                         'themes'          => 'themes'
                         );
     
