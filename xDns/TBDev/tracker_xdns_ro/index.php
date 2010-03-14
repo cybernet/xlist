@@ -188,7 +188,7 @@ if ($CURUSER['show_shout'] === "yes") {
  }
  //==end 09 shoutbox
 
-	/* UN COMMENT TO USE ACTIVE USERS ON INDEX
+//  UN COMMENT TO USE ACTIVE USERS ON INDEX
 	$file = "./cache/active.txt";
 $expire = 30; // 30 seconds
 if (file_exists($file) && filemtime($file) > (time() - $expire)) {
@@ -237,7 +237,6 @@ if (!$activeusers)
 ";
 
  	$HTMLOUT .="<div id='activeindex2'><span style='color:#4080B0'>Sysop</span> | <span style='color:#B000B0'>Administrator</span> | <span style='color:#FE2E2E'>Moderator</span> | <span style='color:#256903'>Code-Team</span> | <span style='color:#04ab27'>Graphic-Team</span> | <span style='color:#0000FF'>Uploader</span> | <span style='color:#009F00'>VIP</span> | <span style='color:#f9a200'>Power User</span> | <span style='color:#8E35EF'>User</span> | <span style='color:#b1b1b1'>Warned <img src='/pic/warned.gif' /></span></div>";
-*/
 	$HTMLOUT .= "
 
 <div><div id='headindex'>{$lang['stats_title']}</div>
