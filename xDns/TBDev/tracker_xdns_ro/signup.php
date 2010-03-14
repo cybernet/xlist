@@ -18,6 +18,7 @@
 */
 require_once "include/bittorrent.php";
 require_once ROOT_PATH."/cache/timezones.php";
+get_template();
 
 dbconn();
     

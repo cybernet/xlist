@@ -112,28 +112,11 @@ $outmessages = $arr[0];
 
     ****************/
     $stylesheets ='';
-    $ss_r = mysql_query("SELECT * from stylesheets") or die;
-    $ss_sa = array();
-    while ($ss_a = mysql_fetch_assoc($ss_r))
-    {
-      $ss_id = $ss_a["id"];
-      $ss_name = $ss_a["name"];
-      $ss_sa[$ss_name] = $ss_id;
-    }
-    ksort($ss_sa);
-    reset($ss_sa);
-    while (list($ss_name, $ss_id) = each($ss_sa))
-    {
-      if ($ss_id == $CURUSER["stylesheet"])
-      { 
-        $ss = " selected='selected'";
-      }
-      else
-      {
-        $ss = "";
-      }
-      $stylesheets .= "<option value='$ss_id'$ss>$ss_name</option>\n";
-    }
+    $TEMPLATES = mysql_query("SELECT * FROM stylesheets");
+	while($TEMPL = mysql_fetch_array($TEMPLATES)){
+		if(file_exists("templates/$TEMPL[id]/template.php"))
+			$stylesheets .= "<option value='$TEMPL[id]'".($TEMPL['id'] == $CURUSER['stylesheet'] ? " selected='selected'":"").">$TEMPL[name]</option>";
+	}
 
     $countries = "<option value='0'>---- {$lang['my_none']} ----</option>\n";
     $ct_r = mysql_query("SELECT id,name FROM countries ORDER BY name") or sqlerr(__FILE__,__LINE__);

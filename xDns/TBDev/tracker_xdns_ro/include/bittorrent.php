@@ -136,6 +136,7 @@ function userlogin() {
     mysql_query("UPDATE users SET last_access='" . TIME_NOW . "', ip=".sqlesc($ip)." WHERE id=" . $row["id"]);// or die(mysql_error());
     $row['ip'] = $ip;
     $GLOBALS["CURUSER"] = $row;
+	get_template();
 }
 
 function autoclean() {
@@ -248,178 +249,6 @@ function sqlesc($x) {
 
 function sqlwildcardesc($x) {
     return str_replace(array("%","_"), array("\\%","\\_"), mysql_real_escape_string($x));
-}
-
-
-function stdhead($title = "", $msgalert = true) {
-    global $CURUSER, $TBDEV, $lang;
-
-    if (!$TBDEV['site_online'])
-      die("Site is down for maintenance, please check back again later... thanks<br />");
-
-    //header("Content-Type: text/html; charset=iso-8859-1");
-    //header("Pragma: No-cache");
-    if ($title == "")
-        $title = $TBDEV['site_name'] .(isset($_GET['tbv'])?" (".TBVERSION.")":'');
-    else
-        $title = $TBDEV['site_name'].(isset($_GET['tbv'])?" (".TBVERSION.")":''). " :: " . htmlspecialchars($title);
-        
-    if ($CURUSER)
-    {
-    /*
-    $ss_a = @mysql_fetch_array(@sql_query("select uri from stylesheets where id=" . $CURUSER["stylesheet"]));
-
-    if ($ss_a) $ss_uri = $ss_a["uri"];
-    */
-      $TBDEV['stylesheet'] = isset($CURUSER['stylesheet']) ? "{$CURUSER['stylesheet']}.css" : $TBDEV['stylesheet'];
-    }
-  
-    if ($TBDEV['msg_alert'] && $msgalert && $CURUSER)
-    {
-      $res = mysql_query("SELECT COUNT(*) FROM messages WHERE receiver=" . $CURUSER["id"] . " && unread='yes'") or sqlerr(__FILE__,__LINE__);
-      $arr = mysql_fetch_row($res);
-      $unread = $arr[0];
-    }
-
-    $htmlout = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
-		\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
-		<!-- DESIGNED BY WWW.KIDVISION.ME | VERSION 3.0 | DONT REMOVE THIS -->
-		<html xmlns='http://www.w3.org/1999/xhtml'>
-		<head>
-
-			<meta name='generator' content='TBDev.net' />
-			<meta http-equiv='Content-Language' content='en-us' />
-			<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
-			<meta name='MSSmartTagsPreventParsing' content='TRUE' />
-			<title>{$title}</title>
-			<link rel='stylesheet' href='{$TBDEV['stylesheet']}' type='text/css' />
- 	<link rel='stylesheet' href='css-menu/borrar.css' type='text/css' />
- 	<link rel='stylesheet' href='css-menu/estilos.css' type='text/css' />
- 	<script type='text/javascript' src='scripts/jquery.js'></script>
- 		<script type='text/javascript' src='scripts/general.js'></script>
- 	<script type='text/javascript' src='scripts/java_klappe.js'></script>
-
-		</head>
-	
-	<body>
-
- 	<table width='1000' cellspacing='0' cellpadding='0' style='background: transparent' align='center'>
- 	<tr>
- 	<td class='clear'>
- 	<div id='logostrip'>";
- 	if ($CURUSER) 
-	{ 
- 	$htmlout .= "<div id='personlig'>";	
- 	if( $CURUSER['class'] >= UC_MODERATOR )
- 	{
- 	$htmlout .= "<a href='admin.php'>{$lang['gl_admin']}</a>&nbsp;|&nbsp;";
- 	}
-
-	$htmlout .= "<a href='donate.php'><span style='color:#a9ef00'><b>DONATE</b></span></a>&nbsp;|&nbsp;<a href='my.php'>{$lang['gl_profile']}</a>&nbsp;|&nbsp;<a href='logout.php'>{$lang['gl_logout']}</a>
-</div><ul id='iconbar'>
-<li><a href='index.php'>
-<img src='css-menu/home.png' alt='Home' />
-<span>{$lang['gl_home2']}</span>
-</a></li>
-
-<li><a href='browse.php'>
-<img src='css-menu/browse.png' alt='Browse' />
-<span>{$lang['gl_browse']}</span>
-</a></li>
-
-<li><a href='search.php'>
-<img src='css-menu/search.png' alt='Search' />
-<span>{$lang['gl_search']}</span>
-</a></li>
-
-<li><a href='upload.php'>
-<img src='css-menu/upload.png' alt='Upload' />
-<span>{$lang['gl_upload']}</span>
-</a></li>
-
-<li><a href='chat.php'>
-<img src='css-menu/chat.png' alt='Chat' />
-<span>{$lang['gl_chat']}</span>
-</a></li>
-
-<li><a href='forums.php'>
-<img src='css-menu/forum.png' alt='Forums' />
-<span>{$lang['gl_forums']}</span>
-</a></li>
-
-<li><a href='topten.php'>
-<img src='css-menu/top.png' alt='Top10' />
-<span>{$lang['gl_top_10']}</span>
-</a></li>
-
-<li><a href='rules.php'>
-<img src='css-menu/rules.png' alt='Rules' />
-<span>{$lang['gl_rules']}</span>
-</a></li>
-
-<li><a href='faq.php'>
-<img src='css-menu/faq.png' alt='Faq' />
-<span>{$lang['gl_faq']}</span>
-</a></li>
-
-<li><a href='links.php'>
-<img src='css-menu/links.png' alt='Links' />
-<span>{$lang['gl_links']}</span>
-</a></li>
-
-<li><a href='staff.php'>
-<img src='css-menu/staff.png' alt='Staff' />
-<span>{$lang['gl_staff']}</span>
-</a></li>
-
-</ul>
-";
-} 
-$htmlout .= StatusBar();
-$htmlout .="</div>
- 	</td>
- 	</tr></table>
- 	<table class='mainouter' width='100%' border='0' cellspacing='0' cellpadding='10'>
- 	<tr><td align='center' class='outer' style='padding-top: 20px; padding-bottom: 20px'>";
-
-	if ($TBDEV['msg_alert'] && isset($unread) && !empty($unread))
-	{
- 	$htmlout .= "<p><div bgcolor='red'>
- 	<b><a href='messages.php'><font color='white'>".sprintf($lang['gl_msg_alert'], $unread) . ($unread > 1 ? "s" : "") . "!</font></a></b>
- 	</div></p>\n";
-	}
-
-	return $htmlout;
-	
-} // stdhead
-
-function stdfoot() {
- global $TBDEV;
- 
-	return "<p align='center'><a href='http://validator.w3.org'><img src='pic/login/xhtml_valid.png' alt='Xhtml valid'/></a>&nbsp;&nbsp;<a href='http://jigsaw.w3.org/css-validator/check/'><img src='pic/login/css_valid.png' alt='Xhtml valid' /></a>&nbsp;&nbsp;<a href='http://tbdev.net'><img src='pic/login/tbdev_power.png' alt='TBDEV'/></a>&nbsp;&nbsp;<a href='http://kidvision.me'><img src='pic/login/kidvision_design.png' alt='Design'/></a></p>
-<script type=\"text/javascript\">
-var gaJsHost = ((\"https:\" == document.location.protocol) ? \"https://ssl.\" : \"http://www.\");
-document.write(unescape(\"%3Cscript src='\" + gaJsHost + \"google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E\"));
-</script>
-<script type=\"text/javascript\">
-try {
-var pageTracker = _gat._getTracker(\"UA-13256113-1\");
-pageTracker._trackPageview();
-} catch(err) {}</script>\n
-<!-- Piwik -->
-<script type=\"text/javascript\">
-var pkBaseURL = ((\"https:\" == document.location.protocol) ? \"https://stats.xdns.ro/\" : \"http://stats.xdns.ro/\");
-document.write(unescape(\"%3Cscript src='\" + pkBaseURL + \"piwik.js' type='text/javascript'%3E%3C/script%3E\"));
-</script><script type=\"text/javascript\">
-try {
-var piwikTracker = Piwik.getTracker(pkBaseURL + \"piwik.php\", 4);
-piwikTracker.trackPageView();
-piwikTracker.enableLinkTracking();
-} catch( err ) {}
-</script><noscript><p><img src=\"http://stats.xdns.ro/piwik.php?idsite=4\" style=\"border:0\" alt=\"\"/></p></noscript>
-<!-- End Piwik Tag -->\n
-	</td></tr></table>\n
-	</body></html>\n";
 }
 
 
@@ -559,20 +388,6 @@ function get_row_count($table, $suffix = "")
   ($r = mysql_query("SELECT COUNT(*) FROM $table$suffix")) or die(mysql_error());
   ($a = mysql_fetch_row($r)) or die(mysql_error());
   return $a[0];
-}
-
-function stdmsg($heading, $text)
-{
-    $htmlout = "<table class='main' width='750' border='0' cellpadding='0' cellspacing='0'>
-    <tr><td class='embedded'>\n";
-    
-    if ($heading)
-      $htmlout .= "<h2>$heading</h2>\n";
-    
-    $htmlout .= "<table width='100%' border='1' cellspacing='0' cellpadding='10'><tr><td class='text'>\n";
-    $htmlout .= "{$text}</td></tr></table></td></tr></table>\n";
-  
-    return $htmlout;
 }
 
 
@@ -860,78 +675,62 @@ function get_date($date, $method, $norelative=0, $full_relative=0)
         }
 }
 
+function get_template(){
+	global $CURUSER, $TBDEV;
+	if(isset($CURUSER)){
+		if(file_exists("templates/".$CURUSER['stylesheet']."/template.php")){
+			require_once("templates/".$CURUSER['stylesheet']."/template.php");
+		}else{
+			if(isset($TBDEV)){
+				if(file_exists("templates/".$TBDEV['stylesheet']."/template.php")){
+					require_once("templates/".$TBDEV['stylesheet']."/template.php");
+				}else{
+					print("Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.");
+				}
+			}else{
+				if(file_exists("templates/1/template.php")){
+					require_once("templates/1/template.php");
+				}else{
+					print("Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.");
+				}
+			}
+		}
+	}else{
+		if(file_exists("templates/".$TBDEV['stylesheet']."/template.php")){
+			require_once("templates/".$TBDEV['stylesheet']."/template.php");
+		}else{
+			print("Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.");
+		}
+	}
+	if(!function_exists("stdhead")){
+		print("stdhead function missing");
+		function stdhead($title="", $message=true){
+			return "<html><head><title>$title</title></head><body>";
+		}
+	}
+	if(!function_exists("stdfoot")){
+		print("stdfoot function missing");
+		function stdfoot(){
+			return "</body></html>";
+		}
+	}
+	if(!function_exists("stdmsg")){
+		print("stdmgs function missing");
+		function stdmsg($TITLE, $MSG){
+			return "<b>".$TITLE."</b><br />$MSG";
+		}
+	}
+	if(!function_exists("StatusBar")){
+		print("StatusBar function missing");
+		function StatusBar(){
+			global $CURUSER, $lang;
+			return "{$lang['gl_msg_welcome']}, $CURUSER[username]";
+		}
+	}
+}
 
 function hash_pad($hash) {
     return str_pad($hash, 20);
-}
-
-
-function StatusBar() {
-
-	global $CURUSER, $TBDEV, $lang, $rep_is_on;
-	
-	if (!$CURUSER)
-		return "<p align='center'>
-Yeah Yeah!</p>";
- 
- $usercolors= array('#8E35EF','#f9a200','#009F00','#0000FF','#FE2E2E','#B000B0','#4080B0');
-	$upped = mksize($CURUSER['uploaded']);
-	$downed = mksize($CURUSER['downloaded']);
- $ratio = $CURUSER['downloaded'] > 0 ? $CURUSER['uploaded'] / $CURUSER['downloaded'] : 0;
- $ratio = number_format($ratio, 2);
- $color = get_ratio_color($ratio);
- if ($color)
- $ratio = "<font color='$color'>$ratio</font>";
-
-	$IsDonor = '';
-	if ($CURUSER['donor'] == "yes")
-	
-	$IsDonor = "<img src='{$TBDEV['pic_base_url']}star.png' alt='donor' title='donor' />";
-
-
-	$warn = '';
-	if ($CURUSER['warned'] == "yes")
-	
-	$warn = "<img src='{$TBDEV['pic_base_url']}warned.png' alt='warned' title='warned' />";
-	
-	$res1 = @mysql_query("SELECT COUNT(*) FROM messages WHERE receiver=" . $CURUSER["id"] . " AND unread='yes'") or sqlerr(__LINE__,__FILE__);
-	
-	$arr1 = mysql_fetch_row($res1);
-	
-	$unread = $arr1[0];
-	
-	$inbox = ($unread == 1 ? "$unread&nbsp;{$lang['gl_msg_singular']}" : "$unread&nbsp;{$lang['gl_msg_plural']}");
-
-	
-	$res2 = @mysql_query("SELECT seeder, COUNT(*) AS pCount FROM peers WHERE userid=".$CURUSER['id']." GROUP BY seeder") or sqlerr(__LINE__,__FILE__);
-	
-	$seedleech = array('yes' => '0', 'no' => '0');
-	
-	while( $row = mysql_fetch_assoc($res2) ) {
-		if($row['seeder'] == 'yes')
-			$seedleech['yes'] = $row['pCount'];
-		else
-			$seedleech['no'] = $row['pCount'];
-		
-	}
-	
-/////////////// REP SYSTEM /////////////
-$member_reputation = get_reputation($CURUSER);
- $StatusBar = '';
-		$StatusBar = 
-		"<div id='statusbar'>".
-		"<div style='float:left;color:white;'>{$lang['gl_msg_welcome']}, <a href='{$TBDEV['baseurl']}/userdetails.php?id={$CURUSER['id']}'><font style='color:{$usercolors[$CURUSER['class']]}'>{$CURUSER['username']}</font></a>".
-		"$IsDonor$warn&nbsp;|&nbsp;&nbsp;$member_reputation
-		
-{$lang['gl_ratio']}:$ratio".
-		"&nbsp;&nbsp;{$lang['gl_uploaded']}:$upped".
-		"&nbsp;&nbsp;{$lang['gl_downloaded']}:$downed".
-		"&nbsp;&nbsp;{$lang['gl_act_torrents']}:&nbsp;<img alt='{$lang['gl_seed_torrents']}' title='{$lang['gl_seed_torrents']}' src='{$TBDEV['pic_base_url']}up.png' />&nbsp;{$seedleech['yes']}".
-		"&nbsp;&nbsp;<img alt='{$lang['gl_leech_torrents']}' title='{$lang['gl_leech_torrents']}' src='{$TBDEV['pic_base_url']}dl.png' />&nbsp;{$seedleech['no']}</div>".
-		"<div><p style='text-align:right;'>".
-	"<a href='{$TBDEV['baseurl']}/messages.php'>$inbox</a></p></div>".
-"</div>";
-return $StatusBar;
 }
 
 function load_language($file='') {

@@ -119,7 +119,7 @@ $TBDEV['msg_alert'] = 0; // saves a query when off
 $TBDEV['autoclean_interval'] = 900;
 $TBDEV['sql_error_log'] = ROOT_PATH.'/logs/sql_err_'.date("M_D_Y").'.log';
 $TBDEV['pic_base_url'] = "./pic/";
-$TBDEV['stylesheet'] = "./1.css";
+$TBDEV['stylesheet'] = "1";
 $TBDEV['readpost_expiry'] = 14*86400; // 14 days
 //set this to size of user avatars
 $TBDEV['av_img_height'] = 100;

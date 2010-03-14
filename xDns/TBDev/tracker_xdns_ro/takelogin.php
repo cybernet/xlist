@@ -18,6 +18,7 @@
 */
 require_once 'include/bittorrent.php';
 require_once "include/password_functions.php";
+get_template();
 
     if (!mkglobal('username:password:captcha'))
       die();

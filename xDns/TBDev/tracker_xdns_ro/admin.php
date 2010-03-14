@@ -52,6 +52,7 @@
                         'log'             => 'log',
                         'news'            => 'news',
                         'forummanage'     => 'forummanage'
+                        'themes'          => 'themes'
                         );
     
     if( in_array($action, $ad_actions) AND file_exists( "admin/{$ad_actions[ $action ]}.php" ) )
