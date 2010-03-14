@@ -74,8 +74,8 @@ else
 	if (get_user_class() >= UC_ADMINISTRATOR)
  	$adminbutton = "&nbsp;&nbsp;<span style='color:#fff; font-size:10px;'><a href='admin.php?action=news'>[Add]</a></span>\n";
  	
-	$HTMLOUT .= "<div style='text-align:left;width:950px;border:0px;padding:5px;'>
-	<div id='headindex'>{$lang['news_title']}{$adminbutton}</div>
+	$HTMLOUT .= "<div class='roundedCorners' style='text-align:left;width:80%;border:1px solid black;padding:5px;'>
+	<div style='background:transparent;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['news_title']}{$adminbutton}</span></div><br />
 ";
  	
 	$res = mysql_query("SELECT * FROM news WHERE added + ( 3600 *24 *45 ) >
@@ -91,7 +91,7 @@ else
  	{
  	if (get_user_class() >= UC_ADMINISTRATOR)
  	{
- 	$button = "<span style='color:#fff; font-size:10px;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='admin.php?action=news&amp;mode=edit&amp;newsid={$array['id']}'>[{$lang['news_edit']}]</a>&nbsp;&nbsp;<a href='admin.php?action=news&amp;mode=delete&amp;newsid={$array['id']}'>[{$lang['news_delete']}]</a></span\n";
+ 	$button = "<span style='color:#fff; font-size:10px;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='admin.php?action=news&amp;mode=edit&amp;newsid={$array['id']}'>[{$lang['news_edit']}]</a>&nbsp;&nbsp;<a href='admin.php?action=news&amp;mode=delete&amp;newsid={$array['id']}'>[{$lang['news_delete']}]</a></span>\n";
  	}
  	
 		$HTMLOUT .= "<div id='headlineindex'>{$array['headline']}{$button}</div>
@@ -198,10 +198,10 @@ else
  }
  //==end 09 shoutbox
 */
-/*
-//latest torrents [see limit on config]
-	$HTMLOUT .= "<div style='text-align:left;width:80%;border:1px solid blue;padding:5px;'>
-	<div style='background:lightgrey;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['latesttorrents_title']}</span></div><br />";
+
+// latest torrents [see limit on config]
+	$HTMLOUT .= "<div class='roundedCorners' style='text-align:left;width:80%;border:1px solid black;padding:5px;'>
+	<div style='background:transparent;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['latesttorrents_title']}</span></div><br />";
 
 $res = mysql_query("SELECT t.id, t.name, t.category, t.seeders, t.leechers, c.name AS cat_name, c.image AS cat_img ".
  "FROM torrents AS t ".
@@ -231,8 +231,8 @@ $HTMLOUT .= "</table></div><br />\n";
 // if there are no torrents
 $HTMLOUT .= "<div style='text-align:center;border:1px solid blue;background:lightgrey;'><span style='font-weight:bold;font-size:10pt;'>{$lang['latesttorrents_no_torrents']}</span></div></div><br />";
 }
-//end latest torrents
-*/
+// end latest torrents
+/*
 //  UN COMMENT TO USE ACTIVE USERS ON INDEX
 	$file = "./cache/active.txt";
 $expire = 30; // 30 seconds
@@ -282,6 +282,7 @@ if (!$activeusers)
 ";
 
  	$HTMLOUT .="<div id='activeindex2'><span style='color:#4080B0'>Sysop</span> | <span style='color:#B000B0'>Administrator</span> | <span style='color:#FE2E2E'>Moderator</span> | <span style='color:#256903'>Code-Team</span> | <span style='color:#04ab27'>Graphic-Team</span> | <span style='color:#0000FF'>Uploader</span> | <span style='color:#009F00'>VIP</span> | <span style='color:#f9a200'>Power User</span> | <span style='color:#8E35EF'>User</span> | <span style='color:#b1b1b1'>Warned <img src='/pic/warned.gif' /></span></div>";
+*/
 	$HTMLOUT .="<div class='roundedCorners' style='text-align:left;width:80%;border:1px solid black;padding:5px;'>
    <div style='background:transparent;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_stats_title']}</span></div><br />
    <table width='100%' border='1' cellspacing='0' cellpadding='10'><tr><td align='center'>
