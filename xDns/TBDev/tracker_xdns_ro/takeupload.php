@@ -196,6 +196,8 @@ loggedinorreturn();
     }
     $id = mysql_insert_id();
 
+    $message = "{$lang['takeupload_new_torrent_uploaded']} : [url={$TBDEV['baseurl']}/details.php?id=$id] " . htmlspecialchars($torrent) . "[/url] {$lang['takeupload_by']} " . htmlspecialchars($CURUSER["username"]) . "";
+
     @mysql_query("DELETE FROM files WHERE torrent = $id");
 
     function file_list($arr,$id)
@@ -209,7 +211,9 @@ loggedinorreturn();
 
     move_uploaded_file($tmpname, "{$TBDEV['torrent_dir']}/$id.torrent");
 
-   write_log(sprintf($lang['takeupload_log'], $id, $torrent, $CURUSER['username']));
+    write_log(sprintf($lang['takeupload_log'], $id, $torrent, $CURUSER['username']));
+
+    autoshout($message);
 
 
     /* RSS feeds */

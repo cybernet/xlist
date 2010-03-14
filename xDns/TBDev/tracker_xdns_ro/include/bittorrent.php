@@ -168,6 +168,12 @@ function unesc($x) {
     return $x;
 }
 
+function autoshout($msg = '')
+{
+    $message = $msg;
+    mysql_query("INSERT INTO shoutbox (date, text, userid, username) VALUES (" . implode(", ", array_map("sqlesc", array(time(), $message, '2', 'System'))) . ")") or sqlerr(__FILE__, __LINE__);
+}
+
 function mksize($bytes)
 {
 	if ($bytes < 1000 * 1024)

@@ -148,6 +148,7 @@ function isproxy()
     $ret = mysql_query("INSERT INTO users (username, passhash, secret, editsecret, email, status, ". (!$arr[0]?"class, ":"") ."added, time_offset, dst_in_use) VALUES (" .
 		implode(",", array_map("sqlesc", array($wantusername, $wantpasshash, $secret, $editsecret, $email, (!$arr[0]?'confirmed':'pending')))).
 		", ". (!$arr[0]?UC_SYSOP.", ":""). "". time() ." , $time_offset, {$dst_in_use['tm_isdst']})");
+    $message = "{$lang['takesignup_welcome_new']} {$TBDEV['takesignup_member']} {$lang['takesignup_user_error']} : - " . htmlspecialchars($wantusername) . "";
 
     if (!$ret) 
     {
@@ -161,6 +162,8 @@ function isproxy()
 //write_log("User account $id ($wantusername) was created");
 
     $psecret = $editsecret; //md5($editsecret);
+
+    autoshout($message);
 
     $body = str_replace(array('<#SITENAME#>', '<#USEREMAIL#>', '<#IP_ADDRESS#>', '<#REG_LINK#>'),
                         array($TBDEV['site_name'], $email, $_SERVER['REMOTE_ADDR'], "{$TBDEV['baseurl']}/confirm.php?id=$id&secret=$psecret"),

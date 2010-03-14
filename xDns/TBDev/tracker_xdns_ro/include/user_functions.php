@@ -190,6 +190,22 @@ function get_user_class()
     return $CURUSER["class"];
 }
 
+function get_user_class_color($class)
+{
+    switch ($class)
+    {        
+
+        case UC_USER: return "8E35EF";
+        case UC_POWER_USER: return "f9a200";
+        case UC_VIP: return "009F00";
+        case UC_UPLOADER: return "0000FF";
+        case UC_MODERATOR: return "FE2E2E";
+        case UC_ADMINISTRATOR: return "B000B0";
+        case UC_SYSOP: return "4080B0";
+    }
+    return "";
+}
+
 function get_user_class_name($class)
 {
   switch ($class)

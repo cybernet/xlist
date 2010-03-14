@@ -151,7 +151,13 @@ function docleanup() {
     $pids[] = $arr['id'];
 		mysql_query("UPDATE topics SET locked='yes' WHERE id IN (".join(',', $pids).")") or sqlerr(__FILE__, __LINE__);
   }
-*/  
+*/
+// delete shouts older then 2 days start  
+  $secs = 2 * 86400;
+  $dt = sqlesc(time() - $secs);
+  mysql_query("DELETE FROM shoutbox WHERE " . time() . " - date > $secs") or sqlerr(__FILE__, __LINE__);
+// delete shouts older then 2 days end
+
   //remove expired warnings
   $res = @mysql_query("SELECT id FROM users WHERE warned='yes' AND warneduntil < ".time()." AND warneduntil <> 0") or sqlerr(__FILE__, __LINE__);
   if (mysql_num_rows($res) > 0)

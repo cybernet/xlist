@@ -147,6 +147,8 @@ loggedinorreturn();
     $updateset[] = "torrentsperpage = " . min(100, 0 + $_POST["torrentsperpage"]);
     $updateset[] = "topicsperpage = " . min(100, 0 + $_POST["topicsperpage"]);
     $updateset[] = "postsperpage = " . min(100, 0 + $_POST["postsperpage"]);
+    $shoutboxbg = 0 + $_POST["shoutboxbg"];
+    $updateset[] = "shoutboxbg = " . sqlesc($shoutboxbg);
 
     if (is_valid_id($stylesheet))
       $updateset[] = "stylesheet = '$stylesheet'";

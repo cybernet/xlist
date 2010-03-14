@@ -29,6 +29,8 @@ $lang = array(
 'takeupload_error' => "filename error",
 'takeupload_already' => "torrent already uploaded!",
 'takeupload_log' => "Torrent %s (%s) was uploaded by %s",
+'takeupload_new_torrent_uploaded' => "New torrent uploaded",
+'takeupload_by' => "by",
 
 );
 

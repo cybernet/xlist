@@ -23,7 +23,9 @@ $lang = array(
 'takesignup_fatal_error' => "Fatal Error!",
 'takesignup_mail' => "",
 'takesignup_confirm' => "user registration confirmation",
-'takesignup_from' => "From:"
+'takesignup_from' => "From:",
+'takesignup_welcome_new' => "Welcome New",
+'takesignup_member' => "member"
 );
 
 $lang['takesignup_email_body'] = <<<EOD

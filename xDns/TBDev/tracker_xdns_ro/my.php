@@ -125,6 +125,8 @@ $outmessages = $arr[0];
     {
       $countries .= "<option value='{$ct_a['id']}'" . ($CURUSER["country"] == $ct_a['id'] ? " selected='selected'" : "") . ">{$ct_a['name']}</option>\n";
     }
+    $HTMLOUT .= tr("".$lang['my_shoutback']."", "<input type='radio' name='shoutboxbg'" . ($CURUSER["shoutboxbg"] == "1" ? " checked='checked'" : "") . " value='1' />{$lang['my_shoutback_white']}
+    <input type='radio' name='shoutboxbg'" . ($CURUSER["shoutboxbg"] == "2" ? " checked='checked'" : "") . " value='2' />{$lang['my_shoutback_grey']}<input type='radio' name='shoutboxbg'" . ($CURUSER["shoutboxbg"] == "3" ? " checked='checked'" : "") . " value='3' />{$lang['my_shoutback_black']}", 1);
         //-----------------------------------------
         // Work out the timezone selection
         //-----------------------------------------

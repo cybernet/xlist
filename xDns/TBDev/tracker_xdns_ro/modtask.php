@@ -195,7 +195,12 @@ if ((isset($_POST['action'])) && ($_POST['action'] == "edituser"))
     mysql_query("INSERT INTO messages (sender, receiver, msg, added) VALUES (0, $userid, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     $updateset[] = "donor = 'yes'";
     }
-
+    // === Enable / Disable chat box rights
+    if ((isset($_POST['chatpost'])) && (($chatpost = $_POST['chatpost']) != $user['chatpost'])) {
+        $modcomment = get_date( time(), 'DATE', 1 ) . " {$lang['modtask_chatpos']} " . sqlesc($chatpost) .
+            " {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
+        $updateset[] = "chatpost = " . sqlesc($chatpost);
+    }
     // Enable / Disable
     if ((isset($_POST['enabled'])) && (($enabled = $_POST['enabled']) != $user['enabled']))
     {

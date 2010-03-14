@@ -97,6 +97,63 @@ else
 
     $HTMLOUT .= "</div><br />\n";
 
+// === TbDev 09 Shoutbox 
+   if ($CURUSER['show_shout'] === "yes") {
+   $commandbutton = '';
+   $refreshbutton = '';
+   $smilebutton = '';
+   if ($CURUSER['class'] >= UC_ADMINISTRATOR){
+   $commandbutton = "<span style='float:right;'><a href=\"javascript:popUp('shoutbox_commands.php')\">{$lang['index_shoutbox_commands']}</a></span>\n";}
+   $refreshbutton = "<span style='float:right;'><a href='shoutbox.php' target='sbox'>{$lang['index_shoutbox_refresh']}</a></span>\n";
+   $smilebutton = "<span style='float:right;'><a href=\"javascript:PopMoreSmiles('shbox','shbox_text')\">{$lang['index_shoutbox_smilies']}</a></span>\n";
+   $HTMLOUT .= "<form action='shoutbox.php' method='get' target='sbox' name='shbox' onsubmit='mysubmit()' />
+   <div style='text-align:left;width:80%;border:1px solid blue;padding:5px;'><div style='background:lightgrey;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_shout']}</span></div><br />
+   <b>{$lang['index_shoutbox']}</b> [ <a href='shoutbox.php?show_shout=1&show=no'><b>{$lang['index_shoutbox_close']}</b></a> ]
+   <iframe src='shoutbox.php' width='100%' height='200' frameborder='0' name='sbox' marginwidth='0' marginheight='0'></iframe>
+   <br/>
+   <br/>
+   <div align='center'>
+   <b>{$lang['index_shoutbox_shout']}</b>
+   <script type=\"text/javascript\" src=\"scripts/shout.js\"></script> 
+   <input type='text' maxlength='180' name='shbox_text' size='100' />
+   <input class='button' type='submit' value='{$lang['index_shoutbox_send']}' />
+   <input type='hidden' name='sent' value='yes' />
+   <br />
+	 <a href=\"javascript:SmileIT(':-)','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/smile1.gif' alt='Smile' title='Smile' /></a> 
+   <a href=\"javascript:SmileIT(':smile:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/smile2.gif' alt='Smiling' title='Smiling' /></a> 
+   <a href=\"javascript:SmileIT(':-D','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/grin.gif' alt='Grin' title='Grin' /></a> 
+   <a href=\"javascript:SmileIT(':lol:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/laugh.gif' alt='Laughing' title='Laughing' /></a> 
+   <a href=\"javascript:SmileIT(':w00t:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/w00t.gif' alt='W00t' title='W00t' /></a> 
+   <a href=\"javascript:SmileIT(':blum:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/blum.gif' alt='Rasp' title='Rasp' /></a> 
+   <a href=\"javascript:SmileIT(';-)','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/wink.gif' alt='Wink' title='Wink' /></a> 
+   <a href=\"javascript:SmileIT(':devil:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/devil.gif' alt='Devil' title='Devil' /></a> 
+   <a href=\"javascript:SmileIT(':yawn:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/yawn.gif' alt='Yawn' title='Yawn' /></a> 
+   <a href=\"javascript:SmileIT(':-/','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/confused.gif' alt='Confused' title='Confused' /></a> 
+   <a href=\"javascript:SmileIT(':o)','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/clown.gif' alt='Clown' title='Clown' /></a> 
+   <a href=\"javascript:SmileIT(':innocent:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/innocent.gif' alt='Innocent' title='innocent' /></a> 
+   <a href=\"javascript:SmileIT(':whistle:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/whistle.gif' alt='Whistle' title='Whistle' /></a> 
+   <a href=\"javascript:SmileIT(':unsure:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/unsure.gif' alt='Unsure' title='Unsure' /></a> 
+   <a href=\"javascript:SmileIT(':blush:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/blush.gif' alt='Blush' title='Blush' /></a> 
+   <a href=\"javascript:SmileIT(':hmm:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/hmm.gif' alt='Hmm' title='Hmm' /></a> 
+   <a href=\"javascript:SmileIT(':hmmm:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/hmmm.gif' alt='Hmmm' title='Hmmm' /></a> 
+   <a href=\"javascript:SmileIT(':huh:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/huh.gif' alt='Huh' title='Huh' /></a> 
+   <a href=\"javascript:SmileIT(':look:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/look.gif' alt='Look' title='Look' /></a> 
+   <a href=\"javascript:SmileIT(':rolleyes:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/rolleyes.gif' alt='Roll Eyes' title='Roll Eyes' /></a> 
+   <a href=\"javascript:SmileIT(':kiss:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/kiss.gif' alt='Kiss' title='Kiss' /></a> 
+   <a href=\"javascript:SmileIT(':blink:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/blink.gif' alt='Blink' title='Blink' /></a> 
+   <a href=\"javascript:SmileIT(':baby:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/baby.gif' alt='Baby' title='Baby' /></a><br/>
+	 <div style='background:lightgrey;height:25px;'><span style='font-weight:bold;font-size:8pt;'>{$refreshbutton}</span></div>
+   <div style='background:lightgrey;height:25px;'><span style='font-weight:bold;font-size:8pt;'>{$smilebutton}</span></div>
+   <div style='background:lightgrey;height:25px;'><span style='font-weight:bold;font-size:8pt;'>{$commandbutton}</span></div>
+   </div>
+   <br /> 
+	 </div>
+   <br />\n";
+   }
+   if ($CURUSER['show_shout'] === "no") {
+   $HTMLOUT .="<div style='text-align:left;width:80%;border:1px solid blue;padding:5px;'><div style='background:lightgrey;height:25px;'><b>{$lang['index_shoutbox']} </b>[ <a href='{$TBDEV['baseurl']}/shoutbox.php?show_shout=1&show=yes'><b>{$lang['index_shoutbox_open']} ]</b></a></div></div><br />";
+   }
+   //==end 09 shoutbox
 
     $HTMLOUT .= "<div style='text-align:left;width:80%;border:1px solid pink;padding:5px;'>
     <div style='background:lightgrey;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['stats_title']}</span></div><br />

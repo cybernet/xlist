@@ -69,6 +69,7 @@ $lang = array(
 'userdetails_fpost' => "Forum post possible",
 'userdetails_upos' => "Upload possible",
 'userdetails_dpos' => "Download possible",
+'userdetails_chatpos' => "Chat possible",
 
 
 );

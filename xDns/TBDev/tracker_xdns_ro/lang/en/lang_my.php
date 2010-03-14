@@ -57,7 +57,11 @@ $lang = array(
 'my_revert' => 'Revert changes!',
 
 #my stdhead
-'my_stdhead' => '\'s private page'
+'my_stdhead' => '\'s private page',
+'my_shoutback' => 'Shoutbox background',
+'my_shoutback_white' => 'White',
+'my_shoutback_grey' => 'Grey',
+'my_shoutback_black' => 'Black',
 
 );
 
