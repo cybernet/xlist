@@ -24,11 +24,6 @@ dbconn();
 loggedinorreturn();
 
 $lang = load_language('download');
-
-if (!($CURUSER["id"] == $row["owner"])) {
-if ($CURUSER["downloadpos"] == "no")
-stderr("ERROR","{$lang['download_rights_disabled_lol']}");
-}
   
   $id = isset($_GET['torrent']) ? intval($_GET['torrent']) : 0;
 
@@ -36,8 +31,13 @@ stderr("ERROR","{$lang['download_rights_disabled_lol']}");
     stderr("{$lang['download_user_error']}", "{$lang['download_no_id']}");
 
 
-  $res = mysql_query("SELECT name, filename FROM torrents WHERE id = $id") or sqlerr(__FILE__, __LINE__);
+  $res = mysql_query("SELECT name, filename, owner FROM torrents WHERE id = $id") or sqlerr(__FILE__, __LINE__);
   $row = mysql_fetch_assoc($res);
+
+if (!($CURUSER["id"] == $row["owner"])) {
+if ($CURUSER["downloadpos"] == "no")
+stderr("ERROR","{$lang['download_rights_disabled_lol']}");
+}
 
   $fn = "{$TBDEV['torrent_dir']}/$id.torrent";
 

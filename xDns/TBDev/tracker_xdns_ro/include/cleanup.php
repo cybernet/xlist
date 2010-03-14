@@ -158,6 +158,20 @@ function docleanup() {
   mysql_query("DELETE FROM shoutbox WHERE " . time() . " - date > $secs") or sqlerr(__FILE__, __LINE__);
 // delete shouts older then 2 days end
 
+$registered = get_row_count('users');
+$unverified = get_row_count('users', "WHERE status='pending'");
+$torrents = get_row_count('torrents');
+$seeders = get_row_count('peers', "WHERE seeder='yes'");
+$leechers = get_row_count('peers', "WHERE seeder='no'");
+$torrentstoday = get_row_count('torrents', 'WHERE added > '.time().' - 86400'); 
+$donors = get_row_count('users', "WHERE donor='yes'");
+$unconnectables = get_row_count("peers", " WHERE connectable='no'");
+$forumposts = get_row_count("posts");
+$forumtopics = get_row_count("topics");
+$dt = sqlesc(time() - 300); // Active users last 5 minutes
+$numactive = get_row_count("users", "WHERE last_access >= $dt");
+mysql_query("UPDATE stats SET regusers = '$registered', unconusers = '$unverified', torrents = '$torrents', seeders = '$seeders', leechers = '$leechers', unconnectables = '$unconnectables', torrentstoday = '$torrentstoday', donors = '$donors', forumposts = '$forumposts', forumtopics = '$forumtopics', numactive = '$numactive' WHERE id = '1' LIMIT 1");
+
   //remove expired warnings
   $res = @mysql_query("SELECT id FROM users WHERE warned='yes' AND warneduntil < ".time()." AND warneduntil <> 0") or sqlerr(__FILE__, __LINE__);
   if (mysql_num_rows($res) > 0)
@@ -250,20 +264,6 @@ function docleanup() {
     @mysql_query("DELETE readposts FROM readposts ".
         "LEFT JOIN posts ON readposts.lastpostread = posts.id ".
         "WHERE posts.added < $dt") or sqlerr(__FILE__,__LINE__);
-
-$registered = get_row_count('users');
-$unverified = get_row_count('users', "WHERE status='pending'");
-$torrents = get_row_count('torrents');
-$seeders = get_row_count('peers', "WHERE seeder='yes'");
-$leechers = get_row_count('peers', "WHERE seeder='no'");
-$torrentstoday = get_row_count('torrents', 'WHERE added > '.time().' - 86400'); 
-$donors = get_row_count('users', "WHERE donor='yes'");
-$unconnectables = get_row_count("peers", " WHERE connectable='no'");
-$forumposts = get_row_count("posts");
-$forumtopics = get_row_count("topics");
-$dt = sqlesc(time() - 300); // Active users last 5 minutes
-$numactive = get_row_count("users", "WHERE last_access >= $dt");
-mysql_query("UPDATE stats SET regusers = '$registered', unconusers = '$unverified', torrents = '$torrents', seeders = '$seeders', leechers = '$leechers', unconnectables = '$unconnectables', torrentstoday = '$torrentstoday', donors = '$donors', forumposts = '$forumposts', forumtopics = '$forumtopics', numactive = '$numactive' WHERE id = '1' LIMIT 1");
 
 }
 

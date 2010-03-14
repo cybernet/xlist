@@ -107,7 +107,7 @@ else
 \n";
 
  if (get_user_class() >= UC_POWER_USER) {
- 	
+/* 	
 // 09 poster mod - UNCOMMENT IF YOU HAVE THIS
  $query = "SELECT id, name, poster FROM torrents WHERE poster <> '' ORDER BY added DESC limit 15";
 	$result = mysql_query( $query );
@@ -136,7 +136,7 @@ else
 	$HTMLOUT .= "</span></span><span id=\"vmarquee2\" style=\"position: absolute; width: 98%;\"></span></div></div></div>
 \n";
 	//== end 09 poster mod
-
+*/
  // === TbDev 09 Shoutbox USE SHOUT UNCOMMENT THIS
 /* if ($CURUSER['show_shout'] === "yes") {
  $commandbutton = '';
