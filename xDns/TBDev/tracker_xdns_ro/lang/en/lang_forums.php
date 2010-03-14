@@ -65,7 +65,7 @@ $lang = array(
 'forum_post_topic_na' => "Topic id n/a",
 'forum_post_post_na' => "Post id n/a",
 'forum_post_created_a_new_forum_topic' => "Created a new forum topic",
-'forum_post_replied_to_the_thread' => "Created a new forum topic",
+'forum_post_replied_to_the_thread' => "replied to the thread",
 
 
 #FORUM QUOTE POST
