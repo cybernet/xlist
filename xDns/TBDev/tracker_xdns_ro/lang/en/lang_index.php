@@ -33,6 +33,8 @@ It is your own responsibility to adhere to these terms.",
 'index_shoutbox_send'	=> "Send",
 'index_shoutbox_close'	=> "Close",
 'index_shoutbox_open'	=> "Open",
+'index_active' => "Active",
+
 #latest torrents
 'latesttorrents_title' => $TBDEV['latest_torrents_limit']." Latest Torrents",
 'latesttorrents_type' => "Type",
