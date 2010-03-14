@@ -37,24 +37,34 @@ if ($CURUSER)
 else
  $latestuser = $a['username'];
 
-	$registered = number_format(get_row_count("users"));
-	//$unverified = number_format(get_row_count("users", "WHERE status='pending'"));
-	$torrents = number_format(get_row_count("torrents"));
-	//$dead = number_format(get_row_count("torrents", "WHERE visible='no'"));
+	//==Stats Begin
+    $cache_stats = "./cache/stats.txt";
+    $cache_stats_life = 5 * 60; // 5min
+    if (file_exists($cache_stats) && is_array(unserialize(file_get_contents($cache_stats))) && (time() - filemtime($cache_stats)) < $cache_stats_life)
+    $row = unserialize(@file_get_contents($cache_stats));
+    else {
+    $stats = mysql_query("SELECT *, seeders + leechers AS peers, seeders / leechers AS ratio, unconnectables / (seeders + leechers) AS ratiounconn FROM stats WHERE id = '1' LIMIT 1") or sqlerr(__FILE__, __LINE__);
+    $row = mysql_fetch_assoc($stats);
+    $handle = fopen($cache_stats, "w+");
+    fwrite($handle, serialize($row));
+    fclose($handle);
+    }
 
-	$r = mysql_query("SELECT value_u FROM avps WHERE arg='seeders'") or sqlerr(__FILE__, __LINE__);
-	$a = mysql_fetch_row($r);
-	$seeders = 0 + $a[0];
-	$r = mysql_query("SELECT value_u FROM avps WHERE arg='leechers'") or sqlerr(__FILE__, __LINE__);
-	$a = mysql_fetch_row($r);
-	$leechers = 0 + $a[0];
-	if ($leechers == 0)
- 	$ratio = 0;
-	else
- 	$ratio = round($seeders / $leechers * 100);
-	$peers = number_format($seeders + $leechers);
-	$seeders = number_format($seeders);
-	$leechers = number_format($leechers);
+    $seeders = number_format($row['seeders']);
+    $leechers = number_format($row['leechers']);
+    $registered = number_format($row['regusers']);
+    $unverified = number_format($row['unconusers']);
+    $torrents = number_format($row['torrents']);
+    $torrentstoday = number_format($row['torrentstoday']);
+    $ratiounconn = $row['ratiounconn'];
+    $unconnectables = $row['unconnectables'];
+    $ratio = round(($row['ratio'] * 100));
+    $peers = number_format($row['peers']);
+    $numactive = number_format($row['numactive']);
+    $donors = number_format($row['donors']);
+    $forumposts = number_format($row['forumposts']);
+    $forumtopics = number_format($row['forumtopics']);
+    //==End
 
 
 	//stdhead();
@@ -272,31 +282,44 @@ if (!$activeusers)
 ";
 
  	$HTMLOUT .="<div id='activeindex2'><span style='color:#4080B0'>Sysop</span> | <span style='color:#B000B0'>Administrator</span> | <span style='color:#FE2E2E'>Moderator</span> | <span style='color:#256903'>Code-Team</span> | <span style='color:#04ab27'>Graphic-Team</span> | <span style='color:#0000FF'>Uploader</span> | <span style='color:#009F00'>VIP</span> | <span style='color:#f9a200'>Power User</span> | <span style='color:#8E35EF'>User</span> | <span style='color:#b1b1b1'>Warned <img src='/pic/warned.gif' /></span></div>";
-	$HTMLOUT .= "
-
-<div><div id='headindex'>{$lang['stats_title']}</div>
-
-	
- 	<table align='center' class='statindex' border='0' cellspacing='5' cellpadding='5'>
- 	<tr>
- 	<td class='rowhead'>{$lang['stats_regusers']}</td><td align='right'>{$registered}</td>
- 	<td class='rowhead'>{$lang['stats_torrents']}</td><td align='right'>{$torrents}</td>
- 	";
-		}
-	if (isset($peers)) 
-	{ 
- 	$HTMLOUT .= "<td class='rowhead'>{$lang['stats_peers']}</td><td align='right'>{$peers}</td>
- 	<td class='rowhead'>{$lang['stats_seed']}</td><td align='right'>{$seeders}</td>
- 	<td class='rowhead'>{$lang['stats_leech']}</td><td align='right'>{$leechers}</td>
- 	<td class='rowhead'>{$lang['stats_sl_ratio']}</td><td align='right'>{$ratio}</td></tr>";
-
-	} 
-
- 	$HTMLOUT .= "</table>
- 	</div>";
-	
-	$HTMLOUT .= "";
-	$HTMLOUT .= "
+	$HTMLOUT .="<div class='roundedCorners' style='text-align:left;width:80%;border:1px solid black;padding:5px;'>
+   <div style='background:transparent;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_stats_title']}</span></div><br />
+   <table width='100%' border='1' cellspacing='0' cellpadding='10'><tr><td align='center'>
+   <table class='main' border='1' cellspacing='0' cellpadding='5'>
+   <tr>
+	 <td class='rowhead'>{$lang['index_stats_regged']}</td><td align='right'>{$registered}/{$TBDEV['maxusers']}</td>
+	 <td class='rowhead'>{$lang['index_stats_online']}</td><td align='right'>{$numactive}</td>
+   </tr>
+   <tr>
+	 <td class='rowhead'>{$lang['index_stats_uncon']}</td><td align='right'>{$unverified}</td>
+	 <td class='rowhead'>{$lang['index_stats_donor']}</td><td align='right'>{$donors}</td>
+   </tr>
+   <tr>
+	 <td colspan='4'> </td>
+   </tr>
+   <tr>
+	 <td class='rowhead'>{$lang['index_stats_topics']}</td><td align='right'>{$forumtopics}</td>
+	 <td class='rowhead'>{$lang['index_stats_torrents']}</td><td align='right'>{$torrents}</td>
+   </tr>
+   <tr>
+   <td class='rowhead'>{$lang['index_stats_posts']}</td><td align='right'>{$forumposts}</td>
+	 <td class='rowhead'>{$lang['index_stats_newtor']}</td><td align='right'>{$torrentstoday}</td>
+   </tr>
+   <tr>
+   <td colspan='4'> </td>
+   </tr>
+   <tr>
+	 <td class='rowhead'>{$lang['index_stats_peers']}</td><td align='right'>{$peers}</td>
+	 <td class='rowhead'>{$lang['index_stats_unconpeer']}</td><td align='right'>{$unconnectables}</td>
+   </tr>
+   <tr>
+	 <td class='rowhead'>{$lang['index_stats_seeders']}</td><td align='right'>{$seeders}</td>
+	 <td class='rowhead' align='right'><b>{$lang['index_stats_unconratio']}</b></td><td align='right'><b>".round($ratiounconn * 100)."</b></td>
+   </tr>
+   <tr>
+	 <td class='rowhead'>{$lang['index_stats_leechers']}</td><td align='right'>{$leechers}</td>
+	 <td class='rowhead'>{$lang['index_stats_slratio']}</td><td align='right'>{$ratio}</td>
+   </tr></table></td></tr></table></div><br />
 <div><font class='small'>Welcome to our newest member, <b>$latestuser</b>!</font></div>
 
 
@@ -310,4 +333,5 @@ $HTMLOUT .= "<div><div id='newshold'>{$lang['foot_disclaimer']}</div>
 ///////////////////////////// FINAL OUTPUT //////////////////////
 
 	print stdhead('Home') . $HTMLOUT . stdfoot();
+}
 ?>

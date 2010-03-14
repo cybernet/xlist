@@ -9,14 +9,21 @@ $lang = array(
 'news_delete' 			=> "Delete",
 
 #Stats
-'stats_title' 			=> "Stats",
-'stats_regusers' 			=> "Registered Users",
-'stats_unverified' 				=> "Unconfirmed Users",
-'stats_torrents' 			=> "Torrents",
-'stats_peers' => "Peers",
-'stats_seed' 			=> "Seeders",
-'stats_leech' 			=> "Leechers",
-'stats_sl_ratio' 				=> "Seeder/leecher ratio (%)",
+'index_stats_title' => "Stats",
+'index_stats_regged' => "Registered Users",
+'index_stats_online' => "Users Online",
+'index_stats_uncon' => "Unconfirmed Users",
+'index_stats_donor' => "Donors",
+'index_stats_topics' => "Forum Topics",
+'index_stats_torrents' => "Torrents",
+'index_stats_posts' => "Forum Posts",
+'index_stats_newtor' => "New Torrents Today",
+'index_stats_peers' => "Peers",
+'index_stats_unconpeer' => "Unconnectable Peers",
+'index_stats_seeders' 	=> "Seeders",
+'index_stats_unconratio' => "Unconnectables ratio (%)",
+'index_stats_leechers' => "Leechers",
+'index_stats_slratio' => "Seeder/leecher ratio (%)",
 
 #disclaimer
 'foot_disclaimer' 			=> "Disclaimer: None of the files shown here are actually hosted on this server. The links are provided solely by this site's users.
