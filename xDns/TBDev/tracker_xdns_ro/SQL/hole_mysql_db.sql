@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 12, 2010 at 06:16 PM
+-- Generation Time: Mar 14, 2010 at 11:14 PM
 -- Server version: 5.1.37
 -- PHP Version: 5.2.10-2ubuntu6.4
 
@@ -554,6 +554,29 @@ CREATE TABLE IF NOT EXISTS `searchcloud` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `shoutbox`
+--
+
+CREATE TABLE IF NOT EXISTS `shoutbox` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `userid` bigint(6) NOT NULL DEFAULT '0',
+  `to_user` int(10) NOT NULL DEFAULT '0',
+  `username` varchar(25) NOT NULL DEFAULT '',
+  `date` int(11) NOT NULL DEFAULT '0',
+  `text` text NOT NULL,
+  `text_parsed` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `for` (`to_user`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `shoutbox`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sitelog`
 --
 
@@ -569,6 +592,35 @@ CREATE TABLE IF NOT EXISTS `sitelog` (
 -- Dumping data for table `sitelog`
 --
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stats`
+--
+
+CREATE TABLE IF NOT EXISTS `stats` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `regusers` int(10) unsigned NOT NULL DEFAULT '0',
+  `unconusers` int(10) unsigned NOT NULL DEFAULT '0',
+  `torrents` int(10) unsigned NOT NULL DEFAULT '0',
+  `seeders` int(10) unsigned NOT NULL DEFAULT '0',
+  `leechers` int(10) unsigned NOT NULL DEFAULT '0',
+  `torrentstoday` int(10) unsigned NOT NULL DEFAULT '0',
+  `donors` int(10) unsigned NOT NULL DEFAULT '0',
+  `unconnectables` int(10) unsigned NOT NULL DEFAULT '0',
+  `forumtopics` int(10) unsigned NOT NULL DEFAULT '0',
+  `forumposts` int(10) unsigned NOT NULL DEFAULT '0',
+  `numactive` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `stats`
+--
+
+INSERT INTO `stats` (`id`, `regusers`, `unconusers`, `torrents`, `seeders`, `leechers`, `torrentstoday`, `donors`, `unconnectables`, `forumtopics`, `forumposts`, `numactive`) VALUES
+(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -717,6 +769,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `uploadpos` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
   `forumpost` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
   `downloadpos` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
+  `show_shout` enum('yes','no') CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT 'yes',
+  `chatpost` enum('yes','no') CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT 'yes',
+  `shoutboxbg` enum('1','2','3') CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `ip` (`ip`),
@@ -732,3 +787,5 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 -- Dumping data for table `users`
 --
+
+
