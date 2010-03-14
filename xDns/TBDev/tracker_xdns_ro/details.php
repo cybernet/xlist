@@ -137,10 +137,11 @@ $HTMLOUT .= tr("{$lang['details_download']}", "{$lang['details_dloadpos']}");
 
 		if (!empty($row["descr"]))
 			$HTMLOUT .= "<tr><td style='vertical-align:top'>{$lang['details_description']}</td><td><div style='overflow: auto'>". str_replace(array("\n", "  "), array("<br />\n", "&nbsp; "), ( $row["descr"] ))."</div></td></tr>";
+                $HTMLOUT .= "<script type='text/javascript' src='scripts/glossy.js'></script>";
                 if (!empty($row["poster"]))
-    $HTMLOUT .= tr("{$lang['details_poster']}", "<img src='".$row["poster"]."' alt='' />", 1);
+    $HTMLOUT .= tr("{$lang['details_poster']}", "<img src='".$row["poster"]."' class='glossy' alt='{$row["name"]}' />", 1);
     else
-    $HTMLOUT .= tr("{$lang['details_poster']}", "<img src='{$TBDEV['baseurl']}/pic/noposter.jpg' alt='{$lang['details_no_poster']}' title='{$lang['details_no_poster_available']}' />", 1);
+    $HTMLOUT .= tr("{$lang['details_poster']}", "<img src='{$TBDEV['baseurl']}/pic/noposter.jpg' class='glossy' alt='{$lang['details_no_poster']}' title='{$lang['details_no_poster_available']}' />", 1);
 			
     if (get_user_class() >= UC_POWER_USER && $row["nfosz"] > 0)
       $HTMLOUT .= "<tr><td class='rowhead'>{$lang['details_nfo']}</td><td align='left'><a href='viewnfo.php?id=$row[id]'><b>{$lang['details_view_nfo']}</b></a> (" .mksize($row["nfosz"]) . ")</td></tr>\n";
