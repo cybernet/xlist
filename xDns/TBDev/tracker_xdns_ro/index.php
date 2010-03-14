@@ -188,6 +188,40 @@ if ($CURUSER['show_shout'] === "yes") {
  }
  //==end 09 shoutbox
 
+//latest torrents [see limit on config]
+	$HTMLOUT .= "<div style='text-align:left;width:80%;border:1px solid blue;padding:5px;'>
+	<div style='background:lightgrey;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['latesttorrents_title']}</span></div><br />";
+
+$res = mysql_query("SELECT t.id, t.name, t.category, t.seeders, t.leechers, c.name AS cat_name, c.image AS cat_img ".
+ "FROM torrents AS t ".
+ "LEFT JOIN categories AS c ON c.id = t.category ".
+ "WHERE t.visible='yes' ".
+ "ORDER BY t.added DESC LIMIT {$TBDEV['latest_torrents_limit']}") or sqlerr(__FILE__, __LINE__);
+if (mysql_num_rows($res) > 0)
+{
+$HTMLOUT .= "<table width='100%' cellspacing='0' cellpadding='5'><tr>
+<td class='colhead' align='center' width='1%'>{$lang['latesttorrents_type']}</td>
+<td class='colhead' align='center'>{$lang['latesttorrents_name']}</td>
+<td class='colhead' align='center' width='1%'>{$lang['latesttorrents_seeders']}</td>
+<td class='colhead' align='center' width='1%'>{$lang['latesttorrents_leechers']}</td></tr>";
+while($arr = mysql_fetch_assoc($res))
+{
+$dispname = htmlspecialchars($arr['name']);
+$catname = htmlspecialchars($arr['cat_name']);
+$catpic = htmlspecialchars($arr['cat_img']);
+
+$HTMLOUT .= "<tr><td align='center' style='padding:0px;'><a href='/browse.php?cat={$arr['category']}'><img border='0' src='{$TBDEV['pic_base_url']}caticons/{$catpic}' alt='{$catname}' /></a></td>
+<td align='left'><a href='/details.php?id={$arr['id']}&amp;hit=1' title='{$dispname}'><b>{$dispname}</b></a></td>
+<td align='center'>{$arr['seeders']}</td>
+<td align='center'>{$arr['leechers']}</td></tr>";
+}
+$HTMLOUT .= "</table></div><br />\n";
+} else {
+// if there are no torrents
+$HTMLOUT .= "<div style='text-align:center;border:1px solid blue;background:lightgrey;'><span style='font-weight:bold;font-size:10pt;'>{$lang['latesttorrents_no_torrents']}</span></div></div><br />";
+}
+//end latest torrents
+
 //  UN COMMENT TO USE ACTIVE USERS ON INDEX
 	$file = "./cache/active.txt";
 $expire = 30; // 30 seconds
