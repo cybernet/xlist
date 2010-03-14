@@ -49,6 +49,8 @@ It is your own responsibility to adhere to these terms.",
 'latesttorrents_seeders' => "Seeders",
 'latesttorrents_leechers' => "Leechers",
 'latesttorrents_no_torrents' => "No Torrents Found",
+#index
+'index_latest'	=> "Latest Torrents",
 
 );
 

@@ -69,7 +69,8 @@ function bark($msg) {
     else
       if ($nfoaction == 'remove')
         $updateset[] = 'nfo = ""';
-
+    $poster = $_POST["poster"];
+    $updateset[] = "poster = " . sqlesc($poster);
     $updateset[] = "name = " . sqlesc($name);
     $updateset[] = "search_text = " . sqlesc(searchfield("$shortfname $dname $name"));
     $updateset[] = "descr = " . sqlesc($descr);

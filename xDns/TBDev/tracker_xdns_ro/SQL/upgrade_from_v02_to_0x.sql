@@ -33,3 +33,4 @@ CREATE TABLE `stats` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `stats` (`id`) VALUES ('1');
+ALTER TABLE torrents ADD `poster` varchar(255) character set utf8 collate utf8_bin NOT NULL default 'pic/noposter.jpg';

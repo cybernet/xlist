@@ -46,6 +46,9 @@ $lang = array(
 'details_no_comment' => "No Comments yet!",
 'details_details' => "Details for torrent ",
 'details_dloadpos' => "You are not allowed to download !",
+'details_poster' => "Poster",
+'details_no_poster' => "No Poster",
+'details_no_poster_available' => "No poster available",
 
 );
 
