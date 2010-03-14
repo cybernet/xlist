@@ -33,6 +33,13 @@ It is your own responsibility to adhere to these terms.",
 'index_shoutbox_send'	=> "Send",
 'index_shoutbox_close'	=> "Close",
 'index_shoutbox_open'	=> "Open",
+#latest torrents
+'latesttorrents_title' => $TBDEV['latest_torrents_limit']." Latest Torrents",
+'latesttorrents_type' => "Type",
+'latesttorrents_name' => "Name",
+'latesttorrents_seeders' => "Seeders",
+'latesttorrents_leechers' => "Leechers",
+'latesttorrents_no_torrents' => "No Torrents Found",
 
 );
 

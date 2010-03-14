@@ -120,6 +120,8 @@ $TBDEV['autoclean_interval'] = 900;
 $TBDEV['sql_error_log'] = ROOT_PATH.'/logs/sql_err_'.date("M_D_Y").'.log';
 $TBDEV['pic_base_url'] = "./pic/";
 $TBDEV['stylesheet'] = "1";
+//latest torrents limit
+$TBDEV['latest_torrents_limit'] = 5; //query limit for latest torrents on index
 $TBDEV['readpost_expiry'] = 14*86400; // 14 days
 //set this to size of user avatars
 $TBDEV['av_img_height'] = 100;
