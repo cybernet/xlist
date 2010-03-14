@@ -128,7 +128,7 @@ else
 	//== end 09 poster mod
  */
  // === TbDev 09 Shoutbox USE SHOUT UNCOMMENT THIS
-if ($CURUSER['show_shout'] === "yes") {
+/* if ($CURUSER['show_shout'] === "yes") {
  $commandbutton = '';
  $refreshbutton = '';
  $smilebutton = '';
@@ -187,7 +187,8 @@ if ($CURUSER['show_shout'] === "yes") {
 ";
  }
  //==end 09 shoutbox
-
+*/
+/*
 //latest torrents [see limit on config]
 	$HTMLOUT .= "<div style='text-align:left;width:80%;border:1px solid blue;padding:5px;'>
 	<div style='background:lightgrey;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['latesttorrents_title']}</span></div><br />";
@@ -221,7 +222,7 @@ $HTMLOUT .= "</table></div><br />\n";
 $HTMLOUT .= "<div style='text-align:center;border:1px solid blue;background:lightgrey;'><span style='font-weight:bold;font-size:10pt;'>{$lang['latesttorrents_no_torrents']}</span></div></div><br />";
 }
 //end latest torrents
-
+*/
 //  UN COMMENT TO USE ACTIVE USERS ON INDEX
 	$file = "./cache/active.txt";
 $expire = 30; // 30 seconds
