@@ -3,29 +3,28 @@
 $lang = array (
 
 #header
-'gl_donate'	      => "donate",
+'gl_donate'	      => "Please make a donation",
 
 #menu
 
-'gl_home' 			=> "RETURN TO<br/>MAINPAGE....",
-'gl_home2' 			=> "RETURN TO<br/>MAINPAGE....",
-'gl_browse' 			=> "VIEW ALL<br/>TORRENT",
-'gl_search' 			=> "LOOKING FOR<br/>SOMETHING?",
-'gl_upload' 			=> "FEED THE<br/>SITE HERE..",
-'gl_chat' 			=> "HAVE A LITTLE<br/>CHAT HERE",
-'gl_forums' 			=> "SEEK AND YOU<br/>WILL FIND HERE",
-'gl_top_10' 			=> "SEE THE<br/>SITE STAT...!",
-'gl_rules' => "PLEASE READ<br/>THIS NOW",
-'gl_faq' => "READ BEFORE<br/>ASKING ANY",
-'gl_links' => "PLEASE VISIT<br/>OUR FRIENDS",
-'gl_staff' => "GET YOUR<br/>SUPPORT",
+'gl_home' 		    => "Home",
+'gl_browse' 			=> "Browse",
+'gl_search' 			=> "Search",
+'gl_upload' 			=> "Upload",
+'gl_chat' 				=> "Chat",
+'gl_forums' 			=> "Forums",
+'gl_top_10' 			=> "Top 10",
+'gl_rules' 			  => "Rules",
+'gl_faq' 				  => "Faq",
+'gl_links' 			  => "Links",
+'gl_staff' 			  => "Staff",
 
 #Mod admin link
 'gl_admin' 			  => "Admin",
 
 #Logged in links
-'gl_profile'			=>	"profile",
-'gl_logout' =>	"logout",
+'gl_profile'			=>	"Profile",
+'gl_logout'			  =>	"Logout",
 
 #a guest user links
 'gl_login'				=>	"Log In",
