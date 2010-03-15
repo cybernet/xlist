@@ -210,7 +210,7 @@ function torrenttable($res, $variant = "index") {
           $_s = "".$lang["torrenttable_time_plural"]."";
         else
           $_s = "".$lang["torrenttable_time_singular"]."";
-        $htmlout .= "<td align='center'><a href='snatches.php?id=$id'>" . number_format($row["times_completed"]) . "<br />$_s</a></td>\n";
+        $htmlout .= "<td align='center'>" . number_format($row["times_completed"]) . "<br />$_s</td>\n";
 
         if ($row["seeders"]) 
         {

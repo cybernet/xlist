@@ -34,29 +34,3 @@ CREATE TABLE `stats` (
 
 INSERT INTO `stats` (`id`) VALUES ('1');
 ALTER TABLE torrents ADD `poster` varchar(255) character set utf8 collate utf8_bin NOT NULL default 'pic/noposter.jpg';
-
-
-CREATE TABLE `snatched` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `userid` int(10) unsigned NOT NULL default '0',
-  `torrentid` int(10) unsigned NOT NULL default '0',
-  `ip` varchar(15) NOT NULL default '',
-  `port` smallint(5) unsigned NOT NULL default '0',
-  `connectable` enum('yes','no') NOT NULL default 'no',
-  `agent` varchar(60) NOT NULL default '',
-  `peer_id` varchar(20) NOT NULL default '',
-  `uploaded` bigint(20) unsigned NOT NULL default '0',
-  `upspeed` bigint(20) NOT NULL default '0',
-  `downloaded` bigint(20) unsigned NOT NULL default '0',
-  `downspeed` bigint(20) NOT NULL default '0',
-  `to_go` bigint(20) unsigned NOT NULL default '0',
-  `seeder` enum('yes','no') NOT NULL default 'no',
-  `seedtime` int(11) unsigned NOT NULL default '0',
-  `leechtime` int(11) unsigned NOT NULL default '0',
-  `start_date` int(11) NOT NULL,
-  `last_action` int(11) NOT NULL,
-  `complete_date` int(11) NOT NULL,
-  `timesann` int(10) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `tr_usr` (`torrentid`,`userid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

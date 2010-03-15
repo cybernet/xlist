@@ -246,7 +246,7 @@ if (!$torrent)
 
 $torrentid = $torrent["id"];
 
-$fields = 'seeder, peer_id, ip, port, uploaded, downloaded, userid, ('.time().' - last_action) AS announcetime';
+$fields = "seeder, peer_id, ip, port, uploaded, downloaded, userid";
 
 $numpeers = $torrent["numpeers"];
 $limit = "";
@@ -422,9 +422,6 @@ else
 {
 	$upthis = max(0, $uploaded - $self["uploaded"]);
 	$downthis = max(0, $downloaded - $self["downloaded"]);
-        $upspeed = ($upthis > 0 ? $upthis / $self["announcetime"] : 0);
-        $downspeed = ($downthis > 0 ? $downthis / $self["announcetime"] : 0);
-        $announcetime = ($self["seeder"] == "yes" ? "seedtime = seedtime + $self[announcetime]" : "leechtime = leechtime + $self[announcetime]");
 
 	if ($upthis > 0 || $downthis > 0)
 		mysql_query("UPDATE users SET uploaded = uploaded + $upthis, downloaded = downloaded + $downthis WHERE id=".$user['id']) or err("Tracker error 3");
@@ -432,7 +429,52 @@ else
 
 ///////////////////////////////////////////////////////////////////////////////
 
-if (portblacklisted($port))
+
+$updateset = array();
+
+if ($event == "stopped")
+{
+	if (isset($self))
+	{
+		mysql_query("DELETE FROM peers WHERE $selfwhere");
+		if (mysql_affected_rows())
+		{
+			if ($self["seeder"] == "yes")
+				$updateset[] = "seeders = seeders - 1";
+			else
+				$updateset[] = "leechers = leechers - 1";
+		}
+	}
+}
+else
+{
+	if ($event == "completed")
+		$updateset[] = "times_completed = times_completed + 1";
+
+	if (isset($self))
+	{
+		mysql_query("UPDATE peers SET uploaded = $uploaded, downloaded = $downloaded, to_go = $left, last_action = ".time().", seeder = '$seeder'"
+			. ($seeder == "yes" && $self["seeder"] != $seeder ? ", finishedat = " . time() : "") . " WHERE $selfwhere");
+		if (mysql_affected_rows() && $self["seeder"] != $seeder)
+		{
+			if ($seeder == "yes")
+			{
+				$updateset[] = "seeders = seeders + 1";
+				$updateset[] = "leechers = leechers - 1";
+			}
+			else
+			{
+				$updateset[] = "seeders = seeders - 1";
+				$updateset[] = "leechers = leechers + 1";
+			}
+		}
+	}
+	else
+	{
+		if ($event != "started")
+			err("Peer not found. ".$passkey." Restart the torrent.");
+
+		if (portblacklisted($port))
 		{
 			err("Port $port is blacklisted.");
 		}
@@ -451,53 +493,6 @@ if (portblacklisted($port))
 		{
       $connectable = 'yes';
 		}
-
-$updateset = array();
-
-if (isset($self) && $event == "stopped") {
- mysql_query("DELETE FROM peers WHERE $selfwhere") or err("D Err");
-
- if (mysql_affected_rows()) {
- $updateset[] = ($self["seeder"] == "yes" ? "seeders = seeders - 1" : "leechers = leechers - 1");
- mysql_query("UPDATE snatched SET ip = ".sqlesc($ip).", port = $port, connectable = '$connectable', uploaded = uploaded + $upthis, downloaded = downloaded + $downthis, to_go = $left, upspeed = $upspeed, downspeed = $downspeed, $announcetime, last_action = ".time().", seeder = '$seeder', agent = ".sqlesc($agent)." WHERE torrentid = $torrentid AND userid = {$user['id']}") or err("SL Err 1");
- }
- } elseif (isset($self)) {
-
- if ($event == "completed") {
- $updateset[] = "times_completed = times_completed + 1";
- $finished = ", finishedat = ".time()."";
- $finished1 = ", complete_date = ".time()."";
- }
-
- mysql_query("UPDATE peers SET ip = ".sqlesc($ip).", port = $port, connectable = '$connectable', uploaded = $uploaded, downloaded = $downloaded, to_go = $left, last_action = " . time() . ", seeder = '$seeder', agent = ".sqlesc($agent)." $finished WHERE $selfwhere") or err("PL Err 1");
-
- if (mysql_affected_rows()) {
- if ($seeder <> $self["seeder"])
- $updateset[] = ($seeder == "yes" ? "seeders = seeders + 1, leechers = leechers - 1" : "seeders = seeders - 1, leechers = leechers + 1");
- $anntime = "timesann = timesann + 1";
- mysql_query("UPDATE snatched SET ip = ".sqlesc($ip).", port = $port, connectable = '$connectable', uploaded = uploaded + $upthis, downloaded = downloaded + $downthis, to_go = $left, upspeed = $upspeed, downspeed = $downspeed, $announcetime, last_action = ".time().", seeder = '$seeder', agent = ".sqlesc($agent)." $finished1, $anntime WHERE torrentid = $torrentid AND userid = {$user['id']}") or err("SL Err 2");
- }
- } else {
- //if ($user["parked"] == "yes") //== uncommet if you use parked 
- //err("Your account is parked! (Read the FAQ)"); //== uncommet if you use parked
- //elseif ($user["downloadpos"] == "no") //== uncommet if you use downloapos
- //err("Your downloading priviledges have been disabled! (Read the rules)"); //== uncommet if you use downloapos
-
- mysql_query("INSERT INTO peers (torrent, userid, peer_id, ip, port, connectable, uploaded, downloaded, to_go, started, last_action, seeder, agent, downloadoffset, uploadoffset, passkey) VALUES ($torrentid, {$user['id']}, ".sqlesc($peer_id).", ".sqlesc($ip).", $port, '$connectable', $uploaded, $downloaded, $left, ".time().", ".time().", '$seeder', ".sqlesc($agent).", $downloaded, $uploaded, ".sqlesc($passkey).")") or err("PL Err 2");
-
- if (mysql_affected_rows()) {
- $updateset[] = ($seeder == "yes" ? "seeders = seeders + 1" : "leechers = leechers + 1");
- $anntime = "timesann = timesann + 1";
- mysql_query("UPDATE snatched SET ip = ".sqlesc($ip).", port = $port, connectable = '$connectable', to_go = $left, last_action = ".time().", seeder = '$seeder', agent = ".sqlesc($agent).", $anntime WHERE torrentid = $torrentid AND userid = {$user['id']}") or err("SL Err 3");
-
- if (!mysql_affected_rows() && $seeder == "no")
- mysql_query("INSERT INTO snatched (torrentid, userid, peer_id, ip, port, connectable, uploaded, downloaded, to_go, start_date, last_action, seeder, agent) VALUES ($torrentid, {$user['id']}, ".sqlesc($peer_id).", ".sqlesc($ip).", $port, '$connectable', $uploaded, $downloaded, $left, ".time().", ".time().", '$seeder', ".sqlesc($agent).")") or err("SL Err 4");
- }
- }
-	else
-	{
-		if ($event != "started")
-			err("Peer not found. ".$passkey." Restart the torrent.");
 
 		$ret = mysql_query("INSERT INTO peers (connectable, torrent, peer_id, ip, port, uploaded, downloaded, to_go, started, last_action, seeder, userid, agent, passkey) VALUES ('$connectable', $torrentid, " . sqlesc($peer_id) . ", " . sqlesc($ip) . ", $port, $uploaded, $downloaded, $left, ".time().", ".time().", '$seeder', {$user['id']}, " . sqlesc($agent) . "," . sqlesc($passkey) . ")");
 		
