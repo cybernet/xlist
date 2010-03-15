@@ -21,6 +21,7 @@ ob_start("ob_gzhandler");
 
 require_once "include/bittorrent.php";
 require_once "include/user_functions.php";
+get_template();
 
 dbconn(true);
 
@@ -106,7 +107,7 @@ else
 	$HTMLOUT .= "</div>
 \n";
 
- if (get_user_class() >= UC_POWER_USER) {
+// if (get_user_class() >= UC_POWER_USER) {
 /* 	
 // 09 poster mod - UNCOMMENT IF YOU HAVE THIS
  $query = "SELECT id, name, poster FROM torrents WHERE poster <> '' ORDER BY added DESC limit 15";
@@ -334,5 +335,5 @@ $HTMLOUT .= "<div><div id='newshold'>{$lang['foot_disclaimer']}</div>
 ///////////////////////////// FINAL OUTPUT //////////////////////
 
 	print stdhead('Home') . $HTMLOUT . stdfoot();
-}
+// }
 ?>

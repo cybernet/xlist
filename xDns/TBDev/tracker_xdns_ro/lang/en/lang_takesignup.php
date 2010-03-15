@@ -25,7 +25,7 @@ $lang = array(
 'takesignup_confirm' => "user registration confirmation",
 'takesignup_from' => "From:",
 'takesignup_welcome_new' => "Welcome New",
-'takesignup_member' => "member"
+'takesignup_member' => "member",
 );
 
 $lang['takesignup_email_body'] = <<<EOD
