@@ -407,7 +407,7 @@ $vt = '';
    else $torrents[$i]["waiting"] = "";
 
 
-   $torrents[$i]["download"] = "<a href=\"download.php?id=".$data["hash"]."&amp;f=" . urlencode($data["filename"]) . ".torrent\">".image_or_link("images/download.gif","","torrent")."</a>\n";
+   $torrents[$i]["download"] = "<a href=\"download.php?id=".$data["hash"]."&amp;f=" . urlencode($data["filename"]) . ".torrent\" onClick=\"javascript:pageTracker._trackPageview('/downloaded_from_torrents_list/".$data["hash"]."/" . urlencode($data["filename"]) . "');\">".image_or_link("images/download.gif","","torrent")."</a>\n";
 
    include("include/offset.php");
    $torrents[$i]["added"] = date("d/m/Y", $data["added"] - $offset); // data

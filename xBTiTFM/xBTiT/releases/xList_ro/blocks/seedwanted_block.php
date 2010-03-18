@@ -56,7 +56,7 @@ else
                   echo "\t<td NOWRAP align=\"center\" class=\"lista\">";
 
 
-           echo "<a href=download.php?id=".$data["hash"]."&amp;f=" . rawurlencode($data["filename"]) . ".torrent><img src='images/torrent.gif' border='0' alt='".$language["DOWNLOAD_TORRENT"]."' title='".$language["DOWNLOAD_TORRENT"]."' /></a>";
+           echo "<a href=download.php?id=".$data["hash"]."&amp;f=" . rawurlencode($data["filename"]) . ".torrent onClick=\"javascript:pageTracker._trackPageview('/downloaded_from_seed_wanted_block/".$data["hash"]."/" . urlencode($data["filename"]) . "');\"><img src='images/download.gif' border='0' alt='".$language["DOWNLOAD_TORRENT"]."' title='".$data["filename"]."' /></a>";
 
 
          //waitingtime

@@ -53,7 +53,7 @@ if (max(0,$CURUSER["WT"])>0)
           if ( strlen($data["hash"]) > 0 )
           {
       echo "\n\t<td align=\"center\" class=\"lista\" width=\"20\" style=\"text-align: center;\">";
-      echo "<a href=\"download.php?id=".$data["hash"]."&amp;f=" . rawurlencode($data["filename"]) . ".torrent\"><img src='images/torrent.gif' border='0' alt='".$language["DOWNLOAD_TORRENT"]."' title='".$language["DOWNLOAD_TORRENT"]."' /></a>";
+      echo "<a href=download.php?id=".$data["hash"]."&amp;f=" . rawurlencode($data["filename"]) . ".torrent onClick=\"javascript:pageTracker._trackPageview('/downloaded_from_top_torrents_block/".$data["hash"]."/" . urlencode($data["filename"]) . "');\"><img src='images/download.gif' border='0' alt='".$language["DOWNLOAD_TORRENT"]."' title='".$data["filename"]."' /></a>";
       echo "</td>";
 
      $data["filename"] = unesc($data["filename"]);
