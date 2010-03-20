@@ -48,10 +48,10 @@ $morescript = '
 	<script type="text/javascript" src="'.$BASEURL.'/jscript/animatedcollapse.js"></script>
 	<script type="text/javascript" src="'.$BASEURL.'/jscript/DV.js"></script>
 	<script type="text/javascript" src="'.$BASEURL.'/jscript/xbtit.js"></script>
-        <script type="text/javascript" language="javascript" src="ajaxstarrater/js/behavior.js"></script>
-        <script type="text/javascript" language="javascript" src="ajaxstarrater/js/rating.js"></script>
+        <script type="text/javascript" language="javascript" src="xList_torrent_ajax_rating/js/behavior.js"></script>
+        <script type="text/javascript" language="javascript" src="xList_torrent_ajax_rating/js/rating.js"></script>
 ';
 
-$morecss = '<link rel="stylesheet" type="text/css" href="ajaxstarrater/css/rating.css" />
+$morecss = '<link rel="stylesheet" type="text/css" href="xList_torrent_ajax_rating/css/rating.css" />
 <meta name="google-site-verification" content="4t88g1Vej9cHGPVLl2shr9DGCkhPm7rWmyg6itUuqnE" />';
 ?>
