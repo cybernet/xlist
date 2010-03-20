@@ -260,7 +260,7 @@ $row["rating"]=$s;
 # <!--
 ##################################################################
 ########################################################################-->
-require('ajaxstarrater/_drawrating.php'); # ajax rating
+require('xList_torrent_ajax_rating/_drawrating.php'); # ajax rating
 
   if ($row["username"] != $CURUSER["username"] && $CURUSER["uid"] > 1) {
       $row["rating"] =  rating_bar("" . $_GET["id"]. "", 5);
