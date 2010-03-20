@@ -36,24 +36,24 @@ $sql = "INSERT INTO $rating_dbname.$rating_tableName (`id`,`total_votes`, `total
 $result = mysql_query($sql);
 }
 
-$numbers=mysql_fetch_assoc($query);
+$numbers = mysql_fetch_assoc($query);
 
 
 if ($numbers['total_votes'] < 1) {
 	$count = 0;
 } else {
-	$count=$numbers['total_votes']; //how many votes total
+	$count = $numbers['total_votes']; //how many votes total
 }
-$current_rating=$numbers['total_value']; //total number of rating added together and stored
-$tense = ($count==1) ? "vote" : "votes"; //plural form votes/vote
+$current_rating = $numbers['total_value']; //total number of rating added together and stored
+$tense = ($count == 1) ? "vote" : "votes"; //plural form votes/vote
 
 // determine whether the user has voted, so we know how to draw the ul/li
 $voted = mysql_num_rows(mysql_query("SELECT used_ips FROM $rating_dbname.$rating_tableName WHERE used_ips LIKE '%".$ip."%' AND id='".$id."' ")); 
 
 // now draw the rating bar
-$rating_width = @number_format($current_rating/$count,2)*$rating_unitwidth;
-$rating1 = @number_format($current_rating/$count,1);
-$rating2 = @number_format($current_rating/$count,2);
+$rating_width = @number_format($current_rating / $count, 2) * $rating_unitwidth;
+$rating1 = @number_format($current_rating / $count, 1);
+$rating2 = @number_format($current_rating / $count, 2);
 
 
 if ($static == 'static') {
