@@ -158,7 +158,7 @@ header("Content-Type: text/html; charset=UTF-8");
       $row = mysql_fetch_array($res);
 
         # check for valid moderation
-        if ($CURUSER["admin_access"]!="yes" && $CURUSER["uid"]!="".$row[uid]."") {
+        if ($CURUSER["admin_access"] != "yes" && $CURUSER["uid"] != "".$row[uid]."") {
         shoutError();
         
         }
@@ -187,7 +187,7 @@ header("Content-Type: text/html; charset=UTF-8");
                             </div>";
 
 
-            if (isset($_POST["confirm"]) && $_POST["confirm"]==$language["FRM_PREVIEW"]) {
+            if (isset($_POST["confirm"]) && $_POST["confirm"] == $language["FRM_PREVIEW"]) {
                             
             $post = str_replace("\'", "'", $post);
 
@@ -225,7 +225,7 @@ header("Content-Type: text/html; charset=UTF-8");
             ";
                                                   
                             
- if (isset($_POST["confirm"]) && $_POST["confirm"]==$language["FRM_CONFIRM"]) {
+ if (isset($_POST["confirm"]) && $_POST["confirm"] == $language["FRM_CONFIRM"]) {
 
 #################################################
  
@@ -283,7 +283,7 @@ function getData($lastID) {
   include("include/offset.php");
 
   # discard it if we are editing
-  $sid = isset($_GET["sid"])?$_GET["sid"]:0; # get shout id (sid)and set it to zero for bool
+  $sid = isset($_GET["sid"]) ? $_GET["sid"] : 0; # get shout id (sid)and set it to zero for bool
 
   
     $sql =  "SELECT * FROM {$TABLE_PREFIX}chat WHERE id > ".$lastID." AND id != ".$sid." ORDER BY id DESC";
@@ -297,8 +297,8 @@ function getData($lastID) {
         $id   = $row[id];
         $uid  = $row[uid];
         $time = $row[time];
-$rd=mysql_fetch_row(mysql_query("SELECT warn FROM {$TABLE_PREFIX}users WHERE id=$uid"));
-$row["warn"]=$rd[0];
+$rd = mysql_fetch_row(mysql_query("SELECT warn FROM {$TABLE_PREFIX}users WHERE id=$uid"));
+$row["warn"] = $rd[0];
 unset($rd);
 $name = $name . warn($row);
         $name = $row[name];
