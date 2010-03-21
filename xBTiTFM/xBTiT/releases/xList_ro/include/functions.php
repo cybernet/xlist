@@ -405,7 +405,8 @@ function userlogin() {
 
   $ip = getip(); //$_SERVER["REMOTE_ADDR"];
   $nip = ip2long($ip);
-  $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}bannedip WHERE $nip >= first AND $nip <= last LIMIT 1;") or sqlerr(__FILE__, __LINE__);
+//  $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}bannedip WHERE $nip >= first AND $nip <= last LIMIT 1;") or sqlerr(__FILE__, __LINE__);
+  $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}bannedip WHERE INET_ATON('".$ip."') >= first AND INET_ATON('".$ip."') <= last LIMIT 1;") or sqlerr(__FILE__, __LINE__);
   if (mysql_num_rows($res) > 0) {
     header('HTTP/1.0 403 Forbidden');
 ?>
@@ -462,6 +463,10 @@ function dbconn($do_clean = false) {
         die('['.mysql_errno().'] dbconn: mysql_connect: '.mysql_error());
     }
   }
+
+if($GLOBALS["charset"] == "UTF-8")
+      do_sqlquery("SET NAMES utf8");
+
   mysql_select_db($database) or die($language['ERR_CANT_OPEN_DB'].' '.$database.' - '.mysql_error());
 
   userlogin();

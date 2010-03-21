@@ -612,6 +612,10 @@ function dbconn($do_clean = false) {
         die('['.mysql_errno().'] dbconn: mysql_connect: '.mysql_error());
     }
   }
+
+if($GLOBALS["charset"] == "UTF-8")
+      do_sqlquery("SET NAMES utf8");
+
   mysql_select_db($database) or die($language['ERR_CANT_OPEN_DB'].' '.$database.' - '.mysql_error());
 
   userlogin();
