@@ -486,5 +486,12 @@ $language['VALIDATION_SENT_TO_2'] = 'You will need to click on the link containe
 $language["STICKY_TORRENT"] = "<b>Sticky</b>";
 $language["STICKY_TORRENT_EXPLAIN"] = "(Always on top of the torrent list)";
 $language["FRIENDLIST"] = "Friendlist";
-
+// Torrent Request & Vote Hack start
+$language['RF'] = 'Request Filled';
+$language['VR'] = 'Requests';
+$language['R'] = 'Add Request';
+$language['VV'] = 'View Votes';
+$language['RD'] = 'Request Details';
+$language['RE'] = 'Edit Request';
+// Torrent Request & Vote Hack end
 ?>

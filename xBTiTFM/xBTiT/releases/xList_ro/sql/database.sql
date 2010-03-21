@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.5
+-- version 3.3.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 07, 2010 at 08:19 PM
+-- Generation Time: Mar 21, 2010 at 09:22 PM
 -- Server version: 5.1.37
 -- PHP Version: 5.2.10-2ubuntu6.4
 
@@ -35,6 +35,26 @@ CREATE TABLE IF NOT EXISTS `tags` (
 
 INSERT INTO `tags` (`id`, `tag`, `count`, `ip`) VALUES
 (1, 'xList.ro', '22', '127.0.0.1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}addedrequests`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}addedrequests` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `requestid` int(10) unsigned NOT NULL DEFAULT '0',
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `pollid` (`id`),
+  KEY `userid` (`userid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}addedrequests`
+--
+
 
 -- --------------------------------------------------------
 
@@ -107,17 +127,17 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}bannedip` (
 --
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}blocks` (
-  `blockid` int(11) unsigned NOT NULL auto_increment,
-  `content` varchar(255) NOT NULL default '',
-  `position` char(1) NOT NULL default '',
-  `sortid` int(11) unsigned NOT NULL default '0',
-  `status` tinyint(3) unsigned default NULL,
-  `title` varchar(255) NOT NULL default '',
+  `blockid` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `content` varchar(255) NOT NULL DEFAULT '',
+  `position` char(1) NOT NULL DEFAULT '',
+  `sortid` int(11) unsigned NOT NULL DEFAULT '0',
+  `status` tinyint(3) unsigned DEFAULT NULL,
+  `title` varchar(255) NOT NULL DEFAULT '',
   `cache` enum('yes','no') NOT NULL,
-  `minclassview` int(11) NOT NULL default '0',
-  `maxclassview` int(11) NOT NULL default '8',
-  PRIMARY KEY  (`blockid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
+  `minclassview` int(11) NOT NULL DEFAULT '0',
+  `maxclassview` int(11) NOT NULL DEFAULT '8',
+  PRIMARY KEY (`blockid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=31 ;
 
 --
 -- Dumping data for table `{$db_prefix}blocks`
@@ -149,7 +169,8 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 (25, 'categories', 'r', 2, 0, 'BLOCK_CAT', 'no', 3, 8),
 (27, 'login', 'c', 1, 1, 'LOGIN', 'no', 1, 1),
 (28, 'cloud', 'c', 0, 0, 'BLOCK_CLOUD', 'no', 3, 8),
-(29, 'ads', 't', 4, 1, 'xList_aDs', 'no', 8, 8);
+(29, 'ads', 't', 4, 1, 'xList_aDs', 'no', 8, 8),
+(30, 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8);
 
 -- --------------------------------------------------------
 
@@ -1130,6 +1151,32 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}readposts` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `{$db_prefix}requests`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}requests` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  `request` varchar(225) DEFAULT NULL,
+  `descr` text NOT NULL,
+  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `fulfilled` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `hits` int(10) unsigned NOT NULL DEFAULT '0',
+  `cat` int(10) unsigned NOT NULL DEFAULT '0',
+  `filled` varchar(255) DEFAULT NULL,
+  `filledby` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `userid` (`userid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}requests`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `{$db_prefix}settings`
 --
 
@@ -1214,7 +1261,19 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('vip_get', '4'),
 ('vip_get_one', '5'),
 ('vip_tekst', 'Vip Torrent Only !!'),
-('vip_one', 'true');
+('vip_one', 'true'),
+('req_prune', '30'),
+('req_page', '10'),
+('req_post', '1'),
+('req_sb', '10'),
+('req_mb', '10000'),
+('req_rwon', 'true'),
+('req_sbmb', 'true'),
+('req_shout', 'true'),
+('req_max', '100'),
+('req_onoff', 'true'),
+('req_number', '5'),
+('req_maxon', 'true');
 
 -- --------------------------------------------------------
 

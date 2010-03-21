@@ -63,6 +63,17 @@ if ($XBTT_USE) {
        quickQuery("UPDATE {$TABLE_PREFIX}users SET seedbonus = seedbonus+".$GLOBALS["bonus"]."*".$clean_interval."/3600 WHERE pid = '$x'");
        }
    } }
+// DT request hack start
+  	$reqprune = $btit_settings["req_prune"];
+	$request = mysql_query("SELECT id FROM {$TABLE_PREFIX}requests WHERE filledby > '0' AND fulfilled < DATE_SUB(NOW(), INTERVAL $reqprune DAY)");
+	$reqrow = mysql_fetch_assoc($request);
+	$reqid = $reqrow["id"];
+	if (mysql_num_rows($request) > 0)
+	{
+	mysql_query("DELETE FROM {$TABLE_PREFIX}requests WHERE filledby > 0 AND id = $reqid");
+	mysql_query("DELETE FROM {$TABLE_PREFIX}addedrequests WHERE requestid = $reqid");
+	}
+ // DT request hack end
          // SANITY FOR TORRENTS
          $results = do_sqlquery("SELECT info_hash, seeds, leechers, dlbytes, filename FROM {$TABLE_PREFIX}files WHERE external='no'");
          $i = 0;

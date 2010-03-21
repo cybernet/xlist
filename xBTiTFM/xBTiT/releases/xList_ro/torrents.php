@@ -149,7 +149,7 @@ if (isset($_GET["search"])) {
 
 // torrents count...
 
-$res = get_result("SELECT COUNT(*) as torrents FROM $ttables $where", true);
+$res = get_result("SELECT COUNT(*) as torrents FROM $ttables $where", true, $CACHE_DURATION);
 
 $count = $res[0]["torrents"];
 if (!isset($search)) $search = "";
@@ -199,7 +199,7 @@ Operation #4*/
     else
         $query = "SELECT f.vip_torrent as vip_torrent, f.free as free, f.sticky as sticky, tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where GROUP BY f.sticky,$qry_order $by ORDER BY f.sticky $by $limit";
 // End the queries
-       $results = get_result($query, true);
+       $results = get_result($query, true, $CACHE_DURATION);
 }
 
 /* Mod by losmi - sticky mod
@@ -261,7 +261,7 @@ if ($count > 0) {
    $torrenttpl->set("WT1", intval($CURUSER["WT"]) > 0, TRUE);
 /* Mod by losmi - sticky mod
     Start Operation #5*/
-    $sticky_color = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}sticky ORDER BY id", true);
+    $sticky_color = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}sticky ORDER BY id", true, $CACHE_DURATION);
     if(mysql_num_rows($sticky_color) > 0)
     {
     $st = mysql_fetch_assoc($sticky_color);
@@ -282,7 +282,7 @@ End Operation #5*/
    $torrenttpl->set("uploader1", $SHOW_UPLOADER, TRUE);
 
 /* Mod by losmi - visible mod*/
-    $users_level = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users_level ORDER BY id", true);
+    $users_level = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users_level ORDER BY id", true, $CACHE_DURATION);
    
     while ($row = mysql_fetch_assoc($users_level))
     {
@@ -329,7 +329,7 @@ $vt = '';
        $torrents[$i]["filename"] = "<a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."\" onmouseover=\" return overlib('<img src=" . $xList_img . "/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\" title=\"".$language["VIEW_DETAILS"].": ".$data["filename"]."\">".($data["filename"] != ""?$filename:$data["hash"])."</a>".($data["external"] == "no"?"":" (<span style=\"color:red\">EXT</span>)")."   ".$vt;
 
 // search for comments
-   $commentres = get_result("SELECT COUNT(*) as comments FROM {$TABLE_PREFIX}comments WHERE info_hash='" . $data["hash"] . "'", true);
+   $commentres = get_result("SELECT COUNT(*) as comments FROM {$TABLE_PREFIX}comments WHERE info_hash='" . $data["hash"] . "'", true, $CACHE_DURATION);
    $commentdata = $commentres[0];
 
     if ($commentdata["comments"] > 0)
@@ -376,7 +376,7 @@ $vt = '';
 // free leech hack
 
      $free_picture = '';
-     $res = get_result("SELECT * FROM {$TABLE_PREFIX}files  WHERE `external`='no'", true);
+     $res = get_result("SELECT * FROM {$TABLE_PREFIX}files  WHERE `external`='no'", true, $CACHE_DURATION);
 
     $torrents[$i]["free"] = '';
     if($data['free'] == yes)
