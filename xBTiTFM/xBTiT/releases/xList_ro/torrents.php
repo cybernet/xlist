@@ -296,8 +296,8 @@ End Operation #5*/
 /* Mod by losmi - end visible mod*/
    $torrenttpl->set("XBTT1", $XBTT_USE, TRUE);
 
-   $data["filename"] = unesc($data["filename"]);
-   $filename = cut_string($data["filename"], intval($btit_settings["cut_name"]));
+$data["filename"] = unesc($data["filename"]);
+$filename = cut_string($data["filename"], intval($btit_settings["cut_name"]));
 // Start baloon hack DT
 // cybernet2u / xList.ro
 $xList_img = $GLOBALS["uploaddir"];
@@ -324,9 +324,9 @@ $vt = '';
        $torrents[$i]["filename"] = "<a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."\" onmouseover=\" return overlib('<img src=" . $xList_img . "/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">".($data["filename"] != ""?$filename:$data["hash"])."</a>".($data["external"] == "no"?"":" (<span style=\"color:red\">Multi.</span>)")."   ".$vt;
        else
        if ($data["tag"])
-       $torrents[$i]["filename"] = "<img src=\"images/plus.gif\" id=\"expandoGif".$data["hash"]."\" onclick=\"expand('".$data["hash"]."')\"> <a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."\" title=\"".$language["VIEW_DETAILS"].": ".$data["filename"]."\">".($data["filename"]!=""?$filename:$data["hash"])."</a>".($data["external"] == "no"?"":" (<span style=\"color:red\">EXT</span>)")."   ".$vt."<div id=\"descr".$data["hash"]."\" style=\"margin-left: 12px; display: none;\">".$data["tag"];
+       $torrents[$i]["filename"] = "<img src=\"images/plus.gif\" id=\"expandoGif".$data["hash"]."\" onclick=\"expand('".$data["hash"]."')\"> <a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."\" onmouseover=\" return overlib('<img src=" . $xList_img . "/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\" title=\"".$language["VIEW_DETAILS"].": ".$data["filename"]."\">".($data["filename"]!=""?$filename:$data["hash"])."</a>".($data["external"] == "no"?"":" (<span style=\"color:red\">EXT</span>)")."   ".$vt."<div id=\"descr".$data["hash"]."\" style=\"margin-left: 12px; display: none;\">".$data["tag"];
        else
-       $torrents[$i]["filename"] = "<a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."\" title=\"".$language["VIEW_DETAILS"].": ".$data["filename"]."\">".($data["filename"] != ""?$filename:$data["hash"])."</a>".($data["external"] == "no"?"":" (<span style=\"color:red\">EXT</span>)")."   ".$vt;
+       $torrents[$i]["filename"] = "<a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."\" onmouseover=\" return overlib('<img src=" . $xList_img . "/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\" title=\"".$language["VIEW_DETAILS"].": ".$data["filename"]."\">".($data["filename"] != ""?$filename:$data["hash"])."</a>".($data["external"] == "no"?"":" (<span style=\"color:red\">EXT</span>)")."   ".$vt;
 
 // search for comments
    $commentres = get_result("SELECT COUNT(*) as comments FROM {$TABLE_PREFIX}comments WHERE info_hash='" . $data["hash"] . "'", true);
