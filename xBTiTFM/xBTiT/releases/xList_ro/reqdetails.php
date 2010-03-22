@@ -85,7 +85,7 @@ $reqdetailstpl->set("rd9","<tr><td align=left class=header><B>Vote For This</B><
 
 if ($CURUSER["can_upload"]=="yes")
 {
-$reqdetailstpl->set("rd10","<tr><td class=header align=left width=30%><b>How To Fill A Request</b> </td><td class=lista align=left width=70%>Type <b>full</b> direct torrent URL, i.e. http://www.mysite.com/index.php?page=torrent-details&id=813.. (you can only copy/paste from another window) or modify existing URL of torrent ID...</td></tr>");
+$reqdetailstpl->set("rd10","<tr><td class=header align=left width=30%><b>How To Fill A Request</b> </td><td class=lista align=left width=70%>Type <b>full</b> direct torrent URL, i.e. http://xlist.ro/index.php?page=torrent-details&id=813.. (you can only copy/paste from another window) or modify existing URL of torrent ID...</td></tr>");
 $reqdetailstpl->set("rd11","<tr><td class=lista align=center width=100% colspan=2><form method=get action=index.php><input type=hidden name=page value=reqfilled />");
 $reqdetailstpl->set("rd12","<input type=text size=80 name=filledurl value=\"TYPE-DIRECT-TORRENT-URL-HERE\"><input type=submit value=Send>");
 $reqdetailstpl->set("rd13","<input type=hidden value=$id name=requestid>");
