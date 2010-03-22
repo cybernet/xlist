@@ -132,9 +132,9 @@ if (!$row || ($row["banned"] == "yes" && !$moderator))
 		if (!empty($row["descr"]))
 			$HTMLOUT .= "<tr><td style='vertical-align:top'>{$lang['details_description']}</td><td><div style='overflow: auto'>". str_replace(array("\n", "  "), array("<br />\n", "&nbsp; "), ( $row["descr"] ))."</div></td></tr>";
 		if (!empty($row["poster"]))
-    			$HTMLOUT .= tr("{$lang['details_poster']}", "<img src='".$row["poster"]."' alt='{$lang['details_no_poster']}' />", 1);
+    			$HTMLOUT .= tr("{$lang['details_poster']}", "<img src='".$row["poster"]."' alt='' />", 1);
     		else
-    			$HTMLOUT .= tr("{$lang['details_poster']}", "<img src='{$TBDEV['baseurl']}/pic/noposter.jpg' alt='' title='' />", 1);
+    			$HTMLOUT .= tr("{$lang['details_poster']}", "<img src='{$TBDEV['baseurl']}/pic/noposter.jpg' alt='{$lang['details_no_poster']}' title='{$lang['details_no_poster_available']}' />", 1);
 
     if (get_user_class() >= UC_POWER_USER && $row["nfosz"] > 0)
       $HTMLOUT .= "<tr><td class='rowhead'>{$lang['details_nfo']}</td><td align='left'><a href='viewnfo.php?id=$row[id]'><b>{$lang['details_view_nfo']}</b></a> (" .mksize($row["nfosz"]) . ")</td></tr>\n";
