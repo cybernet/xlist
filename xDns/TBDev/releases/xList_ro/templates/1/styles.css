@@ -251,3 +251,69 @@ a.colheadlink:hover {text-decoration: underline;}
 /* ------------------------------------    TAGS SETTING   -------------------------------------- */
 /* ------------------------------------    TAGS SETTING   -------------------------------------- */
 /* ------------------------------------    TAGS SETTING   -------------------------------------- */
+
+ 	/* 	::: LAST TORRENT POSTER MOD ON INDEX PAGE ::: 	*/
+
+#marqueecontainer{
+position: relative;
+width: 950px; /*marquee width - adjust to your design */
+height: 120px; /*marquee height */
+background-color:lightyellow;
+color:black;
+overflow: hidden;
+border: 0px solid blue;
+padding: 2px;
+padding-left: 4px;
+text-align:left;
+}
+
+#marqueecontainer img {
+border-width:0px;
+border-style:solid;
+}
+
+ 	/* 	::: HEADLINE ON INDEX PAGE ::: 	*/
+
+#headindex { position:absolute; margin-top: 90px; padding-left: 100px; background: url('pic/menu_bg.png') no-repeat;
+width: 940px; height: 45px;}
+#headindex a {color:#FFF; text-decoration:none}	#headindex a:visited {color:#FFF; text-decoration:none} #headindex a:active {color:#FFF; text-decoration:none} #headindex a:hover {color:#FFF; text-decoration:none}
+/*
+{ position:absolute; margin-top: 90px; padding-left: 100px; background: url('pic/menu_bg.png') no-repeat;
+width: 940px; height: 45px;}
+*/
+
+ 	/* 	::: STATS INFO ON INDEX PAGE ::: 	*/
+																		 
+#statindex {
+	border:0px;
+}
+
+ 	/* 	::: FOOTER ON INDEX PAGE ::: 	*/
+
+#footer {
+	border: 1px solid #002c4d;	-moz-border-radius: 6px; -webkit-border-radius: 6px;
+	background-color:#1573b9;
+	width:950px; height:81px;
+	text-align:center; color:#FFF; font-size:10px;
+}
+
+ 	/* 	::: NEWS ON INDEX PAGE ::: 	*/
+
+#newshold {
+	border: 1px solid #002c4d;	-moz-border-radius: 6px; -webkit-border-radius: 6px;
+	background-color:#FFF; width:930px; padding:8px; }
+#headlineindex {
+	font-size:12px; font-weight:bold; font-family:Tahoma, "Trebuchet MS"; text-align:left; padding-left:10px; width:950px; height:21px; }
+	
+	
+	
+#activeindex { width:920px; border: 0px dashed #d1e400; font-size:11px; min-height:35px; padding:5px; background-color:#f7f7f7;}
+#activeindex2 {width:700px; border: 1px dashed #d1e400; font-size:11px; padding:5px;}
+
+ 	/* 	::: SHOUTBOX ON INDEX PAGE ::: 	*/
+																					
+#shoutbox {
+	width:550px; height:15px; border: 1px dashed #d1e400; 
+	font-size:11px; text-align:center; float: center;
+	padding:5px; margin-top:10px;}
+
