@@ -783,7 +783,7 @@ function StatusBar() {
 	global $CURUSER, $TBDEV, $lang;
 	
 	if (!$CURUSER)
-		return "<tr><td colspan='2'>Yeah Yeah!</td></tr>";
+		return "<tr><td colspan='2'>Welcome!</td></tr>";
 
 
 	$upped = mksize($CURUSER['uploaded']);
