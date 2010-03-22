@@ -62,7 +62,7 @@ else
 	$adminbutton = '';
 	
 	if (get_user_class() >= UC_ADMINISTRATOR)
- 	$adminbutton = "&nbsp;&nbsp;<span style='color:#fff; font-size:10px;'><a href='admin.php?action=news'>[Add]</a></span>\n";
+ 	$adminbutton = "&nbsp;&nbsp;<span style='color:#191919; font-size:10px;'><a href='admin.php?action=news'>[Add]</a></span>\n";
  	
 	$HTMLOUT .= "<div style='text-align:left;width:950px;border:0px;padding:5px;'>
 	<div id='headindex'>{$lang['news_title']}{$adminbutton}</div>
@@ -81,7 +81,7 @@ else
  	{
  	if (get_user_class() >= UC_ADMINISTRATOR)
  	{
- 	$button = "<span style='color:#fff; font-size:10px;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='admin.php?action=news&amp;mode=edit&amp;newsid={$array['id']}'>[{$lang['news_edit']}]</a>&nbsp;&nbsp;<a href='admin.php?action=news&amp;mode=delete&amp;newsid={$array['id']}'>[{$lang['news_delete']}]</a></span\n";
+ 	$button = "<span style='color:#191919; font-size:10px;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='admin.php?action=news&amp;mode=edit&amp;newsid={$array['id']}'>[{$lang['news_edit']}]</a>&nbsp;&nbsp;<a href='admin.php?action=news&amp;mode=delete&amp;newsid={$array['id']}'>[{$lang['news_delete']}]</a></span\n";
  	}
  	
 		$HTMLOUT .= "<div id='headlineindex'>{$array['headline']}{$button}</div>

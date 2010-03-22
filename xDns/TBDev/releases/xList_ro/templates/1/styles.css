@@ -274,13 +274,12 @@ border-style:solid;
 
  	/* 	::: HEADLINE ON INDEX PAGE ::: 	*/
 
-#headindex { position:absolute; margin-top: 90px; padding-left: 100px; background: url('pic/menu_bg.png') no-repeat;
-width: 940px; height: 45px;}
-#headindex a {color:#FFF; text-decoration:none}	#headindex a:visited {color:#FFF; text-decoration:none} #headindex a:active {color:#FFF; text-decoration:none} #headindex a:hover {color:#FFF; text-decoration:none}
-/*
-{ position:absolute; margin-top: 90px; padding-left: 100px; background: url('pic/menu_bg.png') no-repeat;
-width: 940px; height: 45px;}
-*/
+#headindex {
+	border: 1px solid #002c4d;	-moz-border-radius: 5px; -webkit-border-radius: 5px;
+	background: url('pic/menu_bg.png') no-repeat; width:935px; height:30px; padding-left:15px; line-height:25px;
+	color: #fff; font-size:12px; font-weight:bold; font-family:Tahoma, "Trebuchet MS";
+	text-align:left;}
+#headindex a {color:#fff; text-decoration:none}	#headindex a:visited {color:#fff; text-decoration:none} #headindex a:active {color:#fff; text-decoration:none} #headindex a:hover {color:#fff; text-decoration:none}
 
  	/* 	::: STATS INFO ON INDEX PAGE ::: 	*/
 																		 
@@ -292,16 +291,16 @@ width: 940px; height: 45px;}
 
 #footer {
 	border: 1px solid #002c4d;	-moz-border-radius: 6px; -webkit-border-radius: 6px;
-	background-color:#1573b9;
+	background-color:#222222;
 	width:950px; height:81px;
-	text-align:center; color:#FFF; font-size:10px;
+	text-align:center; color:#424242; font-size:10px;
 }
 
  	/* 	::: NEWS ON INDEX PAGE ::: 	*/
 
 #newshold {
 	border: 1px solid #002c4d;	-moz-border-radius: 6px; -webkit-border-radius: 6px;
-	background-color:#FFF; width:930px; padding:8px; }
+	background-color:#3c3c3c; width:930px; padding:8px; }
 #headlineindex {
 	font-size:12px; font-weight:bold; font-family:Tahoma, "Trebuchet MS"; text-align:left; padding-left:10px; width:950px; height:21px; }
 	
