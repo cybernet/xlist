@@ -132,7 +132,7 @@ if (!$row || ($row["banned"] == "yes" && !$moderator))
 		if (!empty($row["descr"]))
 			$HTMLOUT .= "<tr><td style='vertical-align:top'>{$lang['details_description']}</td><td><div style='overflow: auto'>". str_replace(array("\n", "  "), array("<br />\n", "&nbsp; "), ( $row["descr"] ))."</div></td></tr>";
 		if (!empty($row["poster"]))
-    			$HTMLOUT .= tr("{$lang['details_poster']}", "<img src='".$row["poster"]."' alt='' />", 1);
+    			$HTMLOUT .= tr("{$lang['details_poster']}", "<img src='".$row["poster"]."' alt='{$lang['details_no_poster']}' />", 1);
     		else
     			$HTMLOUT .= tr("{$lang['details_poster']}", "<img src='{$TBDEV['baseurl']}/pic/noposter.jpg' alt='{$lang['details_no_poster']}' title='{$lang['details_no_poster_available']}' />", 1);
 
