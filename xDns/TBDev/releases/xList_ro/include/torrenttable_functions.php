@@ -29,7 +29,8 @@ function torrenttable($res, $variant = "index") {
 
     $wait = 0;
     $htmlout = '';
-    
+// disable wait time 
+/*    
     if ($CURUSER["class"] < UC_VIP)
     {
       $gigs = $CURUSER["uploaded"] / (1024*1024*1024);
@@ -40,7 +41,7 @@ function torrenttable($res, $variant = "index") {
       elseif ($ratio < 0.95 || $gigs < 9.5) $wait = 6;
       else $wait = 0;
     }
-
+*/
     $htmlout .= "<table border='1' cellspacing='0' cellpadding='5'>
     <tr>
     <td class='colhead' align='center'>{$lang["torrenttable_type"]}</td>
