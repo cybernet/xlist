@@ -690,5 +690,5 @@ if ((isset($_POST['action'])) && ($_POST['action'] == "edituser"))
     }
 
 stderr("{$lang['modtask_user_error']}", "{$lang['modtask_no_idea']}");
-
+}
 ?>

@@ -128,6 +128,7 @@ if (!$row || ($row["banned"] == "yes" && !$moderator))
 		$HTMLOUT .= tr("{$lang['details_info_hash']}", preg_replace_callback('/./s', "hex_esc", hash_pad($row["info_hash"])));
 */
 		$HTMLOUT .= tr("{$lang['details_info_hash']}", $row["info_hash"]);
+}
                else {
                $HTMLOUT .= tr("{$lang['details_download']}", "{$lang['details_dloadpos']}");
                     }
