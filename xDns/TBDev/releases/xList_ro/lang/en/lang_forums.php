@@ -187,8 +187,8 @@ $lang = array(
 'forum_view_unread_posts' => "Unread Posts",
 
 #forum errors
-'forum_sorry' => "Sorry...",
-'forum_no_auth' => "You are not authorized to post.  (Contact staff for the reason why.)",
+'forums_sorry' => "Sorry...",
+'forums_no_auth' => "You are not authorized to post.  (Contact staff for the reason why.)",
 
 
 );
