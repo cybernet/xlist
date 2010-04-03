@@ -318,7 +318,7 @@ function maketable($res)
     $HTMLOUT .= "</table></td></tr>\n";
     }
     else
-    $HTMLOUT .= tr("Snatched stuff:<br />","[ <a href=\"userdetails.php?id=$id&amp;snatched_table=1\" class=\"sublink\">Show</a> ]  - $count_snatched <font color='red'><b>staff only!!!</b></font>", 1);
+    $HTMLOUT .= tr("{$lang['userdetails_snatched_stuff']}<br />","[ <a href=\"userdetails.php?id=$id&amp;snatched_table=1\" class=\"sublink\">{$lang['userdetails_show']}</a> ]  - $count_snatched <font color='red'><b>{$lang['userdetails_staff_only']}</b></font>", 1);
     }
     //=== end snatched
     if ($user["info"])
