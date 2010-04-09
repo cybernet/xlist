@@ -508,7 +508,7 @@ if (isset($self) && $event == "stopped") {
  } else {
  //if ($user["parked"] == "yes") //== uncommet if you use parked 
  //err("Your account is parked! (Read the FAQ)"); //== uncommet if you use parked
-elseif ($user["downloadpos"] == "no") //== uncommet if you use downloapos
+//elseif ($user["downloadpos"] == "no") //== uncommet if you use downloapos
 err("Your downloading priviledges have been disabled! (Read the rules)"); //== uncommet if you use downloapos
 
  mysql_query("INSERT INTO peers (torrent, userid, peer_id, ip, port, connectable, uploaded, downloaded, to_go, started, last_action, seeder, agent, downloadoffset, uploadoffset, passkey) VALUES ($torrentid, {$user['id']}, ".sqlesc($peer_id).", ".sqlesc($ip).", $port, '$connectable', $uploaded, $downloaded, $left, ".time().", ".time().", '$seeder', ".sqlesc($agent).", $downloaded, $uploaded, ".sqlesc($passkey).")") or err("PL Err 2");
