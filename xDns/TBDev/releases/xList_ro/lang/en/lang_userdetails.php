@@ -80,6 +80,7 @@ $lang = array(
 'userdetails_snatched_stuff' => "Snatched stuff:",
 'userdetails_show' => "Show",
 'userdetails_staff_only' => "staff only!!!",
+'userdetails_highspeed' => 'High Speed',
 
 
 );

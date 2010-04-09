@@ -22,7 +22,13 @@ $TBDEV['baseurl'] = 'http://xlist.ro/';
 $TBDEV['announce_interval'] = 60 * 30;
 $TBDEV['user_ratios'] = 0;
 $TBDEV['connectable_check'] = 0;
+define ('UC_USER', 0);
+define ('UC_POWER_USER', 1);
 define ('UC_VIP', 2);
+define ('UC_UPLOADER', 3);
+define ('UC_MODERATOR', 4);
+define ('UC_ADMINISTRATOR', 5);
+define ('UC_SYSOP', 6);
 // DB setup
 $TBDEV['mysql_host'] = "localhost";
 $TBDEV['mysql_user'] = "root";
@@ -47,6 +53,12 @@ if (
     err("torrent not registered with this tracker CODE 1");
 
 /////////////////////// FUNCTION DEFS ///////////////////////////////////
+
+function auto_enter_cheater($userid, $rate, $upthis, $diff, $torrentid, $client, $ip, $last_up)
+{
+mysql_query("INSERT INTO cheaters (added, userid, client, rate, beforeup, upthis, timediff, userip, torrentid) VALUES(" . sqlesc(time()) . ", " . sqlesc($userid) . ", " . sqlesc($client) . ", " . sqlesc($rate) . ", " . sqlesc($last_up) . ", " . sqlesc($upthis) . ", " . sqlesc($diff) . ", " . sqlesc($ip) . ", " . sqlesc($torrentid) . ")") or sqlerr(__FILE__, __LINE__);
+}
+
 function dbconn()
 {
     global $TBDEV;
@@ -227,7 +239,7 @@ $seeder = ($left == 0) ? "yes" : "no";
 dbconn();
 
 
-$user_query = mysql_query("SELECT id, uploaded, downloaded, class, enabled, downloadpos FROM users WHERE passkey=".sqlesc($passkey)) or err("Tracker error 2");
+$user_query = mysql_query("SELECT id, uploaded, downloaded, class, enabled, downloadpos, highspeed FROM users WHERE passkey=".sqlesc($passkey)) or err("Tracker error 2");
 
 if ( mysql_num_rows($user_query) != 1 )
 
@@ -247,7 +259,7 @@ if (!$torrent)
 
 $torrentid = $torrent["id"];
 
-$fields = 'seeder, peer_id, ip, port, uploaded, downloaded, userid, ('.time().' - last_action) AS announcetime';
+$fields = 'seeder, peer_id, ip, port, uploaded, downloaded, userid, ('.time().' - last_action) AS announcetime, last_action AS ts';
 
 $numpeers = $torrent["numpeers"];
 $limit = "";
@@ -430,8 +442,21 @@ else
         $announcetime = ($self["seeder"] == "yes" ? "seedtime = seedtime + $self[announcetime]" : "leechtime = leechtime + $self[announcetime]");
 
 	if ($upthis > 0 || $downthis > 0)
-		mysql_query("UPDATE users SET uploaded = uploaded + $upthis, downloaded = downloaded + $downthis WHERE id=".$user['id']) or err("Tracker error 3");
-}
+           mysql_query("UPDATE users SET uploaded = uploaded + $upthis, downloaded = downloaded + $downthis WHERE id=".$user['id']) or err("Tracker error 3");
+      //=== abnormal upload detection
+			if ($user['highspeed'] == 'no' && $upthis > 103872) 
+			{
+            		//=== Work out difference
+            		$diff = (time() - $self['ts']);
+            		$rate = ($upthis / ($diff + 1));
+            		$last_up = $user['uploaded'];	
+            	        //=== about 1 MB/s
+            		if ($rate > 103872) 
+            		{
+			auto_enter_cheater($user['id'], $rate, $upthis, $diff, $torrentid, $agent, $ip, $last_up );
+                 	}
+			} //=== end abnormal upload detection
+                        }
 
 ///////////////////////////////////////////////////////////////////////////////
 

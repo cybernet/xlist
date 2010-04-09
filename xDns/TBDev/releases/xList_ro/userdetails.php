@@ -594,6 +594,11 @@ function maketable($res)
         $HTMLOUT .= "</select>{$lang['userdetails_pm_comm']}</td></tr>\n";
         $HTMLOUT .= "<tr><td colspan='2' align='left'><input type='text' size='60' name='warnpm' /></td></tr>";
       }
+      if ($CURUSER["class"] < UC_SYSOP)
+      $HTMLOUT .="<input type=\"hidden\" name=\"highspeed\" value=\"$user[highspeed]\" />\n";
+      else {
+      $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_highspeed']}</td><td class='row' colspan='2' align='left'><input type='radio' name='highspeed' value='yes' " .($user["highspeed"] == "yes" ? " checked='checked'" : "") ." />Yes <input type='radio' name='highspeed' value='no' " . ($user["highspeed"] == "no" ? " checked='checked'" : "") . " />No</td></tr>\n";
+           }
       $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_enabled']}</td><td colspan='2' align='left'><input name='enabled' value='yes' type='radio'" . ($enabled ? " checked='checked'" : "") . " />{$lang['userdetails_yes']} <input name='enabled' value='no' type='radio'" . (!$enabled ? " checked='checked'" : "") . " />{$lang['userdetails_no']}</td></tr>\n";
       $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_invright']}</td><td class='row' colspan='2' align='left'><input type='radio' name='invite_rights' value='yes'" .($user["invite_rights"]=="yes" ? " checked='checked'" : "") . " />{$lang['userdetails_yes']}<input type='radio' name='invite_rights' value='no'" .($user["invite_rights"]=="no" ? " checked='checked'" : "") . " />{$lang['userdetails_no']}</td></tr>\n";
       $HTMLOUT .= "<tr><td class='rowhead' align='left'><b>{$lang['userdetails_invites']}</b></td><td colspan='2' align='left' class='rowhead'><input type='text' size='3' name='invites' value='" . htmlspecialchars($user['invites']) . "' /></td></tr>\n";
