@@ -55,6 +55,10 @@ $lang = array(
 'my_pass_again' => 'Type password again',
 'my_submit' => 'Submit changes!',
 'my_revert' => 'Revert changes!',
+'my_shoutback' => 'Shoutbox background',
+'my_shoutback_white' => 'White',
+'my_shoutback_grey' => 'Grey',
+'my_shoutback_black' => 'Black',
 
 #my stdhead
 'my_stdhead' => '\'s private page'

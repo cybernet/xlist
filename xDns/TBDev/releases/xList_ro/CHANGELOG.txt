@@ -10,3 +10,4 @@ Sat 03 Apr 2010 08:12:17 PM EEST - 09 New and Improved Snatchlist added - suppor
 09 Modified Abnormal Upload Speed Detector installed - support for this mod - http://bit.ly/aJW5Dv
 announce fixed a bit
 Sat 10 Apr 2010 02:55:16 PM EEST - remove spam function / it's annoying
+Sat 10 Apr 2010 05:55:09 PM EEST - 09 Iframe Shoutbox With Extra's installed - support for this mod - http://bit.ly/bSyT8F

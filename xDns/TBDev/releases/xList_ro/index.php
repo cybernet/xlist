@@ -126,7 +126,7 @@ else
     //== end 09 poster mod
 */
  // === TbDev 09 Shoutbox USE SHOUT UNCOMMENT THIS
-/* if ($CURUSER['show_shout'] === "yes") {
+ if ($CURUSER['show_shout'] === "yes") {
  $commandbutton = '';
  $refreshbutton = '';
  $smilebutton = '';
@@ -185,7 +185,7 @@ else
 ";
  }
  //==end 09 shoutbox
-	*/
+
 	/* UN COMMENT TO USE ACTIVE USERS ON INDEX
 	$file = "./cache/active.txt";
 $expire = 30; // 30 seconds
