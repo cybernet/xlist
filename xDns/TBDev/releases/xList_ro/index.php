@@ -146,14 +146,13 @@ else
  <input type='text' maxlength='180' name='shbox_text' size='100' />
  <input class='button' type='submit' value='{$lang['index_shoutbox_send']}' />
  <input type='hidden' name='sent' value='yes' />
- 
-
+ <br/>
+ <br/>
  <a href=\"javascript:SmileIT(':-)','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/smile1.gif' alt='Smile' title='Smile' /></a> 
  <a href=\"javascript:SmileIT(':smile:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/smile2.gif' alt='Smiling' title='Smiling' /></a> 
  <a href=\"javascript:SmileIT(':-D','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/grin.gif' alt='Grin' title='Grin' /></a> 
  <a href=\"javascript:SmileIT(':lol:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/laugh.gif' alt='Laughing' title='Laughing' /></a> 
  <a href=\"javascript:SmileIT(':w00t:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/w00t.gif' alt='W00t' title='W00t' /></a> 
- <a href=\"javascript:SmileIT(':blum:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/blum.gif' alt='Rasp' title='Rasp' /></a> 
  <a href=\"javascript:SmileIT(';-)','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/wink.gif' alt='Wink' title='Wink' /></a> 
  <a href=\"javascript:SmileIT(':devil:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/devil.gif' alt='Devil' title='Devil' /></a> 
  <a href=\"javascript:SmileIT(':yawn:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['baseurl']}/pic/smilies/yawn.gif' alt='Yawn' title='Yawn' /></a> 

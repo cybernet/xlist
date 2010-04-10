@@ -29,6 +29,7 @@ $lang = array_merge( load_language('global'), load_language('userdetails') );
 
 function bark($msg)
 {
+  global $lang;
   stderr("{$lang['userdetails_error']}", $msg);
 }
 
