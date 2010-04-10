@@ -34,11 +34,9 @@ function _strlastpos ($haystack, $needle, $offset = 0)
 
 
 function format_urls($s)
-{
-	return preg_replace(
-    	"/(\A|[^=\]'\"a-zA-Z0-9])((http|ftp|https|ftps|irc):\/\/[^()<>\s]+)/i",
-	    "\\1<a href=\"\\2\">\\2</a>", $s);
-}
+        {
+            return preg_replace_callback("/(\A|[^=\]'\"a-zA-Z0-9])((http|ftp|https|ftps|irc):\/\/[^<>\s]+)/i", "islocal", $s);
+        }
 
 /*
 
@@ -122,11 +120,6 @@ function islocal($link)
                 $lshort = $l[0] . "..." . $l[1];
             } else $lshort = $title;
             return " <a href=\"" . ((stristr($url, $baseurl) !== false) ? "" : "http://anonym.to?") . $url . "\" target=\"_blank\">" . $lshort . "</a>";
-        }
-
-        function format_urls($s)
-        {
-            return preg_replace_callback("/(\A|[^=\]'\"a-zA-Z0-9])((http|ftp|https|ftps|irc):\/\/[^<>\s]+)/i", "islocal", $s);
         }
 
 function format_comment($text, $strip_html = true)
