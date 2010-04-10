@@ -14,7 +14,7 @@ loggedinorreturn();
     <meta name='generator' content='TBDev.net' />
 	  <meta name='MSSmartTagsPreventParsing' content='TRUE' />
 		<title>More Smilies</title>
-    <link rel='stylesheet' href='./1.css' type='text/css' />
+    <link rel='stylesheet' href='templates/1/1.css' type='text/css' />
     </head>
     <body>
     <script type='text/javascript'>
