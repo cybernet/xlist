@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 10, 2010 at 06:05 PM
+-- Generation Time: Apr 11, 2010 at 02:19 AM
 -- Server version: 5.1.37
 -- PHP Version: 5.2.10-2ubuntu6.4
 
@@ -853,7 +853,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `sendpmpos` int(11) NOT NULL DEFAULT '1',
   `highspeed` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `show_shout` enum('yes','no') CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT 'yes',
-  `shoutboxbg` enum('1','2','3') CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '1',
+  `shoutboxbg` enum('1','2','3','4') CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '4',
   `smile_until` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),

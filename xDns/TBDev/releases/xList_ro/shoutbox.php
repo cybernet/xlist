@@ -227,6 +227,18 @@ $bg = '#1f1f1f';
 $fontcolor = '#FFFFFF';
 $dtcolor = '#FFFFFF';
 }
+// == transparent
+if ( $CURUSER['shoutboxbg'] == 4 ) {
+$HTMLOUT .= "<style type='text/css'>
+A {color: #FFFFFF; font-weight: bold; ; }
+A:hover {color: #FFFFFF;}
+.small {font-size: 10pt; font-family: arial; }
+.date {font-size: 8pt;}
+</style>";
+$bg = '#';
+$fontcolor = '#ffffdc';
+$dtcolor = '#FFFFFF';
+}
 $HTMLOUT .="</head><body>";
 //== Banned from shout ??
 if ($CURUSER['chatpost'] == 'no')

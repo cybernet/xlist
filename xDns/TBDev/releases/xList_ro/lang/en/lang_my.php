@@ -59,6 +59,7 @@ $lang = array(
 'my_shoutback_white' => 'White',
 'my_shoutback_grey' => 'Grey',
 'my_shoutback_black' => 'Black',
+'my_shoutback_transparent' => 'Transparent',
 
 #my stdhead
 'my_stdhead' => '\'s private page'
