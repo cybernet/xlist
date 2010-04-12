@@ -382,6 +382,39 @@ function maketable($res)
         $HTMLOUT .= "</select></td></tr>\n";
       }
 
+      $modcomment = htmlspecialchars($user["modcomment"]);
+      $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comment']}</td><td colspan='2' align='left'><textarea cols='60' rows='6' name='modcomment'>$modcomment</textarea></td></tr>\n";
+      $warned = $user["warned"] == "yes";
+
+      $HTMLOUT .= "<tr><td class='rowhead'" . (!$warned ? " rowspan='2'": "") . ">{$lang['userdetails_warned']}</td>
+      <td align='left' width='20%'>" .
+      ( $warned
+      ? "<input name=warned value='yes' type='radio' checked='checked' />{$lang['userdetails_yes']}<input name='warned' value='no' type='radio' />{$lang['userdetails_no']}"
+      : "{$lang['userdetails_no']}" ) ."</td>";
+
+      if ($warned)
+      {
+        $warneduntil = $user['warneduntil'];
+        if ($warneduntil == 0)
+          $HTMLOUT .= "<td align='center'>{$lang['userdetails_dur']}</td></tr>\n";
+        else
+        {
+          $HTMLOUT .= "<td align='center'>{$lang['userdetails_until']} ".get_date($warneduntil, 'DATE');
+          $HTMLOUT .= " (" . mkprettytime($warneduntil - time())  . " {$lang['userdetails_togo']})</td></tr>\n";
+        }
+      }
+      else
+      {
+        $HTMLOUT .= "<td>{$lang['userdetails_warn_for']} <select name='warnlength'>\n";
+        $HTMLOUT .= "<option value='0'>{$lang['userdetails_warn0']}</option>\n";
+        $HTMLOUT .= "<option value='1'>{$lang['userdetails_warn1']}</option>\n";
+        $HTMLOUT .= "<option value='2'>{$lang['userdetails_warn2']}</option>\n";
+        $HTMLOUT .= "<option value='4'>{$lang['userdetails_warn4']}</option>\n";
+        $HTMLOUT .= "<option value='8'>{$lang['userdetails_warn8']}</option>\n";
+        $HTMLOUT .= "<option value='255'>{$lang['userdetails_warninf']}</option>\n";
+        $HTMLOUT .= "</select>{$lang['userdetails_pm_comm']}</td></tr>\n";
+        $HTMLOUT .= "<tr><td colspan='2' align='left'><input type='text' size='60' name='warnpm' /></td></tr>";
+      }
 //==Download disable
      if ($CURUSER['class'] >= UC_MODERATOR) {
 	   $downloadpos = $user['downloadpos'] != 1;
@@ -561,41 +594,6 @@ function maketable($res)
      <tr><td colspan='2' align='left'>{$lang['userdetails_pm_comment']}<input type='text' size='60' name='pmdisable_pm' /></td></tr>";
      }
      }
-
-      $modcomment = htmlspecialchars($user["modcomment"]);
-      $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comment']}</td><td colspan='2' align='left'><textarea cols='60' rows='6' name='modcomment'>$modcomment</textarea></td></tr>\n";
-      $warned = $user["warned"] == "yes";
-
-      $HTMLOUT .= "<tr><td class='rowhead'" . (!$warned ? " rowspan='2'": "") . ">{$lang['userdetails_warned']}</td>
-      <td align='left' width='20%'>" .
-      ( $warned
-      ? "<input name=warned value='yes' type='radio' checked='checked' />{$lang['userdetails_yes']}<input name='warned' value='no' type='radio' />{$lang['userdetails_no']}"
-      : "{$lang['userdetails_no']}" ) ."</td>";
-
-      if ($warned)
-      {
-        $warneduntil = $user['warneduntil'];
-        if ($warneduntil == 0)
-          $HTMLOUT .= "<td align='center'>{$lang['userdetails_dur']}</td></tr>\n";
-        else
-        {
-          $HTMLOUT .= "<td align='center'>{$lang['userdetails_until']} ".get_date($warneduntil, 'DATE');
-          $HTMLOUT .= " (" . mkprettytime($warneduntil - time())  . " {$lang['userdetails_togo']})</td></tr>\n";
-        }
-      }
-      else
-      {
-        $HTMLOUT .= "<td>{$lang['userdetails_warn_for']} <select name='warnlength'>\n";
-        $HTMLOUT .= "<option value='0'>{$lang['userdetails_warn0']}</option>\n";
-        $HTMLOUT .= "<option value='1'>{$lang['userdetails_warn1']}</option>\n";
-        $HTMLOUT .= "<option value='2'>{$lang['userdetails_warn2']}</option>\n";
-        $HTMLOUT .= "<option value='4'>{$lang['userdetails_warn4']}</option>\n";
-        $HTMLOUT .= "<option value='8'>{$lang['userdetails_warn8']}</option>\n";
-        $HTMLOUT .= "<option value='255'>{$lang['userdetails_warninf']}</option>\n";
-        $HTMLOUT .= "</select>{$lang['userdetails_pm_comm']}</td></tr>\n";
-        $HTMLOUT .= "<tr><td colspan='2' align='left'><input type='text' size='60' name='warnpm' /></td></tr>";
-      }
-
       $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_chatpos']}</td><td colspan='2' align='left'><input type='radio' name='chatpost' value='yes'" .($user["chatpost"] == "yes" ? " checked='checked'" : "")." />{$lang['userdetails_yes']} <input type='radio' name='chatpost' value='no'" .($user["chatpost"] == "no" ? " checked='checked'" : "")." />{$lang['userdetails_no']}</td></tr>\n";
       if ($CURUSER["class"] < UC_SYSOP)
       $HTMLOUT .="<input type=\"hidden\" name=\"highspeed\" value=\"$user[highspeed]\" />\n";
