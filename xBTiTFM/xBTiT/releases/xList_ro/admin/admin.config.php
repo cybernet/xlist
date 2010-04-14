@@ -160,7 +160,7 @@ switch ($action)
             }
             else
               {
-              $btit_settings["xbtt_use"] = isset($_POST["xbtt_use"])?"true":"false";
+              $btit_settings["xbtt_use"] = "true";
               $admintpl->set("xbtt_error", false, true);
               // save some settings into xbt_config table
               $xbt_cfg = "('anonymous_announce','anonymous_scrape','announce_interval','auto_register')";
@@ -200,6 +200,10 @@ switch ($action)
               $admintpl->set("xbtt_error", true, true);
           }
         }
+	else 
+      {
+	$btit_settings["xbtt_use"] = "false";
+      }
         $btit_settings["xbtt_url"] = $_POST["xbtt_url"];
         $btit_settings["cache_duration"] = $_POST["cache_duration"];
         $btit_settings["cut_name"] = intval($_POST["cut_name"]);
