@@ -1,1 +1,0 @@
-<div class="blocklist" style="padding:5px; align:center;">Unable to contact Btiteam's site</div>

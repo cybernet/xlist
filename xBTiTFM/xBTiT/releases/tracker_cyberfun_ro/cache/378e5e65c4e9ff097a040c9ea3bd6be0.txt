@@ -1,1 +1,0 @@
-a:3:{i:0;a:3:{s:5:"title";s:16:"BLOCK_SEEDWANTED";s:7:"content";s:10:"seedwanted";s:5:"cache";s:2:"no";}i:1;a:3:{s:5:"title";s:18:"BLOCK_LASTTORRENTS";s:7:"content";s:12:"lasttorrents";s:5:"cache";s:2:"no";}i:2;a:3:{s:5:"title";s:17:"BLOCK_TOPTORRENTS";s:7:"content";s:11:"toptorrents";s:5:"cache";s:2:"no";}}
