@@ -214,10 +214,9 @@ loggedinorreturn();
     <fieldset><legend><strong>{$lang['my_browse']}</strong></legend>$categories</fieldset>
     <fieldset><legend><strong>{$lang['my_stylesheet']}</strong></legend><select name='stylesheet'>\n$stylesheets\n</select></fieldset>
     <fieldset><legend><strong>{$lang['my_language']}</strong></legend>English</fieldset>
-    <fieldset><legend><strong>{$lang['my_country']}</strong></legend><select name='country'>\n$countries\n</select></fieldset>";
-    $HTMLOUT .= tr("".$lang['my_shoutback']."", "<input type='radio' name='shoutboxbg'" . ($CURUSER["shoutboxbg"] == "1" ? " checked='checked'" : "") . " value='1' />{$lang['my_shoutback_white']}
-    <input type='radio' name='shoutboxbg'" . ($CURUSER["shoutboxbg"] == "2" ? " checked='checked'" : "") . " value='2' />{$lang['my_shoutback_grey']}<input type='radio' name='shoutboxbg'" . ($CURUSER["shoutboxbg"] == "3" ? " checked='checked'" : "") . " value='3' />{$lang['my_shoutback_black']}<input type='radio' name='shoutboxbg'" . ($CURUSER["shoutboxbg"] == "4" ? " checked='checked'" : "") . " value='4' />{$lang['my_shoutback_transparent']}", 1);
-$HTMLOUT .= "
+    <fieldset><legend><strong>{$lang['my_country']}</strong></legend><select name='country'>\n$countries\n</select></fieldset>
+    <fieldset><legend><strong>{$lang['my_shoutback']}</strong></legend><input type='radio' name='shoutboxbg'" . ($CURUSER["shoutboxbg"] == "1" ? " checked='checked'" : "") . " value='1' />{$lang['my_shoutback_white']}<input type='radio' name='shoutboxbg'" . ($CURUSER["shoutboxbg"] == "2" ? " checked='checked'" : "") . " value='2' />{$lang['my_shoutback_grey']}<input type='radio' name='shoutboxbg'" . ($CURUSER["shoutboxbg"] == "3" ? " checked='checked'" : "") . " value='3' />{$lang['my_shoutback_black']}<input type='radio' name='shoutboxbg'" . ($CURUSER["shoutboxbg"] == "4" ? " checked='checked'" : "") . " value='4' />{$lang['my_shoutback_transparent']}</fieldset>
+
     <!-- Timezone stuff -->
     <fieldset><legend><strong>{$lang['my_tz']}</strong></legend>$time_select</fieldset>
     <fieldset><legend><strong>{$lang['my_checkdst']}</strong></legend>
