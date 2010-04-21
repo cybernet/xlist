@@ -137,8 +137,6 @@ function userlogin() {
     mysql_query("UPDATE users SET last_access='" . TIME_NOW . "', ip=".sqlesc($ip)." WHERE id=" . $row["id"]);// or die(mysql_error());
     $row['ip'] = $ip;
     $GLOBALS["CURUSER"] = $row;
-//    $GLOBALS['CURUSER']['group'] = $TBDEV['groups'][$row['class']];
-//    $GLOBALS['CURUSER']['ismod'] = ( $GLOBALS['CURUSER']['group']['g_is_mod'] OR $GLOBALS['CURUSER']['group']['g_is_supmod'] ) ? 1:0;
 }
 
 function autoclean() {
@@ -254,7 +252,7 @@ function sqlwildcardesc($x) {
 }
 
 
-function stdhead( $title = "", $js='', $css='' ) {
+function stdhead($title = "", $msgalert = true) {
     global $CURUSER, $TBDEV, $lang;
 
     if (!$TBDEV['site_online'])
@@ -266,14 +264,13 @@ function stdhead( $title = "", $js='', $css='' ) {
         $title = $TBDEV['site_name'] .(isset($_GET['tbv'])?" (".TBVERSION.")":'');
     else
         $title = $TBDEV['site_name'].(isset($_GET['tbv'])?" (".TBVERSION.")":''). " :: " . htmlspecialchars($title);
-    /* Deprecate this.    
+        
     if ($TBDEV['msg_alert'] && $msgalert && $CURUSER)
     {
       $res = mysql_query("SELECT COUNT(*) FROM messages WHERE receiver=" . $CURUSER["id"] . " && unread='yes'") or sqlerr(__FILE__,__LINE__);
       $arr = mysql_fetch_row($res);
       $unread = $arr[0];
     }
-    */
 
        $htmlout = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
     \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
@@ -285,10 +282,9 @@ function stdhead( $title = "", $js='', $css='' ) {
     <meta name='generator' content='xList.ro' />
     <meta http-equiv='Content-Language' content='en-us' />
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+    <meta name='MSSmartTagsPreventParsing' content='TRUE' />
     <title>{$title}</title>
     <link rel='stylesheet' href='templates/1/1.css' type='text/css' />
-    {$css}\n
-    {$js}\n
     </head>
     <body>
     <table width='950' cellspacing='0' cellpadding='0' style='background: transparent' align='center'>
@@ -361,6 +357,21 @@ piwikTracker.enableLinkTracking();
     </td></tr></table>\n
     </body></html>\n";
 }
+
+function genbark($x,$y) {
+    stdhead($y);
+    print("<h2>" . htmlspecialchars($y) . "</h2>\n");
+    print("<p>" . htmlspecialchars($x) . "</p>\n");
+    stdfoot();
+    exit();
+}
+/*
+function mksecret()
+{
+   $ret = substr(md5(uniqid(mt_rand())), 0, 20);
+   return $ret;
+}
+*/
 
 function httperr($code = 404) {
     header("HTTP/1.0 404 Not found");
@@ -855,7 +866,7 @@ function StatusBar() {
 		"<div id='statusbar'>
         {$lang['gl_msg_welcome']}, <a href='userdetails.php?id={$CURUSER['id']}'>{$CURUSER['username']}</a>
 		$IsDonor$warn&nbsp;|&nbsp;[<a href='logout.php'>logout</a>]&nbsp;&nbsp;|&nbsp;&nbsp;Invites:&nbsp;<a href='{$TBDEV['baseurl']}/invite.php'>{$CURUSER['invites']}</a>
-		&nbsp;&nbsp;|&nbsp;&nbsp;{$lang['gl_uploaded']}: {$upped}<!--&nbsp;&nbsp;|&nbsp;&nbsp;{$lang['gl_ratio']}:{$ratio}-->&nbsp;&nbsp;|&nbsp;&nbsp;<a href='messages.php'>$inbox</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='http://twitter.com/xlist_ro' target='_blank'><img src='templates/1/pic/twitter.png' alt='Twitter' /></a>&nbsp;&nbsp;<a href='http://www.facebook.com/cybernet2u' target='_blank'><img src='templates/1/pic/facebook.png' alt='Facebook' /></a>
+		&nbsp;&nbsp;|&nbsp;&nbsp;{$lang['gl_uploaded']}: {$upped}<!--&nbsp;&nbsp;|&nbsp;&nbsp;{$lang['gl_ratio']}:{$ratio}-->&nbsp;&nbsp;|&nbsp;&nbsp;<a href='messages.php'>$inbox</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='http://twitter.com/xlist_ro' target='_blank'><img src='templates/1/pic/twitter.png' alt='Twitter' /></a>&nbsp;&nbsp;<a href='http://www.facebook.com/#' target='_blank'><img src='templates/1/pic/facebook.png' alt='Facebook' /></a>
   </div>";
 	
 	return $StatusBar;
