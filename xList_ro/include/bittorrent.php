@@ -340,6 +340,8 @@ try {
 var pageTracker = _gat._getTracker(\"UA-15405564-1\");
 pageTracker._trackPageview();
 } catch(err) {}</script>\n
+<br /><br /><br /><br /><br />
+<p align='center'><a href='http://validator.w3.org'><img src='pic/login/xhtml_valid.png' alt='Xhtml valid'/></a>&nbsp;&nbsp;<a href='http://jigsaw.w3.org/css-validator/check/'><img src='pic/login/css_valid.png' alt='Xhtml valid' /></a>&nbsp;&nbsp;<a href='http://tbdev.net'><img src='pic/login/tbdev_power.png' alt='TBDEV'/></a>&nbsp;&nbsp;<a href='http://kidvision.me'><img src='pic/login/kidvision_design.png' alt='Design'/></a></p>\n
 <!-- Piwik -->
 <script type=\"text/javascript\">
 var pkBaseURL = ((\"https:\" == document.location.protocol) ? \"https://stats.xdns.ro/\" : \"http://stats.xdns.ro/\");
@@ -350,10 +352,8 @@ var piwikTracker = Piwik.getTracker(pkBaseURL + \"piwik.php\", 1);
 piwikTracker.trackPageView();
 piwikTracker.enableLinkTracking();
 } catch( err ) {}
-</script><noscript><p><img src=\"http://stats.xdns.ro/piwik.php?idsite=1\" style=\"border:0\" alt=\"\"/></p></noscript>
+</script><noscript><p><img src=\"http://stats.xdns.ro/piwik.php?idsite=1\" style=\"border:0\" alt=\"\" /></p></noscript>
 <!-- End Piwik Tag -->\n
-<br /><br /><br /><br /><br />
-<p align='center'><a href='http://validator.w3.org'><img src='pic/login/xhtml_valid.png' alt='Xhtml valid'/></a>&nbsp;&nbsp;<a href='http://jigsaw.w3.org/css-validator/check/'><img src='pic/login/css_valid.png' alt='Xhtml valid' /></a>&nbsp;&nbsp;<a href='http://tbdev.net'><img src='pic/login/tbdev_power.png' alt='TBDEV'/></a>&nbsp;&nbsp;<a href='http://kidvision.me'><img src='pic/login/kidvision_design.png' alt='Design'/></a></p>
     </td></tr></table>\n
     </body></html>\n";
 }
