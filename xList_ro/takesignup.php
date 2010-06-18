@@ -174,6 +174,10 @@ function isproxy()
     else 
       logincookie($id, $wantpasshash);
 
+	$added = time();
+	$welcome = sqlesc("{$lang['takesignup_welcome']}");
+	mysql_query("INSERT INTO messages (sender, receiver, msg, added) VALUES(0, $id, $welcome, $added)") or sqlerr(__FILE__, __LINE__);
+
     header("Refresh: 0; url=ok.php?type=". (!$arr[0]?"sysop":("signup&email=" . urlencode($email))));
 
 ?>
